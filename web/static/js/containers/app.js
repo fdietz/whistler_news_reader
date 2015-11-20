@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
-import { create_feed, update_feed, remove_feed, fetchEntries } from "../actions";
+import { connect } from "react-redux";
+import { createFeed, updateFeed, removeFeed, fetchEntries, fetchFeeds } from "../actions";
 
-import TopHeader from "../components/TopHeader";
 import MainHeader from "../components/MainHeader";
 import FeedEntryList from "../components/FeedEntryList";
 import Sidebar from "../components/Sidebar";
@@ -16,6 +15,7 @@ class App extends Component {
   componentDidMount() {
     let { dispatch } = this.props;
     dispatch(fetchEntries());
+    dispatch(fetchFeeds());
   }
 
   loadMore() {
@@ -37,7 +37,7 @@ class App extends Component {
     return (
       <div className="container">
         <MainHeader/>
-        <Sidebar/>
+        <Sidebar feeds={feeds}/>
 
         <div className="content with-sidebar">
           <MainHeader/>
@@ -53,7 +53,6 @@ class App extends Component {
 }
 
 function select(state) {
-  console.log("select", state)
   return {
     entries: state.entries,
     feeds: state.feeds,

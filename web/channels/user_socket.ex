@@ -3,6 +3,7 @@ defmodule WhistlerNewsReader.UserSocket do
 
   ## Channels
   channel "entries:*", WhistlerNewsReader.EntryChannel
+  channel "feeds:*", WhistlerNewsReader.FeedChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

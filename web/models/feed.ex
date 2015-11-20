@@ -1,7 +1,7 @@
 defmodule WhistlerNewsReader.Feed do
   use WhistlerNewsReader.Web, :model
 
-  @derive {Poison.Encoder, only: [:title, :feed_url, :site_url, :last_updated]}
+  @derive {Poison.Encoder, only: [:id, :title, :feed_url, :site_url, :last_updated]}
   schema "feeds" do
     field :title, :string
     field :feed_url, :string
