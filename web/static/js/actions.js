@@ -12,6 +12,10 @@ export const FETCH_FEEDS_REQUEST = "FETCH_FEEDS_REQUEST";
 export const FETCH_FEEDS_SUCCESS = "FETCH_FEEDS_SUCCESS";
 export const FETCH_FEEDS_FAILURE = "FETCH_FEEDS_FAILURE";
 
+export const FETCH_MORE_ENTRIES_REQUEST = "FETCH_MORE_ENTRIES_REQUEST";
+export const FETCH_MORE_ENTRIES_SUCCESS = "FETCH_MORE_ENTRIES_SUCCESS";
+export const FETCH_MORE_ENTRIES_FAILURE = "FETCH_ENTRIES_FAILURE";
+
 export function createFeed(feed) {
   return { type: CREATE_FEED, feed: feed };
 }
@@ -36,6 +40,18 @@ function fetchEntriesFailure(error) {
   return { type: FETCH_ENTRIES_FAILURE, error };
 }
 
+function fetchMoreEntriesRequest() {
+  return { type: FETCH_MORE_ENTRIES_REQUEST };
+}
+
+function fetchMoreEntriesSuccess(entries) {
+  return { type: FETCH_MORE_ENTRIES_SUCCESS, entries };
+}
+
+function fetchMoreEntriesFailure(error) {
+  return { type: FETCH_MORE_ENTRIES_FAILURE, error };
+}
+
 function fetchFeedsRequest() {
   return { type: FETCH_FEEDS_REQUEST };
 }
@@ -58,15 +74,30 @@ export function fetchEntries() {
 
     entriesChannel.join()
       .receive("ok", messages => {
-        console.log("catching up", messages);
         dispatch(fetchEntriesSuccess(messages.entries));
       })
       .receive("error", reason => {
-        console.log("failed join", reason);
         dispatch(fetchEntriesFailure(reason));
       })
       .after(10000, () => console.log("Networking issue. Still waiting..."));
+  };
+}
 
+export function fetchMoreEntries(lastPublished) {
+  return dispatch => {
+    dispatch(fetchMoreEntriesRequest(lastPublished));
+
+    let payload = {
+      last_published: lastPublished
+    };
+
+    entriesChannel.push("entries:load_more", payload)
+      .receive("ok", response => {
+        dispatch(fetchMoreEntriesSuccess(response.entries));
+      })
+      .receive("error", error => {
+        dispatch(fetchMoreEntriesFailure(error));
+      });
   };
 }
 
@@ -76,14 +107,11 @@ export function fetchFeeds() {
 
     feedsChannel.join()
       .receive("ok", messages => {
-        console.log("catching up", messages);
         dispatch(fetchFeedsSuccess(messages.feeds));
       })
       .receive("error", reason => {
-        console.log("failed join", reason);
         dispatch(fetchFeedsFailure(reason));
       })
       .after(10000, () => console.log("Networking issue. Still waiting..."));
-
   };
 }
