@@ -1,11 +1,11 @@
 defmodule WhistlerNewsReader.EntryChannel do
   use WhistlerNewsReader.Web, :channel
 
+  alias WhistlerNewsReader.Entry
+  alias WhistlerNewsReader.Repo
+
   def join("entries:all", _params, socket) do
-    entries = [
-      %{ id: 1 },
-      %{ id: 2 },
-    ]
+    entries = Entry |> Repo.all |> Repo.preload(:feed)
     {:ok, %{entries: entries}, socket }
   end
 

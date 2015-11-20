@@ -1,3 +1,16 @@
-h1 {
-  color: green;
-}
+@import "../../../node_modules/normalize.css/normalize.css";
+@import "../../../node_modules/purecss/build/base.css";
+@import "../../../node_modules/purecss/build/grids-responsive.css";
+@import "../../../node_modules/purecss/build/grids-units.css";
+@import "../../../node_modules/purecss/build/menus.css";
+
+@import "variables";
+@import "base";
+@import "grid";
+@import "layout";
+@import "components/btn";
+@import "components/item_list";
+@import "components/top_header";
+@import "components/main_header";
+@import "components/paginator";
+@import "components/sidebar";

@@ -52,6 +52,10 @@ module.exports = {
       {
         test: /\.scss$/,
         loader: "style!css!sass!autoprefixer?browsers=last 2 version"
+      },
+      {
+        test: /\.(svg|jpg|png)$/,
+        loader: 'file-loader'
       }
     ]
   }

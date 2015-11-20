@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 import { create_feed, update_feed, remove_feed, fetchEntries } from "../actions";
 
 import TopHeader from "../components/TopHeader";
+import MainHeader from "../components/MainHeader";
 import FeedEntryList from "../components/FeedEntryList";
+import Sidebar from "../components/Sidebar";
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      entries: []
-    };
   }
 
   componentDidMount() {
@@ -21,39 +20,40 @@ class App extends Component {
 
   loadMore() {
     let { dispatch } = this.props;
-    dispatch(fetchEntries());
-
+    // TODO: fetch with pagination
     // let oldestPublishedEntry = this.state.entries[this.state.entries.length-1].published;
-    // this.setState({ loadMoreLoading: true });
-    // $.get("/api/entries/news", { last_published: oldestPublishedEntry }, function(result) {
-    //   this.setState({
-    //     entries: this.state.entries.concat(result.entries),
-    //     loadMoreLoading: false
-    //   });
-    // }.bind(this));
+    // { last_published: oldestPublishedEntry }
+    dispatch(fetchEntries());
   }
 
   render() {
-    const { dispatch } = this.props;
+    const { dispatch, entries, feeds, isLoading } = this.props;
 
     let buttonLabel = "Load More";
-    if (this.state.loadMoreLoading) {
+    if (isLoading) {
       buttonLabel = "loading...";
     }
 
     return (
-      <div>
-        <TopHeader/>
-        <FeedEntryList entries={this.state.entries} onLoadMore={this.loadMore}/>
-        <div className="paginator">
-          <button className="btn btn-primary" onClick={this.loadMore}>{buttonLabel}</button>
+      <div className="container">
+        <MainHeader/>
+        <Sidebar/>
+
+        <div className="content with-sidebar">
+          <MainHeader/>
+          <FeedEntryList entries={entries}/>
+          <div className="paginator">
+            <button className="btn btn-primary" onClick={() => this.loadMore}>{buttonLabel}</button>
+          </div>
         </div>
+
       </div>
     );
   }
 }
 
 function select(state) {
+  console.log("select", state)
   return {
     entries: state.entries,
     feeds: state.feeds,
