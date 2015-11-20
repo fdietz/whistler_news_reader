@@ -51,13 +51,13 @@ class FeedEntry extends Component {
     }
 
     let itemRowClass = classNames({
-      "item-row": true,
+      item: true,
       expanded: this.state.expanded
     });
 
     return (
-      <div className="item">
-        <div className={itemRowClass} onClick={this.toggleExpand}>
+      <div className={itemRowClass}>
+        <div className="item-row" onClick={this.toggleExpand}>
           <span className="primary-title">{this.props.entry.feed.title}</span>
           <span className="secondary-title">{this.props.entry.title}</span>
           <span className="secondary-summary">{this.props.entry.summary}</span>

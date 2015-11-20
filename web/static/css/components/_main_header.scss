@@ -3,40 +3,36 @@ $main-header-bg: #3E6372;
 .main-header {
   position: fixed;
   top: 0;
-  left: 0;
   right: 0;
-  height: 60px;
-
-  display: flex;
-  align-items: center;
-
-  height: 60px;
-
-  background-color: $main-header-bg;
-  color: #FFF;
-
+  left: 0;
   z-index: 20;
+  display: flex;
+  height: 60px;
 
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-right: 30px;
+  padding-left: 30px;
+
+  color: #FFF;
+  background-color: $main-header-bg;
 
   border-bottom: 3px solid #2B454F;
 
+  align-items: center;
+
   &:before {
-    box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.14);
-    content: "";
-    height: 60px;
-    left: 0;
-    right: 0;
     position: fixed;
-    // width: 104%;
+    right: 0;
+    left: 0;
+    height: 60px;
+    content: "";
+    box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .14);
     will-change: top,left;
   }
 
   .left {
     display: flex;
-    align-items: center;
     justify-content: flex-start;
+    align-items: center;
     flex: 1 1;
 
     h2 {
@@ -46,40 +42,28 @@ $main-header-bg: #3E6372;
 
       font-size: 1.4rem;
       font-weight: bold;
-
-      .arrow {
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        right: 20px;
-        top: 50%;
-        margin-top: -15px;
-      }
     }
   }
 
   .right {
     display: flex;
-    align-items: center;
     justify-content: flex-end;
+    align-items: center;
     flex: 1 1;
 
     > .search {
-      background-color: rgba(255,255,255,.15);
-      width: 200px;
-      // font-size: 1.1rem;
+      background-color: rgba(255, 255, 255, .15);
+      width: 300px;
 
       input {
         background: none;
         border: none;
         box-sizing: border-box;
         color: #fff;
-        // display: block;
         font-size: 1.0em;
         height: 36px;
         padding-left: 10px;
         padding-right: 10px;
-        // position: absolute;
         width: 100%;
       }
     }

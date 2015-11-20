@@ -22,18 +22,30 @@ $item-list-expanded-bg-color: #ffffcf;
     display: block;
     pointer-events: none;
     content: '';
-    // box-shadow: 0 -1px 0 #e5e5e5, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);
+    box-shadow: 0 -1px 0 #e5e5e5, 0 0 2px rgba(0, 0, 0, .12), 0 2px 4px rgba(0, 0, 0, .24);
   }
 }
 
 .item {
   background-color: $item-list-bg-color;
   border-bottom: 1px solid $item-list-border-color;
+  transition: margin .1s ease;
   will-change: transform,-webkit-transform;
+
+  &.expanded {
+    margin-right: -20px;
+    margin-left: -20px;
+
+    box-shadow: 0 0 2px rgba(0, 0, 0, .12), 0 2px 4px rgba(0, 0, 0, .24);
+
+    .item-row {
+      background-color: $item-list-expanded-bg-color;
+    }
+  }
 
   .item-row {
     display: flex;
-    padding: 8px 12px;
+    padding: 12px;
 
     font-size: .9rem;
 
@@ -42,9 +54,9 @@ $item-list-expanded-bg-color: #ffffcf;
     align-items: center;
     justify-content: flex-start;
 
-    &.expanded {
-      background-color: $item-list-expanded-bg-color;
-    }
+    // &.expanded {
+    //   background-color: $item-list-expanded-bg-color;
+    // }
 
     .primary-title {
       width: 120px;
@@ -113,6 +125,7 @@ $item-list-expanded-bg-color: #ffffcf;
 
     .title {
       margin: 0;
+
       a {
         text-decoration: none;
       }
