@@ -29,7 +29,6 @@ class App extends Component {
 
   loadMore() {
     const { dispatch, entries } = this.props;
-    // TODO: fetch with pagination
     let oldestPublishedEntry = entries[entries.length-1].published;
     dispatch(fetchMoreEntries(oldestPublishedEntry));
   }
@@ -52,6 +51,9 @@ class App extends Component {
               entries={entries}
               currentEntry={currentEntry}
               onEntryClick={entry => dispatch(selectEntry(entry)) }/>
+              <div className="paginator">
+                <button className="btn btn-primary" onClick={this.loadMore}>Load more</button>
+              </div>
           </div>
           <div className="layout-detail">
             {content}

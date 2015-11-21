@@ -28,6 +28,10 @@ $item-list-secondary-color: #888A8F;
     background-color: #F0F3F7;
   }
 
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.01);
+  }
+
   .half-width-item-row {
     display: flex;
     font-size: .9rem;

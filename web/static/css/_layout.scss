@@ -33,6 +33,7 @@ body {
     min-width: 200px;
     overflow-y: auto;
     flex: 2 2;
+    flex-direction: column;
   }
 
   .layout-detail {
