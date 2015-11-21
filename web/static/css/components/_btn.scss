@@ -60,6 +60,10 @@ $btn-blue-bg: #4B719D;
 
 }
 
+.btn + .btn {
+  margin-left: 5px;
+}
+
 .btn-block {
   display: block;
   width: 100%;

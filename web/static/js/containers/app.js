@@ -78,6 +78,7 @@ class App extends Component {
         threshold={300}
         loadMore={this.loadMore}
         hasMore={hasMoreEntries}
+        className="scrollable-container"
         loader={<div className="loader">Loading ...</div>}>
         {items}
       </InfiniteScroll>)
@@ -100,9 +101,18 @@ class App extends Component {
 
         <div className="layout-content with-sidebar">
           <div className="layout-list">
+            <div className="list-header">
+              <button className="btn">Mark as read</button>
+              <button className="btn">Refresh</button>
+            </div>
+
             {paginatedItems}
           </div>
           <div className="layout-detail">
+            <div className="detail-header">
+              <button className="btn">Prev</button>
+              <button className="btn">Next</button>
+            </div>
             {content}
           </div>
         </div>

@@ -15,7 +15,7 @@ export default class InfiniteScroll extends Component {
   }
 
   componentDidMount() {
-    this.scrollableAncestor = this._findScrollableAncestor();
+    this.scrollableAncestor = this.refs.scrollContainer;
     this.attachScrollListener();
     this.handleScrollEvent();
     window.addEventListener('resize', this.handleScrollEvent);
@@ -30,16 +30,17 @@ export default class InfiniteScroll extends Component {
   }
 
   render() {
-    let props = this.props;
-    return React.DOM.div(null, props.children, props.hasMore && (props.loader));
+    return (
+      <div ref="scrollContainer" className={this.props.className}>
+        {this.props.children}
+      </div>
+    )
   }
 
   handleScrollEvent() {
     if (!this.props.hasMore) {
       return;
     }
-
-    let el = ReactDOM.findDOMNode(this);
 
     let scrollTop    = this.scrollableAncestor.scrollTop;
     let scrollHeight = this.scrollableAncestor.scrollHeight;
@@ -66,29 +67,6 @@ export default class InfiniteScroll extends Component {
   componentWillUnmount() {
     this.detachScrollListener();
     window.removeEventListener('resize', this.handleScrollEvent);
-  }
-
-  _findScrollableAncestor() {
-    let node = ReactDOM.findDOMNode(this);
-
-    while (node.parentNode) {
-      node = node.parentNode;
-
-      if (node === document || node === document.documentElement) {
-        continue;
-      }
-
-      const style = window.getComputedStyle(node);
-      const overflowY = style.getPropertyValue("overflow-y") ||
-        style.getPropertyValue("overflow");
-
-      if (overflowY === "auto" || overflowY === "scroll") {
-        return node;
-      }
-    }
-
-    // fallback window
-    return window;
   }
 
 }
