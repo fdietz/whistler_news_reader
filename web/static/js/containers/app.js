@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import InfiniteScroll from "../components/InfiniteScroll";
 import { connect } from "react-redux";
 import { createFeed, updateFeed, removeFeed, fetchEntries, fetchMoreEntries, selectEntry, fetchFeeds } from "../actions";
 
@@ -13,7 +14,8 @@ class App extends Component {
     entries: PropTypes.array.isRequired,
     feeds: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    currentEntry: PropTypes.object.isRequired
+    currentEntry: PropTypes.object.isRequired,
+    hasMoreEntries: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -34,11 +36,28 @@ class App extends Component {
   }
 
   render() {
-    const { dispatch, entries, feeds, currentEntry } = this.props;
+    const { dispatch, entries, feeds, currentEntry, hasMoreEntries } = this.props;
 
     let content;
     if (currentEntry) {
       content = <FeedEntryContent entry={currentEntry}/>;
+    }
+
+    let items = (<HalfWidthFeedEntryList
+      entries={entries}
+      currentEntry={currentEntry}
+      onEntryClick={entry => dispatch(selectEntry(entry)) }/>
+    );
+
+    let paginatedItems;
+    if (entries.length > 0) {
+      paginatedItems = (<InfiniteScroll
+        threshold={300}
+        loadMore={this.loadMore}
+        hasMore={hasMoreEntries}
+        loader={<div className="loader">Loading ...</div>}>
+        {items}
+      </InfiniteScroll>)
     }
 
     return (
@@ -47,13 +66,7 @@ class App extends Component {
 
         <div className="layout-content with-sidebar">
           <div className="layout-list">
-            <HalfWidthFeedEntryList
-              entries={entries}
-              currentEntry={currentEntry}
-              onEntryClick={entry => dispatch(selectEntry(entry)) }/>
-              <div className="paginator">
-                <button className="btn btn-primary" onClick={this.loadMore}>Load more</button>
-              </div>
+            {paginatedItems}
           </div>
           <div className="layout-detail">
             {content}
@@ -69,6 +82,7 @@ function select(state) {
   return {
     entries: state.entries,
     currentEntry: state.currentEntry,
+    hasMoreEntries: state.hasMoreEntries,
     feeds: state.feeds,
     isLoading: state.isLoading
   };

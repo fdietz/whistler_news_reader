@@ -16,6 +16,7 @@ export const FETCH_FEEDS_FAILURE = "FETCH_FEEDS_FAILURE";
 export const FETCH_MORE_ENTRIES_REQUEST = "FETCH_MORE_ENTRIES_REQUEST";
 export const FETCH_MORE_ENTRIES_SUCCESS = "FETCH_MORE_ENTRIES_SUCCESS";
 export const FETCH_MORE_ENTRIES_FAILURE = "FETCH_ENTRIES_FAILURE";
+export const HAS_MORE_ENTRIES           = "HAS_MORE_ENTRIES";
 
 export function createFeed(feed) {
   return { type: CREATE_FEED, feed: feed };
@@ -53,6 +54,10 @@ function fetchMoreEntriesFailure(error) {
   return { type: FETCH_MORE_ENTRIES_FAILURE, error };
 }
 
+function hasMoreEntries(hasMore) {
+  return { type: HAS_MORE_ENTRIES, hasMore: hasMore };
+}
+
 function fetchFeedsRequest() {
   return { type: FETCH_FEEDS_REQUEST };
 }
@@ -74,8 +79,13 @@ export function fetchEntries() {
     dispatch(fetchEntriesRequest());
 
     entriesChannel.join()
-      .receive("ok", messages => {
-        dispatch(fetchEntriesSuccess(messages.entries));
+      .receive("ok", response => {
+        dispatch(fetchEntriesSuccess(response.entries));
+        if (response.entries.length < 10) {
+          dispatch(hasMoreEntries(false));
+        } else {
+          dispatch(hasMoreEntries(true));
+        }
       })
       .receive("error", reason => {
         dispatch(fetchEntriesFailure(reason));
@@ -95,6 +105,11 @@ export function fetchMoreEntries(lastPublished) {
     entriesChannel.push("entries:load_more", payload)
       .receive("ok", response => {
         dispatch(fetchMoreEntriesSuccess(response.entries));
+        if (response.entries.length < 10) {
+          dispatch(hasMoreEntries(false));
+        } else {
+          dispatch(hasMoreEntries(true));
+        }
       })
       .receive("error", error => {
         dispatch(fetchMoreEntriesFailure(error));

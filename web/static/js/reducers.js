@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import { CREATE_FEED, UPDATE_FEED, REMOVE_FEED } from "./actions";
 import { FETCH_ENTRIES_REQUEST, FETCH_ENTRIES_SUCCESS, FETCH_ENTRIES_FAILURE } from "./actions";
-import { FETCH_MORE_ENTRIES_REQUEST, FETCH_MORE_ENTRIES_SUCCESS, FETCH_MORE_ENTRIES_FAILURE, SELECT_ENTRY } from "./actions";
+import { FETCH_MORE_ENTRIES_REQUEST, FETCH_MORE_ENTRIES_SUCCESS, FETCH_MORE_ENTRIES_FAILURE, SELECT_ENTRY, HAS_MORE_ENTRIES } from "./actions";
 import { FETCH_FEEDS_REQUEST, FETCH_FEEDS_SUCCESS, FETCH_FEEDS_FAILURE } from "./actions";
 
 function feeds(state = [], action) {
@@ -32,8 +32,16 @@ function entries(state = [], action) {
 }
 
 function currentEntry(state = null, action) {
-  if (action.type == SELECT_ENTRY) {
+  if (action.type === SELECT_ENTRY) {
     return action.entry;
+  } else {
+    return state;
+  }
+}
+
+function hasMoreEntries(state = true, action) {
+  if (action.type === HAS_MORE_ENTRIES) {
+    return action.hasMore;
   } else {
     return state;
   }
@@ -51,5 +59,5 @@ function isLoading(state = false, action) {
   }
 }
 
-const reducers = combineReducers({ feeds, entries, currentEntry, isLoading });
+const reducers = combineReducers({ feeds, entries, currentEntry, hasMoreEntries, isLoading });
 export default reducers;

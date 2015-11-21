@@ -29,6 +29,7 @@ body {
   }
 
   .layout-list {
+    position: relative;
     display: flex;
     min-width: 200px;
     overflow-y: auto;

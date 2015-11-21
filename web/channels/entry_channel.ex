@@ -5,7 +5,7 @@ defmodule WhistlerNewsReader.EntryChannel do
   alias WhistlerNewsReader.Repo
 
   def join("entries:all", _params, socket) do
-    entries = Entry |> Entry.sorted |> Entry.limit(10) |> Repo.all |> Repo.preload(:feed)
+    entries = Entry |> Entry.sorted |> Entry.limit(20) |> Repo.all |> Repo.preload(:feed)
     {:ok, %{entries: entries}, socket }
   end
 
