@@ -9,15 +9,22 @@ $item-list-hr-color: #f2f2f2;
 
 $item-list-expanded-bg-color: #ffffcf;
 
+$item-list-color: #474C55;
+$item-list-secondary-color: #474C55;
+
 .half-width-item-list {
   position: relative;
 }
 
 .half-width-item {
+  padding: 20px;
+  color: $item-list-color;
   background-color: $item-list-bg-color;
   border-bottom: 1px solid $item-list-border-color;
 
-  padding: 20px;
+  &.selected {
+    background-color: #F0F3F7;
+  }
 
   .item-row {
     display: flex;
@@ -36,7 +43,7 @@ $item-list-expanded-bg-color: #ffffcf;
 
       overflow-x: hidden;
 
-      color: $item-list-secondary-title-fg-color;
+      // color: $item-list-secondary-title-fg-color;
 
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -51,7 +58,7 @@ $item-list-expanded-bg-color: #ffffcf;
     .secondary-title {
       overflow-x: hidden;
       font-weight: bold;
-      color: $item-list-primary-title-fg-color;
+      color: $item-list-secondary-color;
 
       text-overflow: ellipsis;
       white-space: nowrap;

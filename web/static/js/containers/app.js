@@ -50,6 +50,7 @@ class App extends Component {
           <div className="layout-list">
             <HalfWidthFeedEntryList
               entries={entries}
+              currentEntry={currentEntry}
               onEntryClick={entry => dispatch(selectEntry(entry)) }/>
           </div>
           <div className="layout-detail">

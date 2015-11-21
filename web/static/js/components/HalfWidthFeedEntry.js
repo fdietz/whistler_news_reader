@@ -5,7 +5,8 @@ export default class HalfWidthFeedEntry extends Component {
 
   static propTypes = {
     entry: PropTypes.object.isRequired,
-    onClick: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired,
+    isSelected: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -37,12 +38,18 @@ export default class HalfWidthFeedEntry extends Component {
   }
 
   render() {
+    const { isSelected, onClick, entry } = this.props;
+    let cls = classNames({
+      "half-width-item": true,
+      selected: isSelected
+    });
+
     return (
-      <div className="half-width-item" onClick={this.props.onClick}>
+      <div className={cls} onClick={onClick}>
         <div className="half-width-item-row">
-          <div className="primary-title">{this.props.entry.feed.title}</div>
-          <div className="secondary-title">{this.props.entry.title}</div>
-          <div className="secondary-summary">{this.props.entry.summary}</div>
+          <div className="primary-title">{entry.feed.title}</div>
+          <div className="secondary-title">{entry.title}</div>
+          <div className="secondary-summary">{entry.summary}</div>
           <span className="secondary-published">{this.publishedRelativeDateTime()}</span>
         </div>
       </div>
