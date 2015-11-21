@@ -8,6 +8,8 @@ import HalfWidthFeedEntryList from "../components/HalfWidthFeedEntryList";
 import Sidebar from "../components/Sidebar";
 import FeedEntryContent from "../components/FeedEntryContent";
 
+import imageProfile from "../../assets/images/profile.jpg";
+
 class App extends Component {
 
   static propTypes = {
@@ -102,16 +104,24 @@ class App extends Component {
         <div className="layout-content with-sidebar">
           <div className="layout-list">
             <div className="list-header">
-              <button className="btn">Mark as read</button>
-              <button className="btn">Refresh</button>
+              <button className="btn btn--top-navigation">Mark as read</button>
+              <button className="btn btn--top-navigation">Refresh</button>
             </div>
 
             {paginatedItems}
           </div>
           <div className="layout-detail">
             <div className="detail-header">
-              <button className="btn">Prev</button>
-              <button className="btn">Next</button>
+              <div className="left">
+                <button className="btn btn--top-navigation">Prev</button>
+                <button className="btn btn--top-navigation">Next</button>
+              </div>
+              <div className="right">
+                <div className="avatar">
+                  <img src={imageProfile}/>
+                </div>
+              </div>
+
             </div>
             {content}
           </div>
