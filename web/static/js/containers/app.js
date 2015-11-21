@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { createFeed, updateFeed, removeFeed, fetchEntries, fetchMoreEntries, fetchFeeds } from "../actions";
 
-import MainHeader from "../components/MainHeader";
-import FeedEntryList from "../components/FeedEntryList";
+import HalfWidthFeedEntryList from "../components/HalfWidthFeedEntryList";
 import Sidebar from "../components/Sidebar";
+import FeedEntryContent from "../components/FeedEntryContent";
 
 class App extends Component {
 
@@ -37,21 +37,29 @@ class App extends Component {
   render() {
     const { dispatch, entries, feeds, isLoading } = this.props;
 
+    //  TODO: use state
+    let currentEntry = entries[0];
+
     let buttonLabel = "Load More";
     if (isLoading) {
       buttonLabel = "loading...";
     }
 
+    let content;
+    if (currentEntry) {
+      content = <FeedEntryContent entry={currentEntry}/>;
+    }
+
     return (
-      <div className="container">
-        <MainHeader/>
+      <div className="layout-container">
         <Sidebar feeds={feeds}/>
 
-        <div className="content with-sidebar">
-          <MainHeader/>
-          <FeedEntryList entries={entries}/>
-          <div className="paginator">
-            <button className="btn btn-primary" onClick={this.loadMore}>{buttonLabel}</button>
+        <div className="layout-content with-sidebar">
+          <div className="layout-list">
+            <HalfWidthFeedEntryList entries={entries}/>
+          </div>
+          <div className="layout-detail">
+            {content}
           </div>
         </div>
 

@@ -14,8 +14,10 @@ export default class Sidebar extends Component {
 
     return (
       <div className="sidebar">
+        <div className="sidebar-header">
+          <div className="logo">Whistler</div>
+        </div>
         <div className="sidebar-content">
-          <button className="btn btn--primary new-subscription">Add Subscription</button>
           <h4 className="sidebar-nav-header">Home</h4>
           <ul className="sidebar-nav-list">
             <li className="active">
