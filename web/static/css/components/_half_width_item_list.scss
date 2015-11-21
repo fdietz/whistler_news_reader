@@ -85,6 +85,8 @@ $item-list-expanded-bg-color: #ffffcf;
 
   padding: 20px;
 
+  height: 100%;
+
   // max-width: 640px;
 
   .header {
@@ -93,7 +95,7 @@ $item-list-expanded-bg-color: #ffffcf;
 
     // margin-top: 1.5rem;
     // margin-right: auto;
-    // margin-bottom: .5rem;
+    margin-bottom: .5rem;
     // margin-left: auto;
 
     .title {
@@ -111,7 +113,7 @@ $item-list-expanded-bg-color: #ffffcf;
     //
     // margin-top: .5rem;
     // margin-right: auto;
-    // margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
     // margin-left: auto;
 
     font-size: .8rem;

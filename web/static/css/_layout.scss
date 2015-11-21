@@ -1,3 +1,11 @@
+body {
+  overflow: hidden;
+}
+
+.layout-container {
+  overflow: hidden;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -7,6 +15,11 @@
 }
 
 .layout-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   padding: 65px 0 0;
   flex-direction: row;
@@ -17,15 +30,15 @@
 
   .layout-list {
     display: flex;
-    // max-width: 400px;
     min-width: 200px;
+    overflow-y: auto;
     flex: 2 2;
   }
 
   .layout-detail {
     display: flex;
-    // max-width: 600px;
     min-width: 400px;
+    overflow-y: auto;
     flex: 4 4;
   }
 }

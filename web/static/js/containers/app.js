@@ -27,7 +27,6 @@ class App extends Component {
   }
 
   loadMore() {
-    console.log("load more")
     const { dispatch, entries } = this.props;
     // TODO: fetch with pagination
     let oldestPublishedEntry = entries[entries.length-1].published;
@@ -35,15 +34,10 @@ class App extends Component {
   }
 
   render() {
-    const { dispatch, entries, feeds, isLoading } = this.props;
+    const { entries, feeds } = this.props;
 
     //  TODO: use state
     let currentEntry = entries[0];
-
-    let buttonLabel = "Load More";
-    if (isLoading) {
-      buttonLabel = "loading...";
-    }
 
     let content;
     if (currentEntry) {
