@@ -5,7 +5,7 @@ export default class InfiniteScroll extends Component {
 
   constructor(props) {
     super(props);
-    this.scrollListener = this.scrollListener.bind(this);
+    this.handleScrollEvent = this.handleScrollEvent.bind(this);
   }
 
   static defaultProps = {
@@ -17,7 +17,8 @@ export default class InfiniteScroll extends Component {
   componentDidMount() {
     this.scrollableAncestor = this._findScrollableAncestor();
     this.attachScrollListener();
-    this.scrollListener();
+    this.handleScrollEvent();
+    window.addEventListener('resize', this.handleScrollEvent);
   }
 
   componentDidUpdate() {
@@ -25,7 +26,7 @@ export default class InfiniteScroll extends Component {
   }
 
   componentDidUpdate() {
-    this.scrollListener();
+    this.handleScrollEvent();
   }
 
   render() {
@@ -33,7 +34,7 @@ export default class InfiniteScroll extends Component {
     return React.DOM.div(null, props.children, props.hasMore && (props.loader));
   }
 
-  scrollListener() {
+  handleScrollEvent() {
     if (!this.props.hasMore) {
       return;
     }
@@ -55,15 +56,16 @@ export default class InfiniteScroll extends Component {
       return;
     }
 
-    this.scrollableAncestor.addEventListener("scroll", this.scrollListener);
+    this.scrollableAncestor.addEventListener("scroll", this.handleScrollEvent);
   }
 
   detachScrollListener() {
-    this.scrollableAncestor.removeEventListener("scroll", this.scrollListener);
+    this.scrollableAncestor.removeEventListener("scroll", this.handleScrollEvent);
   }
 
   componentWillUnmount() {
     this.detachScrollListener();
+    window.removeEventListener('resize', this.handleScrollEvent);
   }
 
   _findScrollableAncestor() {
