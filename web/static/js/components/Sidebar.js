@@ -6,11 +6,12 @@ import React, {Component, PropTypes} from "react";
 export default class Sidebar extends Component {
 
   static propTypes = {
-    feeds: PropTypes.array.isRequired
+    feeds: PropTypes.array.isRequired,
+    onAddFeedClick: PropTypes.func.isRequired
   };
 
   render() {
-    const { feeds } = this.props;
+    const { feeds, onAddFeedClick } = this.props;
 
     return (
       <div className="sidebar">
@@ -18,12 +19,17 @@ export default class Sidebar extends Component {
           <div className="logo">Whistler</div>
         </div>
         <div className="sidebar-content">
+          <div className="sidebar-actions">
+            <button onClick={onAddFeedClick}
+              className="btn btn--blue add-subscription">Add Feed</button>
+          </div>
+
           <h4 className="sidebar-nav-header">Home</h4>
           <ul className="sidebar-nav-list">
-            <li className="active">
+            <li className="sidebar-nav-list-item active">
               <a href="test">Today</a>
             </li>
-            <li>
+            <li className="sidebar-nav-list-item">
               <a href="test">All</a>
             </li>
           </ul>
@@ -31,7 +37,10 @@ export default class Sidebar extends Component {
           <h4 className="sidebar-nav-header">Subscriptions</h4>
           <ul className="sidebar-nav-list">
             {feeds.map(function(feed, i) {
-              return (<li key={i}><a href="">{feed.title}</a></li>);
+              return (<li className="sidebar-nav-list-item" key={i}>
+                        <a href="">{feed.title}</a>
+                      </li>
+              );
             })}
           </ul>
         </div>

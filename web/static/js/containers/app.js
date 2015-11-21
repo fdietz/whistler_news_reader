@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import InfiniteScroll from "../components/InfiniteScroll";
 import { connect } from "react-redux";
+import Modal from "react-modal";
 import { createFeed, updateFeed, removeFeed, fetchEntries, fetchMoreEntries, selectEntry, fetchFeeds } from "../actions";
 
 import HalfWidthFeedEntryList from "../components/HalfWidthFeedEntryList";
@@ -21,6 +22,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.loadMore = this.loadMore.bind(this);
+    this.state = {
+      modalIsOpen: false
+    }
   }
 
   componentDidMount() {
@@ -33,6 +37,25 @@ class App extends Component {
     const { dispatch, entries } = this.props;
     let oldestPublishedEntry = entries[entries.length-1].published;
     dispatch(fetchMoreEntries(oldestPublishedEntry));
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+
+  submitAndCloseModal() {
+    this.setState({modalIsOpen: false});
+    console.log("new feed url", this.state.modalValue);
+    const { dispatch } = this.props;
+    dispatch(createFeed(this.state.modalValue));
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false});
+  }
+
+  handleModalChange(event) {
+    this.setState({ modalValue: event.target.value })
   }
 
   render() {
@@ -60,9 +83,20 @@ class App extends Component {
       </InfiniteScroll>)
     }
 
+    const customStyles = {
+      content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)"
+      }
+    };
+
     return (
       <div className="layout-container">
-        <Sidebar feeds={feeds}/>
+        <Sidebar feeds={feeds} onAddFeedClick={() => this.openModal()}/>
 
         <div className="layout-content with-sidebar">
           <div className="layout-list">
@@ -73,10 +107,29 @@ class App extends Component {
           </div>
         </div>
 
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={() => this.closeModal()}
+          style={customStyles} >
+
+          <h2>Enter feed adress</h2>
+          <form>
+            <input type="text"
+              value={this.state.modalValue}
+              onChange={(event) => this.handleModalChange(event)}
+              autoFocus/>
+          </form>
+          <button onClick={() => this.submitAndCloseModal()}
+            className="btn btn--blue">Add Feed</button>
+          <button onClick={() => this.closeModal()}
+            className="btn">close</button>
+
+        </Modal>
       </div>
     );
   }
 }
+
 
 function select(state) {
   return {

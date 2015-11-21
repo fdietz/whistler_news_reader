@@ -34,10 +34,18 @@ defmodule WhistlerNewsReader.Fetcher do
     Repo.delete_all(Feed)
     Repo.delete_all(Entry)
 
-    Enum.each(urls, fn(feed_url) -> import_feed(feed_url) end)
+    Enum.each(urls, fn(feed_url) -> import_feed_with_content(feed_url) end)
   end
 
-  defp import_feed(feed_url) do
+  def import_feed(feed_url) do
+    IO.puts(feed_url)
+
+    {:ok, json_body}   = fetch(feed_url)
+    feed               = parse_feed(json_body)
+    store_feed(feed_url, feed)
+  end
+
+  defp import_feed_with_content(feed_url) do
     IO.puts(feed_url)
 
     {:ok, json_body}   = fetch(feed_url)

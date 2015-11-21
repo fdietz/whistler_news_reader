@@ -1,6 +1,7 @@
 import { configureChannel } from "./channels";
 
 export const CREATE_FEED = "CREATE_FEED";
+export const CREATE_FEED_SUCCESS = "CREATE_FEED_SUCESS";
 export const UPDATE_FEED = "UPDATE_FEED";
 export const REMOVE_FEED = "REMOVE_FEED";
 
@@ -18,8 +19,21 @@ export const FETCH_MORE_ENTRIES_SUCCESS = "FETCH_MORE_ENTRIES_SUCCESS";
 export const FETCH_MORE_ENTRIES_FAILURE = "FETCH_ENTRIES_FAILURE";
 export const HAS_MORE_ENTRIES           = "HAS_MORE_ENTRIES";
 
-export function createFeed(feed) {
-  return { type: CREATE_FEED, feed: feed };
+export function createFeed(feedUrl) {
+  return dispatch => {
+    const payload = { feed_url: feedUrl };
+    feedsChannel.push("feeds:create", payload)
+      .receive("ok", response => {
+        dispatch(createFeedSuccess(response.feed));
+      })
+      .receive("error", error => {
+        console.log("error creating feed", error)
+      });
+  }
+}
+
+export function createFeedSuccess(feed) {
+  return { type: CREATE_FEED_SUCCESS, feed: feed };
 }
 
 export function updateFeed(feed) {

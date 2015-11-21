@@ -4,8 +4,8 @@ $sidebar-color: #617285;
 
 .sidebar {
   display: flex;
-  background-color: $sidebar-bg;
   color: $sidebar-color;
+  background-color: $sidebar-bg;
   flex-direction: column;
 
   .sidebar-content {
@@ -18,13 +18,12 @@ $sidebar-color: #617285;
 }
 
 .sidebar-header {
+  display: flex;
   height: 65px;
   background-color: #F25653;
-  display: flex;
   align-items: center;
 
   .logo {
-    // padding-top: 10px;
     padding-left: 30px;
     font-size: 2rem;
     color: #fff;
@@ -38,7 +37,6 @@ $sidebar-color: #617285;
   margin-bottom: 8px;
   font-size: .9rem;
   color: #fff;
-  // color: #555;
   text-transform: uppercase;
 }
 
@@ -46,43 +44,56 @@ $sidebar-color: #617285;
   padding-left: 0;
   margin: 0 0 30px;
 
-  > li {
+}
+
+.sidebar-nav-list-item {
+  position: relative;
+  list-style: none;
+
+  a {
     position: relative;
-    list-style: none;
+    display: block;
+    padding-top: 3px;
+    padding-right: 20px;
+    padding-bottom: 3px;
+    padding-left: 20px;
+
+    font-size: 1rem;
+    // color: #777;
+    color: $sidebar-color;
+    text-decoration: none;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, .05);
+    }
+
+    .badge {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      margin-top: -10px;
+    }
+  }
+
+  &.active {
+    background-color: rgba(0, 0, 0, .1);
 
     a {
-      position: relative;
-      display: block;
-      padding-top: 3px;
-      padding-right: 20px;
-      padding-bottom: 3px;
-      padding-left: 20px;
-
-      font-size: 1rem;
-      // color: #777;
-      color: $sidebar-color;
-      text-decoration: none;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, .05);
-      }
-
-      .badge {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        margin-top: -10px;
-      }
+      color: #fff;
     }
 
-    &.active {
-      background-color: rgba(0, 0, 0, .1);
+  }
+}
 
-      a {
-        color: #fff;
-        // color: #111;
-      }
+.sidebar-actions {
+  display: flex;
+  margin-bottom: 25px;
+  align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
 
-    }
+  .add-subscription {
+    width: 100%;
   }
 }

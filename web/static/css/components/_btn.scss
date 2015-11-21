@@ -5,6 +5,7 @@ $btn-primary-bg: #FF6900;
 $btn-secondary-bg: #3E6372;
 $btn-secondary-light-bg: #B2D4DC;
 $btn-white-bg: #FAFAFF;
+$btn-blue-bg: #4B719D;
 
 .btn {
   display: inline-block;
@@ -87,4 +88,9 @@ $btn-white-bg: #FAFAFF;
   background-color: $btn-white-bg;
   border: 1px solid $btn-white-bg;
   color: $btn-invert-color;
+}
+
+.btn--blue {
+  background-color: $btn-blue-bg;
+  border: 1px solid $btn-blue-bg;
 }
