@@ -47,10 +47,12 @@ export default class HalfWidthFeedEntry extends Component {
     return (
       <div className={cls} onClick={onClick}>
         <div className="half-width-item-row">
-          <div className="primary-title">{entry.feed.title}</div>
+          <div className="meta">
+            <div className="primary-title">{entry.feed.title}</div>
+            <span className="secondary-published">{this.publishedRelativeDateTime()}</span>
+          </div>
           <div className="secondary-title">{entry.title}</div>
           <div className="secondary-summary">{entry.summary}</div>
-          <span className="secondary-published">{this.publishedRelativeDateTime()}</span>
         </div>
       </div>
     );

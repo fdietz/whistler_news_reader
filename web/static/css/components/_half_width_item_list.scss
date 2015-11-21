@@ -10,15 +10,17 @@ $item-list-hr-color: #f2f2f2;
 $item-list-expanded-bg-color: #ffffcf;
 
 $item-list-color: #474C55;
-$item-list-secondary-color: #474C55;
+$item-list-secondary-color: #888A8F;
 
 .half-width-item-list {
   position: relative;
 }
 
 .half-width-item {
+  display: flex;
   padding: 20px;
   color: $item-list-color;
+  cursor: pointer;
   background-color: $item-list-bg-color;
   border-bottom: 1px solid $item-list-border-color;
 
@@ -26,53 +28,40 @@ $item-list-secondary-color: #474C55;
     background-color: #F0F3F7;
   }
 
-  .item-row {
+  .half-width-item-row {
     display: flex;
-    padding: 12px;
-
     font-size: .9rem;
+    flex: 1;
+    flex-direction: column;
 
-    cursor: pointer;
+    .meta {
+      display: flex;
 
-    align-items: center;
-    justify-content: flex-start;
+      .primary-title {
+        flex: 1;
+      }
 
-    .primary-title {
-      width: 120px;
-      margin-right: 12px;
+      .secondary-published {
+        width: 140px;
+        font-size: .7rem;
+        color: $item-list-secondary-color;
+        text-align: right;
+      }
 
-      overflow-x: hidden;
-
-      // color: $item-list-secondary-title-fg-color;
-
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .divider {
-      width: 5px;
-      margin-right: 6px;
-      margin-left: 6px;
     }
 
     .secondary-title {
       overflow-x: hidden;
-      font-weight: bold;
+      // font-weight: bold;
       color: $item-list-secondary-color;
 
       text-overflow: ellipsis;
-      white-space: nowrap;
 
       flex: 1;
     }
 
     .secondary-summary {
 
-    }
-
-    .secondary-published {
-      width: 140px;
-      text-align: right;
     }
 
   }
