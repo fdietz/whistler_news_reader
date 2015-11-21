@@ -4,7 +4,8 @@ import classNames from "classnames";
 export default class HalfWidthFeedEntry extends Component {
 
   static propTypes = {
-    entry: PropTypes.object.isRequired
+    entry: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -37,7 +38,7 @@ export default class HalfWidthFeedEntry extends Component {
 
   render() {
     return (
-      <div className="half-width-item">
+      <div className="half-width-item" onClick={this.props.onClick}>
         <div className="half-width-item-row">
           <div className="primary-title">{this.props.entry.feed.title}</div>
           <div className="secondary-title">{this.props.entry.title}</div>

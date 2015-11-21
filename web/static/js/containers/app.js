@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { createFeed, updateFeed, removeFeed, fetchEntries, fetchMoreEntries, fetchFeeds } from "../actions";
+import { createFeed, updateFeed, removeFeed, fetchEntries, fetchMoreEntries, selectEntry, fetchFeeds } from "../actions";
 
 import HalfWidthFeedEntryList from "../components/HalfWidthFeedEntryList";
 import Sidebar from "../components/Sidebar";
@@ -12,7 +12,8 @@ class App extends Component {
     dispatch: PropTypes.func.isRequired,
     entries: PropTypes.array.isRequired,
     feeds: PropTypes.array.isRequired,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    currentEntry: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -34,10 +35,7 @@ class App extends Component {
   }
 
   render() {
-    const { entries, feeds } = this.props;
-
-    //  TODO: use state
-    let currentEntry = entries[0];
+    const { dispatch, entries, feeds, currentEntry } = this.props;
 
     let content;
     if (currentEntry) {
@@ -50,7 +48,9 @@ class App extends Component {
 
         <div className="layout-content with-sidebar">
           <div className="layout-list">
-            <HalfWidthFeedEntryList entries={entries}/>
+            <HalfWidthFeedEntryList
+              entries={entries}
+              onEntryClick={entry => dispatch(selectEntry(entry)) }/>
           </div>
           <div className="layout-detail">
             {content}
@@ -65,6 +65,7 @@ class App extends Component {
 function select(state) {
   return {
     entries: state.entries,
+    currentEntry: state.currentEntry,
     feeds: state.feeds,
     isLoading: state.isLoading
   };

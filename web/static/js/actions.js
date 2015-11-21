@@ -7,6 +7,7 @@ export const REMOVE_FEED = "REMOVE_FEED";
 export const FETCH_ENTRIES_REQUEST = "FETCH_ENTRIES_REQUEST";
 export const FETCH_ENTRIES_SUCCESS = "FETCH_ENTRIES_SUCCESS";
 export const FETCH_ENTRIES_FAILURE = "FETCH_ENTRIES_FAILURE";
+export const SELECT_ENTRY          = "SELECT_ENTRY";
 
 export const FETCH_FEEDS_REQUEST = "FETCH_FEEDS_REQUEST";
 export const FETCH_FEEDS_SUCCESS = "FETCH_FEEDS_SUCCESS";
@@ -99,6 +100,10 @@ export function fetchMoreEntries(lastPublished) {
         dispatch(fetchMoreEntriesFailure(error));
       });
   };
+}
+
+export function selectEntry(entry) {
+  return { type: SELECT_ENTRY, entry: entry };
 }
 
 export function fetchFeeds() {
