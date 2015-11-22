@@ -4,7 +4,7 @@ import { FETCH_ENTRIES_REQUEST, FETCH_ENTRIES_SUCCESS, FETCH_ENTRIES_FAILURE } f
 import { FETCH_MORE_ENTRIES_REQUEST, FETCH_MORE_ENTRIES_SUCCESS, FETCH_MORE_ENTRIES_FAILURE, SELECT_ENTRY, HAS_MORE_ENTRIES } from "./actions";
 import { FETCH_FEEDS_REQUEST, FETCH_FEEDS_SUCCESS, FETCH_FEEDS_FAILURE } from "./actions";
 
-function feeds(state = [], action) {
+export function feeds(state = [], action) {
   switch (action.type) {
   case FETCH_FEEDS_SUCCESS:
     return state.concat(action.feeds);
@@ -21,7 +21,7 @@ function feeds(state = [], action) {
   }
 }
 
-function entries(state = [], action) {
+export function entries(state = [], action) {
   switch (action.type) {
   case FETCH_ENTRIES_SUCCESS:
     return state.concat(action.entries);
@@ -32,7 +32,7 @@ function entries(state = [], action) {
   }
 }
 
-function currentEntry(state = null, action) {
+export function currentEntry(state = null, action) {
   if (action.type === SELECT_ENTRY) {
     return action.entry;
   } else {
@@ -40,7 +40,7 @@ function currentEntry(state = null, action) {
   }
 }
 
-function hasMoreEntries(state = true, action) {
+export function hasMoreEntries(state = true, action) {
   if (action.type === HAS_MORE_ENTRIES) {
     return action.hasMore;
   } else {
@@ -48,7 +48,7 @@ function hasMoreEntries(state = true, action) {
   }
 }
 
-function isLoading(state = false, action) {
+export function isLoading(state = false, action) {
   switch (action.type) {
   case FETCH_ENTRIES_REQUEST:
     return true;
