@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from "react";
-
 import { connect } from "react-redux";
+import { pushState } from "redux-router";
 
 import Sidebar from "../components/Sidebar";
 import ModalWrapper from "../components/ModalWrapper";
+import { fetchFeeds } from "../actions";
 
 class App extends Component {
   static propTypes = {
@@ -13,6 +14,11 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(fetchFeeds());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -27,6 +33,11 @@ class App extends Component {
     }
   }
 
+  onAddFeedClick() {
+    const { dispatch } = this.props;
+    dispatch(pushState({ modal: true, returnTo: this.props.location.pathname }, "/feeds/new"));
+  }
+
   render() {
     const { feeds, location, dispatch } = this.props;
     const isModal = (
@@ -37,7 +48,7 @@ class App extends Component {
 
     return (
       <div className="layout-container">
-        <Sidebar location={location}/>
+        <Sidebar feeds={feeds} onAddFeedClick={() => this.onAddFeedClick()}/>
 
           {isModal ?
             this.previousChildren :
@@ -55,5 +66,4 @@ class App extends Component {
   }
 }
 
-// export default App;
 export default connect((state) => ({ feeds: state.feeds }))(App);

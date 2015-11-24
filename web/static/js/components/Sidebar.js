@@ -1,35 +1,19 @@
 import React, {Component, PropTypes} from "react";
-import { connect } from "react-redux";
+import { Link } from "react-router";
+
 // import imageArrowDown from "../../assets/images/arrow-down.svg";
 // import imageArrowUp from "../../assets/images/arrow-up.svg";
 // import imageProfile from "../../assets/images/profile.jpg";
-
-import { pushState } from "redux-router";
-import { Link } from "react-router";
-import { fetchFeeds } from "../actions";
 
 class Sidebar extends Component {
 
   static propTypes = {
     feeds: PropTypes.array.isRequired,
-    // onAddFeedClick: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired
+    onAddFeedClick: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
-
-    this.onAddFeedClick = this.onAddFeedClick.bind(this);
-  }
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchFeeds());
-  }
-
-  onAddFeedClick() {
-    const { dispatch } = this.props;
-
-    dispatch(pushState({ modal: true, returnTo: this.props.location.pathname }, "/feeds/new"));
   }
 
   render() {
@@ -38,11 +22,12 @@ class Sidebar extends Component {
     return (
       <div className="sidebar">
         <div className="sidebar-header">
-          <div className="logo">Whistler</div>
+          <div className="logo">whistle'r</div>
+          <div className="sublogo">news reader</div>
         </div>
         <div className="sidebar-content">
           <div className="sidebar-actions">
-            <button onClick={this.onAddFeedClick}
+            <button onClick={onAddFeedClick}
               className="btn btn--blue add-subscription">Add Feed</button>
           </div>
 
@@ -73,5 +58,4 @@ class Sidebar extends Component {
   }
 }
 
-export default connect((state) => ({ feeds: state.feeds }))(Sidebar);
-// export default Sidebar;
+export default Sidebar;
