@@ -49,7 +49,7 @@ class Root extends Component {
               <IndexRoute component={Welcome}/>
               <Route path="all" component={Entries}/>
               <Route path="today" component={Entries}/>
-              <Route path="feeds/new" component={NewFeedModal}/>
+              <Route path="feeds/new" component={NewFeedModal} modal={true}/>
               <Route path="feeds/:id" component={Entries}/>
             </Route>
             <Redirect from="/" to="/all"/>

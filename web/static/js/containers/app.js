@@ -22,11 +22,12 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("nextProps", nextProps)
     // if we changed routes...
     if ((
       nextProps.location.key !== this.props.location.key &&
-      nextProps.location.state &&
-      nextProps.location.state.modal
+      (nextProps.location.state &&
+      nextProps.location.state.modal) || (nextProps.children.props.route.modal)
     )) {
       // save the old children
       this.previousChildren = this.props.children;
@@ -40,11 +41,8 @@ class App extends Component {
 
   render() {
     const { feeds, location, dispatch } = this.props;
-    const isModal = (
-      location.state &&
-      location.state.modal &&
-      this.previousChildren
-    );
+    const returnTo = location.state && location.state.returnTo || "/"
+    const isModal = this.props.children.props.route.modal;
 
     return (
       <div className="layout-container">
@@ -56,7 +54,7 @@ class App extends Component {
           }
 
           {isModal && (
-            <ModalWrapper isOpen={true} returnTo={location.state.returnTo} dispatch={dispatch}>
+            <ModalWrapper isOpen={true} returnTo={returnTo} dispatch={dispatch}>
               {this.props.children}
             </ModalWrapper>
           )}
