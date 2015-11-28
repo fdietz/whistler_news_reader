@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { CREATE_FEED, CREATE_FEED_SUCCESS, UPDATE_FEED, REMOVE_FEED } from "./actions";
+import { CREATE_FEED, UPDATE_FEED, REMOVE_FEED } from "./actions";
 import { FETCH_ENTRIES_REQUEST, FETCH_ENTRIES_SUCCESS, FETCH_ENTRIES_FAILURE } from "./actions";
 import { FETCH_MORE_ENTRIES_REQUEST, FETCH_MORE_ENTRIES_SUCCESS, FETCH_MORE_ENTRIES_FAILURE, SELECT_ENTRY, HAS_MORE_ENTRIES } from "./actions";
 import { FETCH_FEEDS_REQUEST, FETCH_FEEDS_SUCCESS, FETCH_FEEDS_FAILURE } from "./actions";
@@ -7,11 +7,13 @@ import { FETCH_FEEDS_REQUEST, FETCH_FEEDS_SUCCESS, FETCH_FEEDS_FAILURE } from ".
 export function feeds(state = [], action) {
   switch (action.type) {
   case FETCH_FEEDS_SUCCESS:
-    return state.concat(action.feeds);
+    return action.feeds;
   case CREATE_FEED:
-    return state;
-  case CREATE_FEED_SUCCESS:
-    return [...state, action.feed];
+    if (action.error) {
+      return state;
+    } else {
+      return [...state, action.payload.feed];
+    }
   case UPDATE_FEED:
     return state;
   case REMOVE_FEED:

@@ -22,7 +22,6 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps", nextProps)
     // if we changed routes...
     if ((
       nextProps.location.key !== this.props.location.key &&

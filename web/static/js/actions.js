@@ -1,7 +1,7 @@
 import { configureChannel } from "./channels";
+import { createAction } from "redux-actions";
 
 export const CREATE_FEED = "CREATE_FEED";
-export const CREATE_FEED_SUCCESS = "CREATE_FEED_SUCESS";
 export const UPDATE_FEED = "UPDATE_FEED";
 export const REMOVE_FEED = "REMOVE_FEED";
 
@@ -19,21 +19,24 @@ export const FETCH_MORE_ENTRIES_SUCCESS = "FETCH_MORE_ENTRIES_SUCCESS";
 export const FETCH_MORE_ENTRIES_FAILURE = "FETCH_ENTRIES_FAILURE";
 export const HAS_MORE_ENTRIES           = "HAS_MORE_ENTRIES";
 
-export function createFeed(feedUrl) {
+let socket         = configureChannel();
+let entriesChannel = socket.channel("entries:all");
+let feedsChannel   = socket.channel("feeds:all");
+
+const createFeed = createAction(CREATE_FEED);
+
+export function requestCreateFeed(feedUrl) {
   return dispatch => {
-    const payload = { feed_url: feedUrl };
-    feedsChannel.push("feeds:create", payload)
-      .receive("ok", response => {
-        dispatch(createFeedSuccess(response.feed));
+    createFeed();
+    feedsChannel.push("feeds:create", { feed_url: feedUrl })
+      .receive("ok", payload => {
+        dispatch(createFeed({ feed: payload.feed }));
       })
       .receive("error", error => {
-        console.log("error creating feed", error)
+        console.log("error creating feed", error);
+        dispatch(createFeed(new Error(error)));
       });
-  }
-}
-
-export function createFeedSuccess(feed) {
-  return { type: CREATE_FEED_SUCCESS, feed: feed };
+  };
 }
 
 export function updateFeed(feed) {
@@ -44,6 +47,20 @@ export function removeFeed(feed) {
   return { type: REMOVE_FEED, feed: feed };
 }
 
+export function fetchFeeds() {
+  return dispatch => {
+    dispatch(fetchFeedsRequest());
+
+    feedsChannel.join()
+      .receive("ok", messages => {
+        dispatch(fetchFeedsSuccess(messages.feeds));
+      })
+      .receive("error", reason => {
+        dispatch(fetchFeedsFailure(reason));
+      })
+      .after(10000, () => console.log("Networking issue. Still waiting..."));
+  };
+}
 function fetchEntriesRequest() {
   return { type: FETCH_ENTRIES_REQUEST };
 }
@@ -84,9 +101,6 @@ function fetchFeedsFailure(error) {
   return { type: FETCH_FEEDS_FAILURE, error };
 }
 
-let socket         = configureChannel();
-let entriesChannel = socket.channel("entries:all");
-let feedsChannel   = socket.channel("feeds:all");
 
 export function fetchEntries() {
   return dispatch => {
@@ -133,19 +147,4 @@ export function fetchMoreEntries(lastPublished) {
 
 export function selectEntry(entry) {
   return { type: SELECT_ENTRY, entry: entry };
-}
-
-export function fetchFeeds() {
-  return dispatch => {
-    dispatch(fetchFeedsRequest());
-
-    feedsChannel.join()
-      .receive("ok", messages => {
-        dispatch(fetchFeedsSuccess(messages.feeds));
-      })
-      .receive("error", reason => {
-        dispatch(fetchFeedsFailure(reason));
-      })
-      .after(10000, () => console.log("Networking issue. Still waiting..."));
-  };
 }

@@ -40,9 +40,12 @@ defmodule WhistlerNewsReader.Fetcher do
   def import_feed(feed_url) do
     IO.puts(feed_url)
 
-    {:ok, json_body}   = fetch(feed_url)
-    feed               = parse_feed(json_body)
-    store_feed(feed_url, feed)
+    case fetch(feed_url) do
+      {:ok, json_body} ->
+        feed = parse_feed(json_body)
+        store_feed(feed_url, feed)
+      {:error, error}  -> {:error, error.reason} # HTTPoison.Error
+    end
   end
 
   defp import_feed_with_content(feed_url) do

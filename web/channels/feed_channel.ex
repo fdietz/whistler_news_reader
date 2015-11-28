@@ -11,7 +11,9 @@ defmodule WhistlerNewsReader.FeedChannel do
   end
 
   def handle_in("feeds:create", %{"feed_url" => feed_url} = _params, socket) do
-    {:ok, feed} = Fetcher.import_feed(feed_url)
-    {:reply, {:ok, %{feed: feed} }, socket}
+    case Fetcher.import_feed(feed_url) do
+      {:ok, feed}      -> {:reply, {:ok, %{feed: feed} }, socket}
+      {:error, error } -> {:reply, {:error, %{error: error} }, socket}  
+    end
   end
 end

@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import { pushState } from "redux-router";
 
-import { createFeed } from "../actions";
+import { requestCreateFeed } from "../actions";
 export default class NewFeedModal extends Component {
 
   constructor(props) {
@@ -18,7 +18,7 @@ export default class NewFeedModal extends Component {
 
   submitAndCloseModal() {
     const { dispatch, returnTo } = this.props;
-    dispatch(createFeed(this.state.modalValue));
+    dispatch(requestCreateFeed(this.state.modalValue));
     dispatch(pushState(null, returnTo));
   }
 

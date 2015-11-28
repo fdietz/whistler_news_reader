@@ -36,7 +36,6 @@ class Entries extends Component {
   }
 
   render() {
-    console.log("entries props", this.props)
     const { dispatch, entries, currentEntry, hasMoreEntries } = this.props;
 
     let content;
