@@ -19,23 +19,13 @@ class Sidebar extends Component {
   }
 
   renderFeedLink(feed, index) {
-    const { currentPathname } = this.props;
-
-    let feedLink = `/feeds/${feed.id}`;
-
-    let cls = classNames({
-      "sidebar-nav-list-item": true,
-      active: feedLink === currentPathname
-    });
-
-    return (<li className={cls} key={index}>
-              <Link to={feedLink}>{feed.title}</Link>
-            </li>
-    );
+    const feedLink = `/feeds/${feed.id}`;
+    return this.renderLink(feed.title, feedLink, index);
   }
 
-  renderLink(label, path) {
+  renderLink(label, path, index = null) {
     const { currentPathname } = this.props;
+    const key = index || label;
 
     let cls = classNames({
       "sidebar-nav-list-item": true,
@@ -43,7 +33,7 @@ class Sidebar extends Component {
     });
 
     return (
-      <li className={cls}>
+      <li className={cls} key={key}>
         <Link to={path}>{label}</Link>
       </li>
     );
