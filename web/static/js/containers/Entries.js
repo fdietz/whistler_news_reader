@@ -15,7 +15,7 @@ class Entries extends Component {
     dispatch: PropTypes.func.isRequired,
     entries: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    currentEntry: PropTypes.object.isRequired,
+    currentEntry: PropTypes.object,
     hasMoreEntries: PropTypes.bool.isRequired
   };
 

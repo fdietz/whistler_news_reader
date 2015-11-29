@@ -8,7 +8,7 @@ export default class ModalWrapper extends Component {
   static propTypes = {
     returnTo: PropTypes.string.required,
     dispatch: PropTypes.func.required,
-    children: PropTypes.node
+    children: PropTypes.node.required
   }
 
   closeModal(event) {

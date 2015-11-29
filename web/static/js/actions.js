@@ -10,9 +10,10 @@ export const FETCH_ENTRIES_SUCCESS = "FETCH_ENTRIES_SUCCESS";
 export const FETCH_ENTRIES_FAILURE = "FETCH_ENTRIES_FAILURE";
 export const SELECT_ENTRY          = "SELECT_ENTRY";
 
-export const FETCH_FEEDS_REQUEST = "FETCH_FEEDS_REQUEST";
-export const FETCH_FEEDS_SUCCESS = "FETCH_FEEDS_SUCCESS";
-export const FETCH_FEEDS_FAILURE = "FETCH_FEEDS_FAILURE";
+export const FETCH_FEEDS = "FETCH_FEEDS";
+// export const FETCH_FEEDS_REQUEST = "FETCH_FEEDS_REQUEST";
+// export const FETCH_FEEDS_SUCCESS = "FETCH_FEEDS_SUCCESS";
+// export const FETCH_FEEDS_FAILURE = "FETCH_FEEDS_FAILURE";
 
 export const FETCH_MORE_ENTRIES_REQUEST = "FETCH_MORE_ENTRIES_REQUEST";
 export const FETCH_MORE_ENTRIES_SUCCESS = "FETCH_MORE_ENTRIES_SUCCESS";
@@ -27,10 +28,10 @@ const createFeed = createAction(CREATE_FEED);
 
 export function requestCreateFeed(feedUrl) {
   return dispatch => {
-    createFeed();
+    dispatch(createFeed());
     feedsChannel.push("feeds:create", { feed_url: feedUrl })
       .receive("ok", payload => {
-        dispatch(createFeed({ feed: payload.feed }));
+        dispatch(createFeed({ item: payload.feed }));
       })
       .receive("error", payload => {
         dispatch(createFeed(new Error(payload.error)));
@@ -46,16 +47,18 @@ export function removeFeed(feed) {
   return { type: REMOVE_FEED, feed: feed };
 }
 
-export function fetchFeeds() {
+const fetchFeeds = createAction(FETCH_FEEDS);
+
+export function requestFetchFeeds() {
   return dispatch => {
-    dispatch(fetchFeedsRequest());
+    dispatch(fetchFeeds());
 
     feedsChannel.join()
-      .receive("ok", messages => {
-        dispatch(fetchFeedsSuccess(messages.feeds));
+      .receive("ok", payload => {
+        dispatch(fetchFeeds({ items: payload.feeds }));
       })
-      .receive("error", reason => {
-        dispatch(fetchFeedsFailure(reason));
+      .receive("error", payload => {
+        dispatch(fetchFeeds(new Error(payload.error)));
       })
       .after(10000, () => console.log("Networking issue. Still waiting..."));
   };
@@ -87,19 +90,6 @@ function fetchMoreEntriesFailure(error) {
 function hasMoreEntries(hasMore) {
   return { type: HAS_MORE_ENTRIES, hasMore: hasMore };
 }
-
-function fetchFeedsRequest() {
-  return { type: FETCH_FEEDS_REQUEST };
-}
-
-function fetchFeedsSuccess(feeds) {
-  return { type: FETCH_FEEDS_SUCCESS, feeds };
-}
-
-function fetchFeedsFailure(error) {
-  return { type: FETCH_FEEDS_FAILURE, error };
-}
-
 
 export function fetchEntries() {
   return dispatch => {

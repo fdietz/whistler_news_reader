@@ -4,11 +4,15 @@ import { pushState } from "redux-router";
 
 import Sidebar from "../components/Sidebar";
 import ModalWrapper from "../components/ModalWrapper";
-import { fetchFeeds } from "../actions";
+import { requestFetchFeeds } from "../actions";
 
 class App extends Component {
   static propTypes = {
-    feeds: PropTypes.array.required,
+    feeds: PropTypes.shape({
+      items: PropTypes.array.isRequired,
+      isLoading: PropTypes.bool.isRequired,
+      error: PropTypes.string
+    }).isRequired,
     children: PropTypes.node
   }
 
@@ -18,7 +22,7 @@ class App extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchFeeds());
+    dispatch(requestFetchFeeds());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,12 +44,12 @@ class App extends Component {
 
   render() {
     const { feeds, location, dispatch } = this.props;
-    const returnTo = location.state && location.state.returnTo || "/"
-    const isModal = this.props.children.props.route.modal;
+    const returnTo = (location.state && location.state.returnTo) || "/"
+    const isModal = this.props.children.props.route.modal || false;
 
     return (
       <div className="layout-container">
-        <Sidebar feeds={feeds} onAddFeedClick={() => this.onAddFeedClick()}/>
+        <Sidebar feeds={feeds.items} onAddFeedClick={() => this.onAddFeedClick()}/>
 
           {isModal ?
             this.previousChildren :
@@ -63,4 +67,10 @@ class App extends Component {
   }
 }
 
-export default connect((state) => ({ feeds: state.feeds }))(App);
+function mapStateToProps(state) {
+  return {
+    feeds: state.feeds
+  };
+}
+
+export default connect(mapStateToProps)(App);

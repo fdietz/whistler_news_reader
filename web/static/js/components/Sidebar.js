@@ -18,7 +18,7 @@ class Sidebar extends Component {
 
   render() {
     const { feeds, onAddFeedClick } = this.props;
-
+    
     return (
       <div className="sidebar">
         <div className="sidebar-header">
