@@ -21,18 +21,21 @@ body {
   bottom: 0;
   left: 0;
   display: flex;
-  // padding: 65px 0 0;
   flex-direction: row;
 
   &.with-sidebar {
     margin-left: 250px;
   }
 
+  &.layout-vertical {
+    flex-direction: column;
+  }
+
   .layout-list {
     position: relative;
     display: flex;
     min-width: 200px;
-    // overflow-y: auto;
+    box-sizing: border-box;
     flex: 2 2;
     flex-direction: column;
   }
@@ -40,9 +43,20 @@ body {
   .layout-detail {
     display: flex;
     min-width: 400px;
-    // overflow-y: auto;
+    box-sizing: border-box;
     flex: 4 4;
     flex-direction: column;
+  }
+
+  .layout-full {
+    display: flex;
+    min-width: 400px;
+
+    padding: 25px;
+    background-color: #fff;
+    box-sizing: border-box;
+    flex-direction: column;
+    flex: 1 1;
   }
 }
 

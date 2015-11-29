@@ -32,9 +32,8 @@ export function requestCreateFeed(feedUrl) {
       .receive("ok", payload => {
         dispatch(createFeed({ feed: payload.feed }));
       })
-      .receive("error", error => {
-        console.log("error creating feed", error);
-        dispatch(createFeed(new Error(error)));
+      .receive("error", payload => {
+        dispatch(createFeed(new Error(payload.error)));
       });
   };
 }

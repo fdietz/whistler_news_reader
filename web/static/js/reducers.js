@@ -8,16 +8,30 @@ export function feeds(state = [], action) {
   switch (action.type) {
   case FETCH_FEEDS_SUCCESS:
     return action.feeds;
-  case CREATE_FEED:
-    if (action.error) {
-      return state;
-    } else {
-      return [...state, action.payload.feed];
-    }
   case UPDATE_FEED:
     return state;
   case REMOVE_FEED:
     return state;
+  default:
+    return state;
+  }
+}
+
+// state = {
+//   newFeed: newFeed,
+//   isCreating: false,
+//   error: reason
+// }
+export function createFeed(state = {}, action) {
+  switch (action.type) {
+  case CREATE_FEED:
+    if (action.error) {
+      return { error: action.payload.message, isCreating: false };
+    } else if (action.payload) {
+      return { feed: action.payload.feed, isCreating: false };
+    } else {
+      return { isCreating: true };
+    }
   default:
     return state;
   }
@@ -62,5 +76,5 @@ export function isLoading(state = false, action) {
   }
 }
 
-const reducers = combineReducers({ feeds, entries, currentEntry, hasMoreEntries, isLoading });
+const reducers = combineReducers({ feeds, createFeed, entries, currentEntry, hasMoreEntries, isLoading });
 export default reducers;

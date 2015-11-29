@@ -1,71 +1,19 @@
-$main-header-bg: #3E6372;
-
 .main-header {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 20;
   display: flex;
-  height: 60px;
-
-  padding-right: 30px;
-  padding-left: 30px;
-
-  color: #FFF;
-  background-color: $main-header-bg;
-
-  border-bottom: 3px solid #2B454F;
-
+  min-height: 65px;
+  padding-right: 20px;
+  padding-left: 20px;
+  border-bottom: 1px solid #F1F3F7;
+  justify-content: flex-start;
   align-items: center;
 
-  &:before {
-    position: fixed;
-    right: 0;
-    left: 0;
-    height: 60px;
-    content: "";
-    box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .14);
-    will-change: top,left;
-  }
-
   .left {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex: 1 1;
-
-    h2 {
-      position: relative;
-
-      margin: 0;
-
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
+    flex: 1;
   }
 
   .right {
     display: flex;
-    justify-content: flex-end;
+    text-align: right;
     align-items: center;
-    flex: 1 1;
-
-    > .search {
-      background-color: rgba(255, 255, 255, .15);
-      width: 300px;
-
-      input {
-        background: none;
-        border: none;
-        box-sizing: border-box;
-        color: #fff;
-        font-size: 1.0em;
-        height: 36px;
-        padding-left: 10px;
-        padding-right: 10px;
-        width: 100%;
-      }
-    }
   }
 }

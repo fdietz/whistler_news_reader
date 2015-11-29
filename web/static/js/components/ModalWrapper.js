@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+import { pushState } from "redux-router";
 
 // TODO: consider using react-modal instead
 export default class ModalWrapper extends Component {
@@ -10,25 +11,23 @@ export default class ModalWrapper extends Component {
     children: PropTypes.node
   }
 
-  render() {
-    const styles = {
-      position: "fixed",
-      top: "20%",
-      right: "20%",
-      bottom: "20%",
-      left: "20%",
-      padding: 20,
-      overflow: "auto",
-      background: "#fff"
-    };
+  closeModal(event) {
+    const { dispatch, returnTo } = this.props;
+    // event.preventDefault();
+    // event.stopPropagation();
+    // dispatch(pushState(null, returnTo));
+  }
 
+  render() {
     // using React.cloneElements instead of only this.props.children
     // because we need to pass props down to the modal component
     return (
-      <div style={styles}>
-        <p><Link to={this.props.returnTo}>Back</Link></p>
-        {React.cloneElement(this.props.children, {
-          dispatch: this.props.dispatch, returnTo: this.props.returnTo })}
+      <div className="modal-backdrop" onClick={(event) => this.closeModal(event)}>
+        <div className="modal modal-right">
+          <Link className="modal-close-link" to={this.props.returnTo}>Back</Link>
+          {React.cloneElement(this.props.children, {
+            dispatch: this.props.dispatch, returnTo: this.props.returnTo })}
+        </div>
       </div>
     );
   }

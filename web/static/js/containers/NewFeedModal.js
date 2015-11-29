@@ -1,47 +1,93 @@
 import React, {Component, PropTypes} from "react";
 import { pushState } from "redux-router";
+import { connect } from "react-redux";
 
 import { requestCreateFeed } from "../actions";
-export default class NewFeedModal extends Component {
+
+class NewFeedModal extends Component {
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    returnTo: PropTypes.string.isRequired,
+    createFeed: PropTypes.object.isRequired
+  };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      modalValue: ""
+      feedUrl: ""
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { dispatch, returnTo } = this.props;
+
+    console.log("componentWillReceiveProps", nextProps)
+    if (nextProps && nextProps.createFeed && nextProps.createFeed.feed) {
+      // navigate to new feed url
+      dispatch(pushState(null, returnTo));
     }
   }
 
-  handleModalChange(event) {
-    this.setState({ modalValue: event.target.value });
+  handleChange(event) {
+    console.log("handleChange")
+    this.setState({ feedUrl: event.target.value });
   }
 
-  submitAndCloseModal() {
-    const { dispatch, returnTo } = this.props;
-    dispatch(requestCreateFeed(this.state.modalValue));
-    dispatch(pushState(null, returnTo));
+  submitForm(event) {
+    console.log("submit")
+    const { dispatch} = this.props;
+    dispatch(requestCreateFeed(this.state.feedUrl));
+    event.preventDefault();
   }
 
-  closeModal() {
+  cancel() {
+    console.log("cancel")
     const { dispatch, returnTo } = this.props;
     dispatch(pushState(null, returnTo));
   }
 
   render() {
+    const { createFeed } = this.props;
+    let error;
+    if (createFeed.error) {
+      error = (
+        <div className="form-message">Error adding feed: {createFeed.error}</div>
+      );
+    }
+
     return (
-      <div>
-        <h2>Enter feed adress</h2>
-        <form>
-          <input type="text"
-            value={this.state.modalValue}
-            onChange={(event) => this.handleModalChange(event)}
-            autoFocus/>
-        </form>
-        <button onClick={() => this.submitAndCloseModal()}
-          className="btn btn--blue">Add Feed</button>
-        <button onClick={() => this.closeModal()}
-          className="btn">close</button>
+      <div className="modal-body">
+        <div className="modal-header">
+          <h2>Add Feed</h2>
+        </div>
+        <div className="modal-content">
+          <form className="form form-stacked form-prominent">
+              <input className="pure-input-1"
+                  type="text"
+                  placeholder="Enter feed url"
+                  value={this.state.feedUrl}
+                  onChange={(event) => this.handleChange(event)}
+                  autoFocus/>
+                {error}
+          </form>
+        </div>
+        <div className="modal-footer">
+          <button type="submit" className="btn btn--blue" onClick={(event) => this.submitForm(event)}>Add Feed</button>
+          <button onClick={() => this.cancel()}
+            className="btn">close</button>
+        </div>
+
       </div>
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    createFeed: state.createFeed
+  };
+}
+
+export default connect(mapStateToProps)(NewFeedModal);
