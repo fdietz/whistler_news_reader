@@ -18,7 +18,7 @@ class Sidebar extends Component {
 
   render() {
     const { feeds, onAddFeedClick } = this.props;
-    
+
     return (
       <div className="sidebar">
         <div className="sidebar-header">
@@ -47,7 +47,6 @@ class Sidebar extends Component {
               let feedLink = `/feeds/${feed.id}`
               return (<li className="sidebar-nav-list-item" key={i}>
                         <Link to={feedLink}>{feed.title}</Link>
-                        <a href="">{feed.title}</a>
                       </li>
               );
             })}
