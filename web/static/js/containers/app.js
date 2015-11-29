@@ -46,10 +46,11 @@ class App extends Component {
     const { feeds, location, dispatch } = this.props;
     const returnTo = (location.state && location.state.returnTo) || "/"
     const isModal = this.props.children.props.route.modal || false;
+    const currentPathname = location.pathname;
 
     return (
       <div className="layout-container">
-        <Sidebar feeds={feeds.items} onAddFeedClick={() => this.onAddFeedClick()}/>
+        <Sidebar feeds={feeds.items} currentPathname={currentPathname} onAddFeedClick={() => this.onAddFeedClick()}/>
 
           {isModal ?
             this.previousChildren :

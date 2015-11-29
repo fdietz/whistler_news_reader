@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import { Link } from "react-router";
+import classNames from "classnames";
 
 // import imageArrowDown from "../../assets/images/arrow-down.svg";
 // import imageArrowUp from "../../assets/images/arrow-up.svg";
@@ -9,11 +10,43 @@ class Sidebar extends Component {
 
   static propTypes = {
     feeds: PropTypes.array.isRequired,
-    onAddFeedClick: PropTypes.func.isRequired
+    onAddFeedClick: PropTypes.func.isRequired,
+    currentPathname: PropTypes.string.isRequired
   };
 
   constructor(props) {
     super(props);
+  }
+
+  renderFeedLink(feed, index) {
+    const { currentPathname } = this.props;
+
+    let feedLink = `/feeds/${feed.id}`;
+
+    let cls = classNames({
+      "sidebar-nav-list-item": true,
+      active: feedLink === currentPathname
+    });
+
+    return (<li className={cls} key={index}>
+              <Link to={feedLink}>{feed.title}</Link>
+            </li>
+    );
+  }
+
+  renderLink(label, path) {
+    const { currentPathname } = this.props;
+
+    let cls = classNames({
+      "sidebar-nav-list-item": true,
+      active: path === currentPathname
+    });
+
+    return (
+      <li className={cls}>
+        <Link to={path}>{label}</Link>
+      </li>
+    );
   }
 
   render() {
@@ -33,22 +66,14 @@ class Sidebar extends Component {
 
           <h4 className="sidebar-nav-header">Home</h4>
           <ul className="sidebar-nav-list">
-            <li className="sidebar-nav-list-item active">
-              <Link to="/today">Today</Link>
-            </li>
-            <li className="sidebar-nav-list-item">
-              <Link to="/all">All</Link>
-            </li>
+            {this.renderLink("Today", "/today")}
+            {this.renderLink("All", "/all")}
           </ul>
 
           <h4 className="sidebar-nav-header">Subscriptions</h4>
           <ul className="sidebar-nav-list">
-            {feeds.map(function(feed, i) {
-              let feedLink = `/feeds/${feed.id}`
-              return (<li className="sidebar-nav-list-item" key={i}>
-                        <Link to={feedLink}>{feed.title}</Link>
-                      </li>
-              );
+            {feeds.map((feed, index) => {
+              return this.renderFeedLink(feed, index);
             })}
           </ul>
         </div>
