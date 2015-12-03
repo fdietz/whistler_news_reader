@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
 import { CREATE_FEED, UPDATE_FEED, REMOVE_FEED } from "./actions";
-import { FETCH_ENTRIES_REQUEST, FETCH_ENTRIES_SUCCESS, FETCH_ENTRIES_FAILURE } from "./actions";
-import { FETCH_MORE_ENTRIES_REQUEST, FETCH_MORE_ENTRIES_SUCCESS, FETCH_MORE_ENTRIES_FAILURE, SELECT_ENTRY, HAS_MORE_ENTRIES } from "./actions";
+import { FETCH_ENTRIES, SELECT_ENTRY } from "./actions";
 import { FETCH_FEEDS } from "./actions";
 
 // feeds = {
@@ -50,12 +49,24 @@ export function createFeed(state = { item: null, isLoading: false }, action) {
   }
 }
 
-export function entries(state = [], action) {
+// entries = {
+//   items: [],
+//   isLoading: false,
+//   error: reason
+// }
+export function entries(state = { items: [], isLoading: false, hasMoreEntries: true }, action) {
   switch (action.type) {
-  case FETCH_ENTRIES_SUCCESS:
-    return state.concat(action.entries);
-  case FETCH_MORE_ENTRIES_SUCCESS:
-    return state.concat(action.entries);
+  case FETCH_ENTRIES:
+    if (action.error) {
+      return Object.assign({}, state, { error: action.payload.message });
+    } else if (action.payload && action.payload.lastPublished) {
+      return Object.assign({}, state, { isLoading: true });
+    } else if (action.payload) {
+      return { items: [...state.items, ...action.payload.items], isLoading: false, hasMoreEntries: action.payload.items.length === 20 };
+    } else {
+      return Object.assign({}, state, { isLoading: true });
+    }
+    break;
   default:
     return state;
   }
@@ -69,25 +80,5 @@ export function currentEntry(state = null, action) {
   }
 }
 
-export function hasMoreEntries(state = true, action) {
-  if (action.type === HAS_MORE_ENTRIES) {
-    return action.hasMore;
-  } else {
-    return state;
-  }
-}
-
-export function isLoading(state = false, action) {
-  switch (action.type) {
-  case FETCH_ENTRIES_REQUEST:
-    return true;
-  case FETCH_ENTRIES_SUCCESS:
-  case FETCH_ENTRIES_FAILURE:
-    return false;
-  default:
-    return state;
-  }
-}
-
-const reducers = combineReducers({ feeds, createFeed, entries, currentEntry, hasMoreEntries, isLoading });
+const reducers = combineReducers({ feeds, createFeed, entries, currentEntry });
 export default reducers;

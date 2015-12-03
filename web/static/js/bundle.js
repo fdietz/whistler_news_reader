@@ -22,16 +22,14 @@ import NewFeedModal from "./containers/NewFeedModal";
 import "../css/app.scss";
 
 const loggerMiddleware = createLogger();
-import { feeds, createFeed, entries, currentEntry, hasMoreEntries, isLoading } from "./reducers";
+import { feeds, createFeed, entries, currentEntry } from "./reducers";
 
 const reducers = combineReducers({
   router: routerStateReducer,
   feeds: feeds,
   createFeed: createFeed,
   entries: entries,
-  currentEntry: currentEntry,
-  hasMoreEntries: hasMoreEntries,
-  isLoading: isLoading
+  currentEntry: currentEntry
 });
 
 const store = compose(

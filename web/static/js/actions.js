@@ -5,20 +5,28 @@ export const CREATE_FEED = "CREATE_FEED";
 export const UPDATE_FEED = "UPDATE_FEED";
 export const REMOVE_FEED = "REMOVE_FEED";
 
-export const FETCH_ENTRIES_REQUEST = "FETCH_ENTRIES_REQUEST";
-export const FETCH_ENTRIES_SUCCESS = "FETCH_ENTRIES_SUCCESS";
-export const FETCH_ENTRIES_FAILURE = "FETCH_ENTRIES_FAILURE";
+export const FETCH_ENTRIES = "FETCH_ENTRIES";
 export const SELECT_ENTRY          = "SELECT_ENTRY";
 
 export const FETCH_FEEDS = "FETCH_FEEDS";
 
-export const FETCH_MORE_ENTRIES_REQUEST = "FETCH_MORE_ENTRIES_REQUEST";
-export const FETCH_MORE_ENTRIES_SUCCESS = "FETCH_MORE_ENTRIES_SUCCESS";
-export const FETCH_MORE_ENTRIES_FAILURE = "FETCH_ENTRIES_FAILURE";
+export const FETCH_MORE_ENTRIES = "FETCH_MORE_ENTRIES";
 export const HAS_MORE_ENTRIES           = "HAS_MORE_ENTRIES";
 
 let socket         = configureChannel();
-let entriesChannel = socket.channel("entries:all");
+let entriesChannel = socket.channel("entries:join");
+
+export function joinEntriesChannel() {
+  return entriesChannel.join()
+    .receive("ok", response => {
+      console.log("joined entries channel", response)
+    })
+    .receive("error", reason => {
+      console.log("joining entries channel failed: ", reason)
+    })
+    .after(10000, () => console.log("Networking issue. Still waiting..."));
+}
+
 let feedsChannel   = socket.channel("feeds:all");
 
 const createFeed = createAction(CREATE_FEED);
@@ -60,73 +68,39 @@ export function requestFetchFeeds() {
       .after(10000, () => console.log("Networking issue. Still waiting..."));
   };
 }
-function fetchEntriesRequest() {
-  return { type: FETCH_ENTRIES_REQUEST };
-}
 
-function fetchEntriesSuccess(entries) {
-  return { type: FETCH_ENTRIES_SUCCESS, entries };
-}
+const fetchEntries = createAction(FETCH_ENTRIES);
 
-function fetchEntriesFailure(error) {
-  return { type: FETCH_ENTRIES_FAILURE, error };
-}
-
-function fetchMoreEntriesRequest() {
-  return { type: FETCH_MORE_ENTRIES_REQUEST };
-}
-
-function fetchMoreEntriesSuccess(entries) {
-  return { type: FETCH_MORE_ENTRIES_SUCCESS, entries };
-}
-
-function fetchMoreEntriesFailure(error) {
-  return { type: FETCH_MORE_ENTRIES_FAILURE, error };
-}
-
-function hasMoreEntries(hasMore) {
-  return { type: HAS_MORE_ENTRIES, hasMore: hasMore };
-}
-
-export function fetchEntries() {
+export function requestFetchEntries() {
+  console.log("requestFetchEntries")
   return dispatch => {
-    dispatch(fetchEntriesRequest());
+    dispatch(fetchEntries());
 
-    entriesChannel.join()
-      .receive("ok", response => {
-        dispatch(fetchEntriesSuccess(response.entries));
-        if (response.entries.length < 10) {
-          dispatch(hasMoreEntries(false));
-        } else {
-          dispatch(hasMoreEntries(true));
-        }
+    entriesChannel.push("entries:all")
+      .receive("ok", payload => {
+        dispatch(fetchEntries({ items: payload.entries }));
       })
-      .receive("error", reason => {
-        dispatch(fetchEntriesFailure(reason));
+      .receive("error", payload => {
+        dispatch(fetchEntries(new Error(payload.error)));
       })
       .after(10000, () => console.log("Networking issue. Still waiting..."));
   };
 }
 
-export function fetchMoreEntries(lastPublished) {
+export function requestFetchMoreEntries(lastPublished) {
   return dispatch => {
-    dispatch(fetchMoreEntriesRequest(lastPublished));
+    dispatch(fetchEntries({ lastPublished: lastPublished }));
 
-    let payload = {
+    let params = {
       last_published: lastPublished
     };
 
-    entriesChannel.push("entries:load_more", payload)
-      .receive("ok", response => {
-        dispatch(fetchMoreEntriesSuccess(response.entries));
-        if (response.entries.length < 10) {
-          dispatch(hasMoreEntries(false));
-        } else {
-          dispatch(hasMoreEntries(true));
-        }
+    entriesChannel.push("entries:load_more", params)
+      .receive("ok", payload => {
+        dispatch(fetchEntries({ items: payload.entries }));
       })
-      .receive("error", error => {
-        dispatch(fetchMoreEntriesFailure(error));
+      .receive("error", payload => {
+        dispatch(fetchEntries(new Error(payload.error)));
       });
   };
 }
