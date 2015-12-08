@@ -7,7 +7,10 @@ import FeedEntryContent from "../components/FeedEntryContent";
 
 import imageProfile from "../../assets/images/profile.jpg";
 
-import { joinEntriesChannel, requestFetchEntries, requestFetchMoreEntries, selectEntry } from "../actions";
+import {
+  requestFetchEntries,
+  requestFetchMoreEntries,
+  selectEntry } from "../actions";
 
 class Entries extends Component {
 
@@ -28,9 +31,7 @@ class Entries extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    joinEntriesChannel().receive("ok", function() {
-      dispatch(requestFetchEntries());
-    }.bind(this));
+    dispatch(requestFetchEntries());
   }
 
   loadMore() {

@@ -1,6 +1,7 @@
 {
   "repository": {},
   "dependencies": {
+    "axios": "^0.7.0",
     "classnames": "^2.2.0",
     "history": "^1.13.1",
     "normalize.css": "^3.0.3",

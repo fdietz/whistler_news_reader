@@ -13,6 +13,15 @@ defmodule WhistlerNewsReader.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/api", WhistlerNewsReader do
+    pipe_through :api
+
+    # get "/entries/today", Api.EntryController, :today
+    # get "/entries/all", Api.EntryController, :all
+    resources "/entries", Api.EntryController, only: [:index]
+    resources "/feeds", Api.FeedController, only: [:index]
+  end
+
   scope "/", WhistlerNewsReader do
     pipe_through :browser # Use the default browser stack
 

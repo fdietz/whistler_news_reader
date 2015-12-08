@@ -1,12 +1,14 @@
-import React, {Component} from "react";
-import ReactDOM from "react-dom";
+import React, {Component, PropTypes} from "react";
 
 export default class InfiniteScroll extends Component {
 
-  constructor(props) {
-    super(props);
-    this.handleScrollEvent = this.handleScrollEvent.bind(this);
-  }
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    hasMore: PropTypes.bool.isRequired,
+    loadMore: PropTypes.func.isRequired,
+    threshold: PropTypes.number.isRequired,
+    className: PropTypes.string
+  };
 
   static defaultProps = {
     hasMore: true,
@@ -14,11 +16,16 @@ export default class InfiniteScroll extends Component {
     threshold: 250
   }
 
+  constructor(props) {
+    super(props);
+    this.handleScrollEvent = this.handleScrollEvent.bind(this);
+  }
+
   componentDidMount() {
     this.scrollableAncestor = this.refs.scrollContainer;
     this.attachScrollListener();
     this.handleScrollEvent();
-    window.addEventListener('resize', this.handleScrollEvent);
+    window.addEventListener("resize", this.handleScrollEvent);
   }
 
   componentDidUpdate() {
@@ -34,13 +41,11 @@ export default class InfiniteScroll extends Component {
       <div ref="scrollContainer" className={this.props.className}>
         {this.props.children}
       </div>
-    )
+    );
   }
 
   handleScrollEvent() {
-    if (!this.props.hasMore) {
-      return;
-    }
+    if (!this.props.hasMore) return;
 
     let scrollTop    = this.scrollableAncestor.scrollTop;
     let scrollHeight = this.scrollableAncestor.scrollHeight;
@@ -52,11 +57,7 @@ export default class InfiniteScroll extends Component {
   }
 
   attachScrollListener() {
-    if (!this.props.hasMore) {
-      console.log("hasMore == false")
-      return;
-    }
-
+    if (!this.props.hasMore) return;
     this.scrollableAncestor.addEventListener("scroll", this.handleScrollEvent);
   }
 
@@ -66,7 +67,7 @@ export default class InfiniteScroll extends Component {
 
   componentWillUnmount() {
     this.detachScrollListener();
-    window.removeEventListener('resize', this.handleScrollEvent);
+    window.removeEventListener("resize", this.handleScrollEvent);
   }
 
 }
