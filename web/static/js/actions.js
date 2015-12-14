@@ -53,29 +53,11 @@ export function requestFetchFeeds() {
 
 const fetchEntries = createAction(FETCH_ENTRIES);
 
-export function requestFetchEntries() {
+export function requestFetchEntries(options = {}) {
   return dispatch => {
-    dispatch(fetchEntries());
+    dispatch(fetchEntries(options));
 
-    axios.get("/api/entries")
-    .then(function(response) {
-      dispatch(fetchEntries({ items: response.data.entries }));
-    })
-    .catch(function(response) {
-      dispatch(fetchEntries(new Error(response.data.error)));
-    });
-  };
-}
-
-export function requestFetchMoreEntries(lastPublished) {
-  return dispatch => {
-    dispatch(fetchEntries({ lastPublished: lastPublished }));
-
-    let params = {
-      last_published: lastPublished
-    };
-
-    axios.get("/api/entries", { params: params })
+    axios.get("/api/entries", { params: options })
     .then(function(response) {
       dispatch(fetchEntries({ items: response.data.entries }));
     })

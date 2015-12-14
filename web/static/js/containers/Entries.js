@@ -7,10 +7,7 @@ import FeedEntryContent from "../components/FeedEntryContent";
 
 import imageProfile from "../../assets/images/profile.jpg";
 
-import {
-  requestFetchEntries,
-  requestFetchMoreEntries,
-  selectEntry } from "../actions";
+import { requestFetchEntries, selectEntry } from "../actions";
 
 class Entries extends Component {
 
@@ -38,7 +35,7 @@ class Entries extends Component {
     const { dispatch, entries } = this.props;
     if (entries.hasMoreEntries && !entries.isLoading) {
       let oldestPublishedEntry = entries.items[entries.items.length-1].published;
-      dispatch(requestFetchMoreEntries(oldestPublishedEntry));
+      dispatch(requestFetchEntries({ last_published: oldestPublishedEntry }));
     }
   }
 
