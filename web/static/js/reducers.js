@@ -8,32 +8,6 @@ import { FETCH_FEEDS } from "./actions";
 //   isLoading: false,
 //   error: reason
 // }
-// function isFunction(val) {
-//   return typeof val === 'function';
-// }
-//
-// function isError(action) {
-//   return action.payload.error;
-// }
-
-// function handleAction(type, reducers) {
-//   console.log("handleActions", type, reducers)
-//   return (state, action) => {
-//     console.log("1", state, action)
-//     if (action.type !== type) return state;
-//
-//     const handlerKey = isError(action) ? "throw" : "next";
-//     const reducer = reducers[handlerKey];
-//
-//     console.log("reducer", reducer)
-//     return isFunction(reducer) ? reducer(state, action) : state;
-//   }
-// }
-
-// export const feeds = handleAction(FETCH_FEEDS, (state = { items: [], isLoading: false }, actions) => ({feeds: state}));
-
-// console.log("feeds", feeds)
-
 export function feeds(state = { items: [], isLoading: false }, action) {
   switch (action.type) {
   case FETCH_FEEDS:
