@@ -9,6 +9,7 @@ export const FETCH_ENTRIES = "FETCH_ENTRIES";
 export const SELECT_ENTRY  = "SELECT_ENTRY";
 
 export const FETCH_FEEDS = "FETCH_FEEDS";
+export const REFRESH_ALL = "REFRESH_ALL";
 
 const createFeed = createAction(CREATE_FEED);
 
@@ -56,7 +57,6 @@ const fetchEntries = createAction(FETCH_ENTRIES);
 export function requestFetchEntries(options = {}) {
   return dispatch => {
     const params = Object.assign({}, options, { limit: 20 });
-    console.log("fetch entries", params)
     dispatch(fetchEntries(params));
 
     axios.get("/api/entries", { params: params })
@@ -67,6 +67,25 @@ export function requestFetchEntries(options = {}) {
       dispatch(fetchEntries(new Error(response.data.error)));
     });
   };
+}
+
+const refreshAll = createAction(REFRESH_ALL);
+
+export function requestRefreshAll(options = {}) {
+  return dispatch => {
+    const params = options;
+    dispatch(refreshAll(params));
+
+    axios.put("/api/entries/refresh", { params: params })
+    .then(function(response) {
+      console.log("response success", response)
+      // dispatch(fetchEntries({ items: response.data.entries, meta: options }));
+    })
+    .catch(function(response) {
+      console.log("response error", response)
+      // dispatch(fetchEntries(new Error(response.data.error)));
+    });
+  }
 }
 
 export function selectEntry(entry) {

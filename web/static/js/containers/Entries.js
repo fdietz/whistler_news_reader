@@ -7,7 +7,7 @@ import FeedEntryContent from "../components/FeedEntryContent";
 
 import imageProfile from "../../assets/images/profile.jpg";
 
-import { requestFetchEntries, selectEntry } from "../actions";
+import { requestFetchEntries, requestRefreshAll, selectEntry } from "../actions";
 
 class Entries extends Component {
 
@@ -24,15 +24,13 @@ class Entries extends Component {
   constructor(props) {
     super(props);
     this.loadMore = this.loadMore.bind(this);
+    this.refreshAll = this.refreshAll.bind(this);
   }
 
   componentDidMount() {
-    console.log("component did mount");
-
     const { dispatch } = this.props;
     dispatch(requestFetchEntries());
   }
-
 
   componentWillReceiveProps(nextProps) {
     const { dispatch } = this.props;
@@ -58,6 +56,12 @@ class Entries extends Component {
       let oldestPublishedEntry = entries.items[entries.items.length-1].published;
       dispatch(requestFetchEntries(Object.assign({ feed_id: this.state.feed_id, last_published: oldestPublishedEntry })));
     }
+  }
+
+  refreshAll() {
+    const { dispatch } = this.props;
+
+    dispatch(requestRefreshAll({ feed_id: this.state.feed_id }));
   }
 
   render() {
@@ -91,7 +95,7 @@ class Entries extends Component {
         <div className="layout-list">
           <div className="list-header">
             <button className="btn btn--top-navigation">Mark as read</button>
-            <button className="btn btn--top-navigation">Refresh</button>
+            <button onClick={this.refreshAll} className="btn btn--top-navigation">Refresh</button>
           </div>
 
           {paginatedItems}

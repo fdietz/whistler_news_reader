@@ -19,6 +19,7 @@ defmodule WhistlerNewsReader.Router do
     # get "/entries/today", Api.EntryController, :today
     # get "/entries/all", Api.EntryController, :all
     resources "/entries", Api.EntryController, only: [:index]
+    put "/entries/refresh", Api.EntryController, :refresh
     resources "/feeds", Api.FeedController, only: [:index]
   end
 
