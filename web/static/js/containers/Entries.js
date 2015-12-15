@@ -27,15 +27,36 @@ class Entries extends Component {
   }
 
   componentDidMount() {
+    console.log("component did mount");
+
     const { dispatch } = this.props;
     dispatch(requestFetchEntries());
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+    const { dispatch } = this.props;
+
+    // if we changed routes...
+    if (nextProps.location.key !== this.props.location.key) {
+      if (nextProps.params.id) {
+        this.setState({ feed_id: nextProps.params.id });
+        dispatch(requestFetchEntries({ feed_id: nextProps.params.id }));
+      } else if (nextProps.location.pathname === "/all") {
+        this.setState({ feed_id: "all" });
+        dispatch(requestFetchEntries({ feed_id: "all" }));
+      } else if (nextProps.location.pathname === "/today") {
+        this.setState({ feed_id: "today" });
+        dispatch(requestFetchEntries({ feed_id: "today" }));
+      }
+    }
   }
 
   loadMore() {
     const { dispatch, entries } = this.props;
     if (entries.hasMoreEntries && !entries.isLoading) {
       let oldestPublishedEntry = entries.items[entries.items.length-1].published;
-      dispatch(requestFetchEntries({ last_published: oldestPublishedEntry }));
+      dispatch(requestFetchEntries(Object.assign({ feed_id: this.state.feed_id, last_published: oldestPublishedEntry })));
     }
   }
 

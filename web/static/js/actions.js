@@ -55,11 +55,13 @@ const fetchEntries = createAction(FETCH_ENTRIES);
 
 export function requestFetchEntries(options = {}) {
   return dispatch => {
-    dispatch(fetchEntries(options));
+    const params = Object.assign({}, options, { limit: 20 });
+    console.log("fetch entries", params)
+    dispatch(fetchEntries(params));
 
-    axios.get("/api/entries", { params: options })
+    axios.get("/api/entries", { params: params })
     .then(function(response) {
-      dispatch(fetchEntries({ items: response.data.entries }));
+      dispatch(fetchEntries({ items: response.data.entries, meta: options }));
     })
     .catch(function(response) {
       dispatch(fetchEntries(new Error(response.data.error)));

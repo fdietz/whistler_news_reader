@@ -5,8 +5,33 @@ defmodule WhistlerNewsReader.Api.EntryController do
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Entry
 
-  def index(conn, %{"last_published" => last_published} = _params) do
-    entries = Entry |> Entry.sorted |> Entry.load_more(last_published, 20) |> Repo.all |> Repo.preload(:feed)
+  def index(conn, %{"feed_id" => "today", "last_published" => last_published, "limit" => limit} = _params) do
+    entries = Entry |> Entry.for_today |> Entry.sorted |> Entry.load_more(last_published, limit) |> Repo.all |> Repo.preload(:feed)
+    render(conn, "index.json", entries: entries)
+  end
+
+  def index(conn, %{"feed_id" => "all", "last_published" => last_published, "limit" => limit} = _params) do
+    entries = Entry |> Entry.sorted |> Entry.load_more(last_published, limit) |> Repo.all |> Repo.preload(:feed)
+    render(conn, "index.json", entries: entries)
+  end
+
+  def index(conn, %{"feed_id" => feed_id, "last_published" => last_published, "limit" => limit} = _params) do
+    entries = Entry |> Entry.for_feed(feed_id) |> Entry.sorted |> Entry.load_more(last_published, limit) |> Repo.all |> Repo.preload(:feed)
+    render(conn, "index.json", entries: entries)
+  end
+
+  def index(conn, %{"feed_id" => "today"} = _params) do
+    entries = Entry |> Entry.for_today |> Entry.sorted |> Entry.limit(20) |> Repo.all |> Repo.preload(:feed)
+    render(conn, "index.json", entries: entries)
+  end
+
+  def index(conn, %{"feed_id" => "all"} = _params) do
+    entries = Entry |> Entry.sorted |> Entry.limit(20) |> Repo.all |> Repo.preload(:feed)
+    render(conn, "index.json", entries: entries)
+  end
+
+  def index(conn, %{"feed_id" => feed_id} = _params) do
+    entries = Entry |> Entry.for_feed(feed_id) |> Entry.sorted |> Entry.limit(20) |> Repo.all |> Repo.preload(:feed)
     render(conn, "index.json", entries: entries)
   end
 

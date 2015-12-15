@@ -52,4 +52,14 @@ defmodule WhistlerNewsReader.Entry do
     limit: ^limit
   end
 
+  def for_feed(query, feed_id) do
+    from p in query,
+    where: p.feed_id == ^feed_id
+  end
+
+  def for_today(query) do
+    from p in query,
+    where: p.published >= ^Ecto.DateTime.to_string(Ecto.DateTime.utc)
+  end
+
 end
