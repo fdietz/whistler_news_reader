@@ -9,7 +9,7 @@ export const FETCH_ENTRIES = "FETCH_ENTRIES";
 export const SELECT_ENTRY  = "SELECT_ENTRY";
 
 export const FETCH_FEEDS = "FETCH_FEEDS";
-export const REFRESH_ALL = "REFRESH_ALL";
+export const REFRESH_ENTRIES = "REFRESH_ENTRIES";
 
 const createFeed = createAction(CREATE_FEED);
 
@@ -69,14 +69,14 @@ export function requestFetchEntries(options = {}) {
   };
 }
 
-const refreshAll = createAction(REFRESH_ALL);
+const refreshEntries = createAction(REFRESH_ENTRIES);
 
-export function requestRefreshAll(options = {}) {
+export function requestRefreshEntries(options = {}) {
   return dispatch => {
     const params = options;
-    dispatch(refreshAll(params));
+    dispatch(refreshEntries(params));
 
-    axios.put("/api/entries/refresh", { params: params })
+    axios.put("/api/entries/refresh", params)
     .then(function(response) {
       console.log("response success", response)
       // dispatch(fetchEntries({ items: response.data.entries, meta: options }));

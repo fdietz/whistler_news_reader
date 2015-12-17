@@ -8,19 +8,25 @@ defmodule WhistlerNewsReader.Fetcher do
 
   def refresh_all do
     Enum.each(Repo.all(Feed), fn(feed) ->
-      IO.puts "Refresh #{feed.title}"
+      refresh(feed)
+    end)
+  end
 
-      {:ok, json_body}   = fetch(feed.feed_url)
-      parsed_feed = parse_feed(json_body)
+  def refresh(feed) do
+    IO.puts "Refresh #{feed.title}"
 
-      Enum.each(parsed_feed.entries, fn(entry) ->
-        case store_entry(feed, entry) do
-          {:ok, _new_entry} ->
-            IO.puts "Updated successfully"
-          {:error, changeset} ->
-            IO.puts "Update failed: #{inspect changeset.errors}"
-        end
-      end)
+    {:ok, json_body}   = fetch(feed.feed_url)
+    parsed_feed = parse_feed(json_body)
+
+    Enum.each(parsed_feed.entries, fn(entry) ->
+      case store_entry(feed, entry) do
+        {:ok, _new_entry} ->
+          IO.puts "Updated successfully"
+        {:skipping} ->
+          IO.puts "Skipping entry"
+        {:error, changeset} ->
+          IO.puts "Update failed: #{inspect changeset.errors}"
+      end
     end)
   end
 
@@ -60,10 +66,11 @@ defmodule WhistlerNewsReader.Fetcher do
 
   defp store_entry(feed, entry) do
     published = entry[:updated] |> convert_to_ecto_date_time
-    published_string = entry[:updated] |> convert_to_date_time_str
+    guid = generate_guid(feed.feed_url, entry[:id], published, entry[:title])
+
     result = %{
       feed_id: feed.id,
-      guid: generate_guid(feed.feed_url, entry[:id], published, entry[:title]),
+      guid: guid,
       title: entry[:title],
       author: entry[:author],
       url: entry[:url],
@@ -71,7 +78,13 @@ defmodule WhistlerNewsReader.Fetcher do
       content: entry[:content],
       published: published
     }
-    Repo.insert(Entry.changeset(%Entry{}, result))
+
+    case Entry |> Entry.for_guid(guid) |> Repo.all do
+      [] ->
+        Repo.insert(Entry.changeset(%Entry{}, result))
+      _ ->
+        {:skipping}
+    end
   end
 
   defp convert_to_ecto_date_time(date_time) do
@@ -79,10 +92,6 @@ defmodule WhistlerNewsReader.Fetcher do
       year: date_time.year, month: date_time.month, day: date_time.day,
       hour: date_time.hour, min: date_time.min, sec: date_time.sec, usec: date_time.usec
     }
-  end
-
-  defp convert_to_date_time_str(date_time) do
-    "#{date_time[:year]}-#{date_time[:month]}-#{date_time[:day]}Z#{date_time[:hour]}:#{date_time[:min]}:#{date_time[:sec]}:#{date_time[:usec]}"
   end
 
   # generate unique guid since in RSS/Atom entries the guid ist not alwasy unique

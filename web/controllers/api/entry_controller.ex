@@ -2,6 +2,7 @@ defmodule WhistlerNewsReader.Api.EntryController do
   use WhistlerNewsReader.Web, :controller
   require Logger
 
+  alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Entry
   alias WhistlerNewsReader.Fetcher
@@ -39,6 +40,22 @@ defmodule WhistlerNewsReader.Api.EntryController do
   def index(conn, %{} = _params) do
     entries = Entry |> Entry.sorted |> Entry.limit(20) |> Repo.all |> Repo.preload(:feed)
     render(conn, "index.json", entries: entries)
+  end
+
+  def refresh(conn, %{"feed_id" => "all"} = _params) do
+    Fetcher.refresh_all
+    conn |> send_resp(204, "")
+  end
+
+  def refresh(conn, %{"feed_id" => "today"} = _params) do
+    Fetcher.refresh_all
+    conn |> send_resp(204, "")
+  end
+
+  def refresh(conn, %{"feed_id" => feed_id} = _params) do
+    feed = Repo.get!(Feed, feed_id)
+    Fetcher.refresh(feed)
+    conn |> send_resp(204, "")
   end
 
   def refresh(conn, %{} = _params) do

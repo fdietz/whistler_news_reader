@@ -62,4 +62,9 @@ defmodule WhistlerNewsReader.Entry do
     where: p.published >= ^Ecto.DateTime.to_string(Ecto.DateTime.utc)
   end
 
+  def for_guid(query, guid) do
+    from p in query,
+    where: p.guid == ^guid
+  end
+
 end
