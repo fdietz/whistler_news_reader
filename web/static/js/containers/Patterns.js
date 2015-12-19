@@ -11,7 +11,7 @@ class Patterns extends Component {
         <div className="example">
           <form>
             <label htmlFor="search">Search</label>
-            <input id="search" type="text" className="field"/>
+            <input id="search" type="text" className="field ml1"/>
             <button className="btn btn-primary ml1">Go</button>
           </form>
         </div>
@@ -41,25 +41,25 @@ class Patterns extends Component {
 
         <div className="example">
           <label>Normal</label>
-          <input type="text" className="block col-12 field"/>
+          <input type="text" className="block col-12 mb1 field"/>
           <label>Disabled</label>
-          <input type="text" className="block col-12 field" disabled value="This is disabled"/>
+          <input type="text" className="block col-12 mb1 field" disabled value="This is disabled"/>
           <label>Read Only</label>
-          <input type="text" className="block col-12 field" readOnly value="This is read-only"/>
+          <input type="text" className="block col-12 mb1 field" readOnly value="This is read-only"/>
           <label>Required</label>
-          <input type="text" className="block col-12 field" required/>
+          <input type="text" className="block col-12 mb1 field" required/>
           <label>.is-focused</label>
-          <input type="text" className="block col-12 field is-focused"/>
+          <input type="text" className="block col-12 mb1 field is-focused"/>
           <label>.is-disabled</label>
-          <input type="text" className="block col-12 field is-disabled"/>
+          <input type="text" className="block col-12 mb1 field is-disabled"/>
           <label>.is-read-only</label>
-          <input type="text" className="block col-12 field is-read-only"/>
+          <input type="text" className="block col-12 mb1 field is-read-only"/>
           <label>Success</label>
-          <input type="text" className="block col-12 field is-success"/>
+          <input type="text" className="block col-12 mb1 field is-success"/>
           <label>Warning</label>
-          <input type="text" className="block col-12 field is-warning"/>
+          <input type="text" className="block col-12 mb1 field is-warning"/>
           <label>Error</label>
-          <input type="text" className="block col-12 field is-error"/>
+          <input type="text" className="block col-12 mb1 field is-error"/>
         </div>
 
         <h2>Buttons</h2>
@@ -83,6 +83,18 @@ class Patterns extends Component {
           <button className="btn btn-primary m1 black bg-gray-2">Button</button>
         </div>
 
+        <div className="example">
+          <button className="btn btn-outline m1 blue">Button</button>
+          <button className="btn btn-outline m1 black">Button</button>
+          <button className="btn btn-outline m1 silver">Button</button>
+        </div>
+
+        <div className="example">
+          <button type="button" className="btn btn-big btn-primary m1">Burgers</button>
+          <button type="button" className="btn btn-primary m1">Fries</button>
+          <button type="button" className="btn btn-narrow btn-primary m1">Onion Rings</button>
+          <button type="button" className="btn btn-small btn-primary m1">Shakes</button>
+        </div>
       </div>
     );
   }
