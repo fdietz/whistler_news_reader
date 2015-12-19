@@ -17,13 +17,11 @@ export function requestCreateFeed(feedUrl) {
   return dispatch => {
     dispatch(createFeed());
     axios.post("/api/feeds", { data: { feed_url: feedUrl } })
-      .then(function (response) {
-        dispatch(createFeed({ item: payload.feed }));
-        console.log(response);
+      .then((response) => {
+        dispatch(createFeed({ item: response.feed }));
       })
-      .catch(function (response) {
-        dispatch(createFeed(new Error(payload.error)));
-        console.log(response);
+      .catch((response) => {
+        dispatch(createFeed(new Error(response.error)));
       });
   };
 }
@@ -43,10 +41,10 @@ export function requestFetchFeeds() {
     dispatch(fetchFeeds());
 
     axios.get("/api/feeds")
-    .then(function(response) {
+    .then((response) => {
       dispatch(fetchFeeds({ items: response.data.feeds }));
     })
-    .catch(function(response) {
+    .catch((response) => {
       dispatch(fetchFeeds(new Error(response.data.error)));
     });
   };
@@ -60,10 +58,10 @@ export function requestFetchEntries(options = {}) {
     dispatch(fetchEntries(params));
 
     axios.get("/api/entries", { params: params })
-    .then(function(response) {
+    .then((response) => {
       dispatch(fetchEntries({ items: response.data.entries, meta: options }));
     })
-    .catch(function(response) {
+    .catch((response) => {
       dispatch(fetchEntries(new Error(response.data.error)));
     });
   };
@@ -77,15 +75,14 @@ export function requestRefreshEntries(options = {}) {
     dispatch(refreshEntries(params));
 
     axios.put("/api/entries/refresh", params)
-    .then(function(response) {
-      console.log("response success", response)
-      // dispatch(fetchEntries({ items: response.data.entries, meta: options }));
+    .then((response) => {
+      // refresh entries list
+      console.log("response success", response);
     })
-    .catch(function(response) {
-      console.log("response error", response)
-      // dispatch(fetchEntries(new Error(response.data.error)));
+    .catch((response) => {
+      console.log("response error", response);
     });
-  }
+  };
 }
 
 export function selectEntry(entry) {

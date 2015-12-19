@@ -48,19 +48,11 @@ export function createFeed(state = { item: null, isLoading: false }, action) {
 //   error: reason
 // }
 export function entries(state = { items: [], isLoading: false, hasMoreEntries: true }, action) {
-
   switch (action.type) {
   case FETCH_ENTRIES:
-    console.log("action", action)
-
     if (action.error) {
       return Object.assign({}, state, { error: action.payload.message });
-    }
-    // else if (action.payload && action.payload.last_published) {
-    //   return Object.assign({}, state, { isLoading: true });
-    // }
-    else if (action.payload && action.payload.items && action.payload.meta && action.payload.meta.last_published) {
-      console.log("==== MORE")
+    } else if (action.payload && action.payload.items && action.payload.meta && action.payload.meta.last_published) {
       // fetch more
       return { items: [
         ...state.items, ...action.payload.items],
@@ -68,7 +60,6 @@ export function entries(state = { items: [], isLoading: false, hasMoreEntries: t
         hasMoreEntries: action.payload.items.length === 20
       };
     } else if (action.payload && action.payload.items) {
-      console.log(">>>> INIT")
       // initial fetch
       return { items: action.payload.items,
         isLoading: false,

@@ -94,7 +94,9 @@ class Entries extends Component {
         <div className="layout-list">
           <div className="list-header">
             <button className="btn btn--top-navigation">Mark as read</button>
-            <button onClick={this.refreshEntries} className="btn btn--top-navigation">Refresh</button>
+            <button
+              onClick={this.refreshEntries}
+              className="btn btn--top-navigation">Refresh</button>
           </div>
 
           {paginatedItems}
