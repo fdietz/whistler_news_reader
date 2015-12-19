@@ -3,3 +3,78 @@ $primary-color: #111;
 $link-color: #3e6372;
 
 $secondary-bg-color: #F0F3F7;
+
+// colors
+$darken-1: rgba(0, 0, 0, .0625);
+$darken-2: rgba(0, 0, 0, .125);
+$darken-3: rgba(0, 0, 0, .25);
+$darken-4: rgba(0, 0, 0, .5);
+
+$white: #FAFAFF;
+$black: #111;
+$orange: #FF6900;
+$gray: #7F7F7F;
+$gray-2: #B2D4DC;
+$silver: #E4E4E4;
+$blue: #4B719D;
+$blue-2: #9AA2AF;
+$blue-3: #3E6372;
+$red: #F25653;
+$green: green;
+$yellow: yellow;
+
+// layouts
+$container-width: 64em;
+$breakpoint-sm: 40em;
+$breakpoint-md: 52em;
+$breakpoint-lg: 64em;
+
+// base
+$font-family: "Lato", sans-serif;
+$line-height: 1.5;
+
+$body-color: $black;
+$body-background-color: $white;
+$link-color: $blue;
+$link-text-decoration: $blue;
+$link-hover-text-decoration: $blue;
+
+// headings
+$h1: 2.25rem;
+$h2: 1.75rem;
+$h3: 1.25rem;
+$h4: 1.125rem;
+$h5: 1rem;
+$h6: .75rem;
+
+// white space
+$space-1: .5rem;
+$space-2: 1rem;
+$space-3: 2rem;
+$space-4: 4rem;
+
+// borders
+$border-width: 1px;
+$border-radius: 3px;
+$border-color: $darken-2;
+
+// forms
+$form-field-font-size: 1.1rem;
+$form-field-height: 2.25rem;
+$form-field-padding-y: .5rem;
+$form-field-padding-x: .5rem;
+
+$field-focus-color: $blue;
+$field-success-color: $green;
+$field-warning-color: $yellow;
+$field-error-color: $red;
+
+// buttons
+$btn-font-size: $h5;
+$btn-font-weight: bold;
+$btn-line-height: 1.375rem;
+$btn-color: $white;
+$btn-background-color: $blue;
+
+$btn-padding-y: .5rem;
+$btn-padding-x: 1rem;

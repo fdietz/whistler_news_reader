@@ -1,7 +1,3 @@
-body {
-  overflow: hidden;
-}
-
 .layout-container {
   overflow: hidden;
 }
@@ -61,11 +57,5 @@ body {
 }
 
 .scrollable-container {
-  overflow-y: hidden;
-  background-color: #fff;
-
-  &:hover {
-    padding-right: 1px;
-    overflow-y: auto;
-  }
+  overflow-y: auto;
 }

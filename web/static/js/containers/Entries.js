@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 
 import InfiniteScroll from "../components/InfiniteScroll";
-import HalfWidthFeedEntryList from "../components/HalfWidthFeedEntryList";
+import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryContent from "../components/FeedEntryContent";
 
 import imageProfile from "../../assets/images/profile.jpg";
@@ -71,7 +71,7 @@ class Entries extends Component {
       content = <FeedEntryContent entry={currentEntry}/>;
     }
 
-    let items = (<HalfWidthFeedEntryList
+    let items = (<FeedEntryList
       entries={entries.items}
       currentEntry={currentEntry}
       onEntryClick={entry => dispatch(selectEntry(entry)) }/>
@@ -93,10 +93,10 @@ class Entries extends Component {
       <div className="layout-content with-sidebar">
         <div className="layout-list">
           <div className="list-header">
-            <button className="btn btn--top-navigation">Mark as read</button>
+            <button className="btn btn-primary bg-silver gray">Mark as read</button>
             <button
               onClick={this.refreshEntries}
-              className="btn btn--top-navigation">Refresh</button>
+              className="btn btn-primary bg-silver gray ml1">Refresh</button>
           </div>
 
           {paginatedItems}
@@ -104,8 +104,8 @@ class Entries extends Component {
         <div className="layout-detail">
           <div className="detail-header">
             <div className="left">
-              <button className="btn btn--top-navigation">Prev</button>
-              <button className="btn btn--top-navigation">Next</button>
+              <button className="btn btn-primary bg-silver gray">Prev</button>
+              <button className="btn btn-primary bg-silver gray ml1">Next</button>
             </div>
             <div className="right">
               <div className="avatar">

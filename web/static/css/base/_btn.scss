@@ -1,0 +1,52 @@
+.btn {
+  font-size: inherit;
+  font-weight: $btn-font-weight;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  line-height: $btn-line-height;
+  padding: $btn-padding-y $btn-padding-x;
+  margin: 0;
+  height: auto;
+  border: $border-width solid transparent;
+  vertical-align: middle;
+  -webkit-appearance: none;
+  color: inherit;
+  background-color: transparent;
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+.btn:focus {
+  border-color: $darken-2;
+  outline: none;
+  box-shadow: 0 0 0 3px $darken-3;
+}
+
+::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+.btn-primary {
+  color: $btn-color;
+  background-color: $btn-background-color;
+  border-radius: $border-radius;
+}
+
+.btn-primary:hover {
+  box-shadow: inset 0 0 0 20rem $darken-1;
+}
+
+.btn-primary:active {
+  box-shadow: inset 0 0 0 20rem $darken-2,
+    inset 0 3px 4px 0 $darken-3,
+    0 0 1px $darken-2;
+}
+
+.btn-primary:disabled,
+.btn-primary.is-disabled {
+  opacity: .5;
+}

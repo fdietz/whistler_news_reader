@@ -46,12 +46,11 @@ class Sidebar extends Component {
       <div className="sidebar">
         <div className="sidebar-header">
           <div className="logo">whistle'r</div>
-          <div className="sublogo">news reader</div>
         </div>
         <div className="sidebar-content">
           <div className="sidebar-actions">
             <button onClick={onAddFeedClick}
-              className="btn btn--blue add-subscription">Add Feed</button>
+              className="btn btn-primary bg-blue add-subscription">Add Feed</button>
           </div>
 
           <h4 className="sidebar-nav-header">Home</h4>

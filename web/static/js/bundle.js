@@ -20,6 +20,7 @@ import Welcome from "./containers/Welcome";
 import Entries from "./containers/Entries";
 import NewFeed from "./containers/NewFeed";
 import NewFeedModal from "./containers/NewFeedModal";
+import Patterns from "./containers/Patterns";
 
 import "../css/app.scss";
 
@@ -56,6 +57,7 @@ class App extends Component {
                 <Route path="feeds/:id" component={Entries}/>
               </Route>
               <Redirect from="/" to="/all"/>
+              <Route path="patterns" component={Patterns}/>
             </ReduxRouter>
           </div>
         </Provider>

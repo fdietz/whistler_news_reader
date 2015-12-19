@@ -75,12 +75,12 @@ export function requestRefreshEntries(options = {}) {
     dispatch(refreshEntries(params));
 
     axios.put("/api/entries/refresh", params)
-    .then((response) => {
-      // refresh entries list
-      console.log("response success", response);
+    .then(() => {
+      dispatch(refreshEntries());
+      dispatch(requestFetchEntries(options));
     })
     .catch((response) => {
-      console.log("response error", response);
+      dispatch(refreshEntries(new Error(response.data.error)));
     });
   };
 }

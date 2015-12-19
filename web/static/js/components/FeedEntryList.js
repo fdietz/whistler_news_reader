@@ -1,21 +1,37 @@
 import React, {Component, PropTypes} from "react";
 import FeedEntry from "./FeedEntry";
 
-class FeedEntryList extends Component {
+export default class FeedEntryList extends Component {
 
   static propTypes = {
-    entries: PropTypes.array.isRequired
+    entries: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired
+    })).isRequired,
+    currentEntry: PropTypes.shape({
+      id: PropTypes.string.isRequired
+    }),
+    // todos: PropTypes.arrayOf(PropTypes.shape({
+    //   text: PropTypes.string.isRequired,
+    //   completed: PropTypes.bool.isRequired
+    // }).isRequired).isRequired
+    onEntryClick: PropTypes.func.isRequired
   };
 
   render() {
+    const { onEntryClick, currentEntry } = this.props;
+
     return (
       <div className="item-list">
         {this.props.entries.map(function(entry, i) {
-          return (<FeedEntry entry={entry} key={i} />);
+          let isSelected = (entry && currentEntry && entry.id === currentEntry.id) || false;
+          return (
+            <FeedEntry
+              entry={entry}
+              isSelected={isSelected}
+              key={i}
+              onClick={() => onEntryClick(entry)} />);
         })}
       </div>
     );
   }
 }
-
-export default FeedEntryList;

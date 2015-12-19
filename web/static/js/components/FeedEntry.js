@@ -1,22 +1,16 @@
 import React, {Component, PropTypes} from "react";
-import FeedEntryContent from "./FeedEntryContent";
 import classNames from "classnames";
 
-class FeedEntry extends Component {
+export default class FeedEntry extends Component {
 
   static propTypes = {
-    entry: PropTypes.object.isRequired
+    entry: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired,
+    isSelected: PropTypes.bool.isRequired
   };
 
   constructor(props) {
     super(props);
-    this.state = { expanded: false };
-
-    this.toggleExpand = this.toggleExpand.bind(this);
-  }
-
-  toggleExpand() {
-    this.setState({expanded: !this.state.expanded });
   }
 
   timeDifference(previous) {
@@ -44,29 +38,23 @@ class FeedEntry extends Component {
   }
 
   render() {
-    let content = null;
-
-    if (this.state.expanded) {
-      content = <FeedEntryContent entry={this.props.entry}/>;
-    }
-
-    let itemRowClass = classNames({
+    const { isSelected, onClick, entry } = this.props;
+    let cls = classNames({
       item: true,
-      expanded: this.state.expanded
+      selected: isSelected
     });
 
     return (
-      <div className={itemRowClass}>
-        <div className="item-row" onClick={this.toggleExpand}>
-          <span className="primary-title">{this.props.entry.feed.title}</span>
-          <span className="secondary-title">{this.props.entry.title}</span>
-          <span className="secondary-summary">{this.props.entry.summary}</span>
-          <span className="secondary-published">{this.publishedRelativeDateTime()}</span>
+      <div className={cls} onClick={onClick}>
+        <div className="item-row">
+          <div className="meta">
+            <div className="primary-title">{entry.feed.title}</div>
+            <span className="secondary-published">{this.publishedRelativeDateTime()}</span>
+          </div>
+          <div className="secondary-title">{entry.title}</div>
+          <div className="secondary-summary">{entry.summary}</div>
         </div>
-        {content}
       </div>
     );
   }
 }
-
-export default FeedEntry;
