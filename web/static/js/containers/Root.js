@@ -6,7 +6,7 @@ import Sidebar from "../components/Sidebar";
 import ModalWrapper from "../components/ModalWrapper";
 import { requestFetchFeeds } from "../actions";
 
-class App extends Component {
+class Root extends Component {
   static propTypes = {
     feeds: PropTypes.shape({
       items: PropTypes.array.isRequired,
@@ -50,7 +50,9 @@ class App extends Component {
 
     return (
       <div className="layout-container">
-        <Sidebar feeds={feeds.items} currentPathname={currentPathname} onAddFeedClick={() => this.onAddFeedClick()}/>
+        <Sidebar feeds={feeds.items}
+          currentPathname={currentPathname}
+          onAddFeedClick={() => this.onAddFeedClick()}/>
 
           {isModal ?
             this.previousChildren :
@@ -74,4 +76,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(Root);

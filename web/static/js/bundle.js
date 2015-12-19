@@ -10,10 +10,12 @@ import { ReduxRouter, routerStateReducer, reduxReactRouter } from "redux-router"
 import { Route, Redirect, IndexRoute } from "react-router";
 import { createHistory } from "history";
 
+import DevTools from "./containers/DevTools";
+
 // import { devTools } from 'redux-devtools';
 // import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 
-import App from "./containers/app";
+import Root from "./containers/Root";
 import Welcome from "./containers/Welcome";
 import Entries from "./containers/Entries";
 import NewFeed from "./containers/NewFeed";
@@ -35,28 +37,31 @@ const reducers = combineReducers({
 const store = compose(
   applyMiddleware(thunkMiddleware, loggerMiddleware),
   reduxReactRouter({ createHistory })
+  // DevTools.instrument()
 )(createStore)(reducers);
 
-class Root extends Component {
+class App extends Component {
   render() {
     return (
       <div>
         <Provider store={store}>
-          <ReduxRouter>
-            <Route path="/" component={App}>
-              <IndexRoute component={Welcome}/>
-              <Route path="all" component={Entries}/>
-              <Route path="today" component={Entries}/>
-              <Route path="feeds/new_full" component={NewFeed}/>
-              <Route path="feeds/new" component={NewFeedModal} modal={true}/>
-              <Route path="feeds/:id" component={Entries}/>
-            </Route>
-            <Redirect from="/" to="/all"/>
-          </ReduxRouter>
+          <div>
+            <ReduxRouter>
+              <Route path="/" component={Root}>
+                <IndexRoute component={Welcome}/>
+                <Route path="all" component={Entries}/>
+                <Route path="today" component={Entries}/>
+                <Route path="feeds/new_full" component={NewFeed}/>
+                <Route path="feeds/new" component={NewFeedModal} modal={true}/>
+                <Route path="feeds/:id" component={Entries}/>
+              </Route>
+              <Redirect from="/" to="/all"/>
+            </ReduxRouter>
+          </div>
         </Provider>
       </div>
     );
   }
 }
 
-ReactDOM.render(<Root />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
