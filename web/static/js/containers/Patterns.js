@@ -37,6 +37,9 @@ class Patterns extends Component {
             <div className="col col-2 mr2 p1 bg-blue white border rounded">
               blue
             </div>
+            <div className="col col-2 mr2 p1 bg-blue-4 white border rounded">
+              blue-4
+            </div>
             <div className="col col-2 mr2 p1 bg-blue-2 white border rounded">
               blue-2
             </div>
