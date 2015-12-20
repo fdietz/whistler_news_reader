@@ -1,0 +1,35 @@
+[class^="svg-icon-"],
+[class*=" svg-icon-"] {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-position: left top;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.svg-icon-large {
+  width: 32px;
+  height: 32px;
+}
+
+.svg-icon-small {
+  width: 16px;
+  height: 16px;
+}
+
+.svg-icon-reload {
+  background-image: url("../assets/images/spinner2.svg");
+}
+
+.svg-icon-checkmark {
+  background-image: url("../assets/images/checkmark.svg");
+}
+
+.svg-icon-redo {
+  background-image: url("../assets/images/redo.svg");
+}
+
+.svg-icon-undo {
+  background-image: url("../assets/images/undo.svg");
+}

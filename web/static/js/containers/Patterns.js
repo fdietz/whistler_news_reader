@@ -184,6 +184,27 @@ class Patterns extends Component {
           <input type="text" className="block col-12 mb1 field is-error"/>
         </div>
 
+        <h2>Icons</h2>
+        <div className="example">
+          <h3>Large</h3>
+          <div className="clearfix">
+            <div className="svg-icon-reload svg-icon-large"></div>
+            <div className="svg-icon-undo svg-icon-large"></div>
+            <div className="svg-icon-redo svg-icon-large"></div>
+          </div>
+          <h3>Medium</h3>
+          <div className="clearfix">
+            <div className="svg-icon-reload"></div>
+            <div className="svg-icon-undo"></div>
+            <div className="svg-icon-redo"></div>
+          </div>
+          <h3>Small</h3>
+          <div className="clearfix">
+            <div className="svg-icon-reload svg-icon-small"></div>
+            <div className="svg-icon-undo svg-icon-small"></div>
+            <div className="svg-icon-redo svg-icon-small"></div>
+          </div>
+        </div>
       </div>
     );
   }
