@@ -4,7 +4,11 @@ import classNames from "classnames";
 export default class FeedEntry extends Component {
 
   static propTypes = {
-    entry: PropTypes.object.isRequired,
+    // entry: PropTypes.object.isRequired,
+    published: PropTypes.string.isRequired,
+    feed: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired,
+    summary: PropTypes.string,
     onClick: PropTypes.func.isRequired,
     isSelected: PropTypes.bool.isRequired
   };
@@ -33,12 +37,12 @@ export default class FeedEntry extends Component {
   }
 
   publishedRelativeDateTime() {
-    let date = new Date(this.props.entry.published);
+    let date = new Date(this.props.published);
     return this.timeDifference(date);
   }
 
   render() {
-    const { isSelected, onClick, entry } = this.props;
+    const { isSelected, onClick, feed, title, summary } = this.props;
     let cls = classNames({
       item: true,
       selected: isSelected
@@ -48,11 +52,11 @@ export default class FeedEntry extends Component {
       <div className={cls} onClick={onClick}>
         <div className="item-row">
           <div className="meta">
-            <div className="primary-title">{entry.feed.title}</div>
+            <div className="primary-title">{feed.title}</div>
             <span className="secondary-published">{this.publishedRelativeDateTime()}</span>
           </div>
-          <div className="secondary-title">{entry.title}</div>
-          <div className="secondary-summary">{entry.summary}</div>
+          <div className="secondary-title">{title}</div>
+          <div className="secondary-summary">{summary}</div>
         </div>
       </div>
     );

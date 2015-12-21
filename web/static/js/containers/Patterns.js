@@ -37,6 +37,9 @@ class Patterns extends Component {
                 <div className="col col-2 mr2 p1 bg-black white border rounded">
                   black
                 </div>
+                <div className="col col-2 mr2 p1 bg-black-2 white border rounded">
+                  black-2
+                </div>
               </div>
 
               <div className="clearfix">
@@ -45,6 +48,9 @@ class Patterns extends Component {
                 </div>
                 <div className="col col-2 mr2 p1 bg-gray-2 black border rounded">
                   gray-2
+                </div>
+                <div className="col col-2 mr2 p1 bg-gray-3 white border rounded">
+                  gray-3
                 </div>
               </div>
             </div>

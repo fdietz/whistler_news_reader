@@ -26,7 +26,7 @@ export default class FeedEntryList extends Component {
           let isSelected = (entry && currentEntry && entry.id === currentEntry.id) || false;
           return (
             <FeedEntry
-              entry={entry}
+              {...entry}
               isSelected={isSelected}
               key={i}
               onClick={() => onEntryClick(entry)} />);

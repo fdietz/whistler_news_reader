@@ -49,6 +49,7 @@ $sidebar-color: $gray;
   list-style: none;
 
   a {
+    position: relative;
     display: block;
 
     padding: 6px $space-2;
@@ -66,7 +67,18 @@ $sidebar-color: $gray;
     &.active {
       color: #fff;
       background-color: $darken-3;
+
+      &:before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 3px;
+        background-color: $blue;
+        content: "";
+      }
     }
+
 
   }
 
