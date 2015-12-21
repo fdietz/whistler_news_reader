@@ -24,7 +24,7 @@ class Patterns extends Component {
         </div>
         <div className="layout-master with-sidebar">
           <div className="layout-master-header px3">
-            <h1 className="m0">Pattern Library</h1>
+            <h1 className="m0 blue-2">Pattern Library</h1>
           </div>
           <div className="layout-master-content p3">
 
@@ -43,11 +43,8 @@ class Patterns extends Component {
                 <div className="col col-2 mr2 p1 bg-gray white border rounded">
                   gray
                 </div>
-                <div className="col col-2 mr2 p1 bg-gray-2 white border rounded">
+                <div className="col col-2 mr2 p1 bg-gray-2 black border rounded">
                   gray-2
-                </div>
-                <div className="col col-2 mr2 p1 bg-gray-3 border rounded">
-                  gray-3
                 </div>
               </div>
             </div>
@@ -58,22 +55,16 @@ class Patterns extends Component {
                 <div className="col col-2 mr2 p1 bg-blue white border rounded">
                   blue
                 </div>
-                <div className="col col-2 mr2 p1 bg-blue-4 white border rounded">
-                  blue-4
-                </div>
                 <div className="col col-2 mr2 p1 bg-blue-2 white border rounded">
                   blue-2
                 </div>
-                <div className="col col-2 mr2 p1 bg-blue-3 border rounded">
-                  blue-3
+                <div className="col col-2 mr2 p1 bg-blue-4 white border rounded">
+                  blue-4
                 </div>
               </div>
               <div className="clearfix">
                 <div className="col col-2 mr2 p1 bg-red white border rounded">
                   red
-                </div>
-                <div className="col col-2 mr2 p1 bg-red-2 white border rounded">
-                  red-2
                 </div>
               </div>
             </div>

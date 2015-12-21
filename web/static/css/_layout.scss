@@ -48,7 +48,7 @@ body {
   display: flex;
   height: 65px;
 
-  background-color: $white-2;
+  background-color: $gray-2;
   border-bottom: 1px solid $darken-1;
 
   box-sizing: border-box;
@@ -58,6 +58,7 @@ body {
 
 .layout-master-content {
   overflow-y: auto;
+  background-color: $white;
   flex: 1 1;
 }
 

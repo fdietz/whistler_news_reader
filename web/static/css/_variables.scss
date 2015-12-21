@@ -5,18 +5,13 @@ $darken-3: rgba(0, 0, 0, .25);
 $darken-4: rgba(0, 0, 0, .5);
 
 $white: #FAFAFF;
-$white-2: #F0F3F7;
 $black: #111;
 $gray: #798ca7;
-$gray-2: #afbaca;
-$gray-3: #dee5e8;
-$silver: #E6E9ED;
+$gray-2: #F0F3F7;
 $blue: #4B719D;
 $blue-2: #27323F;
-$blue-3: #B2D4DC;
-$blue-4: #5A83B0;
+$blue-4: #617285;
 $red: #F25653;
-$red-2: #C44542;
 $orange: #EB8F4E;
 $green: #599D59;
 $yellow: #E5E528;
@@ -34,8 +29,8 @@ $line-height: 1.5;
 $body-color: $black;
 $body-background-color: $white;
 $link-color: $blue;
-$link-text-decoration: $blue;
-$link-hover-text-decoration: $blue;
+$link-text-decoration: none;
+$link-hover-text-decoration: $darken-1;
 
 // headings
 $h1: 2.25rem;
@@ -55,30 +50,3 @@ $space-4: 4rem;
 $border-width: 1px;
 $border-radius: 3px;
 $border-color: $darken-2;
-
-// forms
-$form-field-font-size: 1.1rem;
-$form-field-height: 2.25rem;
-$form-field-padding-y: .5rem;
-$form-field-padding-x: .5rem;
-
-$field-focus-color: $blue;
-$field-success-color: $green;
-$field-warning-color: $yellow;
-$field-error-color: $red;
-
-// buttons
-$btn-font-size: .875rem;
-$btn-font-weight: bold;
-$btn-line-height: 1.125rem;
-$btn-color: $white;
-$btn-background-color: $blue;
-
-$btn-padding-y: .5rem;
-$btn-padding-x: 1rem;
-
-$btn-small-padding-y: .25rem;
-$btn-small-padding-x: .5rem;
-$btn-big-padding-y: 1rem;
-$btn-big-padding-x: 1.25rem;
-$btn-narrow-padding-x: $space-1;

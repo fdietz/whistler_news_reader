@@ -1,10 +1,8 @@
-// $sidebar-bg: rgb(45, 62, 80);
-$sidebar-bg: #27323F;
-$sidebar-color: #617285;
+$sidebar-bg: $blue-2;
+$sidebar-color: $blue-4;
 
 .sidebar {
   display: flex;
-  color: $sidebar-color;
   background-color: $sidebar-bg;
   flex-direction: column;
 
@@ -20,7 +18,8 @@ $sidebar-color: #617285;
 .sidebar-header {
   display: flex;
   height: 65px;
-  background-color: #F25653;
+  background-color: $red;
+  border-bottom: 1px solid $darken-1;
   align-items: center;
 
   flex-direction: row;

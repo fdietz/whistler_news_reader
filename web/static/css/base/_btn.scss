@@ -1,5 +1,20 @@
+$btn-font-size: .875rem;
+$btn-font-weight: bold;
+$btn-line-height: 1.125rem;
+$btn-color: $white;
+$btn-background-color: $blue;
+
+$btn-padding-y: .5rem;
+$btn-padding-x: 1rem;
+
+$btn-small-padding-y: .25rem;
+$btn-small-padding-x: .5rem;
+$btn-big-padding-y: 1rem;
+$btn-big-padding-x: 1.25rem;
+$btn-narrow-padding-x: $space-1;
+
 .btn {
-  font-size: inherit;
+  font-size: $btn-font-size;
   font-weight: $btn-font-weight;
   text-decoration: none;
   cursor: pointer;

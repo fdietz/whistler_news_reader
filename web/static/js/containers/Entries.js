@@ -92,12 +92,12 @@ class Entries extends Component {
       <div className="layout-master-split with-sidebar">
         <div className="layout-master-left layout-master-40">
           <div className="layout-master-header px2">
-            <button className="btn btn-primary bg-silver gray">
+            <button className="btn btn-primary bg-white gray">
               <span className="svg-icon-reload svg-icon-small"></span>
             </button>
             <button
               onClick={this.refreshEntries}
-              className="btn btn-primary bg-silver gray ml1">
+              className="btn btn-primary bg-white gray ml1">
               <span className="svg-icon-checkmark svg-icon-small"></span>
             </button>
           </div>
@@ -107,10 +107,10 @@ class Entries extends Component {
         </div>
         <div className="layout-master-right layout-master-60">
           <div className="layout-master-header px3">
-            <button className="btn btn-primary bg-silver gray">
+            <button className="btn btn-primary bg-white gray">
               <span className="svg-icon-undo svg-icon-small"></span>
             </button>
-            <button className="btn btn-primary bg-silver gray ml1">
+            <button className="btn btn-primary bg-white gray ml1">
               <span className="svg-icon-redo svg-icon-small"></span>
             </button>
             <div className="avatar mx-l-auto">
