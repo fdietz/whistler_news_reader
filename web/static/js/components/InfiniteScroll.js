@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import ReactDOM from "react-dom";
 
 export default class InfiniteScroll extends Component {
 
@@ -22,7 +23,7 @@ export default class InfiniteScroll extends Component {
   }
 
   componentDidMount() {
-    this.scrollableAncestor = this.refs.scrollContainer;
+    this.scrollableAncestor = this._findScrollableAncestor();
     this.attachScrollListener();
     this.handleScrollEvent();
     window.addEventListener("resize", this.handleScrollEvent);
@@ -30,9 +31,6 @@ export default class InfiniteScroll extends Component {
 
   componentDidUpdate() {
     this.attachScrollListener();
-  }
-
-  componentDidUpdate() {
     this.handleScrollEvent();
   }
 
@@ -70,4 +68,26 @@ export default class InfiniteScroll extends Component {
     window.removeEventListener("resize", this.handleScrollEvent);
   }
 
+  _findScrollableAncestor() {
+    let node = ReactDOM.findDOMNode(this);
+
+    while (node.parentNode) {
+      node = node.parentNode;
+
+      if (node === document || node === document.documentElement) {
+        continue;
+      }
+
+      const style = window.getComputedStyle(node);
+      const overflowY = style.getPropertyValue("overflow-y") ||
+        style.getPropertyValue("overflow");
+
+      if (overflowY === "auto" || overflowY === "scroll") {
+        return node;
+      }
+    }
+
+    // fallback window
+    return window;
+  }
 }

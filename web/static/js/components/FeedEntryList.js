@@ -5,10 +5,10 @@ export default class FeedEntryList extends Component {
 
   static propTypes = {
     entries: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired
+      id: PropTypes.number.isRequired
     })).isRequired,
     currentEntry: PropTypes.shape({
-      id: PropTypes.string.isRequired
+      id: PropTypes.number.isRequired
     }),
     // todos: PropTypes.arrayOf(PropTypes.shape({
     //   text: PropTypes.string.isRequired,

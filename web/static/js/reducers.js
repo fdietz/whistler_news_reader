@@ -59,7 +59,7 @@ export function createFeed(state = { item: null, isLoading: false }, action) {
 //   isLoading: false,
 //   error: reason
 // }
-export function entries(state = { items: [], isLoading: false, hasMoreEntries: true }, action) {
+export function entries(state = { items: [], isLoading: false, hasMoreEntries: false }, action) {
   switch (action.type) {
   case FETCH_ENTRIES:
     if (action.error) {
@@ -73,15 +73,15 @@ export function entries(state = { items: [], isLoading: false, hasMoreEntries: t
         items: [
           ...state.items, ...action.payload.items
         ],
-        isLoading: false,
-        hasMoreEntries: action.payload.items.length === 20
+        hasMoreEntries: action.payload.hasMoreEntries,
+        isLoading: false
       };
     } else if (action.payload && action.payload.items) {
       // initial fetch
       return {
         items: action.payload.items,
-        isLoading: false,
-        hasMoreEntries: action.payload.items.length === 20
+        hasMoreEntries: action.payload.hasMoreEntries,
+        isLoading: false
       };
     }
     return Object.assign({}, state, {

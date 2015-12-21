@@ -59,7 +59,11 @@ export function requestFetchEntries(options = {}) {
 
     axios.get("/api/entries", { params: params })
     .then((response) => {
-      dispatch(fetchEntries({ items: response.data.entries, meta: options }));
+      dispatch(fetchEntries({
+        items: response.data.entries,
+        meta: options,
+        hasMoreEntries: response.data.entries.length === params.limit
+      }));
     })
     .catch((response) => {
       dispatch(fetchEntries(new Error(response.data.error)));

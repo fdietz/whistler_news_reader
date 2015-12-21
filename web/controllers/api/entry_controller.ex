@@ -37,10 +37,10 @@ defmodule WhistlerNewsReader.Api.EntryController do
     render(conn, "index.json", entries: entries)
   end
 
-  def index(conn, %{} = _params) do
-    entries = Entry |> Entry.sorted |> Entry.limit(20) |> Repo.all |> Repo.preload(:feed)
-    render(conn, "index.json", entries: entries)
-  end
+  # def index(conn, %{} = _params) do
+  #   entries = Entry |> Entry.sorted |> Entry.limit(20) |> Repo.all |> Repo.preload(:feed)
+  #   render(conn, "index.json", entries: entries)
+  # end
 
   def refresh(conn, %{"feed_id" => "all"} = _params) do
     Fetcher.refresh_all
