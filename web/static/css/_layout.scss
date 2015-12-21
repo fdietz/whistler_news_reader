@@ -39,6 +39,10 @@ body {
     &.layout-master-60 { width: 60vw; }
   }
 
+  .layout-master-right {
+    border-left: 1px solid $darken-1;
+  }
+
   &.with-sidebar {
     margin-left: 250px;
   }
