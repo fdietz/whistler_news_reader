@@ -186,6 +186,14 @@ class Patterns extends Component {
 
         <h2>Icons</h2>
         <div className="example">
+          <div className="clearfix">
+            <div className="svg-icon-reload"></div>
+            <div className="svg-icon-undo"></div>
+            <div className="svg-icon-redo"></div>
+            <div className="svg-icon-arrow-left"></div>
+            <div className="svg-icon-arrow-right"></div>
+          </div>
+
           <h3>Large</h3>
           <div className="clearfix">
             <div className="svg-icon-reload svg-icon-large"></div>
