@@ -67,6 +67,7 @@ defmodule WhistlerNewsReader.Fetcher do
   defp store_entry(feed, entry) do
     published = entry[:updated] |> convert_to_ecto_date_time
     guid = generate_guid(feed.feed_url, entry[:id], published, entry[:title])
+    text_content = Floki.text(entry[:content])
 
     result = %{
       feed_id: feed.id,
@@ -74,7 +75,7 @@ defmodule WhistlerNewsReader.Fetcher do
       title: entry[:title],
       author: entry[:author],
       url: entry[:url],
-      summary: entry[:summary],
+      summary: entry[:summary] || String.slice(text_content, 0..255),
       content: entry[:content],
       published: published
     }

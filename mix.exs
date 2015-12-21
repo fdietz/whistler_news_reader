@@ -37,6 +37,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
      {:elixir_feed_parser, path: "../elixir-feed-parser"},
-     {:httpoison, "~> 0.7.3"}]
+     {:httpoison, "~> 0.7.3"},
+     {:floki, "~> 0.7.1"}]
   end
 end
