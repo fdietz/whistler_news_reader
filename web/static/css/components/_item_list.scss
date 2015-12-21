@@ -18,7 +18,7 @@ $item-list-secondary-color: #888A8F;
 
 .item {
   display: flex;
-  padding: 20px;
+  padding: $space-2;
   color: $item-list-color;
   cursor: pointer;
   background-color: $item-list-bg-color;

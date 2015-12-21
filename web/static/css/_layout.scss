@@ -1,4 +1,4 @@
-.layout-container {
+body {
   overflow: hidden;
 }
 
@@ -10,52 +10,49 @@
   width: 250px;
 }
 
-.layout-content {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+.layout-master {
   display: flex;
-  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
+  flex-direction: column;
 
   &.with-sidebar {
     margin-left: 250px;
   }
+}
 
-  &.layout-vertical {
+.layout-master-split {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  flex-direction: row;
+
+  .layout-master-left,
+  .layout-master-right {
+    display: flex;
+    width: 50vw;
+    height: 100%;
     flex-direction: column;
   }
 
-  .layout-list {
-    position: relative;
-    display: flex;
-    min-width: 200px;
-    box-sizing: border-box;
-    flex: 2 2;
-    flex-direction: column;
-  }
-
-  .layout-detail {
-    display: flex;
-    min-width: 400px;
-    box-sizing: border-box;
-    flex: 4 4;
-    flex-direction: column;
-  }
-
-  .layout-full {
-    display: flex;
-    min-width: 400px;
-
-    padding: 25px;
-    background-color: #fff;
-    box-sizing: border-box;
-    flex-direction: column;
-    flex: 1 1;
+  &.with-sidebar {
+    margin-left: 250px;
   }
 }
 
-.scrollable-container {
+.layout-master-header {
+  display: flex;
+  height: 65px;
+
+  background-color: $white-2;
+  border-bottom: 1px solid $darken-1;
+
+  box-sizing: border-box;
+
+  align-items: center;
+}
+
+.layout-master-content {
   overflow-y: auto;
+  flex: 1 1;
 }

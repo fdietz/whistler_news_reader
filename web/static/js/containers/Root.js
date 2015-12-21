@@ -49,7 +49,7 @@ class Root extends Component {
     const currentPathname = location.pathname;
 
     return (
-      <div className="layout-container">
+      <div className="layout-container2">
         <Sidebar feeds={feeds.items}
           currentPathname={currentPathname}
           onAddFeedClick={() => this.onAddFeedClick()}/>

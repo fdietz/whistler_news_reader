@@ -68,7 +68,7 @@ class Entries extends Component {
 
     let content;
     if (currentEntry) {
-      content = <FeedEntryContent entry={currentEntry}/>;
+      content = (<FeedEntryContent entry={currentEntry}/>);
     }
 
     let items = (<FeedEntryList
@@ -83,16 +83,15 @@ class Entries extends Component {
         threshold={300}
         loadMore={this.loadMore}
         hasMore={entries.hasMoreEntries}
-        className="scrollable-container"
         loader={<div className="loader">Loading ...</div>}>
         {items}
       </InfiniteScroll>);
     }
 
     return (
-      <div className="layout-content with-sidebar">
-        <div className="layout-list">
-          <div className="list-header">
+      <div className="layout-master-split with-sidebar">
+        <div className="layout-master-left">
+          <div className="layout-master-header px2">
             <button className="btn btn-primary bg-silver gray">
               <span className="svg-icon-reload svg-icon-small"></span>
             </button>
@@ -102,27 +101,25 @@ class Entries extends Component {
               <span className="svg-icon-checkmark svg-icon-small"></span>
             </button>
           </div>
-
-          {paginatedItems}
-        </div>
-        <div className="layout-detail">
-          <div className="detail-header">
-            <div className="left">
-              <button className="btn btn-primary bg-silver gray">
-                <span className="svg-icon-undo svg-icon-small"></span>
-              </button>
-              <button className="btn btn-primary bg-silver gray ml1">
-                <span className="svg-icon-redo svg-icon-small"></span>
-              </button>
-            </div>
-            <div className="right">
-              <div className="avatar">
-                <img src={imageProfile}/>
-              </div>
-            </div>
-
+          <div className="layout-master-content">
+            {paginatedItems}
           </div>
-          {content}
+        </div>
+        <div className="layout-master-right">
+          <div className="layout-master-header px3">
+            <button className="btn btn-primary bg-silver gray">
+              <span className="svg-icon-undo svg-icon-small"></span>
+            </button>
+            <button className="btn btn-primary bg-silver gray ml1">
+              <span className="svg-icon-redo svg-icon-small"></span>
+            </button>
+            <div className="avatar mx-l-auto">
+              <img src={imageProfile}/>
+            </div>
+          </div>
+          <div className="layout-master-content">
+            {content}
+          </div>
         </div>
       </div>
     );
