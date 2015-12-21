@@ -28,13 +28,12 @@ class Sidebar extends Component {
     const key = index || label;
 
     let cls = classNames({
-      "sidebar-nav-list-item": true,
       active: path === currentPathname
     });
 
     return (
-      <li className={cls} key={key}>
-        <Link to={path}>{label}</Link>
+      <li className="sidebar-nav-list-item" key={key}>
+        <Link to={path} className={cls}>{label}</Link>
       </li>
     );
   }

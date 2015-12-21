@@ -1,5 +1,5 @@
 $sidebar-bg: $blue-2;
-$sidebar-color: $blue-4;
+$sidebar-color: $gray;
 
 .sidebar {
   display: flex;
@@ -7,9 +7,7 @@ $sidebar-color: $blue-4;
   flex-direction: column;
 
   .sidebar-content {
-    padding-top: 30px;
-    padding-right: 10px;
-    padding-left: 10px;
+    padding: $space-3 $space-2;
     flex: 1 1;
   }
 
@@ -18,80 +16,65 @@ $sidebar-color: $blue-4;
 .sidebar-header {
   display: flex;
   height: 65px;
+  padding: 0 $space-2;
   background-color: $red;
   border-bottom: 1px solid $darken-1;
   align-items: center;
 
   flex-direction: row;
+
   .logo {
-    padding-left: 30px;
     font-size: 2rem;
     color: #fff;
   }
 }
 
 .sidebar-nav-header {
-  padding-right: 20px;
-  padding-left: 20px;
   margin: 0;
-  margin-bottom: 8px;
+  margin-bottom: $space-1;
   font-size: .9rem;
   color: #fff;
   text-transform: uppercase;
 }
 
 .sidebar-nav-list {
-  padding-left: 0;
-  margin: 0 0 30px;
-
+  padding: 0;
+  margin: 0 0 $space-3;
 }
 
 .sidebar-nav-list-item {
-  position: relative;
+  margin: 0;
   list-style: none;
 
   a {
-    position: relative;
     display: block;
-    padding-top: 5px;
-    padding-right: 20px;
-    padding-bottom: 5px;
-    padding-left: 20px;
+
+    padding: 6px $space-2;
+    margin-right: -$space-2;
+    margin-left: -$space-2;
 
     font-size: 1rem;
-    // color: #777;
     color: $sidebar-color;
     text-decoration: none;
 
     &:hover {
-      background-color: rgba(0, 0, 0, .05);
+      background-color: $darken-3;
     }
 
-    .badge {
-      position: absolute;
-      top: 50%;
-      right: 20px;
-      margin-top: -10px;
-    }
-  }
-
-  &.active {
-    background-color: rgba(0, 0, 0, .3);
-
-    a {
+    &.active {
       color: #fff;
+      background-color: $darken-3;
     }
 
   }
+
 }
 
 .sidebar-actions {
   display: flex;
-  margin-bottom: 25px;
+  margin-bottom: $space-3;
   align-items: center;
   justify-content: center;
-  padding-left: 20px;
-  padding-right: 20px;
 
   .add-subscription {
     width: 100%;
