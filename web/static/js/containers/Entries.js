@@ -29,10 +29,7 @@ class Entries extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    // this.updateFeedId(this.props);
-
     dispatch(requestFetchEntries(this.requestParams(this.props)));
-    // dispatch(requestFetchEntries());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,19 +37,7 @@ class Entries extends Component {
 
     // if we changed routes...
     if (nextProps.location.key !== this.props.location.key) {
-      // this.updateFeedId(nextProps);
       dispatch(requestFetchEntries(this.requestParams(nextProps)));
-
-      // if (nextProps.params.id) {
-      //   this.setState({ feed_id: nextProps.params.id });
-      //   dispatch(requestFetchEntries({ feed_id: nextProps.params.id }));
-      // } else if (nextProps.location.pathname === "/all") {
-      //   this.setState({ feed_id: "all" });
-      //   dispatch(requestFetchEntries({ feed_id: "all" }));
-      // } else if (nextProps.location.pathname === "/today") {
-      //   this.setState({ feed_id: "today" });
-      //   dispatch(requestFetchEntries({ feed_id: "today" }));
-      // }
     }
   }
 
@@ -78,7 +63,7 @@ class Entries extends Component {
 
   refreshEntries() {
     const { dispatch } = this.props;
-    dispatch(requestRefreshEntries({ feed_id: this.state.feed_id }));
+    dispatch(requestRefreshEntries(this.requestParams(this.props)));
   }
 
   render() {
@@ -111,12 +96,12 @@ class Entries extends Component {
         <div className="layout-master-left layout-master-40">
           <div className="layout-master-header px2">
             <button className="btn btn-primary bg-white gray">
-              <span className="svg-icon-reload svg-icon-small"></span>
+              <span className="svg-icon-checkmark svg-icon-small"></span>
             </button>
             <button
               onClick={this.refreshEntries}
               className="btn btn-primary bg-white gray ml1">
-              <span className="svg-icon-checkmark svg-icon-small"></span>
+              <span className="svg-icon-reload svg-icon-small"></span>
             </button>
           </div>
           <div className="layout-master-content">
