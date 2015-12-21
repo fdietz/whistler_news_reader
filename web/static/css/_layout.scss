@@ -33,6 +33,10 @@ body {
     width: 50vw;
     height: 100%;
     flex-direction: column;
+
+    &.layout-master-50 { width: 50vw; }
+    &.layout-master-40 { width: 40vw; }
+    &.layout-master-60 { width: 60vw; }
   }
 
   &.with-sidebar {
@@ -56,3 +60,7 @@ body {
   overflow-y: auto;
   flex: 1 1;
 }
+
+.layout-master-50 { width: 50vw; }
+.layout-master-40 { width: 40vw; }
+.layout-master-60 { width: 60vw; }

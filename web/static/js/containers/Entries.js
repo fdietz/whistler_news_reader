@@ -90,7 +90,7 @@ class Entries extends Component {
 
     return (
       <div className="layout-master-split with-sidebar">
-        <div className="layout-master-left">
+        <div className="layout-master-left layout-master-40">
           <div className="layout-master-header px2">
             <button className="btn btn-primary bg-silver gray">
               <span className="svg-icon-reload svg-icon-small"></span>
@@ -105,7 +105,7 @@ class Entries extends Component {
             {paginatedItems}
           </div>
         </div>
-        <div className="layout-master-right">
+        <div className="layout-master-right layout-master-60">
           <div className="layout-master-header px3">
             <button className="btn btn-primary bg-silver gray">
               <span className="svg-icon-undo svg-icon-small"></span>
