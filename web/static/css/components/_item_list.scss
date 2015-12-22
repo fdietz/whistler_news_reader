@@ -1,6 +1,6 @@
-$item-list-color: $black-2;
-$item-list-bg-color: $white;
-$item-list-hover-bg-color: $darken-1;
+$item-list-color: $black-3;
+$item-list-bg-color: #FFF;
+$item-list-hover-bg-color: $white;
 $item-list-secondary-color: $gray-3;
 
 .item-list {
@@ -16,11 +16,11 @@ $item-list-secondary-color: $gray-3;
   border-bottom: 1px solid $darken-1;
 
   &.selected {
-    background-color: $darken-1;
+    background-color: $gray-2;
   }
 
   &:hover {
-    background-color: $darken-1;
+    background-color: $item-list-hover-bg-color;
   }
 
 }
