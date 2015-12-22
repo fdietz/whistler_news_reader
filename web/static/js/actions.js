@@ -1,5 +1,6 @@
 import { createAction } from "redux-actions";
 import axios from "axios";
+import { pushState } from "redux-router";
 
 export const CREATE_FEED = "CREATE_FEED";
 export const UPDATE_FEED = "UPDATE_FEED";
@@ -12,22 +13,10 @@ export const FETCH_FEEDS = "FETCH_FEEDS";
 export const ADD_FEED = "ADD_FEED";
 export const REFRESH_ENTRIES = "REFRESH_ENTRIES";
 
+export let selectEntry = createAction(SELECT_ENTRY);
 const createFeed = createAction(CREATE_FEED);
 const addFeed = createAction(ADD_FEED);
-
-export function requestCreateFeed(feedUrl) {
-  return dispatch => {
-    dispatch(createFeed());
-    axios.post("/api/feeds", { feed_url: feedUrl })
-      .then((response) => {
-        dispatch(createFeed({ item: response.data }));
-        dispatch(addFeed({ items: [response.data ] }));
-      })
-      .catch((response) => {
-        dispatch(createFeed(new Error(response.data.error)));
-      });
-  };
-}
+const refreshEntries = createAction(REFRESH_ENTRIES);
 
 export function updateFeed(feed) {
   return { type: UPDATE_FEED, feed: feed };
@@ -73,9 +62,6 @@ export function requestFetchEntries(options = {}) {
     });
   };
 }
-
-const refreshEntries = createAction(REFRESH_ENTRIES);
-
 export function requestRefreshEntries(options = {}) {
   return dispatch => {
     const params = options;
@@ -92,8 +78,22 @@ export function requestRefreshEntries(options = {}) {
   };
 }
 
-export let selectEntry = createAction(SELECT_ENTRY);
-
-// export function requestSelectEntry(entry) {
-//   return { type: SELECT_ENTRY, entry: entry };
-// }
+export function requestCreateFeed(feedUrl) {
+  return dispatch => {
+    dispatch(createFeed());
+    axios.post("/api/feeds", { feed_url: feedUrl })
+      .then((response) => {
+        // update form data
+        dispatch(createFeed({ item: response.data }));
+        // update sidebar feed list
+        dispatch(addFeed({ items: [response.data ] }));
+        // refresh entries of new feed
+        dispatch(requestRefreshEntries({ feed_id: response.data.id }));
+        // select new feed
+        dispatch(pushState(null, `/feeds/${response.data.id}`));
+      })
+      .catch((response) => {
+        dispatch(createFeed(new Error(response.data.error)));
+      });
+  };
+}
