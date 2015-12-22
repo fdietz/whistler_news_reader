@@ -13,7 +13,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
   def create(conn, %{"feed_url" => feed_url} = _params) do
     case Fetcher.import_feed(feed_url) do
-      {:ok, feed}      -> render(conn, "show.json", feed: feed)
+      {:ok, feed}      -> render(conn, "feed.json", feed: feed)
       {:error, error } -> send_resp(conn, 400, "")
     end
   end

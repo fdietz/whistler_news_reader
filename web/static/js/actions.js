@@ -9,19 +9,22 @@ export const FETCH_ENTRIES = "FETCH_ENTRIES";
 export const SELECT_ENTRY  = "SELECT_ENTRY";
 
 export const FETCH_FEEDS = "FETCH_FEEDS";
+export const ADD_FEED = "ADD_FEED";
 export const REFRESH_ENTRIES = "REFRESH_ENTRIES";
 
 const createFeed = createAction(CREATE_FEED);
+const addFeed = createAction(ADD_FEED);
 
 export function requestCreateFeed(feedUrl) {
   return dispatch => {
     dispatch(createFeed());
     axios.post("/api/feeds", { feed_url: feedUrl })
       .then((response) => {
-        dispatch(createFeed({ item: response.feed }));
+        dispatch(createFeed({ item: response.data }));
+        dispatch(addFeed({ items: [response.data ] }));
       })
       .catch((response) => {
-        dispatch(createFeed(new Error(response.error)));
+        dispatch(createFeed(new Error(response.data.error)));
       });
   };
 }

@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import { CREATE_FEED, UPDATE_FEED, REMOVE_FEED } from "./actions";
 import { FETCH_ENTRIES, SELECT_ENTRY } from "./actions";
-import { FETCH_FEEDS } from "./actions";
+import { FETCH_FEEDS, ADD_FEED } from "./actions";
 
 // feeds = {
 //   items: [],
@@ -23,6 +23,16 @@ export function feeds(state = { items: [], isLoading: false }, action) {
     return Object.assign({}, state, {
       isLoading: true
     });
+  case ADD_FEED:
+    if (action.payload) {
+      return Object.assign({}, state, {
+        items: [
+          ...state.items,
+          ...action.payload.items
+        ]
+      })
+    }
+    break;
   default:
     return state;
   }
@@ -93,7 +103,6 @@ export function entries(state = { items: [], isLoading: false, hasMoreEntries: f
 }
 
 export function currentEntry(state = null, action) {
-  console.log("currentEntry", action)
   if (action.type === SELECT_ENTRY) {
     return action.payload.entry;
   }
