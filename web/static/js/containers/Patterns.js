@@ -139,10 +139,43 @@ class Patterns extends Component {
             </div>
 
             <div className="example">
-              <button type="button" className="btn btn-big btn-primary m1">Burgers</button>
+              <button type="button" className="btn btn-large btn-primary m1">Burgers</button>
               <button type="button" className="btn btn-primary m1">Fries</button>
-              <button type="button" className="btn btn-narrow btn-primary m1">Onion Rings</button>
-              <button type="button" className="btn btn-small btn-primary m1">Shakes</button>
+              <button type="button" className="btn btn-small btn-primary m1">Onion Rings</button>
+              <button type="button" className="btn btn-tiny btn-primary m1">Shakes</button>
+            </div>
+
+            <div className="example">
+              <button type="button" className="btn btn-large btn-primary bg-red m1">
+                <span className="svg-entypo-icon-refresh svg-icon-large mr1"></span>Burgers
+              </button>
+              <button type="button" className="btn btn-primary bg-red m1">
+                <span className="svg-entypo-icon-checkmark svg-icon-medium mr1"></span>Fries
+              </button>
+              <button type="button" className="btn btn-small btn-primary bg-red m1">
+                <span className="svg-entypo-icon-arrow-left svg-icon-small mr1"></span>Onion Rings
+              </button>
+              <button type="button" className="btn btn-tiny btn-primary bg-red m1">
+                <span className="svg-entypo-icon-arrow-left3 svg-icon-tiny mr1"></span>Shakes
+              </button>
+            </div>
+
+            <div className="example">
+              <div className="btn-group btn-group-rounded m1">
+                <button className="btn btn-primary bg-blue">Button 1</button>
+                <button className="btn btn-primary bg-blue">Button 2</button>
+                <button className="btn btn-primary bg-blue">Button 3</button>
+              </div>
+              <div className="btn-group btn-group-rounded m1">
+                <button className="btn btn-outline blue">Button 1</button>
+                <button className="btn btn-outline blue">Button 2</button>
+                <button className="btn btn-outline blue">Button 3</button>
+              </div>
+              <div className="btn-group btn-group-rounded m1">
+                <button className="btn btn-header">Button 1</button>
+                <button className="btn btn-header">Button 2</button>
+                <button className="btn btn-header">Button 3</button>
+              </div>
             </div>
 
             <h2><a name="forms">Forms</a></h2>
@@ -201,6 +234,23 @@ class Patterns extends Component {
 
             <h2><a name="icons">Icons</a></h2>
             <div className="example">
+
+              <div className="clearfix mb2">
+                <div className="svg-entypo-icon-arrow-left"></div>
+                <div className="svg-entypo-icon-arrow-right"></div>
+                <div className="svg-entypo-icon-arrow-left2"></div>
+                <div className="svg-entypo-icon-arrow-right2"></div>
+                <div className="svg-entypo-icon-arrow-left3"></div>
+                <div className="svg-entypo-icon-arrow-right3"></div>
+                <div className="svg-entypo-icon-arrow-left4"></div>
+                <div className="svg-entypo-icon-arrow-right4"></div>
+                <div className="svg-entypo-icon-arrow-left5"></div>
+                <div className="svg-entypo-icon-arrow-right5"></div>
+                <div className="svg-entypo-icon-refresh"></div>
+                <div className="svg-entypo-icon-checkmark"></div>
+                <div className="svg-entypo-icon-ellipsis"></div>
+              </div>
+
               <div className="clearfix">
                 <div className="svg-icon-reload"></div>
                 <div className="svg-icon-undo"></div>

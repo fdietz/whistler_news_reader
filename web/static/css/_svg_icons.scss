@@ -1,6 +1,9 @@
 [class^="svg-icon-"],
-[class*=" svg-icon-"] {
+[class*=" svg-icon-"],
+[class^="svg-entypo-icon-"],
+[class*=" svg-entypo-icon-"] {
   display: inline-block;
+  vertical-align: middle;
   width: 24px;
   height: 24px;
   background-position: center center;
@@ -13,31 +16,40 @@
   height: 32px;
 }
 
+.svg-icon-medium {
+  width: 24px;
+  height: 24px;
+}
+
 .svg-icon-small {
   width: 16px;
   height: 16px;
 }
 
-.svg-icon-reload {
-  background-image: url("../assets/images/spinner2.svg");
+.svg-icon-tiny {
+  width: 16px;
+  height: 16px;
 }
 
-.svg-icon-checkmark {
-  background-image: url("../assets/images/checkmark.svg");
-}
+.svg-icon-reload { background-image: url("../assets/images/spinner2.svg"); }
+.svg-icon-checkmark { background-image: url("../assets/images/checkmark.svg"); }
+.svg-icon-redo { background-image: url("../assets/images/redo.svg"); }
+.svg-icon-undo { background-image: url("../assets/images/undo.svg"); }
+.svg-icon-arrow-left { background-image: url("../assets/images/arrow-left.svg"); }
+.svg-icon-arrow-right { background-image: url("../assets/images/arrow-right.svg"); }
 
-.svg-icon-redo {
-  background-image: url("../assets/images/redo.svg");
-}
+// entypo
+.svg-entypo-icon-arrow-left { background-image: url("../assets/images/entypo/arrow-left.svg"); }
+.svg-entypo-icon-arrow-right { background-image: url("../assets/images/entypo/arrow-right.svg"); }
+.svg-entypo-icon-arrow-left2 { background-image: url("../assets/images/entypo/arrow-left2.svg"); }
+.svg-entypo-icon-arrow-right2 { background-image: url("../assets/images/entypo/arrow-right2.svg"); }
+.svg-entypo-icon-arrow-left3 { background-image: url("../assets/images/entypo/arrow-left3.svg"); }
+.svg-entypo-icon-arrow-right3 { background-image: url("../assets/images/entypo/arrow-right3.svg"); }
+.svg-entypo-icon-arrow-left4 { background-image: url("../assets/images/entypo/arrow-left4.svg"); }
+.svg-entypo-icon-arrow-right4 { background-image: url("../assets/images/entypo/arrow-right4.svg"); }
+.svg-entypo-icon-arrow-left5 { background-image: url("../assets/images/entypo/arrow-left5.svg"); }
+.svg-entypo-icon-arrow-right5 { background-image: url("../assets/images/entypo/arrow-right5.svg"); }
 
-.svg-icon-undo {
-  background-image: url("../assets/images/undo.svg");
-}
-
-.svg-icon-arrow-left {
-  background-image: url("../assets/images/arrow-left.svg");
-}
-
-.svg-icon-arrow-right {
-  background-image: url("../assets/images/arrow-right.svg");
-}
+.svg-entypo-icon-refresh { background-image: url("../assets/images/entypo/refresh.svg"); }
+.svg-entypo-icon-checkmark { background-image: url("../assets/images/entypo/checkmark.svg"); }
+.svg-entypo-icon-ellipsis { background-image: url("../assets/images/entypo/ellipsis.svg"); }
