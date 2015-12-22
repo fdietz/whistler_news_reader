@@ -1,14 +1,18 @@
 .item-content {
+  max-width: 640px;
   padding: $space-3;
+  margin-right: auto;
+  margin-left: auto;
+
   font-family: $font-family-serif;
   letter-spacing: .01rem;
   text-rendering: optimizeLegibility;
   white-space: normal;
 
   // background-color: $item-list-bg-color;
-  background-color: #FFF;
+  // background-color: #FFF;
 
-  border-left: 1px solid $darken-3;
+  // border-left: 1px solid $darken-3;
 
   .header {
     margin-bottom: .5rem;
