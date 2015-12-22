@@ -60,3 +60,7 @@ $field-error-color: $red;
 .field.is-error.is-focused {
   box-shadow: 0 0 0 2px $field-error-color .5;
 }
+
+.hint {
+  color: $gray-3;
+}

@@ -18,6 +18,8 @@ class NewFeedModal extends Component {
     this.state = {
       feedUrl: ""
     };
+
+    this.setFeed = this.setFeed.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,6 +50,12 @@ class NewFeedModal extends Component {
     dispatch(pushState(null, returnTo));
   }
 
+  setFeed(feedUrl) {
+    const { dispatch } = this.props;
+    dispatch(requestCreateFeed(feedUrl));
+    event.preventDefault();
+  }
+
   render() {
     const { createFeed } = this.props;
     let error;
@@ -57,26 +65,48 @@ class NewFeedModal extends Component {
       );
     }
 
+    const links = [
+      { name: "TechCrunch", feedUrl: "http://feeds.feedburner.com/techcrunch" },
+      { name: "BoingBoind", feedUrl: "http://feeds.feedburner.com/boingboing/ibag" }
+    ];
+
     return (
       <div className="modal-body">
         <div className="modal-header">
           <h2>Add Feed</h2>
         </div>
         <div className="modal-content">
-          <form className="form form-stacked form-prominent">
-              <input className="pure-input-1"
-                  type="text"
-                  placeholder="Enter feed url"
-                  value={this.state.feedUrl}
-                  onChange={(event) => this.handleChange(event)}
-                  autoFocus/>
-                {error}
+          <form className="form-prominent">
+            <label className="hint">Enter website or feed address here.</label>
+            <input className="field mt2 mb2"
+                type="text"
+                placeholder="Website or feed"
+                value={this.state.feedUrl}
+                onChange={(event) => this.handleChange(event)}
+                autoFocus/>
+              {error}
+
+            <div className="clearfix">
+
+            <label className="hint">Or pick from our great proposals.</label>
+            <ul>
+              {links.map((link) => {
+                return (
+                  <li key={link.feedUrl}>
+                    <a onClick={() => this.setFeed(link.feedUrl)}>{link.name}</a>
+                  </li>
+                );
+              })}
+            </ul>
+            </div>
           </form>
         </div>
         <div className="modal-footer">
-          <button type="submit" className="btn btn--blue" onClick={(event) => this.submitForm(event)}>Add Feed</button>
           <button onClick={() => this.cancel()}
-            className="btn">close</button>
+            className="btn">Close</button>
+          <button type="submit"
+            className="btn btn-primary bg-blue white"
+            onClick={(event) => this.submitForm(event)}>Add Feed</button>
         </div>
 
       </div>

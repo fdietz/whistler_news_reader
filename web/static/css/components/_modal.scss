@@ -9,12 +9,12 @@
 
 .modal {
   position: fixed;
+  z-index: 10;
   background: #fff;
 
   box-sizing: border-box;
 
   transition: left .5s;
-  z-index: 10;
 }
 
 .modal-close-link {
@@ -46,6 +46,10 @@
   padding: 0 25px;
   background-color: $gray-2;
   align-items: center;
+}
+
+.modal-footer {
+  justify-content: flex-end;
 }
 
 .modal-content {
