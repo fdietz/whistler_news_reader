@@ -1,11 +1,12 @@
 .item-content {
   padding: $space-3;
-  font-family: 'Merriweather', serif;
+  font-family: $font-family-serif;
   letter-spacing: .01rem;
   text-rendering: optimizeLegibility;
   white-space: normal;
 
-  background-color: $item-list-bg-color;
+  // background-color: $item-list-bg-color;
+  background-color: #FFF;
 
   border-left: 1px solid $darken-3;
 
@@ -16,6 +17,7 @@
       margin: 0;
 
       a {
+        color: inherit;
         text-decoration: none;
       }
     }

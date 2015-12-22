@@ -46,16 +46,17 @@ $item-list-secondary-color: $gray-3;
 
     .secondary-published {
       width: 40px;
+      margin-left: auto;
       font-size: .7rem;
       color: $item-list-secondary-color;
       text-align: right;
-      margin-left: auto;
     }
 
   }
 
   .secondary-title {
-    font-weight: bold;
+    // font-weight: bold;
+    font-weight: 600;
     flex: 1;
   }
 
