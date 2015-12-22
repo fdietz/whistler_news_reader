@@ -69,21 +69,33 @@ class Entries extends Component {
   }
 
   nextEntry() {
-    const { dispatch, entries, currentEntry } = this.props;
-    const currentIndex = entries.items.indexOf(currentEntry);
-    if (currentIndex+1 < entries.items.length) {
-      const entry = entries.items[currentIndex+1];
+    const { dispatch, entries } = this.props;
+    if (this.isNextEntry()) {
+      const entry = entries.items[this.currentIndex()+1];
       dispatch(selectEntry({ entry: entry }));
     }
   }
 
+  isNextEntry() {
+    const { entries } = this.props;
+    return this.currentIndex()+1 < entries.items.length;
+  }
+
+  currentIndex() {
+    const { entries, currentEntry } = this.props;
+    return currentEntry ? entries.items.indexOf(currentEntry) : 0;
+  }
+
   previousEntry() {
-    const { dispatch, entries, currentEntry } = this.props;
-    const currentIndex = entries.items.indexOf(currentEntry);
-    if (currentIndex-1 >= 0) {
-      const entry = entries.items[currentIndex-1];
+    const { dispatch, entries } = this.props;
+    if (this.isPreviousEntry()) {
+      const entry = entries.items[this.currentIndex()-1];
       dispatch(selectEntry({ entry: entry }));
     }
+  }
+
+  isPreviousEntry() {
+    return this.currentIndex()-1 >= 0;
   }
 
   render() {
