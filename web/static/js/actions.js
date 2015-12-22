@@ -89,6 +89,8 @@ export function requestRefreshEntries(options = {}) {
   };
 }
 
-export function selectEntry(entry) {
-  return { type: SELECT_ENTRY, entry: entry };
-}
+export let selectEntry = createAction(SELECT_ENTRY);
+
+// export function requestSelectEntry(entry) {
+//   return { type: SELECT_ENTRY, entry: entry };
+// }

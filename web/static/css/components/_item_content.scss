@@ -4,16 +4,6 @@
   margin-right: auto;
   margin-left: auto;
 
-  font-family: $font-family-serif;
-  letter-spacing: .01rem;
-  text-rendering: optimizeLegibility;
-  white-space: normal;
-
-  // background-color: $item-list-bg-color;
-  // background-color: #FFF;
-
-  // border-left: 1px solid $darken-3;
-
   .header {
     margin-bottom: .5rem;
 
@@ -34,6 +24,10 @@
   }
 
   .item-content-content {
+    font-family: $font-family-serif;
+    letter-spacing: .01rem;
+    text-rendering: optimizeLegibility;
+    white-space: normal;
 
     p {
       margin-top: 0;

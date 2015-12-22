@@ -25,6 +25,8 @@ class Entries extends Component {
     super(props);
     this.loadMore = this.loadMore.bind(this);
     this.refreshEntries = this.refreshEntries.bind(this);
+    this.nextEntry = this.nextEntry.bind(this);
+    this.previousEntry = this.previousEntry.bind(this);
   }
 
   componentDidMount() {
@@ -66,6 +68,24 @@ class Entries extends Component {
     dispatch(requestRefreshEntries(this.requestParams(this.props)));
   }
 
+  nextEntry() {
+    const { dispatch, entries, currentEntry } = this.props;
+    const currentIndex = entries.items.indexOf(currentEntry);
+    if (currentIndex+1 < entries.items.length) {
+      const entry = entries.items[currentIndex+1];
+      dispatch(selectEntry({ entry: entry }));
+    }
+  }
+
+  previousEntry() {
+    const { dispatch, entries, currentEntry } = this.props;
+    const currentIndex = entries.items.indexOf(currentEntry);
+    if (currentIndex-1 >= 0) {
+      const entry = entries.items[currentIndex-1];
+      dispatch(selectEntry({ entry: entry }));
+    }
+  }
+
   render() {
     const { dispatch, entries, currentEntry } = this.props;
 
@@ -77,7 +97,7 @@ class Entries extends Component {
     let items = (<FeedEntryList
       entries={entries.items}
       currentEntry={currentEntry}
-      onEntryClick={entry => dispatch(selectEntry(entry)) }/>
+      onEntryClick={entry => dispatch(selectEntry({ entry: entry })) }/>
     );
 
     let paginatedItems;
@@ -113,10 +133,14 @@ class Entries extends Component {
         <div className="layout-master-right layout-master-60">
           <div className="layout-master-header px2">
             <div className="btn-group btn-group-rounded">
-              <button className="btn btn-header">
+              <button
+                onClick={this.previousEntry}
+                className="btn btn-header">
                 <span className="svg-entypo-icon-arrow-left3 svg-icon-small"></span>
               </button>
-              <button className="btn btn-header">
+              <button
+                onClick={this.nextEntry}
+                className="btn btn-header">
                 <span className="svg-entypo-icon-arrow-right3 svg-icon-small"></span>
               </button>
             </div>

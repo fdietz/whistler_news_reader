@@ -93,8 +93,9 @@ export function entries(state = { items: [], isLoading: false, hasMoreEntries: f
 }
 
 export function currentEntry(state = null, action) {
+  console.log("currentEntry", action)
   if (action.type === SELECT_ENTRY) {
-    return action.entry;
+    return action.payload.entry;
   }
 
   return state;
