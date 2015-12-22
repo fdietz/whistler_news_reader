@@ -89,8 +89,6 @@ export function requestCreateFeed(feedUrl) {
         dispatch(addFeed({ items: [response.data ] }));
         // refresh entries of new feed
         dispatch(requestRefreshEntries({ feed_id: response.data.id }));
-        // select new feed
-        dispatch(pushState(null, `/feeds/${response.data.id}`));
       })
       .catch((response) => {
         dispatch(createFeed(new Error(response.data.error)));

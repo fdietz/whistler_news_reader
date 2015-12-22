@@ -24,9 +24,9 @@ class NewFeedModal extends Component {
     const { dispatch, returnTo } = this.props;
 
     console.log("componentWillReceiveProps", nextProps)
-    if (nextProps && nextProps.createFeed && nextProps.createFeed.feed) {
+    if (nextProps && nextProps.createFeed && nextProps.createFeed.item) {
       // navigate to new feed url
-      dispatch(pushState(null, returnTo));
+      dispatch(pushState(null, `/feeds/${nextProps.createFeed.item.id}`));
     }
   }
 
