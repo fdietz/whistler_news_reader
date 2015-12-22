@@ -16,7 +16,7 @@ const createFeed = createAction(CREATE_FEED);
 export function requestCreateFeed(feedUrl) {
   return dispatch => {
     dispatch(createFeed());
-    axios.post("/api/feeds", { data: { feed_url: feedUrl } })
+    axios.post("/api/feeds", { feed_url: feedUrl })
       .then((response) => {
         dispatch(createFeed({ item: response.feed }));
       })

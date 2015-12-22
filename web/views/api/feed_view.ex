@@ -2,10 +2,10 @@ defmodule WhistlerNewsReader.Api.FeedView do
   use WhistlerNewsReader.Web, :view
 
   def render("index.json", %{feeds: feeds}) do
-    %{feeds: render_many(feeds, WhistlerNewsReader.Api.FeedView, "feed.json")}
+    %{feeds: render_many(feeds, WhistlerNewsReader.Api.FeedView, "show.json")}
   end
 
-  def render("feed.json", %{feed: feed}) do
+  def render("show.json", %{feed: feed}) do
     %{
       id: feed.id,
       title: feed.title,
