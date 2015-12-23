@@ -52,11 +52,11 @@ export default class FeedEntry extends Component {
       <div className={cls} onClick={onClick}>
         <div className="item-row">
           <div className="meta">
-            <div className="primary-title">{feed.title}</div>
-            <span className="secondary-published">{this.publishedRelativeDateTime()}</span>
+            <div className="feed-title">{feed.title}</div>
+            <span className="published">{this.publishedRelativeDateTime()}</span>
           </div>
-          <div className="secondary-title">{title}</div>
-          <div className="secondary-summary">{summary}</div>
+          <div className="entry-title">{title}</div>
+          <div className="entry-summary">{summary}</div>
         </div>
       </div>
     );

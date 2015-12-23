@@ -27,40 +27,38 @@ $item-list-secondary-color: $gray-3;
 
 .item-row {
   display: flex;
-  max-height: 6.5rem;
-  overflow: hidden;
   font-size: .9rem;
   flex: 1;
   flex-direction: column;
 
-
   .meta {
     display: flex;
+    font-size: .8rem;
+    color: $item-list-secondary-color;
 
-    .primary-title {
-      color: $item-list-secondary-color;
+    .feed-title {
       text-overflow: ellipsis;
       white-space: nowrap;
       flex: 1;
     }
 
-    .secondary-published {
+    .published {
       width: 40px;
       margin-left: auto;
-      font-size: .7rem;
-      color: $item-list-secondary-color;
       text-align: right;
     }
 
   }
 
-  .secondary-title {
-    // font-weight: bold;
+  .entry-title {
+    font-size: 1rem;
     font-weight: 600;
     flex: 1;
   }
 
-  .secondary-summary {
+  .entry-summary {
+    max-height: 4rem;
+    overflow: hidden;
     color: $item-list-secondary-color;
   }
 
