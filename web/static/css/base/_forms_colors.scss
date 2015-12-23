@@ -64,3 +64,15 @@ $field-error-color: $red;
 .hint {
   color: $gray-3;
 }
+
+::-webkit-input-placeholder {
+   color: $border-color;
+}
+
+::-moz-placeholder {
+   color: $border-color;
+}
+
+:-ms-input-placeholder {
+   color: $border-color;
+}
