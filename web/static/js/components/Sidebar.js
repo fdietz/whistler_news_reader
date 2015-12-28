@@ -2,6 +2,8 @@ import React, {Component, PropTypes} from "react";
 import { Link } from "react-router";
 import classNames from "classnames";
 
+import imageProfile from "../../assets/images/profile.jpg";
+
 // import imageArrowDown from "../../assets/images/arrow-down.svg";
 // import imageArrowUp from "../../assets/images/arrow-up.svg";
 // import imageProfile from "../../assets/images/profile.jpg";
@@ -47,11 +49,6 @@ class Sidebar extends Component {
           <div className="logo">whistle'r</div>
         </div>
         <div className="sidebar-content">
-          <div className="sidebar-actions">
-            <button onClick={onAddFeedClick}
-              className="btn btn-primary bg-blue btn-expand">Add Feed</button>
-          </div>
-
           <h4 className="sidebar-nav-header">Home</h4>
           <ul className="sidebar-nav-list">
             {this.renderLink("Today", "/today")}
@@ -64,6 +61,11 @@ class Sidebar extends Component {
               return this.renderFeedLink(feed, index);
             })}
           </ul>
+        </div>
+        <div className="sidebar-footer">
+          <div className="avatar">
+            <img src={imageProfile}/>
+          </div>
         </div>
       </div>
     );

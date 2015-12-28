@@ -1,6 +1,5 @@
 import { createAction } from "redux-actions";
 import axios from "axios";
-import { pushState } from "redux-router";
 
 export const CREATE_FEED = "CREATE_FEED";
 export const UPDATE_FEED = "UPDATE_FEED";
@@ -14,9 +13,9 @@ export const ADD_FEED = "ADD_FEED";
 export const REFRESH_ENTRIES = "REFRESH_ENTRIES";
 
 export let selectEntry = createAction(SELECT_ENTRY);
-const createFeed = createAction(CREATE_FEED);
-const addFeed = createAction(ADD_FEED);
-const refreshEntries = createAction(REFRESH_ENTRIES);
+export let createFeed = createAction(CREATE_FEED);
+export let addFeed = createAction(ADD_FEED);
+export let refreshEntries = createAction(REFRESH_ENTRIES);
 
 export function updateFeed(feed) {
   return { type: UPDATE_FEED, feed: feed };

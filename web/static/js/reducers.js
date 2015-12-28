@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { CREATE_FEED, UPDATE_FEED, REMOVE_FEED } from "./actions";
+import { CREATE_FEED } from "./actions";
 import { FETCH_ENTRIES, SELECT_ENTRY } from "./actions";
 import { FETCH_FEEDS, ADD_FEED } from "./actions";
 
@@ -30,7 +30,7 @@ export function feeds(state = { items: [], isLoading: false }, action) {
           ...state.items,
           ...action.payload.items
         ]
-      })
+      });
     }
     break;
   default:
@@ -44,8 +44,7 @@ export function feeds(state = { items: [], isLoading: false }, action) {
 //   error: reason
 // }
 export function createFeed(state = { item: null, isLoading: false }, action) {
-  switch (action.type) {
-  case CREATE_FEED:
+  if (action.type === CREATE_FEED) {
     if (action.error) {
       return Object.assign({}, state, {
         error: action.payload.message
@@ -59,9 +58,9 @@ export function createFeed(state = { item: null, isLoading: false }, action) {
     return Object.assign({}, state, {
       isLoading: true
     });
-  default:
-    return state;
   }
+
+  return state;
 }
 
 // entries = {

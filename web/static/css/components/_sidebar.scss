@@ -14,21 +14,34 @@ $sidebar-color: $gray;
 
 }
 
-.sidebar-header {
+.sidebar-header,
+.sidebar-footer {
   display: flex;
   height: 65px;
   padding: 0 $space-2;
-  background-color: $red;
-  border-bottom: 1px solid $darken-1;
 
   box-sizing: border-box;
 
   align-items: center;
   flex-direction: row;
+}
+
+.sidebar-header {
+  background-color: $red;
+  border-bottom: 1px solid $darken-1;
 
   .logo {
     font-size: 2rem;
     color: #fff;
+  }
+}
+
+.sidebar-footer {
+  background-color: $darken-2;
+  border-top: 1px solid $darken-1;
+
+  .avator {
+    display: flex;
   }
 }
 
@@ -67,19 +80,8 @@ $sidebar-color: $gray;
 
     &.active {
       color: #fff;
-      background-color: $darken-3;
-
-      &:before {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 3px;
-        background-color: $blue;
-        content: "";
-      }
+      background-color: $blue;
     }
-
 
   }
 

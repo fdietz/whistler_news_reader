@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import { pushState } from "redux-router";
 
 import InfiniteScroll from "../components/InfiniteScroll";
 import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryContent from "../components/FeedEntryContent";
-
-import imageProfile from "../../assets/images/profile.jpg";
 
 import { requestFetchEntries, requestRefreshEntries, selectEntry } from "../actions";
 
@@ -27,6 +26,7 @@ class Entries extends Component {
     this.refreshEntries = this.refreshEntries.bind(this);
     this.nextEntry = this.nextEntry.bind(this);
     this.previousEntry = this.previousEntry.bind(this);
+    this.createFeed = this.createFeed.bind(this);
   }
 
   componentDidMount() {
@@ -50,16 +50,19 @@ class Entries extends Component {
       return { feed_id: "all" };
     } else if (props.location.pathname === "/today") {
       return { feed_id: "today" };
-    } else {
-      return {};
     }
+
+    return {};
   }
 
   loadMore() {
     const { dispatch, entries } = this.props;
     if (entries.hasMoreEntries && !entries.isLoading) {
       let oldestPublishedEntry = entries.items[entries.items.length-1].published;
-      dispatch(requestFetchEntries(Object.assign(this.requestParams(this.props), { last_published: oldestPublishedEntry })));
+      let params = Object.assign(this.requestParams(this.props), {
+        last_published: oldestPublishedEntry
+      });
+      dispatch(requestFetchEntries(params));
     }
   }
 
@@ -98,6 +101,11 @@ class Entries extends Component {
     return this.currentIndex()-1 >= 0;
   }
 
+  createFeed() {
+    const { dispatch } = this.props;
+    dispatch(pushState({ modal: true, returnTo: this.props.location.pathname }, "/feeds/new"));
+  }
+
   render() {
     const { dispatch, entries, currentEntry } = this.props;
 
@@ -125,7 +133,7 @@ class Entries extends Component {
 
     return (
       <div className="layout-master-split with-sidebar">
-        <div className="layout-master-left layout-master-40">
+        <div className="layout-master-left layout-master-30">
           <div className="layout-master-header px2">
             <div className="btn-group btn-group-rounded">
               <button className="btn btn-header">
@@ -142,7 +150,7 @@ class Entries extends Component {
             {paginatedItems}
           </div>
         </div>
-        <div className="layout-master-right layout-master-60">
+        <div className="layout-master-right layout-master-70">
           <div className="layout-master-header px2">
             <div className="btn-group btn-group-rounded">
               <button
@@ -156,9 +164,9 @@ class Entries extends Component {
                 <span className="svg-entypo-icon-arrow-right3 svg-icon-small"></span>
               </button>
             </div>
-            <div className="avatar mx-l-auto">
-              <img src={imageProfile}/>
-            </div>
+            <button
+              onClick={this.createFeed}
+              className="btn btn-primary bg-blue mx-l-auto">+ New</button>
           </div>
           <div className="layout-master-content">
             {content}
