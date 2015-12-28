@@ -34,9 +34,11 @@ body {
     height: 100%;
     flex-direction: column;
 
-    &.layout-master-50 { width: 50vw; }
+    &.layout-master-30 { width: 30vw; }
     &.layout-master-40 { width: 40vw; }
+    &.layout-master-50 { width: 50vw; }
     &.layout-master-60 { width: 60vw; }
+    &.layout-master-70 { width: 70vw; }
   }
 
   .layout-master-right {
