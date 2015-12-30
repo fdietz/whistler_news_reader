@@ -1,11 +1,10 @@
-import thunkMiddleware from "redux-thunk";
 import { createStore, applyMiddleware, combineReducers, compose } from "redux";
+import thunkMiddleware from "redux-thunk";
 
 import { reduxReactRouter, routerStateReducer } from "redux-router";
 import { createHistory } from "history";
 
-import createLogger from "redux-logger";
-const loggerMiddleware = createLogger();
+import reduxLogger from "redux-logger";
 
 import { feeds, createFeed, entries, currentEntry } from "./reducers";
 
@@ -20,7 +19,7 @@ const reducers = combineReducers({
 // import DevTools from "./containers/DevTools";
 
 const store = compose(
-  applyMiddleware(thunkMiddleware, loggerMiddleware),
+  applyMiddleware(thunkMiddleware, reduxLogger()),
   reduxReactRouter({ createHistory })
   // DevTools.instrument()
 )(createStore)(reducers);

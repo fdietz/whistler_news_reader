@@ -1,5 +1,6 @@
-import React, { Component } from "react";
-import { Route, Redirect, IndexRoute } from "react-router";
+import React from "react";
+import { Route, IndexRoute } from "react-router";
+// import { Route, Redirect, IndexRoute } from "react-router";
 
 import Root from "./containers/Root";
 import Welcome from "./containers/Welcome";
@@ -8,7 +9,7 @@ import NewFeed from "./containers/NewFeed";
 import NewFeedModal from "./containers/NewFeedModal";
 import Patterns from "./containers/Patterns";
 
-export default function() {
+export default function createRoutes() {
   return (
    <Route path="/" component={Root}>
      <IndexRoute component={Welcome}/>
