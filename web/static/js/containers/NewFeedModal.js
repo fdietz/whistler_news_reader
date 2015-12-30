@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import { pushState } from "redux-router";
 import { connect } from "react-redux";
 
-import { requestCreateFeed } from "../redux/actions";
+import { requestCreateFeed } from "../redux/modules/createFeed";
 
 class NewFeedModal extends Component {
 

@@ -6,7 +6,7 @@ import { ReduxRouter } from "redux-router";
 
 import "../css/app.scss";
 
-import store from "./redux/createStore";
+import create from "./redux/create";
 import createRoutes from "./routes";
 
 import DevTools from "./containers/DevTools";
@@ -20,7 +20,7 @@ const __DEVTOOLS__ = false;
 
 if (__DEVTOOLS__) {
   ReactDOM.render(
-    <Provider store={store}>
+    <Provider store={create()}>
       <div>
         {component}
         <DevTools />
@@ -30,7 +30,7 @@ if (__DEVTOOLS__) {
   );
 } else {
   ReactDOM.render(
-    <Provider store={store}>
+    <Provider store={create()}>
       {component}
     </Provider>,
     rootElement

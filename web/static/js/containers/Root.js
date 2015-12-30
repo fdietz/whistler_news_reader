@@ -4,7 +4,7 @@ import { pushState } from "redux-router";
 
 import Sidebar from "../components/Sidebar";
 import ModalWrapper from "../components/ModalWrapper";
-import { requestFetchFeeds } from "../redux/actions";
+import { requestFetchFeeds } from "../redux/modules/feeds";
 
 class Root extends Component {
   static propTypes = {
@@ -21,6 +21,7 @@ class Root extends Component {
   }
 
   componentDidMount() {
+    console.log("component did mount")
     const { dispatch } = this.props;
     dispatch(requestFetchFeeds());
   }
