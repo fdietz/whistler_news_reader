@@ -9,6 +9,8 @@ import "../css/app.scss";
 import store from "./redux/createStore";
 import createRoutes from "./routes";
 
+import DevTools from "./containers/DevTools";
+
 const component = (
   <ReduxRouter routes={createRoutes()} />
 );
@@ -17,8 +19,6 @@ const rootElement = document.getElementById("root");
 const __DEVTOOLS__ = false;
 
 if (__DEVTOOLS__) {
-  const DevTools = require("./containers/DevTools");
-
   ReactDOM.render(
     <Provider store={store}>
       <div>
