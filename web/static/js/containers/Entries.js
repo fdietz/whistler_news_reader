@@ -6,7 +6,7 @@ import InfiniteScroll from "../components/InfiniteScroll";
 import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryContent from "../components/FeedEntryContent";
 
-import { requestFetchEntries, requestRefreshEntries, selectEntry } from "../actions";
+import { requestFetchEntries, requestRefreshEntries, selectEntry } from "../redux/actions";
 
 class Entries extends Component {
 

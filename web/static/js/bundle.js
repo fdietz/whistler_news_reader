@@ -1,69 +1,38 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
-import thunkMiddleware from "redux-thunk";
-import createLogger from "redux-logger";
-import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import { Provider } from "react-redux";
-
-import { ReduxRouter, routerStateReducer, reduxReactRouter } from "redux-router";
-import { Route, Redirect, IndexRoute } from "react-router";
-import { createHistory } from "history";
-
-import DevTools from "./containers/DevTools";
-
-// import { devTools } from 'redux-devtools';
-// import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
-
-import Root from "./containers/Root";
-import Welcome from "./containers/Welcome";
-import Entries from "./containers/Entries";
-import NewFeed from "./containers/NewFeed";
-import NewFeedModal from "./containers/NewFeedModal";
-import Patterns from "./containers/Patterns";
+import { ReduxRouter } from "redux-router";
 
 import "../css/app.scss";
 
-const loggerMiddleware = createLogger();
-import { feeds, createFeed, entries, currentEntry } from "./reducers";
+import store from "./redux/createStore";
+import createRoutes from "./routes";
 
-const reducers = combineReducers({
-  router: routerStateReducer,
-  feeds: feeds,
-  createFeed: createFeed,
-  entries: entries,
-  currentEntry: currentEntry
-});
+const component = (
+  <ReduxRouter routes={createRoutes()} />
+);
 
-const store = compose(
-  applyMiddleware(thunkMiddleware, loggerMiddleware),
-  reduxReactRouter({ createHistory })
-  // DevTools.instrument()
-)(createStore)(reducers);
+const rootElement = document.getElementById("root");
+const __DEVTOOLS__ = false;
 
-class App extends Component {
-  render() {
-    return (
+if (__DEVTOOLS__) {
+  const DevTools = require("./containers/DevTools");
+
+  ReactDOM.render(
+    <Provider store={store}>
       <div>
-        <Provider store={store}>
-          <div>
-            <ReduxRouter>
-              <Route path="/" component={Root}>
-                <IndexRoute component={Welcome}/>
-                <Route path="all" component={Entries}/>
-                <Route path="today" component={Entries}/>
-                <Route path="feeds/new_full" component={NewFeed}/>
-                <Route path="feeds/new" component={NewFeedModal} modal={true}/>
-                <Route path="feeds/:id" component={Entries}/>
-              </Route>
-              <Redirect from="/" to="/all"/>
-              <Route path="patterns" component={Patterns}/>
-            </ReduxRouter>
-          </div>
-        </Provider>
+        {component}
+        <DevTools />
       </div>
-    );
-  }
+    </Provider>,
+    rootElement
+  );
+} else {
+  ReactDOM.render(
+    <Provider store={store}>
+      {component}
+    </Provider>,
+    rootElement
+  );
 }
-
-ReactDOM.render(<App />, document.getElementById("root"));

@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import { pushState } from "redux-router";
 
-import { requestCreateFeed } from "../actions";
+import { requestCreateFeed } from "../redux/actions";
 import MainHeader from "../components/MainHeader";
 
 export default class NewFeed extends Component {

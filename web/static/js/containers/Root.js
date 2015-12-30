@@ -4,7 +4,7 @@ import { pushState } from "redux-router";
 
 import Sidebar from "../components/Sidebar";
 import ModalWrapper from "../components/ModalWrapper";
-import { requestFetchFeeds } from "../actions";
+import { requestFetchFeeds } from "../redux/actions";
 
 class Root extends Component {
   static propTypes = {
