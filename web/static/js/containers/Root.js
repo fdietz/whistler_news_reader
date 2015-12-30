@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 import { pushState } from "redux-router";
 
 import Sidebar from "../components/Sidebar";
+import Notification from "../components/Notification";
 import ModalWrapper from "../components/ModalWrapper";
+
 import { requestFetchFeeds } from "../redux/modules/feeds";
 
 class Root extends Component {
@@ -21,7 +23,6 @@ class Root extends Component {
   }
 
   componentDidMount() {
-    console.log("component did mount")
     const { dispatch } = this.props;
     dispatch(requestFetchFeeds());
   }
@@ -44,27 +45,34 @@ class Root extends Component {
   }
 
   render() {
-    const { feeds, location, dispatch } = this.props;
+    const { feeds, notification, location, dispatch } = this.props;
     const returnTo = (location.state && location.state.returnTo) || "/"
     const isModal = this.props.children.props.route.modal || false;
     const currentPathname = location.pathname;
 
+    let notificationElement;
+    if (notification) {
+      notificationElement = (
+        <Notification {...notification}/>
+      );
+    }
+
     return (
-      <div className="layout-container2">
+      <div>
         <Sidebar feeds={feeds.items}
           currentPathname={currentPathname}
-          onAddFeedClick={() => this.onAddFeedClick()}/>
+          onAddFeedClick={() => this.onAddFeedClick()}
+          />
 
-          {isModal ?
-            this.previousChildren :
-            this.props.children
-          }
+        {notificationElement}
 
-          {isModal && (
-            <ModalWrapper isOpen={true} returnTo={returnTo} dispatch={dispatch}>
-              {this.props.children}
-            </ModalWrapper>
-          )}
+        {isModal ? this.previousChildren : this.props.children }
+
+        {isModal && (
+          <ModalWrapper isOpen={true} returnTo={returnTo} dispatch={dispatch}>
+            {this.props.children}
+          </ModalWrapper>
+        )}
 
       </div>
     );
@@ -73,7 +81,8 @@ class Root extends Component {
 
 function mapStateToProps(state) {
   return {
-    feeds: state.feeds
+    feeds: state.feeds,
+    notification: state.notification
   };
 }
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createAction } from "redux-actions";
+import { createNotification, resetNotification } from "./notification";
 
 const FETCH_ENTRIES   = "FETCH_ENTRIES";
 const REFRESH_ENTRIES = "REFRESH_ENTRIES";
@@ -11,6 +12,7 @@ export function requestFetchEntries(options = {}) {
   return dispatch => {
     const params = Object.assign({}, options, { limit: 20 });
     dispatch(fetchEntries(params));
+    dispatch(createNotification({ message: "Fetching entries", type: "info" }));
 
     axios.get("/api/entries", { params: params })
     .then((response) => {
@@ -19,9 +21,11 @@ export function requestFetchEntries(options = {}) {
         meta: options,
         hasMoreEntries: response.data.entries.length === params.limit
       }));
+      dispatch(resetNotification());
     })
     .catch((response) => {
       dispatch(fetchEntries(new Error(response.data.error)));
+      dispatch(resetNotification());
     });
   };
 }
@@ -30,14 +34,17 @@ export function requestRefreshEntries(options = {}) {
   return dispatch => {
     const params = options;
     dispatch(refreshEntries(params));
+    dispatch(createNotification({ message: "Refresh entries", type: "info" }));
 
     axios.put("/api/entries/refresh", params)
     .then(() => {
       dispatch(refreshEntries());
       dispatch(requestFetchEntries(options));
+      dispatch(resetNotification());
     })
     .catch((response) => {
       dispatch(refreshEntries(new Error(response.data.error)));
+      dispatch(resetNotification());
     });
   };
 }

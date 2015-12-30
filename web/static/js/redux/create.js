@@ -8,7 +8,7 @@ import { createHistory } from "history";
 
 import DevTools from "../containers/DevTools";
 
-import reducers from "./reducers";
+import reducers from "./modules/index";
 
 const __DEVTOOLS__ = false;
 
