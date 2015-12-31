@@ -6,9 +6,9 @@ const FETCH_ENTRIES      = "FETCH_ENTRIES";
 const FETCH_MORE_ENTRIES = "FETCH_MORE_ENTRIES";
 const REFRESH_ENTRIES    = "REFRESH_ENTRIES";
 
-export const fetchEntries   = createAction(FETCH_ENTRIES);
+export const fetchEntries     = createAction(FETCH_ENTRIES);
 export const fetchMoreEntries = createAction(FETCH_MORE_ENTRIES);
-export const refreshEntries = createAction(REFRESH_ENTRIES);
+export const refreshEntries   = createAction(REFRESH_ENTRIES);
 
 export function requestFetchEntries(options = {}) {
   return dispatch => {

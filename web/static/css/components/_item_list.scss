@@ -25,6 +25,15 @@ $item-list-secondary-color: $gray-3;
 
 }
 
+.item.no-more-content {
+  flex-direction: column;
+  text-align: center;
+
+  .smile {
+    font-size: 2rem;
+  }
+}
+
 .item-row {
   display: flex;
   font-size: .9rem;

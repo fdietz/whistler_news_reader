@@ -124,12 +124,22 @@ class Entries extends Component {
 
     let paginatedItems;
     if (entries.items.length > 0) {
+      let noMoreContent;
+      if (!entries.hasMoreEntries) {
+        noMoreContent = (
+          <div className="item no-more-content">
+            <p className="hint">No more contents. You are all done!</p>
+            <div className="smile">:-)</div>
+          </div>
+        );
+      }
+
       paginatedItems = (<InfiniteScroll
         threshold={300}
         loadMore={this.loadMore}
-        hasMore={entries.hasMoreEntries}
-        loader={<div className="loader">Loading ...</div>}>
+        hasMore={entries.hasMoreEntries}>
         {items}
+        {noMoreContent}
       </InfiniteScroll>);
     }
 
