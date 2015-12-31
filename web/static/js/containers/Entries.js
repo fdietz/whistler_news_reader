@@ -7,7 +7,7 @@ import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryContent from "../components/FeedEntryContent";
 
 // import { requestFetchEntries, requestRefreshEntries, selectEntry } from "../redux/actions";
-import { requestFetchEntries, requestRefreshEntries } from "../redux/modules/entries";
+import { requestFetchEntries, requestFetchMoreEntries, requestRefreshEntries } from "../redux/modules/entries";
 import { selectEntry } from "../redux/modules/currentEntry";
 
 class Entries extends Component {
@@ -64,7 +64,7 @@ class Entries extends Component {
       let params = Object.assign(this.requestParams(this.props), {
         last_published: oldestPublishedEntry
       });
-      dispatch(requestFetchEntries(params));
+      dispatch(requestFetchMoreEntries(params));
     }
   }
 

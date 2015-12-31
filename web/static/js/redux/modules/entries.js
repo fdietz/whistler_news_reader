@@ -2,10 +2,12 @@ import axios from "axios";
 import { createAction } from "redux-actions";
 import { createNotification, resetNotification } from "./notification";
 
-const FETCH_ENTRIES   = "FETCH_ENTRIES";
-const REFRESH_ENTRIES = "REFRESH_ENTRIES";
+const FETCH_ENTRIES      = "FETCH_ENTRIES";
+const FETCH_MORE_ENTRIES = "FETCH_MORE_ENTRIES";
+const REFRESH_ENTRIES    = "REFRESH_ENTRIES";
 
 export const fetchEntries   = createAction(FETCH_ENTRIES);
+export const fetchMoreEntries = createAction(FETCH_MORE_ENTRIES);
 export const refreshEntries = createAction(REFRESH_ENTRIES);
 
 export function requestFetchEntries(options = {}) {
@@ -25,6 +27,28 @@ export function requestFetchEntries(options = {}) {
     })
     .catch((response) => {
       dispatch(fetchEntries(new Error(response.data.error)));
+      dispatch(resetNotification());
+    });
+  };
+}
+
+export function requestFetchMoreEntries(options = {}) {
+  return dispatch => {
+    const params = Object.assign({}, options, { limit: 20 });
+    dispatch(fetchMoreEntries(params));
+    dispatch(createNotification({ message: "Fetching more entries", type: "info" }));
+
+    axios.get("/api/entries", { params: params })
+    .then((response) => {
+      dispatch(fetchMoreEntries({
+        items: response.data.entries,
+        meta: options,
+        hasMoreEntries: response.data.entries.length === params.limit
+      }));
+      dispatch(resetNotification());
+    })
+    .catch((response) => {
+      dispatch(fetchMoreEntries(new Error(response.data.error)));
       dispatch(resetNotification());
     });
   };
@@ -67,20 +91,26 @@ export default function reducer(state = initial, action) {
       return Object.assign({}, state, {
         error: action.payload.message
       });
-    } else if (action.payload && action.payload.items &&
-      action.payload.meta && action.payload.meta.last_published) {
-      // fetch more
+    } else if (action.payload && action.payload.items) {
+      return {
+        items: action.payload.items,
+        hasMoreEntries: action.payload.hasMoreEntries,
+        isLoading: false
+      };
+    }
+    return Object.assign({}, state, {
+      isLoading: true
+    });
+  case FETCH_MORE_ENTRIES:
+    if (action.error) {
+      return Object.assign({}, state, {
+        error: action.payload.message
+      });
+    } else if (action.payload && action.payload.items) {
       return {
         items: [
           ...state.items, ...action.payload.items
         ],
-        hasMoreEntries: action.payload.hasMoreEntries,
-        isLoading: false
-      };
-    } else if (action.payload && action.payload.items) {
-      // initial fetch
-      return {
-        items: action.payload.items,
         hasMoreEntries: action.payload.hasMoreEntries,
         isLoading: false
       };
