@@ -9,13 +9,14 @@ export default class Icon extends Component {
   };
 
   render() {
-    const iconClassName = `svg-entypo-icon-${this.props.name}`;
-    const iconClassSize = `svg-icon-${this.props.size}`;
+    const { name, size, children } = this.props;
+    const iconClassName = `svg-entypo-icon-${name}`;
+    const iconClassSize = `svg-icon-${size}`;
     const cls = `${iconClassName} ${iconClassSize}`;
 
     return (
       <span className={cls}>
-        {this.props.children}
+        {children}
       </span>
     );
   }
