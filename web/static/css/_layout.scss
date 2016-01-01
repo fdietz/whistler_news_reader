@@ -27,18 +27,17 @@ body {
   overflow: hidden;
   flex-direction: row;
 
-  .layout-master-left,
-  .layout-master-right {
+  .layout-master-pane {
     display: flex;
     width: 50vw;
     height: 100%;
     flex-direction: column;
 
-    &.layout-master-30 { width: 30vw; }
-    &.layout-master-40 { width: 40vw; }
-    &.layout-master-50 { width: 50vw; }
-    &.layout-master-60 { width: 60vw; }
-    &.layout-master-70 { width: 70vw; }
+    &.layout-master-pane-size-30 { width: 30vw; }
+    &.layout-master-pane-size-40 { width: 40vw; }
+    &.layout-master-pane-size-50 { width: 50vw; }
+    &.layout-master-pane-size-60 { width: 60vw; }
+    &.layout-master-pane-size-70 { width: 70vw; }
   }
 
   .layout-master-right {
@@ -67,7 +66,3 @@ body {
   // background-color: $white;
   flex: 1 1;
 }
-
-.layout-master-50 { width: 50vw; }
-.layout-master-40 { width: 40vw; }
-.layout-master-60 { width: 60vw; }

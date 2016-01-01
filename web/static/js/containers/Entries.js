@@ -2,6 +2,16 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { pushState } from "redux-router";
 
+
+import LayoutPane from "../components/LayoutPane";
+import LayoutHeader from "../components/LayoutHeader";
+import LayoutContent from "../components/LayoutContent";
+import LayoutMasterSplit from "../components/LayoutMasterSplit";
+
+import Button from "../components/Button";
+import ButtonGroup from "../components/ButtonGroup";
+import Icon from "../components/Icon";
+
 import InfiniteScroll from "../components/InfiniteScroll";
 import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryContent from "../components/FeedEntryContent";
@@ -144,47 +154,38 @@ class Entries extends Component {
     }
 
     return (
-      <div className="layout-master-split with-sidebar">
-        <div className="layout-master-left layout-master-30">
-          <div className="layout-master-header px2">
-            <div className="btn-group btn-group-rounded">
-              <button className="btn btn-header">
-                <span className="svg-entypo-icon-checkmark svg-icon-small"></span>
-              </button>
-              <button
-                onClick={this.refreshEntries}
-                className="btn btn-header">
-                <span className="svg-entypo-icon-refresh svg-icon-small"></span>
-              </button>
-            </div>
-          </div>
-          <div className="layout-master-content">
+      <LayoutMasterSplit>
+        <LayoutPane size="30">
+          <LayoutHeader>
+            <ButtonGroup>
+              <Button type="btn-header">
+                <Icon name="checkmark" size="small"/>
+              </Button>
+              <Button type="btn-header" onClick={this.refreshEntries}>
+                <Icon name="refresh" size="small"/>
+              </Button>
+            </ButtonGroup>
+          </LayoutHeader>
+          <LayoutContent>
             {paginatedItems}
-          </div>
-        </div>
-        <div className="layout-master-right layout-master-70">
-          <div className="layout-master-header px2">
-            <div className="btn-group btn-group-rounded">
-              <button
-                onClick={this.previousEntry}
-                className="btn btn-header">
-                <span className="svg-entypo-icon-arrow-left3 svg-icon-small"></span>
-              </button>
-              <button
-                onClick={this.nextEntry}
-                className="btn btn-header">
-                <span className="svg-entypo-icon-arrow-right3 svg-icon-small"></span>
-              </button>
-            </div>
-            <button
-              onClick={this.createFeed}
-              className="btn btn-primary bg-blue mx-l-auto">+ New</button>
-          </div>
-          <div className="layout-master-content">
+          </LayoutContent>
+        </LayoutPane>
+        <LayoutPane size="70">
+          <LayoutHeader>
+            <ButtonGroup>
+              <Button type="btn-header" onClick={this.previousEntry}>
+                <Icon name="arrow-left3" size="small"/>
+              </Button>
+              <Button type="btn-header" onClick={this.nextEntry}>
+                <Icon name="arrow-right3" size="small"/>
+              </Button>
+            </ButtonGroup>
+          </LayoutHeader>
+          <LayoutContent>
             {content}
-          </div>
-        </div>
-      </div>
+          </LayoutContent>
+        </LayoutPane>
+      </LayoutMasterSplit>
     );
   }
 }
