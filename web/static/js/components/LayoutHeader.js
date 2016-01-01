@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 
 export default class LayoutHeader extends Component {
 
-  static PropTypes = {
+  static propTypes = {
     children: PropTypes.node.required
   };
 

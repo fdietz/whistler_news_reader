@@ -16,8 +16,12 @@ import InfiniteScroll from "../components/InfiniteScroll";
 import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryContent from "../components/FeedEntryContent";
 
-// import { requestFetchEntries, requestRefreshEntries, selectEntry } from "../redux/actions";
-import { requestFetchEntries, requestFetchMoreEntries, requestRefreshEntries } from "../redux/modules/entries";
+import {
+  requestFetchEntries,
+  requestFetchMoreEntries,
+  requestRefreshEntries
+} from "../redux/modules/entries";
+
 import { selectEntry } from "../redux/modules/currentEntry";
 
 class Entries extends Component {
@@ -155,7 +159,7 @@ class Entries extends Component {
 
     return (
       <LayoutMasterSplit>
-        <LayoutPane size="30">
+        <LayoutPane size={30}>
           <LayoutHeader>
             <ButtonGroup>
               <Button type="btn-header">
@@ -170,7 +174,7 @@ class Entries extends Component {
             {paginatedItems}
           </LayoutContent>
         </LayoutPane>
-        <LayoutPane size="70">
+        <LayoutPane size={70}>
           <LayoutHeader>
             <ButtonGroup>
               <Button type="btn-header" onClick={this.previousEntry}>

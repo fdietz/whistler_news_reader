@@ -40,7 +40,7 @@ body {
     &.layout-master-pane-size-70 { width: 70vw; }
   }
 
-  .layout-master-right {
+  .layout-master-pane + .layout-master-pane {
     border-left: 1px solid $darken-1;
   }
 
