@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { pushState } from "redux-router";
 
-
 import LayoutPane from "../components/LayoutPane";
 import LayoutHeader from "../components/LayoutHeader";
 import LayoutContent from "../components/LayoutContent";

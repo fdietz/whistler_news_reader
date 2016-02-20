@@ -3,8 +3,8 @@ import React, { Component, PropTypes } from "react";
 export default class Icon extends Component {
 
   static PropTypes = {
-    children: PropTypes.node.required,
-    name: PropTypes.string.required,
+    children: PropTypes.node.isRequired,
+    name: PropTypes.string.isRequired,
     size: PropTypes.number
   };
 

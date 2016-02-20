@@ -6,9 +6,9 @@ import { pushState } from "redux-router";
 export default class ModalWrapper extends Component {
 
   static propTypes = {
-    returnTo: PropTypes.string.required,
-    dispatch: PropTypes.func.required,
-    children: PropTypes.node.required
+    returnTo: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired
   }
 
   closeModal(event) {

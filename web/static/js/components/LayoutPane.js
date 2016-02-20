@@ -3,8 +3,8 @@ import React, { Component, PropTypes } from "react";
 export default class LayoutPane extends Component {
 
   static propTypes = {
-    children: PropTypes.node.required,
-    size: PropTypes.number.required
+    children: PropTypes.node.isRequired,
+    size: PropTypes.number.isRequired
   };
 
   render() {

@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from "react";
 export default class ButtonGroup extends Component {
 
   static PropTypes = {
-    children: PropTypes.node.required
+    children: PropTypes.node.isRequired
   };
 
   render() {
