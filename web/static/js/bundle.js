@@ -1,38 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { Provider } from "react-redux";
-import { ReduxRouter } from "redux-router";
+import { browserHistory } from "react-router";
 
 import "../css/app.scss";
 
-import create from "./redux/create";
-import createRoutes from "./routes";
+import configureStore from "./redux/configureStore";
+import makeRoutes from "./routes/index";
+import Root from "./containers/Root";
 
-import DevTools from "./containers/DevTools";
+const initialState = window.__INITIAL_STATE__;
+const store = configureStore(initialState);
 
-const component = (
-  <ReduxRouter routes={createRoutes()} />
-);
+const history = browserHistory;
+
+const routes = makeRoutes(store);
 
 const rootElement = document.getElementById("root");
-const __DEVTOOLS__ = false;
 
-if (__DEVTOOLS__) {
-  ReactDOM.render(
-    <Provider store={create()}>
-      <div>
-        {component}
-        <DevTools />
-      </div>
-    </Provider>,
-    rootElement
-  );
-} else {
-  ReactDOM.render(
-    <Provider store={create()}>
-      {component}
-    </Provider>,
-    rootElement
-  );
-}
+ReactDOM.render(
+  <Root history={history} routes={routes} store={store} />,
+  rootElement
+);
