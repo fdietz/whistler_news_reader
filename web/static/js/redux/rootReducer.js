@@ -6,6 +6,7 @@ import currentEntry from "./modules/currentEntry";
 import entries from "./modules/entries";
 import feeds from "./modules/feeds";
 import notification from "./modules/notification";
+import user from "./modules/user";
 
 export default combineReducers({
   createFeed,
@@ -13,5 +14,6 @@ export default combineReducers({
   entries,
   feeds,
   notification,
+  user,
   routing
 });

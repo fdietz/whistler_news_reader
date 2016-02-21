@@ -11,13 +11,24 @@ defmodule WhistlerNewsReader.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+
+    # check token in Authorization header
+    plug Guardian.Plug.VerifyHeader
+    # make resource available in Guardian.Plug.current_resource(conn)
+    plug Guardian.Plug.LoadResource
   end
 
   scope "/api", WhistlerNewsReader do
     pipe_through :api
 
+    post "/registrations", Api.RegistrationController, :create
+    post "/sessions", Api.SessionController, :create
+    delete "/sessions", Api.SessionController, :delete
+    get "/current_user", Api.CurrentUserController, :show
+
     # get "/entries/today", Api.EntryController, :today
     # get "/entries/all", Api.EntryController, :all
+
     resources "/entries", Api.EntryController, only: [:index]
     put "/entries/refresh", Api.EntryController, :refresh
     resources "/feeds", Api.FeedController, only: [:index, :create]
@@ -29,8 +40,4 @@ defmodule WhistlerNewsReader.Router do
     get "/*page", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", WhistlerNewsReader do
-  #   pipe_through :api
-  # end
 end

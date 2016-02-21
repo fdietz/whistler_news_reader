@@ -19,7 +19,7 @@ defmodule WhistlerNewsReader.Mixfile do
   def application do
     [mod: {WhistlerNewsReader, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex, :tzdata]]
+                    :phoenix_ecto, :postgrex, :tzdata, :comeonin]]
   end
 
   # Specifies which paths to compile per environment
@@ -30,14 +30,16 @@ defmodule WhistlerNewsReader.Mixfile do
   #
   # Type `mix help deps` for examples and options
   defp deps do
-    [{:phoenix, "~> 1.0.2"},
-     {:phoenix_ecto, "~> 1.1"},
+    [{:phoenix, "~> 1.1.2"},
+     {:phoenix_ecto, "~> 2.0"},
      {:postgrex, ">= 0.0.0"},
-     {:phoenix_html, "~> 2.1"},
+     {:phoenix_html, "~> 2.3"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"},
      {:elixir_feed_parser, path: "../elixir-feed-parser"},
      {:httpoison, "~> 0.7.3"},
-     {:floki, "~> 0.7.1"}]
+     {:floki, "~> 0.7.1"},
+     {:comeonin, "~> 2.0"},
+     {:guardian, "~> 0.9.0"}]
   end
 end

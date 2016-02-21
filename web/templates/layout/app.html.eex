@@ -14,7 +14,7 @@
   </head>
 
   <body>
-    <%= @inner %>
+    <%= render @view_module, @view_template, assigns %>
     <%= if Mix.env == :dev do %>
       <script src="http://localhost:4001/bundle.js"></script>
     <% else %>
