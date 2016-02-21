@@ -4,10 +4,12 @@ import { routeActions } from "react-router-redux";
 
 const CREATE_SIGN_UP = "CREATE_SIGN_UP";
 const CREATE_SIGN_IN = "CREATE_SIGN_IN";
+const SIGN_OUT = "SIGN_OUT";
 const SET_CURRENT_USER = "SET_CURRENT_USER";
 
 export const createSignUp = createAction(CREATE_SIGN_UP);
 export const createSignIn = createAction(CREATE_SIGN_IN);
+export const signOut = createAction(SIGN_OUT);
 export const setCurrentUser = createAction(SET_CURRENT_USER);
 
 export function requestSignUp(data) {
@@ -35,10 +37,8 @@ export function requestSignIn(email, password) {
   return dispatch => {
     dispatch(createSignIn());
     const data = {
-      session: {
-        email: email,
-        password: password
-      }
+      email: email,
+      password: password
     };
 
     axios.post("/api/sessions", { session: data })
@@ -51,25 +51,46 @@ export function requestSignIn(email, password) {
 
         dispatch(routeActions.push("/"));
       })
+      // .catch((response) => {
+      //   console.log("response ERROR", response.data)
+      //   dispatch(createSignIn(new Error(response.data.errors)));
+      // });
+  };
+}
+
+export function requestSignOut() {
+  return dispatch => {
+    const authToken = localStorage.getItem('phoenixAuthToken');
+
+    axios.delete("/api/sessions", { headers: { Authorization: authToken } })
+      .then((response) => {
+        console.log("response SUCCESS", response.data);
+
+        localStorage.removeItem('phoenixAuthToken');
+
+        dispatch(signOut());
+
+        dispatch(routeActions.push("/sign_in"));
+      })
       .catch((response) => {
         console.log("response ERROR", response.data)
-        dispatch(createSignIn(new Error(response.data.errors)));
       });
   };
 }
 
 export function requestSetCurrentUser() {
-  console.log("requestSetCurrentUser 0")
 
   return dispatch => {
-    dispatch(createSetCurrentUser());
+    const authToken = localStorage.getItem('phoenixAuthToken');
+
+    dispatch(setCurrentUser());
     console.log("requestSetCurrentUser")
 
-    axios.get("/api/current_user")
+    axios.get("/api/current_user", { headers: { Authorization: authToken } })
       .then((response) => {
         console.log("response SUCCESS", response.data);
 
-        dispatch(createSetCurrentUser({ user: response.data.user }));
+        dispatch(setCurrentUser({ user: response.data.user }));
       })
       .catch((response) => {
         console.log("response ERROR", response.data)
@@ -115,6 +136,8 @@ export default function reducer(state = initialState, action) {
     return Object.assign({}, state, {
       isLoading: true
     });
+  } else if (action.type === SIGN_OUT) {
+    return Object.assign({}, initialState);
   }
 
   return state;

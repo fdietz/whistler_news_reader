@@ -3,7 +3,7 @@ import { connect }          from "react-redux";
 import { Link }             from "react-router";
 
 import { setDocumentTitle, renderErrorsFor } from "../utils";
-import requestSignIn from "../redux/modules/user";
+import { requestSignIn } from "../redux/modules/user";
 
 class SessionNew extends Component {
 
@@ -46,13 +46,13 @@ class SessionNew extends Component {
           <header>
             <div className="logo" />
           </header>
-          <form onSubmit={::this._handleSubmit}>
-            {::this._renderError()}
+          <form onSubmit={this.handleSubmit}>
+            {this.renderError()}
             <div className="field">
-              <input ref="email" type="Email" placeholder="Email" required="true" defaultValue="yourmail@mail.com"/>
+              <input ref="email" type="Email" placeholder="Email" required="true" focus="true" placeholder="yourmail@mail.com"/>
             </div>
             <div className="field">
-              <input ref="password" type="password" placeholder="Password" required="true" defaultValue="abc123"/>
+              <input ref="password" type="password" placeholder="Password" required="true" placeholder="password"/>
             </div>
             <button type="submit">Sign in</button>
           </form>
