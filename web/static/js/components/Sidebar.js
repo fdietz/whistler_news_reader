@@ -12,7 +12,6 @@ class Sidebar extends Component {
 
   static propTypes = {
     feeds: PropTypes.array.isRequired,
-    onAddFeedClick: PropTypes.func.isRequired,
     currentPathname: PropTypes.string.isRequired
   };
 
@@ -41,7 +40,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { feeds, onAddFeedClick } = this.props;
+    const { feeds } = this.props;
 
     return (
       <div className="sidebar">

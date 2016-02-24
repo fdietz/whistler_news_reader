@@ -39,10 +39,10 @@ class App extends Component {
     }
   }
 
-  onAddFeedClick() {
-    const { dispatch } = this.props;
-    dispatch(pushState({ modal: true, returnTo: this.props.location.pathname }, "/feeds/new"));
-  }
+  // onAddFeedClick() {
+  //   const { dispatch } = this.props;
+  //   dispatch(pushState({ modal: true, returnTo: this.props.location.pathname }, "/feeds/new"));
+  // }
 
   render() {
     const { feeds, notification, location, dispatch } = this.props;
@@ -59,10 +59,7 @@ class App extends Component {
 
     return (
       <div>
-        <Sidebar feeds={feeds.items}
-          currentPathname={currentPathname}
-          onAddFeedClick={() => this.onAddFeedClick()}
-          />
+        <Sidebar feeds={feeds.items} currentPathname={currentPathname}/>
 
         {notificationElement}
 

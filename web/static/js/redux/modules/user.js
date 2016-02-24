@@ -18,8 +18,6 @@ export function requestSignUp(data) {
 
     axios.post("/api/registrations", { user: data })
       .then((response) => {
-        console.log("response SUCCESS", response.data);
-
         localStorage.setItem("phoenixAuthToken", response.data.jwt);
 
         dispatch(createSignUp({ user: response.data.user }));
@@ -27,7 +25,6 @@ export function requestSignUp(data) {
         dispatch(routeActions.push("/"));
       })
       .catch((response) => {
-        console.log("response ERROR", response.data)
         dispatch(createSignUp(new Error(response.data.errors)));
       });
   };
@@ -43,57 +40,47 @@ export function requestSignIn(email, password) {
 
     axios.post("/api/sessions", { session: data })
       .then((response) => {
-        console.log("response SUCCESS", response.data);
-
         localStorage.setItem("phoenixAuthToken", response.data.jwt);
 
         dispatch(createSignIn({ user: response.data.user }));
 
         dispatch(routeActions.push("/"));
       })
-      // .catch((response) => {
-      //   console.log("response ERROR", response.data)
-      //   dispatch(createSignIn(new Error(response.data.errors)));
-      // });
+      .catch((response) => {
+        dispatch(createSignIn(new Error(response.data.errors)));
+      });
   };
 }
 
 export function requestSignOut() {
   return dispatch => {
-    const authToken = localStorage.getItem('phoenixAuthToken');
+    const authToken = localStorage.getItem("phoenixAuthToken");
 
     axios.delete("/api/sessions", { headers: { Authorization: authToken } })
-      .then((response) => {
-        console.log("response SUCCESS", response.data);
-
-        localStorage.removeItem('phoenixAuthToken');
+      .then(() => {
+        localStorage.removeItem("phoenixAuthToken");
 
         dispatch(signOut());
 
         dispatch(routeActions.push("/sign_in"));
       })
       .catch((response) => {
-        console.log("response ERROR", response.data)
+        console.log("response ERROR", response.data);
       });
   };
 }
 
 export function requestSetCurrentUser() {
-
   return dispatch => {
-    const authToken = localStorage.getItem('phoenixAuthToken');
+    const authToken = localStorage.getItem("phoenixAuthToken");
 
     dispatch(setCurrentUser());
-    console.log("requestSetCurrentUser")
 
     axios.get("/api/current_user", { headers: { Authorization: authToken } })
       .then((response) => {
-        console.log("response SUCCESS", response.data);
-
         dispatch(setCurrentUser({ user: response.data.user }));
       })
-      .catch((response) => {
-        console.log("response ERROR", response.data)
+      .catch(() => {
         dispatch(routeActions.push("/sign_in"));
       });
   };
@@ -106,8 +93,6 @@ const initialState = {
 };
 
 export default function reducer(state = initialState, action) {
-  console.log("user reducer", state, action)
-
   if (action.type === CREATE_SIGN_UP || action.type === CREATE_SIGN_IN) {
     if (action.error) {
       return Object.assign({}, state, {

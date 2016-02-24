@@ -51,26 +51,15 @@ export default class Header extends Component {
 
     return (
       <header className="main-header">
-        <nav>
-          <ul>
-            <li>
-              <Link to="/"><i className="fa fa-columns"/>Home</Link>
-            </li>
-          </ul>
-        </nav>
-        <Link to='/'>
-          <span className='logo'/>
-        </Link>
-        <nav className="right">
-          <ul>
-            <li>
-              {this.renderCurrentUser()}
-            </li>
-            <li>
-              {this.renderSignOutLink()}
-            </li>
-          </ul>
-        </nav>
+        <Link to="/"><i className="fa fa-columns"/>Home</Link>
+        <ul className="inline">
+          <li>
+            {this.renderCurrentUser()}
+          </li>
+          <li>
+            {this.renderSignOutLink()}
+          </li>
+        </ul>
       </header>
     );
   }

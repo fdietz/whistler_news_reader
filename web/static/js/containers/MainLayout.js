@@ -1,14 +1,9 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 
-export default class MainLayout extends Component {
+const MainLayout = ({ children }) => {
+  return (
+    <div className="main-layout">{children}</div>
+  );
+};
 
-  static propTypes = {
-    children: PropTypes.node.isRequired
-  }
-
-  render() {
-    return (
-      <div>{this.props.children}</div>
-    );
-  }
-}
+export default MainLayout;
