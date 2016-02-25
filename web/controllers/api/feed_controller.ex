@@ -14,10 +14,17 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
   def create(conn, %{"feed_url" => feed_url} = _params) do
     case Fetcher.import_feed(feed_url) do
-      {:ok, feed}     ->
-        subscription = Ecto.build_assoc(feed, :subscriptions, user_id: current_user(conn).id)
+      {:ok, feed} ->
+        subscription = Ecto.build_assoc(
+          feed,
+          :subscriptions,
+          user_id: current_user(conn).id
+        )
         Repo.insert!(subscription)
-        render(conn, "feed.json", feed: feed)
+
+        conn
+        |> put_status(:created)
+        |> render("feed.json", feed: feed)
       {:error, error} ->
         Logger.error(error)
         send_resp(conn, 400, "")

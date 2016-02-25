@@ -20,4 +20,9 @@ defmodule WhistlerNewsReader.UserTest do
     changeset = User.changeset(%User{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "encrypted_password value gets set to a hash" do
+    changeset = User.changeset(%User{}, @valid_attrs)
+    assert Comeonin.Bcrypt.checkpw(@valid_attrs.password, Ecto.Changeset.get_change(changeset, :encrypted_password))
+  end
 end

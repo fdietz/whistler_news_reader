@@ -6,6 +6,8 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Subscription
 
+  @feed_url "http://heise.de.feedsportal.com/c/35207/f/653902/index.rss"
+
   setup do
     user = Repo.insert!(%User{
       email: "test@test.de",
@@ -28,7 +30,7 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
     {:ok, conn: conn, jwt: jwt, feed: feed}
   end
 
-  test "GET /api/feeds succeeds with token", %{conn: conn, jwt: jwt, feed: feed} do
+  test "GET /api/feeds succeeds", %{conn: conn, jwt: jwt, feed: feed} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, feed_path(conn, :index)
 
@@ -40,5 +42,15 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
   test "GET /api/feeds fails if no token", %{conn: conn} do
     conn = get conn, feed_path(conn, :index)
     assert json_response(conn, 403)["error"] == "Not Authenticated"
+  end
+
+  test "POST /api/feeds succeeds", %{conn: conn, jwt: jwt} do
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = post conn, feed_path(conn, :create), feed_url: @feed_url
+
+    assert json_response(conn, 201)
+    feed_id = json_response(conn, 201)["id"]
+    assert Repo.get!(Feed, feed_id)
+    assert Repo.get_by!(Subscription, feed_id: feed_id)
   end
 end
