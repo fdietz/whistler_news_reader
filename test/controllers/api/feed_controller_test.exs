@@ -22,13 +22,13 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
       site_url: "http://theverge.com"
     })
 
-    # subscription = Repo.insert!(%Subscription{feed_id: feed.id, user_id: user.id})
+    Repo.insert!(%Subscription{feed_id: feed.id, user_id: user.id})
 
     conn = conn() |> put_req_header("accept", "application/json")
     {:ok, conn: conn, jwt: jwt, feed: feed}
   end
 
-  test "GET / succeeds with token", %{conn: conn, jwt: jwt, feed: feed} do
+  test "GET /api/feeds succeeds with token", %{conn: conn, jwt: jwt, feed: feed} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, feed_path(conn, :index)
 
@@ -37,7 +37,7 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
     assert result["title"] == feed.title
   end
 
-  test "GET / fails if no token", %{conn: conn} do
+  test "GET /api/feeds fails if no token", %{conn: conn} do
     conn = get conn, feed_path(conn, :index)
     assert json_response(conn, 403)["error"] == "Not Authenticated"
   end
