@@ -3,7 +3,6 @@ defmodule WhistlerNewsReader.Api.CurrentUserController do
 
   plug Guardian.Plug.EnsureAuthenticated, handler: WhistlerNewsReader.Api.SessionController
 
-
   def show(conn, _) do
     case decode_and_verify_token(conn) do
       {:ok, _claims} ->

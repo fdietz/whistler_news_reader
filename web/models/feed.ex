@@ -8,6 +8,7 @@ defmodule WhistlerNewsReader.Feed do
     field :site_url, :string
     field :last_updated, Ecto.DateTime
     has_many :entries, WhistlerNewsReader.Entry
+    has_many :subscriptions, WhistlerNewsReader.Subscription
 
     timestamps
   end
@@ -24,5 +25,11 @@ defmodule WhistlerNewsReader.Feed do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+  def for_user(query, user_id) do
+    from p in query,
+    join: c in assoc(p, :subscriptions),
+    where: p.id == c.feed_id and c.user_id == ^user_id
   end
 end

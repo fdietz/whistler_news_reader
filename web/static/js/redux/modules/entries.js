@@ -12,11 +12,12 @@ export const refreshEntries   = createAction(REFRESH_ENTRIES);
 
 export function requestFetchEntries(options = {}) {
   return dispatch => {
+    const authToken = localStorage.getItem("phoenixAuthToken");
     const params = Object.assign({}, options, { limit: 20 });
     dispatch(fetchEntries(params));
     dispatch(createNotification({ message: "Fetching entries", type: "info" }));
 
-    axios.get("/api/entries", { params: params })
+    axios.get("/api/entries", { params: params, headers: { Authorization: authToken } })
     .then((response) => {
       dispatch(fetchEntries({
         items: response.data.entries,

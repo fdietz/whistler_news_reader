@@ -4,8 +4,8 @@ defmodule WhistlerNewsReader.UserTest do
   alias WhistlerNewsReader.User
 
   @valid_attrs %{
-    email: "some content",
-    encrypted_password: "some content",
+    email: "test@test.de",
+    password: "some content",
     first_name: "some content",
     last_name: "some content"
   }

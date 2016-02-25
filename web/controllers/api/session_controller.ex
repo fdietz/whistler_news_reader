@@ -37,9 +37,9 @@ defmodule WhistlerNewsReader.Api.SessionController do
   def unauthenticated(conn, _params) do
     conn
     |> put_status(:forbidden)
-    |> render(PhoenixTrello.SessionView, "forbidden.json", error: "Not Authenticated")
+    |> render(WhistlerNewsReader.Api.SessionView, "forbidden.json", error: "Not Authenticated")
   end
-  
+
   defp authenticate(%{"email" => email, "password" => password}) do
     user = Repo.get_by(User, email: String.downcase(email))
 

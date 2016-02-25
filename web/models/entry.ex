@@ -12,6 +12,7 @@ defmodule WhistlerNewsReader.Entry do
     field :guid, :string
     field :published, Ecto.DateTime
     belongs_to :feed, WhistlerNewsReader.Feed
+    has_many :read_entries, WhistlerNewsReader.ReadEntry
 
     timestamps
   end

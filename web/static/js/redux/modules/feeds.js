@@ -14,9 +14,10 @@ export const fetchFeeds = createAction(FETCH_FEEDS);
 
 export function requestFetchFeeds() {
   return dispatch => {
+    const authToken = localStorage.getItem("phoenixAuthToken");
     dispatch(fetchFeeds());
 
-    axios.get("/api/feeds")
+    axios.get("/api/feeds", { headers: { Authorization: authToken } })
     .then((response) => {
       dispatch(fetchFeeds({ items: response.data.feeds }));
     })
