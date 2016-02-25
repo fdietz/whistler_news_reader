@@ -1,8 +1,8 @@
 import axios from "axios";
 import { createAction } from "redux-actions";
 
-import addFeed from "./feeds";
-import requestRefreshEntries from "./entries";
+import { addFeed } from "./feeds";
+import { requestRefreshEntries } from "./entries";
 
 const CREATE_FEED = "CREATE_FEED";
 export const createFeed = createAction(CREATE_FEED);
@@ -10,8 +10,11 @@ export const createFeed = createAction(CREATE_FEED);
 // TODO: extract method since it depends on other modules
 export function requestCreateFeed(feedUrl) {
   return dispatch => {
+    const authToken = localStorage.getItem("phoenixAuthToken");
     dispatch(createFeed());
-    axios.post("/api/feeds", { feed_url: feedUrl })
+    axios.post("/api/feeds",
+      { feed_url: feedUrl },
+      { headers: { Authorization: authToken }})
       .then((response) => {
         // update form data
         dispatch(createFeed({ item: response.data }));

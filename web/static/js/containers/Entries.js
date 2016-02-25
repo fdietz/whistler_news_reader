@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { pushState } from "redux-router";
+import Modal from "react-modal";
 
 import LayoutPane from "../components/LayoutPane";
 import LayoutHeader from "../components/LayoutHeader";
@@ -21,6 +22,7 @@ import {
   requestRefreshEntries
 } from "../redux/modules/entries";
 
+import { requestCreateFeed } from "../redux/modules/createFeed";
 import { selectEntry } from "../redux/modules/currentEntry";
 
 class Entries extends Component {
@@ -32,16 +34,26 @@ class Entries extends Component {
       isLoading: PropTypes.bool.isRequired,
       error: PropTypes.string
     }).isRequired,
-    currentEntry: PropTypes.object
+    currentEntry: PropTypes.object,
+    location: PropTypes.object.isRequired
   };
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      newFeedModalIsOpen: false,
+      feedUrl: ""
+    };
+
     this.loadMore = this.loadMore.bind(this);
     this.refreshEntries = this.refreshEntries.bind(this);
     this.nextEntry = this.nextEntry.bind(this);
     this.previousEntry = this.previousEntry.bind(this);
     this.createFeed = this.createFeed.bind(this);
+    this.openNewFeedModal = this.openNewFeedModal.bind(this);
+    this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
+    this.handleNewFeedChange = this.handleNewFeedChange.bind(this);
   }
 
   componentDidMount() {
@@ -121,6 +133,25 @@ class Entries extends Component {
     dispatch(pushState({ modal: true, returnTo: this.props.location.pathname }, "/feeds/new"));
   }
 
+  openNewFeedModal() {
+    this.setState({ newFeedModalIsOpen: true });
+  }
+
+  closeNewFeedModal() {
+    this.setState({ newFeedModalIsOpen: false });
+  }
+
+  handleNewFeedChange(event) {
+    this.setState({ feedUrl: event.target.value });
+  }
+
+  submitForm(event) {
+    const { dispatch} = this.props;
+    dispatch(requestCreateFeed(this.state.feedUrl));
+    this.closeNewFeedModal();
+    event.preventDefault();
+  }
+
   render() {
     const { dispatch, entries, currentEntry } = this.props;
 
@@ -156,6 +187,17 @@ class Entries extends Component {
       </InfiniteScroll>);
     }
 
+    const customStyles = {
+      content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)"
+      }
+    };
+
     return (
       <LayoutMasterSplit>
         <LayoutPane size={30}>
@@ -182,21 +224,52 @@ class Entries extends Component {
               <Button type="btn-header" onClick={this.nextEntry}>
                 <Icon name="arrow-right3" size="small"/>
               </Button>
+              <Button type="btn-header" onClick={this.openNewFeedModal}>
+                <Icon name="arrow-left3" size="small"/>
+              </Button>
             </ButtonGroup>
           </LayoutHeader>
           <LayoutContent>
             {content}
           </LayoutContent>
         </LayoutPane>
+
+        <Modal
+          isOpen={this.state.newFeedModalIsOpen}
+          onRequestClose={this.closeNewFeedModal}
+          style={customStyles}>
+
+          <h2>Add new feed</h2>
+          <button onClick={this.closeNewFeedModal}>close</button>
+
+          <form className="form-prominent">
+            <input className="field mt2 mb2"
+                type="text"
+                placeholder="Website or feed"
+                value={this.state.feedUrl}
+                onChange={(event) => this.handleNewFeedChange(event)}
+                autoFocus/>
+            {/*{error}*/}
+
+            <div className="modal-footer">
+              <button onClick={this.closeNewFeedModal}
+                className="btn">Close</button>
+              <button type="submit"
+                className="btn btn-primary bg-blue white"
+                onClick={(event) => this.submitForm(event)}>Add Feed</button>
+            </div>
+          </form>
+        </Modal>
       </LayoutMasterSplit>
     );
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     entries: state.entries,
-    currentEntry: state.currentEntry
+    currentEntry: state.currentEntry,
+    location: ownProps.location
   };
 }
 

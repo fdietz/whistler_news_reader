@@ -23,7 +23,8 @@ class AuthenticatedContainer extends Component {
       message: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired
     }),
-    currentPath: PropTypes.string.isRequired
+    currentPath: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -51,8 +52,6 @@ class AuthenticatedContainer extends Component {
   render() {
     const { currentUser, feeds, notification, currentPath } = this.props;
     if (!currentUser) return false;
-
-    console.log("feeds", feeds)
 
     return (
       <div className="authenticated-container">

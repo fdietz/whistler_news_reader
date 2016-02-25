@@ -36,10 +36,11 @@ export function requestFetchEntries(options = {}) {
 export function requestFetchMoreEntries(options = {}) {
   return dispatch => {
     const params = Object.assign({}, options, { limit: 20 });
+    const authToken = localStorage.getItem("phoenixAuthToken");
     dispatch(fetchMoreEntries(params));
     dispatch(createNotification({ message: "Fetching more entries", type: "info" }));
 
-    axios.get("/api/entries", { params: params })
+    axios.get("/api/entries", { params: params, headers: { Authorization: authToken } })
     .then((response) => {
       dispatch(fetchMoreEntries({
         items: response.data.entries,
@@ -57,7 +58,8 @@ export function requestFetchMoreEntries(options = {}) {
 
 export function requestRefreshEntries(options = {}) {
   return dispatch => {
-    const params = options;
+    const authToken = localStorage.getItem("phoenixAuthToken");
+    const params = Object.assign(options, { headers: { Authorization: authToken } });
     dispatch(refreshEntries(params));
     dispatch(createNotification({ message: "Refresh entries", type: "info" }));
 
