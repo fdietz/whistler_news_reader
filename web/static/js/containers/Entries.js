@@ -54,6 +54,7 @@ class Entries extends Component {
     this.openNewFeedModal = this.openNewFeedModal.bind(this);
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
     this.handleNewFeedChange = this.handleNewFeedChange.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
 
   componentDidMount() {
@@ -137,8 +138,9 @@ class Entries extends Component {
     this.setState({ newFeedModalIsOpen: true });
   }
 
-  closeNewFeedModal() {
+  closeNewFeedModal(event) {
     this.setState({ newFeedModalIsOpen: false });
+    if (event) event.preventDefault();
   }
 
   handleNewFeedChange(event) {
@@ -147,9 +149,10 @@ class Entries extends Component {
 
   submitForm(event) {
     const { dispatch} = this.props;
-    dispatch(requestCreateFeed(this.state.feedUrl));
-    this.closeNewFeedModal();
     event.preventDefault();
+    dispatch(requestCreateFeed(this.state.feedUrl));
+    this.setState({ feedUrl: "" });
+    this.closeNewFeedModal();
   }
 
   render() {
@@ -188,13 +191,24 @@ class Entries extends Component {
     }
 
     const customStyles = {
+      overlay: {
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "rgba(0, 0, 0, 0.75)"
+      },
       content: {
         top: "50%",
         left: "50%",
         right: "auto",
         bottom: "auto",
         marginRight: "-50%",
-        transform: "translate(-50%, -50%)"
+        transform: "translate(-50%, -50%)",
+        border: "2",
+        borderRadius: "2px",
+        padding: 0
       }
     };
 
@@ -207,7 +221,7 @@ class Entries extends Component {
                 <Icon name="checkmark" size="small"/>
               </Button>
               <Button type="btn-header" onClick={this.refreshEntries}>
-                <Icon name="refresh" size="small"/>
+                <Icon name="cycle" size="small"/>
               </Button>
             </ButtonGroup>
           </LayoutHeader>
@@ -224,8 +238,10 @@ class Entries extends Component {
               <Button type="btn-header" onClick={this.nextEntry}>
                 <Icon name="arrow-right3" size="small"/>
               </Button>
+            </ButtonGroup>
+            <ButtonGroup className="mx-l-auto">
               <Button type="btn-header" onClick={this.openNewFeedModal}>
-                <Icon name="arrow-left3" size="small"/>
+                <Icon name="plus" size="small"/>
               </Button>
             </ButtonGroup>
           </LayoutHeader>
@@ -239,26 +255,35 @@ class Entries extends Component {
           onRequestClose={this.closeNewFeedModal}
           style={customStyles}>
 
-          <h2>Add new feed</h2>
-          <button onClick={this.closeNewFeedModal}>close</button>
+          <div className="modal-header">
+            <h2>Add new feed</h2>
+            <a className="modal-close-link" onClick={this.closeNewFeedModal}>
+              <Icon name="cross"/>
+            </a>
+          </div>
 
-          <form className="form-prominent">
-            <input className="field mt2 mb2"
+          <div className="modal-content">
+            <form onSubmit={this.submitForm} className="form-prominent2">
+              <input className="field"
                 type="text"
                 placeholder="Website or feed"
                 value={this.state.feedUrl}
                 onChange={(event) => this.handleNewFeedChange(event)}
-                autoFocus/>
-            {/*{error}*/}
+                autoFocus={true}/>
+              {/*{error}*/}
+            </form>
+          </div>
 
-            <div className="modal-footer">
-              <button onClick={this.closeNewFeedModal}
-                className="btn">Close</button>
-              <button type="submit"
-                className="btn btn-primary bg-blue white"
-                onClick={(event) => this.submitForm(event)}>Add Feed</button>
-            </div>
-          </form>
+          <div className="modal-footer">
+            <button
+              onClick={this.closeNewFeedModal}
+              className="btn">Close</button>
+            <button
+              type="submit"
+              className="btn btn-primary bg-blue white"
+              disabled={!this.state.feedUrl}
+              onClick={this.submitForm}>Add Feed</button>
+          </div>
         </Modal>
       </LayoutMasterSplit>
     );

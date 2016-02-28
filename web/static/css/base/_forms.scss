@@ -49,9 +49,12 @@ input[type=radio] {
   margin: 0 .25rem;
 }
 
+.field {
+  width: 100%;
+}
+
 .form-prominent {
   .field {
-    width: 100%;
     height: $form-field-height-prominent;
     font-size: $form-field-font-size-prominent;
     border-width: 3px;
