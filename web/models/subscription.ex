@@ -20,5 +20,6 @@ defmodule WhistlerNewsReader.Subscription do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> unique_constraint(:feed_id, name: :subscriptions_feed_id_user_id_index)
   end
 end

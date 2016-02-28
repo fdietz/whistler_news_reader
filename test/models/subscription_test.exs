@@ -2,6 +2,7 @@ defmodule WhistlerNewsReader.SubscriptionTest do
   use WhistlerNewsReader.ModelCase
 
   alias WhistlerNewsReader.Subscription
+  alias WhistlerNewsReader.Feed
 
   @valid_attrs %{feed_id: 42, user_id: 42}
   @invalid_attrs %{}
@@ -15,4 +16,17 @@ defmodule WhistlerNewsReader.SubscriptionTest do
     changeset = Subscription.changeset(%Subscription{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "fails if subscription exists already for feed and user" do
+    %Subscription{}
+    |> Subscription.changeset(@valid_attrs)
+    |> Repo.insert!
+
+    subscription = %Subscription{}
+    |> Subscription.changeset(@valid_attrs)
+
+    assert {:error, changeset} = Repo.insert(subscription)
+    assert changeset.errors[:feed_id] == "has already been taken"
+  end
+
 end
