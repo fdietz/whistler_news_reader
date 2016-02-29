@@ -42,10 +42,9 @@ defmodule WhistlerNewsReader.Entry do
     order_by: [desc: p.published]
   end
 
-  def load_more(query, last_published, limit) do
+  def gt_last_published(query, last_published) do
     from p in query,
-    where: p.published < ^last_published,
-    limit: ^limit
+    where: p.published < ^last_published
   end
 
   def limit(query, limit) do

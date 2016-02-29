@@ -4,8 +4,14 @@ defmodule WhistlerNewsReader.Fetcher do
   alias WhistlerNewsReader.Entry
   alias WhistlerNewsReader.Repo
 
-  def refresh_all do
-    Enum.each(Repo.all(Feed), fn(feed) ->
+  # def refresh_all do
+  #   Enum.each(Repo.all(Feed), fn(feed) ->
+  #     refresh(feed)
+  #   end)
+  # end
+
+  def refresh_all(feeds) do
+    Enum.each(feeds, fn(feed) ->
       refresh(feed)
     end)
   end

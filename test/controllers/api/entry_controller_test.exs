@@ -33,12 +33,6 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
       last_name: "Duck",
       encrypted_password: "password"
     })
-    # another_user = Repo.insert!(%User{
-    #   email: "test_another@test.de",
-    #   first_name: "Donald Another",
-    #   last_name: "Duck",
-    #   encrypted_password: "password"
-    # })
 
     {:ok, jwt, _full_claims} = Guardian.encode_and_sign(user, :token)
 
