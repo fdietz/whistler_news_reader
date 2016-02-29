@@ -2,7 +2,6 @@ defmodule WhistlerNewsReader.SubscriptionTest do
   use WhistlerNewsReader.ModelCase
 
   alias WhistlerNewsReader.Subscription
-  alias WhistlerNewsReader.Feed
 
   @valid_attrs %{feed_id: 42, user_id: 42}
   @invalid_attrs %{}

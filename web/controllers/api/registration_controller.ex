@@ -21,7 +21,7 @@ defmodule WhistlerNewsReader.Api.RegistrationController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render("error.json", changeset: changeset)
+        |> render(WhistlerNewsReader.Api.ErrorView, "error.json", changeset: changeset)
     end
   end
 end
