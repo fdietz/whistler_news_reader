@@ -9,6 +9,6 @@ defmodule WhistlerNewsReader.Repo.Migrations.CreateSubscription do
       timestamps
     end
 
-    create unique_index(:subscriptions, [:feed_id, :user_id], :subscriptions_feed_id_user_id_index)
+    create unique_index(:subscriptions, [:feed_id, :user_id], name: :subscriptions_feed_id_user_id_index)
   end
 end

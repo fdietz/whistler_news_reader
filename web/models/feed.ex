@@ -25,6 +25,7 @@ defmodule WhistlerNewsReader.Feed do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> unique_constraint(:feed_url)
   end
 
   def for_user(query, user_id) do
