@@ -8,6 +8,8 @@ defmodule WhistlerNewsReader.User do
     field :encrypted_password, :string
     field :password, :string, virtual: true
 
+    has_many :subscriptions, WhistlerNewsReader.Subscription
+
     timestamps
   end
 
@@ -39,6 +41,5 @@ defmodule WhistlerNewsReader.User do
       _ ->
         current_changeset
     end
-
   end
 end

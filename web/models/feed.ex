@@ -28,9 +28,10 @@ defmodule WhistlerNewsReader.Feed do
     |> unique_constraint(:feed_url)
   end
 
-  def for_user(query, user_id) do
+  def subscribed_by_user(query, user_id) do
     from p in query,
     join: c in assoc(p, :subscriptions),
     where: p.id == c.feed_id and c.user_id == ^user_id
   end
+
 end

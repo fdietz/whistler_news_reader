@@ -14,7 +14,7 @@ defmodule WhistlerNewsReader.Fetcher do
     IO.puts "Refresh #{feed.title}"
 
     {:ok, json_body}   = fetch(feed.feed_url)
-    parsed_feed = parse_feed(json_body)
+    parsed_feed        = parse_feed(json_body)
 
     Enum.each(parsed_feed.entries, fn(entry) ->
       case store_entry(feed, entry) do
@@ -29,24 +29,22 @@ defmodule WhistlerNewsReader.Fetcher do
   end
 
   # TODO: implement OPML import instead of fixed url list
-  def import_feeds() do
-    urls = [
-      "http://heise.de.feedsportal.com/c/35207/f/653902/index.rss",
-      "http://www.theverge.com/rss/frontpage"
-    ]
-
-    Repo.delete_all(Feed)
-    Repo.delete_all(Entry)
-
-    Enum.each(urls, fn(feed_url) -> import_feed_with_content(feed_url) end)
-  end
+  # def import_feeds() do
+  #   urls = [
+  #     "http://heise.de.feedsportal.com/c/35207/f/653902/index.rss",
+  #     "http://www.theverge.com/rss/frontpage"
+  #   ]
+  #
+  #   Repo.delete_all(Feed)
+  #   Repo.delete_all(Entry)
+  #
+  #   Enum.each(urls, fn(feed_url) -> import_feed_with_content(feed_url) end)
+  # end
 
   def import_feed(feed_url) do
     case fetch(feed_url) do
       {:ok, body} ->
-        # feed_attrs = parse_feed(body)
         {:ok, parse_feed(body)}
-        # store_feed(feed_url, feed_attrs)
       {:error, reason} ->
         {:error, reason}
     end
@@ -57,8 +55,6 @@ defmodule WhistlerNewsReader.Fetcher do
   end
 
   defp fetch(feed_url) do
-    # IO.puts "fetching feed #{feed_url}"
-
     HTTPoison.start
     case HTTPoison.get(feed_url) do
     {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
@@ -72,24 +68,24 @@ defmodule WhistlerNewsReader.Fetcher do
   end
 
   # TODO: store feed.last_build_date
-  defp store_feed(feed_url, feed_attrs) do
-    changeset = Feed.changeset(%Feed{}, %{
-      title: feed_attrs.title,
-      feed_url: feed_url,
-      site_url: feed_attrs.url
-    })
-    Repo.insert(changeset)
-  end
+  # defp store_feed(feed_url, feed_attrs) do
+  #   changeset = Feed.changeset(%Feed{}, %{
+  #     title: feed_attrs.title,
+  #     feed_url: feed_url,
+  #     site_url: feed_attrs.url
+  #   })
+  #   Repo.insert(changeset)
+  # end
 
-  defp import_feed_with_content(feed_url) do
-    IO.puts(feed_url)
-
-    {:ok, json_body}   = fetch(feed_url)
-    feed               = parse_feed(json_body)
-    {:ok, stored_feed} = store_feed(feed_url, feed)
-
-    Enum.each(feed.entries, fn(entry) -> store_entry(stored_feed, entry) end)
-  end
+  # defp import_feed_with_content(feed_url) do
+  #   IO.puts(feed_url)
+  #
+  #   {:ok, json_body}   = fetch(feed_url)
+  #   feed               = parse_feed(json_body)
+  #   {:ok, stored_feed} = store_feed(feed_url, feed)
+  #
+  #   Enum.each(feed.entries, fn(entry) -> store_entry(stored_feed, entry) end)
+  # end
 
   defp store_entry(feed, entry) do
     published = entry[:updated] |> convert_to_ecto_date_time

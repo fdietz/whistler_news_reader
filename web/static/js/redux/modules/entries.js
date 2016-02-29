@@ -59,11 +59,11 @@ export function requestFetchMoreEntries(options = {}) {
 export function requestRefreshEntries(options = {}) {
   return dispatch => {
     const authToken = localStorage.getItem("phoenixAuthToken");
-    const params = Object.assign(options, { headers: { Authorization: authToken } });
+    const params = Object.assign(options, {});
     dispatch(refreshEntries(params));
     dispatch(createNotification({ message: "Refresh entries", type: "info" }));
 
-    axios.put("/api/entries/refresh", params)
+    axios.put("/api/entries/refresh", params, { headers: { Authorization: authToken } })
     .then(() => {
       dispatch(refreshEntries());
       dispatch(requestFetchEntries(options));

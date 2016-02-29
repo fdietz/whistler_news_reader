@@ -58,6 +58,11 @@ defmodule WhistlerNewsReader.Entry do
     where: p.feed_id == ^feed_id
   end
 
+  def for_feeds(query, feed_ids) do
+    from p in query,
+    where: p.feed_id in ^feed_ids
+  end
+
   def for_today(query) do
     from p in query,
     where: p.published >= ^Ecto.DateTime.to_string(Ecto.DateTime.utc)

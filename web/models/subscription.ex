@@ -2,8 +2,11 @@ defmodule WhistlerNewsReader.Subscription do
   use WhistlerNewsReader.Web, :model
 
   schema "subscriptions" do
-    field :feed_id, :integer
-    field :user_id, :integer
+
+    # field :user_id, :integer
+    belongs_to :user, WhistlerNewsReader.User
+    # field :feed_id, :integer
+    belongs_to :feed, WhistlerNewsReader.Feed
 
     timestamps
   end
