@@ -52,12 +52,13 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     Repo.insert!(%Subscription{feed_id: feed.id, user_id: user.id})
     Repo.insert!(%Subscription{feed_id: feed2.id, user_id: user.id})
 
-    entry  = Repo.insert!(%Entry{feed_id: feed.id, title: "test1"})
-    entry2 = Repo.insert!(%Entry{feed_id: feed2.id, title: "test2"})
-    entry3 = Repo.insert!(%Entry{feed_id: feed3.id, title: "test3"})
+    {{year, month, day}, _ } = :calendar.universal_time()
+    entry  = Repo.insert!(%Entry{feed_id: feed.id, title: "test1", published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
+    entry2 = Repo.insert!(%Entry{feed_id: feed2.id, title: "test2", published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
+    entry3 = Repo.insert!(%Entry{feed_id: feed3.id, title: "test3", published: {{year, month, day-2}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
 
     conn = conn() |> put_req_header("accept", "application/json")
-    {:ok, conn: conn, jwt: jwt, feed: feed, feed2: feed2, feed3: feed3, entry: entry, entry2: entry2}
+    {:ok, conn: conn, jwt: jwt, feed: feed, feed2: feed2, feed3: feed3, entry: entry, entry2: entry2, entry3: entry3}
   end
 
   test "GET /api/entries?feed_id=1 succeeds", %{conn: conn, jwt: jwt, feed: feed, entry: entry} do
@@ -87,6 +88,16 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert first["title"] == entry.title
     assert second["id"] == entry2.id
     assert second["title"] == entry2.title
+  end
+
+  test "GET /api/entries?feed_id=today succeeds", %{conn: conn, jwt: jwt, entry: entry} do
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = get conn, entry_path(conn, :index, %{"feed_id" => "today"})
+
+    assert 1 == length json_response(conn, 200)["entries"]
+    first = Enum.at(json_response(conn, 200)["entries"], 0)
+    assert first["id"] == entry.id
+    assert first["title"] == entry.title
   end
 
   test "GET /api/entries fails if no token", %{conn: conn} do

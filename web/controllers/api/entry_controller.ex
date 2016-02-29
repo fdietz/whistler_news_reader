@@ -7,7 +7,6 @@ defmodule WhistlerNewsReader.Api.EntryController do
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Entry
-  alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.Fetcher
 
   # TODO
@@ -28,7 +27,6 @@ defmodule WhistlerNewsReader.Api.EntryController do
     render(conn, "index.json", entries: entries)
   end
 
-  # TODO
   def index(conn, %{"feed_id" => "today"} = _params) do
     entries = Entry |> Entry.for_feeds(subscribed_feed_ids(conn)) |> Entry.for_today |> Entry.sorted |> Entry.limit(20) |> Repo.all |> Repo.preload(:feed)
     render(conn, "index.json", entries: entries)

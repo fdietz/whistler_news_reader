@@ -64,8 +64,11 @@ defmodule WhistlerNewsReader.Entry do
   end
 
   def for_today(query) do
+    {{year, month, day}, _ } = :calendar.universal_time()
+    ecto_date_time = {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl
+
     from p in query,
-    where: p.published >= ^Ecto.DateTime.to_string(Ecto.DateTime.utc)
+    where: p.published >= ^Ecto.DateTime.to_string(ecto_date_time)
   end
 
   def for_guid(query, guid) do
