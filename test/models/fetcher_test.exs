@@ -30,8 +30,6 @@ defmodule WhistlerNewsReader.FetcherTest do
 
   test "import fails on parsing invalid feed" do
     {:error, error } = Fetcher.import_feed(@invalid_feed_format_feed_url)
-    IO.puts "invalid feed"
-    IO.inspect error
     assert :not_found == error
   end
 end
