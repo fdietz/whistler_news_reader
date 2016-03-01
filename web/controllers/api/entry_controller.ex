@@ -9,19 +9,19 @@ defmodule WhistlerNewsReader.Api.EntryController do
   alias WhistlerNewsReader.Entry
   alias WhistlerNewsReader.Fetcher
 
-  # TODO
+  # TODO: add unit test
   def index(conn, %{"feed_id" => "today", "last_published" => last_published, "limit" => limit} = _params) do
     entries = subscribed_feed_entries(conn) |> Entry.for_today |> load_more(last_published, limit)
     render(conn, "index.json", entries: entries)
   end
 
-  # TODO
+  # TODO: add unit test
   def index(conn, %{"feed_id" => "all", "last_published" => last_published, "limit" => limit} = _params) do
     entries = subscribed_feed_entries(conn) |> load_more(last_published, limit)
     render(conn, "index.json", entries: entries)
   end
 
-  # TODO
+  # TODO: add unit test
   def index(conn, %{"feed_id" => feed_id, "last_published" => last_published, "limit" => limit} = _params) do
     entries = subscribed_feed_entries(conn) |> Entry.for_feed(feed_id) |> load_more(last_published, limit)
     render(conn, "index.json", entries: entries)
@@ -42,19 +42,19 @@ defmodule WhistlerNewsReader.Api.EntryController do
     render(conn, "index.json", entries: entries)
   end
 
-  # TODO
+  # TODO: add unit test
   def refresh(conn, %{"feed_id" => "all"} = _params) do
     Fetcher.refresh_all(subscribed_feeds(conn))
     conn |> send_resp(204, "")
   end
 
-  # TODO
+  # TODO: add unit test
   def refresh(conn, %{"feed_id" => "today"} = _params) do
     Fetcher.refresh_all(subscribed_feeds(conn))
     conn |> send_resp(204, "")
   end
 
-  # TODO
+  # TODO: add unit test
   def refresh(conn, %{"feed_id" => feed_id} = _params) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(String.to_integer(feed_id))
     Fetcher.refresh(feed)
