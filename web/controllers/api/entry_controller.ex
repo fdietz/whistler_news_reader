@@ -7,7 +7,7 @@ defmodule WhistlerNewsReader.Api.EntryController do
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Entry
-  alias WhistlerNewsReader.Fetcher
+  alias WhistlerNewsReader.FeedRefresher
 
   # TODO: add unit test
   def index(conn, %{"feed_id" => "today", "last_published" => last_published, "limit" => limit} = _params) do
@@ -44,20 +44,20 @@ defmodule WhistlerNewsReader.Api.EntryController do
 
   # TODO: add unit test
   def refresh(conn, %{"feed_id" => "all"} = _params) do
-    Fetcher.refresh_all(subscribed_feeds(conn))
+    FeedRefresher.refresh_all(subscribed_feeds(conn))
     conn |> send_resp(204, "")
   end
 
   # TODO: add unit test
   def refresh(conn, %{"feed_id" => "today"} = _params) do
-    Fetcher.refresh_all(subscribed_feeds(conn))
+    FeedRefresher.refresh_all(subscribed_feeds(conn))
     conn |> send_resp(204, "")
   end
 
   # TODO: add unit test
   def refresh(conn, %{"feed_id" => feed_id} = _params) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(String.to_integer(feed_id))
-    Fetcher.refresh(feed)
+    FeedRefresher.refresh(feed)
     conn |> send_resp(204, "")
   end
 

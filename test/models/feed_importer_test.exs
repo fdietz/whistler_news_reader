@@ -1,10 +1,10 @@
-defmodule WhistlerNewsReader.FetcherTest do
+defmodule WhistlerNewsReader.FeedImporterTest do
   use WhistlerNewsReader.ModelCase
 
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Subscription
-  alias WhistlerNewsReader.Fetcher
+  alias WhistlerNewsReader.FeedImporter
   alias WhistlerNewsReader.Entry
 
   @feed_url "http://www.theverge.com/rss/frontpage"
@@ -20,16 +20,16 @@ defmodule WhistlerNewsReader.FetcherTest do
   @invalid_attrs %{}
 
   test "import succeeds" do
-    {:ok, feed_attrs } = Fetcher.import_feed(@feed_url)
+    {:ok, feed_attrs } = FeedImporter.import_with_feed_url(@feed_url)
     assert "http://www.theverge.com/rss/full.xml" == feed_attrs[:id]
   end
 
   test "import fails on HTTP not found error" do
-    {:error, :not_found } = Fetcher.import_feed(@not_existing_feed_url)
+    {:error, :not_found } = FeedImporter.import_with_feed_url(@not_existing_feed_url)
   end
 
   test "import fails on parsing invalid feed" do
-    {:error, error } = Fetcher.import_feed(@invalid_feed_format_feed_url)
+    {:error, error } = FeedImporter.import_with_feed_url(@invalid_feed_format_feed_url)
     assert :not_found == error
   end
 end

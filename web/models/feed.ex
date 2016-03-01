@@ -30,8 +30,9 @@ defmodule WhistlerNewsReader.Feed do
 
   def subscribed_by_user(query, user_id) do
     from p in query,
+    # join condition is handled by ecto for us
     join: c in assoc(p, :subscriptions),
-    where: p.id == c.feed_id and c.user_id == ^user_id
+    where: c.user_id == ^user_id
   end
 
 end

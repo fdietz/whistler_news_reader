@@ -5,15 +5,16 @@ defmodule WhistlerNewsReader.Api.FeedController do
   plug Guardian.Plug.EnsureAuthenticated, handler: WhistlerNewsReader.Api.SessionController
 
   alias WhistlerNewsReader.Feed
-  alias WhistlerNewsReader.Fetcher
+  alias WhistlerNewsReader.FeedImporter
 
   def index(conn, %{} = _params) do
     feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
     render(conn, "index.json", feeds: feeds)
   end
 
+  # TODO: move to feed importer
   def create(conn, %{"feed_url" => feed_url} = _params) do
-    case Fetcher.import_feed(feed_url) do
+    case FeedImporter.import_with_feed_url(feed_url) do
       {:ok, feed_attrs} ->
         try do
           case store_feed_and_user_subscription(conn, feed_attrs, feed_url) do

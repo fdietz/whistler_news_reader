@@ -46,6 +46,7 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     Repo.insert!(%Subscription{feed_id: feed.id, user_id: user.id})
     Repo.insert!(%Subscription{feed_id: feed2.id, user_id: user.id})
 
+    # TODO: fix - 1 day arithmetic
     {{year, month, day}, _ } = :calendar.universal_time()
     entry  = Repo.insert!(%Entry{feed_id: feed.id, title: "test1", published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
     entry2 = Repo.insert!(%Entry{feed_id: feed2.id, title: "test2", published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl})

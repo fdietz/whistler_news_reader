@@ -1,7 +1,7 @@
-defmodule WhistlerNewsReader.ReadEntry do
+defmodule WhistlerNewsReader.UnreadEntry do
   use WhistlerNewsReader.Web, :model
 
-  schema "read_entries" do
+  schema "unread_entries" do
 
     # field :entry_id, :integer
     belongs_to :entry, WhistlerNewsReader.Entry
@@ -13,7 +13,7 @@ defmodule WhistlerNewsReader.ReadEntry do
     timestamps
   end
 
-  @required_fields ~w(entry_id feed_id user_id)
+  @required_fields ~w(entry_id user_id feed_id)
   @optional_fields ~w()
 
   @doc """
