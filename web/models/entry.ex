@@ -80,6 +80,15 @@ defmodule WhistlerNewsReader.Entry do
     from p in query,
     # join condition is handled by ecto for us
     join: c in assoc(p, :unread_entries),
-    where: c.user_id == ^user_id
+    where: c.user_id == ^user_id,
+    preload: [unread_entries: c]
+  end
+
+  def read(query, user_id) do
+    from p in query,
+    # join condition is handled by ecto for us
+    join: c in assoc(p, :read_entries),
+    where: c.user_id == ^user_id,
+    preload: [read_entries: c]
   end
 end

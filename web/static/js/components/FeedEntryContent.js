@@ -3,11 +3,36 @@ import React, {Component, PropTypes} from "react";
 class FeedEntryContent extends Component {
 
   static propTypes = {
-    entry: PropTypes.object//.isRequired
+    entry: PropTypes.object,
+    onEntryShown: PropTypes.func
   };
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    this.initTimer();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.entry.id !== this.props.entry.id) {
+      this.initTimer();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.timeout) clearTimeout(this.timeout);
+  }
+
+  initTimer() {
+    if (this.timeout) clearTimeout(this.timeout);
+
+    if (this.props.entry.unread) {
+      this.timeout = setTimeout(() => {
+        if (this.props.onEntryShown) this.props.onEntryShown(this.props.entry);
+      }, 2000);
+    }
   }
 
   rawContent() {

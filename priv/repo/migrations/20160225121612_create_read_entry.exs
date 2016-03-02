@@ -2,7 +2,7 @@ defmodule WhistlerNewsReader.Repo.Migrations.CreateReadEntry do
   use Ecto.Migration
 
   def change do
-    create table(:read_entries, primary_key: false) do
+    create table(:read_entries) do
       add :entry_id, :integer
       add :feed_id, :integer
       add :user_id, :integer

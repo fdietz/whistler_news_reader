@@ -23,6 +23,11 @@ $item-list-secondary-color: $gray-3;
     background-color: $item-list-hover-bg-color;
   }
 
+  &.unread {
+    .item-row .circle {
+      display: inline-block;
+    }
+  }
 }
 
 .item.no-more-content {
@@ -44,11 +49,22 @@ $item-list-secondary-color: $gray-3;
     display: flex;
     font-size: .8rem;
     color: $item-list-secondary-color;
+    align-items: center;
 
     .feed-title {
       text-overflow: ellipsis;
       white-space: nowrap;
       flex: 1;
+    }
+
+    .circle {
+      display: none;
+      width: 8px;
+      height: 8px;
+      margin: 0 4px;
+      background-color: $orange;
+      border-radius: 50%;
+      transition: all 1s ease-out;
     }
 
     .published {

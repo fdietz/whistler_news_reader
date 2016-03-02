@@ -31,6 +31,7 @@ defmodule WhistlerNewsReader.Router do
 
     resources "/entries", Api.EntryController, only: [:index]
     put "/entries/refresh", Api.EntryController, :refresh
+    put "entries/:id/mark_as_read", Api.EntryController, :mark_as_read
     resources "/feeds", Api.FeedController, only: [:index, :create]
   end
 

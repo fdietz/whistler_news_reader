@@ -8,38 +8,39 @@ defmodule WhistlerNewsReader.Api.EntryController do
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Entry
   alias WhistlerNewsReader.FeedRefresher
+  alias WhistlerNewsReader.StoreEntryHelper
 
   # TODO: add unit test
   def index(conn, %{"feed_id" => "today", "last_published" => last_published, "limit" => limit} = _params) do
     entries = subscribed_feed_entries(conn) |> Entry.for_today |> load_more(last_published, limit)
-    render(conn, "index.json", entries: entries)
+    render(conn, "index.json", entries: entries, current_user: current_user(conn))
   end
 
   # TODO: add unit test
   def index(conn, %{"feed_id" => "all", "last_published" => last_published, "limit" => limit} = _params) do
     entries = subscribed_feed_entries(conn) |> load_more(last_published, limit)
-    render(conn, "index.json", entries: entries)
+    render(conn, "index.json", entries: entries, current_user: current_user(conn))
   end
 
   # TODO: add unit test
   def index(conn, %{"feed_id" => feed_id, "last_published" => last_published, "limit" => limit} = _params) do
     entries = subscribed_feed_entries(conn) |> Entry.for_feed(feed_id) |> load_more(last_published, limit)
-    render(conn, "index.json", entries: entries)
+    render(conn, "index.json", entries: entries, current_user: current_user(conn))
   end
 
   def index(conn, %{"feed_id" => "today"} = _params) do
     entries = subscribed_feed_entries(conn) |> Entry.for_today |> sort_limit_and_preload
-    render(conn, "index.json", entries: entries)
+    render(conn, "index.json", entries: entries, current_user: current_user(conn))
   end
 
   def index(conn, %{"feed_id" => "all"} = _params) do
     entries = subscribed_feed_entries(conn) |> sort_limit_and_preload
-    render(conn, "index.json", entries: entries)
+    render(conn, "index.json", entries: entries, current_user: current_user(conn))
   end
 
   def index(conn, %{"feed_id" => feed_id} = _params) do
     entries = subscribed_feed_entries(conn) |> Entry.for_feed(feed_id) |> sort_limit_and_preload
-    render(conn, "index.json", entries: entries)
+    render(conn, "index.json", entries: entries, current_user: current_user(conn))
   end
 
   # TODO: add unit test
@@ -61,6 +62,17 @@ defmodule WhistlerNewsReader.Api.EntryController do
     conn |> send_resp(204, "")
   end
 
+  # TODO: add unit test
+  def mark_as_read(conn, %{"id" => id}) do
+    entry = Repo.get!(Entry, id)
+    StoreEntryHelper.mark_as_read(current_user(conn), entry)
+    entry = Entry |> Entry.read(current_user(conn).id) |> Repo.get!(id) |> Repo.preload(:feed)
+
+    conn
+    |> put_status(:created)
+    |> render("entry.json", entry: entry, current_user: current_user(conn))
+  end
+
   defp load_more(query, last_published, limit) do
     query |> Entry.gt_last_published(last_published) |> sort_limit_and_preload(limit)
   end
@@ -70,7 +82,7 @@ defmodule WhistlerNewsReader.Api.EntryController do
   end
 
   defp subscribed_feed_entries(conn) do
-    Entry |> Entry.for_feeds(subscribed_feed_ids(conn))
+    Entry |> Entry.for_feeds(subscribed_feed_ids(conn)) |> Entry.unread(current_user(conn).id)
   end
 
   defp subscribed_feed_ids(conn) do

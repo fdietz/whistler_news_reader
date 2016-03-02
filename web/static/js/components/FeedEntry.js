@@ -8,6 +8,7 @@ export default class FeedEntry extends Component {
     published: PropTypes.string.isRequired,
     feed: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
+    unread: PropTypes.bool.isRequired,
     summary: PropTypes.string,
     onClick: PropTypes.func.isRequired,
     isSelected: PropTypes.bool.isRequired
@@ -42,10 +43,11 @@ export default class FeedEntry extends Component {
   }
 
   render() {
-    const { isSelected, onClick, feed, title, summary } = this.props;
+    const { isSelected, onClick, feed, title, summary, unread } = this.props;
     let cls = classNames({
       item: true,
-      selected: isSelected
+      selected: isSelected,
+      unread: unread
     });
 
     return (
@@ -53,6 +55,7 @@ export default class FeedEntry extends Component {
         <div className="item-row">
           <div className="meta">
             <div className="feed-title">{feed.title}</div>
+            <span className="circle"></span>
             <span className="published">{this.publishedRelativeDateTime()}</span>
           </div>
           <div className="entry-title">{title}</div>

@@ -26,4 +26,19 @@ defmodule WhistlerNewsReader.UnreadEntry do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
+  def for_feed(query, feed_id) do
+    from p in query,
+    where: p.feed_id == ^feed_id
+  end
+
+  def for_user(query, user_id) do
+    from p in query,
+    where: p.user_id == ^user_id
+  end
+
+  def for_entry(query, entry_id) do
+    from p in query,
+    where: p.entry_id == ^entry_id
+  end
 end

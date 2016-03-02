@@ -25,4 +25,14 @@ defmodule WhistlerNewsReader.Subscription do
     |> cast(params, @required_fields, @optional_fields)
     |> unique_constraint(:feed_id, name: :subscriptions_feed_id_user_id_index)
   end
+
+  def for_feed(query, feed_id) do
+    from p in query,
+    where: p.feed_id == ^feed_id
+  end
+
+  def for_user(query, user_id) do
+    from p in query,
+    where: p.user_id == ^user_id
+  end
 end

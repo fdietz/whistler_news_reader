@@ -19,7 +19,8 @@ import FeedEntryContent from "../components/FeedEntryContent";
 import {
   requestFetchEntries,
   requestFetchMoreEntries,
-  requestRefreshEntries
+  requestRefreshEntries,
+  requestMarkEntryAsRead
 } from "../redux/modules/entries";
 
 import { requestCreateFeed } from "../redux/modules/createFeed";
@@ -55,6 +56,7 @@ class Entries extends Component {
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
     this.handleNewFeedChange = this.handleNewFeedChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.handleEntryShown = this.handleEntryShown.bind(this);
   }
 
   componentDidMount() {
@@ -155,12 +157,23 @@ class Entries extends Component {
     this.closeNewFeedModal();
   }
 
+  handleEntryShown(entry) {
+    console.log("handleEntryShown", entry)
+
+    const { dispatch} = this.props;
+    dispatch(requestMarkEntryAsRead(entry));
+  }
+
   render() {
     const { dispatch, entries, currentEntry } = this.props;
 
     let content;
     if (currentEntry) {
-      content = (<FeedEntryContent entry={currentEntry}/>);
+      content = (
+        <FeedEntryContent
+          entry={currentEntry}
+          onEntryShown={this.handleEntryShown}/>
+      );
     }
 
     let items = (<FeedEntryList
