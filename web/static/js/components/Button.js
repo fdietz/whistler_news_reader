@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from "react";
 
 export default class Button extends Component {
 
-  static PropTypes = {
-    children: PropTypes.node.isRequired,
-    type: PropTypes.string.isRequired,
+  static propTypes = {
+    children: PropTypes.node,
+    type: PropTypes.string,
     onClick: PropTypes.func
   };
 
