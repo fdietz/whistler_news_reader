@@ -1,3 +1,5 @@
+/*eslint no-undefined: 0*/
+
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import nock from "nock";
