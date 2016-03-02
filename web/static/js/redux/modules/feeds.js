@@ -1,11 +1,11 @@
 import axios from "axios";
 import { createAction } from "redux-actions";
 
-const UPDATE_FEED = "UPDATE_FEED";
-const REMOVE_FEED = "REMOVE_FEED";
+export const UPDATE_FEED = "UPDATE_FEED";
+export const REMOVE_FEED = "REMOVE_FEED";
 
-const FETCH_FEEDS = "FETCH_FEEDS";
-const ADD_FEED    = "ADD_FEED";
+export const FETCH_FEEDS = "FETCH_FEEDS";
+export const ADD_FEED    = "ADD_FEED";
 
 export const addFeed    = createAction(ADD_FEED);
 export const updateFeed = createAction(UPDATE_FEED);

@@ -2,10 +2,10 @@ import axios from "axios";
 import { createAction } from "redux-actions";
 import { createNotification, resetNotification } from "./notification";
 
-const FETCH_ENTRIES      = "FETCH_ENTRIES";
-const FETCH_MORE_ENTRIES = "FETCH_MORE_ENTRIES";
-const REFRESH_ENTRIES    = "REFRESH_ENTRIES";
-const UPDATE_ENTRY       = "UPDATE_ENTRY";
+export const FETCH_ENTRIES      = "FETCH_ENTRIES";
+export const FETCH_MORE_ENTRIES = "FETCH_MORE_ENTRIES";
+export const REFRESH_ENTRIES    = "REFRESH_ENTRIES";
+export const UPDATE_ENTRY       = "UPDATE_ENTRY";
 
 export const fetchEntries     = createAction(FETCH_ENTRIES);
 export const fetchMoreEntries = createAction(FETCH_MORE_ENTRIES);

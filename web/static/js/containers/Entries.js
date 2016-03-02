@@ -152,7 +152,7 @@ class Entries extends Component {
   submitForm(event) {
     const { dispatch} = this.props;
     event.preventDefault();
-    dispatch(requestCreateFeed(this.state.feedUrl));
+    dispatch(requestCreateFeed(this.state.feedUrl, { refreshEntries: true }));
     this.setState({ feedUrl: "" });
     this.closeNewFeedModal();
   }
