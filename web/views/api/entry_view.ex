@@ -40,6 +40,7 @@ defmodule WhistlerNewsReader.Api.EntryView do
     }
   end
 
+  # TODO: n+1 query! Refactor using eager loading of unread_entries association instead
   defp unread?(entry, current_user) do
     unread_entries = UnreadEntry |> UnreadEntry.for_entry(entry.id) |> UnreadEntry.for_user(current_user.id) |> Repo.all
     Enum.any?(unread_entries, fn(e) -> e.entry_id == entry.id end)
