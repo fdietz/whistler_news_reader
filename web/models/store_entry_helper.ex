@@ -9,7 +9,7 @@ defmodule WhistlerNewsReader.StoreEntryHelper do
   def store_entry(feed, entry) do
     published = entry[:updated] |> convert_to_ecto_date_time
     guid = generate_guid(feed.feed_url, entry[:id], published, entry[:title])
-    text_content = Floki.text(entry[:content] || entry[:description])
+    text_content = Floki.text(entry[:content] || entry[:description] || "")
 
     result = %{
       feed_id: feed.id,

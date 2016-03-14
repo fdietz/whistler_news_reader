@@ -14,13 +14,11 @@ export function requestCreateFeed(feedUrl) {
       { feed_url: feedUrl },
       { headers: { Authorization: AuthToken.getToken() }})
       .then((response) => {
-        // update form data
         dispatch(createFeed({ item: response.data }));
-
-        return response.data;
       })
       .catch((response) => {
-        return dispatch(createFeed(new Error(response.data.error)));
+        console.log("response.data.errors", response.data.errors)
+        dispatch(createFeed({ errors: response.data.errors }));
       });
   };
 }
@@ -36,10 +34,11 @@ const initial = {
 //   error: reason
 // }
 export default function reducer(state = initial, action) {
+  console.log("-------", action)
   if (action.type === CREATE_FEED) {
-    if (action.error) {
+    if (action.payload.errors) {
       return Object.assign({}, state, {
-        error: action.payload.message
+        errors: action.payload.errors
       });
     } else if (action.payload) {
       return Object.assign({}, state, {

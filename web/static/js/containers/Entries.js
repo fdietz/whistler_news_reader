@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-// import { pushState } from "redux-router";
-import { push } from "react-router-redux";
 import Modal from "react-modal";
 
 import LayoutPane from "../components/LayoutPane";
@@ -24,10 +22,8 @@ import {
   requestMarkEntryAsRead
 } from "../redux/modules/entries";
 
-import { addFeed } from "../redux/modules/feeds";
-
-import { requestCreateFeed } from "../redux/modules/createFeed";
 import { selectEntry } from "../redux/modules/currentEntry";
+import createFeedAction from "../redux/actions/createFeedAction";
 
 class Entries extends Component {
 
@@ -38,6 +34,7 @@ class Entries extends Component {
       isLoading: PropTypes.bool.isRequired,
       error: PropTypes.string
     }).isRequired,
+    createFeed: PropTypes.object,
     currentEntry: PropTypes.object,
     location: PropTypes.object.isRequired
   };
@@ -134,11 +131,6 @@ class Entries extends Component {
     return this.currentIndex()-1 >= 0;
   }
 
-  // createFeed() {
-  //   const { dispatch } = this.props;
-  //   dispatch(pushState({ modal: true, returnTo: this.props.location.pathname }, "/feeds/new"));
-  // }
-
   openNewFeedModal() {
     this.setState({ newFeedModalIsOpen: true });
   }
@@ -156,17 +148,10 @@ class Entries extends Component {
     const { dispatch} = this.props;
     event.preventDefault();
 
-    dispatch(requestCreateFeed(this.state.feedUrl, { refreshEntries: true }))
-    .then((feed) => {
+    dispatch(createFeedAction(this.state.feedUrl)).then(() => {
       this.setState({ feedUrl: "" });
       this.closeNewFeedModal();
-
-      // navigate to new feed
-      dispatch(push(`/feeds/${feed.id}`));
-      // refresh feed entries
-      dispatch(requestRefreshEntries({ feed_id: feed.id }));
-      // update sidebar feed list
-      dispatch(addFeed({ items: [feed] }));
+    }).catch((reason) => {
     });
   }
 
@@ -294,7 +279,9 @@ class Entries extends Component {
                 value={this.state.feedUrl}
                 onChange={(event) => this.handleNewFeedChange(event)}
                 autoFocus={true}/>
-              {/*{error}*/}
+              {this.props.createFeed && this.props.createFeed.errors && this.props.createFeed.errors[0]["feed_url"] &&
+                <p>Error creating feed: {this.props.createFeed.errors[0]["feed_url"]}</p>
+              }
             </form>
           </div>
 
@@ -318,6 +305,7 @@ function mapStateToProps(state, ownProps) {
   return {
     entries: state.entries,
     currentEntry: state.currentEntry,
+    createFeed: state.createFeed,
     location: ownProps.location
   };
 }
