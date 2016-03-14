@@ -57,7 +57,7 @@ defmodule WhistlerNewsReader.Api.EntryController do
 
   # TODO: add unit test
   def refresh(conn, %{"feed_id" => feed_id} = _params) do
-    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(String.to_integer(feed_id))
+    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed_id)
     FeedRefresher.refresh(feed)
     conn |> send_resp(204, "")
   end

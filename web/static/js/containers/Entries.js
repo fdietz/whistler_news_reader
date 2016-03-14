@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { pushState } from "redux-router";
+// import { pushState } from "redux-router";
+import { push } from "react-router-redux";
 import Modal from "react-modal";
 
 import LayoutPane from "../components/LayoutPane";
@@ -22,6 +23,8 @@ import {
   requestRefreshEntries,
   requestMarkEntryAsRead
 } from "../redux/modules/entries";
+
+import { addFeed } from "../redux/modules/feeds";
 
 import { requestCreateFeed } from "../redux/modules/createFeed";
 import { selectEntry } from "../redux/modules/currentEntry";
@@ -51,7 +54,7 @@ class Entries extends Component {
     this.refreshEntries = this.refreshEntries.bind(this);
     this.nextEntry = this.nextEntry.bind(this);
     this.previousEntry = this.previousEntry.bind(this);
-    this.createFeed = this.createFeed.bind(this);
+    // this.createFeed = this.createFeed.bind(this);
     this.openNewFeedModal = this.openNewFeedModal.bind(this);
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
     this.handleNewFeedChange = this.handleNewFeedChange.bind(this);
@@ -131,10 +134,10 @@ class Entries extends Component {
     return this.currentIndex()-1 >= 0;
   }
 
-  createFeed() {
-    const { dispatch } = this.props;
-    dispatch(pushState({ modal: true, returnTo: this.props.location.pathname }, "/feeds/new"));
-  }
+  // createFeed() {
+  //   const { dispatch } = this.props;
+  //   dispatch(pushState({ modal: true, returnTo: this.props.location.pathname }, "/feeds/new"));
+  // }
 
   openNewFeedModal() {
     this.setState({ newFeedModalIsOpen: true });
@@ -152,14 +155,22 @@ class Entries extends Component {
   submitForm(event) {
     const { dispatch} = this.props;
     event.preventDefault();
-    dispatch(requestCreateFeed(this.state.feedUrl, { refreshEntries: true }));
-    this.setState({ feedUrl: "" });
-    this.closeNewFeedModal();
+
+    dispatch(requestCreateFeed(this.state.feedUrl, { refreshEntries: true }))
+    .then((feed) => {
+      this.setState({ feedUrl: "" });
+      this.closeNewFeedModal();
+
+      // navigate to new feed
+      dispatch(push(`/feeds/${feed.id}`));
+      // refresh feed entries
+      dispatch(requestRefreshEntries({ feed_id: feed.id }));
+      // update sidebar feed list
+      dispatch(addFeed({ items: [feed] }));
+    });
   }
 
   handleEntryShown(entry) {
-    console.log("handleEntryShown", entry)
-
     const { dispatch} = this.props;
     dispatch(requestMarkEntryAsRead(entry));
   }
