@@ -55,7 +55,6 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
     assert json_response(conn, 201)
     feed_id = json_response(conn, 201)["id"]
     assert Repo.get!(Feed, feed_id)
-    assert Repo.get_by!(Subscription, feed_id: feed_id)
   end
 
   test "POST /api/feeds fails if feed exists already", %{conn: conn, jwt: jwt} do

@@ -13,11 +13,23 @@ defmodule WhistlerNewsReader.Api.FeedController do
   end
 
   def create(conn, %{"feed_url" => feed_url} = _params) do
-    case FeedImporter.import_feed(current_user(conn), feed_url) do
-      {:ok, feed} ->
-        conn
-        |> put_status(:created)
-        |> render("feed.json", feed: feed)
+    case FeedImporter.import_feed(feed_url) do
+      {:ok, feed_attrs} ->
+        changeset = Feed.changeset(%Feed{}, %{
+          title: feed_attrs.title,
+          feed_url: feed_url,
+          site_url: feed_attrs.url
+        })
+        case Repo.insert(changeset) do
+          {:ok, feed} ->
+            conn
+            |> put_status(:created)
+            |> render("feed.json", feed: feed)
+          {:error, changeset} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> render(WhistlerNewsReader.Api.ErrorView, "error.json", changeset: changeset)
+        end
       {:error, :not_found} ->
         conn
         |> put_status(:not_found)
