@@ -17,16 +17,11 @@ defmodule WhistlerNewsReader.Api.FeedController do
   def create(conn, %{"feed_url" => feed_url} = _params) do
     case FeedImporter.import_feed(feed_url) do
       {:ok, feed_attrs} ->
-        changeset = Feed.changeset(%Feed{}, %{
-          title: feed_attrs.title,
-          feed_url: feed_url,
-          site_url: feed_attrs.url
-        })
-        case Repo.insert(changeset) do
+        case save_feed(feed_url, feed_attrs) do
           {:ok, feed} ->
             conn
             |> put_status(:created)
-            |> render("feed.json", feed: feed)
+            |> render("created_feed.json", feed: feed)
           {:error, changeset} ->
             conn
             |> put_status(:unprocessable_entity)
@@ -36,22 +31,17 @@ defmodule WhistlerNewsReader.Api.FeedController do
         conn
         |> put_status(:not_found)
         |> render(WhistlerNewsReader.Api.ErrorView, "not_found.json")
-      {:error, changeset} ->
-        conn
-        |> put_status(:unprocessable_entity)
-        |> render(WhistlerNewsReader.Api.ErrorView, "error.json", changeset: changeset)
     end
   end
 
-  # only delete subscription, keep feed
-  # def delete(conn, %{"id" => feed_id}) do
-  #   subscriptions = Subscription |> Subscription.for_feed(feed_id) |> Subscription.for_user(current_user(conn).id) |> Repo.all
-  #   Enum.each(subscriptions, fn(s) ->
-  #     Repo.delete!(s)
-  #   end)
-  #
-  #   conn |> put_status(204)
-  # end
+  defp save_feed(feed_url, feed_attrs) do
+    changeset = Feed.changeset(%Feed{}, %{
+      title: feed_attrs.title,
+      feed_url: feed_url,
+      site_url: feed_attrs.url
+    })
+    Repo.insert(changeset)
+  end
 
   defp current_user(conn) do
     Guardian.Plug.current_resource(conn)

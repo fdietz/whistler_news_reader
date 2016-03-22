@@ -152,10 +152,12 @@ class Entries extends Component {
     const { dispatch} = this.props;
     event.preventDefault();
 
-    dispatch(createFeedAction(this.state.feedUrl)).then(() => {
-      this.setState({ feedUrl: "" });
-      this.closeNewFeedModal();
-    }).catch((reason) => {
+    dispatch(createFeedAction(this.state.feedUrl)).then((result) => {
+      console.log("result", result)
+      if (!result.errors) {
+        this.setState({ feedUrl: "" });
+        this.closeNewFeedModal();
+      }
     });
   }
 
