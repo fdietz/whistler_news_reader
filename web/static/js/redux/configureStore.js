@@ -6,11 +6,10 @@ import createLogger from "redux-logger";
 import rootReducer from "./rootReducer";
 
 export default function configureStore(initialState = {}) {
-
   // Sync dispatched route actions to the history
   const reduxRouterMiddleware = syncHistory(browserHistory);
   const logger = createLogger();
-  
+
   // Compose final middleware and use devtools in debug environment
   let middleware = applyMiddleware(thunk, reduxRouterMiddleware, logger);
 

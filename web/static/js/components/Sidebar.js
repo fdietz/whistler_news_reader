@@ -12,16 +12,29 @@ class Sidebar extends Component {
 
   static propTypes = {
     feeds: PropTypes.array.isRequired,
-    currentPathname: PropTypes.string.isRequired
+    currentPathname: PropTypes.string.isRequired,
+    onRemoveClick: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
   }
 
-  renderFeedLink(feed, index) {
-    const feedLink = `/feeds/${feed.id}`;
-    return this.renderLink(feed.title, feedLink, index);
+  renderRemoveableLink(feed, index) {
+    const { currentPathname, onRemoveClick } = this.props;
+    const key = index || feed.title;
+    const path = `/feeds/${feed.id}`;
+
+    let cls = classNames({
+      active: path === currentPathname
+    });
+
+    return (
+      <li className="sidebar-nav-list-item" key={key}>
+        <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
+        <a href="#" className="removable" onClick={onRemoveClick.bind(this, feed)}>x</a>
+      </li>
+    );
   }
 
   renderLink(label, path, index = null) {
@@ -57,7 +70,7 @@ class Sidebar extends Component {
           <h4 className="sidebar-nav-header">Subscriptions</h4>
           <ul className="sidebar-nav-list">
             {feeds.map((feed, index) => {
-              return this.renderFeedLink(feed, index);
+              return this.renderRemoveableLink(feed, index);
             })}
           </ul>
         </div>

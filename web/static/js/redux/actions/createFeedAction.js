@@ -1,12 +1,16 @@
 import { push } from "react-router-redux";
 
 import { requestCreateFeed } from "../modules/createFeed";
+import { requestCreateSubscription } from "../modules/createFeed";
 import { requestRefreshEntries } from "../modules/entries";
 import { addFeed } from "../modules/feeds";
 
 export default function createFeedAction(feedUrl) {
   return (dispatch, getState) => {
-    return dispatch(requestCreateFeed(feedUrl))
+    dispatch(requestCreateFeed(feedUrl))
+    .then((feed) => {
+      dispatch(requestCreateSubscription(feed.id))
+    })
     .then(() => {
       if (getState().createFeed.error) {
         return Promise.reject(getState().createFeed.error);

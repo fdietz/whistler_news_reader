@@ -32,7 +32,8 @@ defmodule WhistlerNewsReader.Feed do
     from p in query,
     # join condition is handled by ecto for us
     join: c in assoc(p, :subscriptions),
-    where: c.user_id == ^user_id
+    where: c.user_id == ^user_id,
+    preload: [subscriptions: c]
   end
 
 end

@@ -6,9 +6,11 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.FeedImporter
+  alias WhistlerNewsReader.Subscription
 
   def index(conn, %{} = _params) do
     feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
+    IO.inspect feeds
     render(conn, "index.json", feeds: feeds)
   end
 
@@ -40,6 +42,16 @@ defmodule WhistlerNewsReader.Api.FeedController do
         |> render(WhistlerNewsReader.Api.ErrorView, "error.json", changeset: changeset)
     end
   end
+
+  # only delete subscription, keep feed
+  # def delete(conn, %{"id" => feed_id}) do
+  #   subscriptions = Subscription |> Subscription.for_feed(feed_id) |> Subscription.for_user(current_user(conn).id) |> Repo.all
+  #   Enum.each(subscriptions, fn(s) ->
+  #     Repo.delete!(s)
+  #   end)
+  #
+  #   conn |> put_status(204)
+  # end
 
   defp current_user(conn) do
     Guardian.Plug.current_resource(conn)

@@ -9,6 +9,8 @@ import { requestFetchFeeds } from "../redux/modules/feeds";
 import Sidebar from "../components/Sidebar";
 import Notification from "../components/Notification";
 
+import { requestRemoveFeed } from "../redux/modules/feeds";
+
 class AuthenticatedContainer extends Component {
 
   static propTypes = {
@@ -31,11 +33,17 @@ class AuthenticatedContainer extends Component {
     super(props);
 
     this.handleSignOut = this.handleSignOut.bind(this);
+    this.handleOnRemove = this.handleOnRemove.bind(this);
   }
 
   handleSignOut() {
     const { dispatch } = this.props;
     dispatch(requestSignOut());
+  }
+
+  handleOnRemove(feed) {
+    const { dispatch } = this.props;
+    dispatch(requestRemoveFeed(feed.subscription_id));
   }
 
   componentDidMount() {
@@ -55,7 +63,10 @@ class AuthenticatedContainer extends Component {
 
     return (
       <div className="authenticated-container">
-        <Sidebar feeds={feeds.items} currentPathname={currentPath}/>
+        <Sidebar
+          feeds={feeds.items}
+          currentPathname={currentPath}
+          onRemoveClick={this.handleOnRemove}/>
 
         {notification &&
           <Notification {...notification}/>

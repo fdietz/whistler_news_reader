@@ -24,6 +24,7 @@ import {
 
 import { selectEntry } from "../redux/modules/currentEntry";
 import createFeedAction from "../redux/actions/createFeedAction";
+import { createFeedResetForm } from "../redux/modules/createFeed";
 
 class Entries extends Component {
 
@@ -136,8 +137,11 @@ class Entries extends Component {
   }
 
   closeNewFeedModal(event) {
+    const { dispatch } = this.props;
+
     this.setState({ newFeedModalIsOpen: false });
     if (event) event.preventDefault();
+    dispatch(createFeedResetForm());
   }
 
   handleNewFeedChange(event) {
@@ -279,8 +283,13 @@ class Entries extends Component {
                 value={this.state.feedUrl}
                 onChange={(event) => this.handleNewFeedChange(event)}
                 autoFocus={true}/>
-              {this.props.createFeed && this.props.createFeed.errors && this.props.createFeed.errors[0]["feed_url"] &&
-                <p>Error creating feed: {this.props.createFeed.errors[0]["feed_url"]}</p>
+              {this.props.createFeed &&
+                this.props.createFeed.errors &&
+                this.props.createFeed.errors[0]["feed_url"] &&
+                <p>
+                  Error creating feed:
+                  {this.props.createFeed.errors[0]["feed_url"]}
+                </p>
               }
             </form>
           </div>

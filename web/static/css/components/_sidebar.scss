@@ -56,15 +56,32 @@ $sidebar-color: $gray;
 .sidebar-nav-list {
   padding: 0;
   margin: 0 0 $space-3;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-nav-list-item {
+  display: flex;
+  align-items: center;
+  flex: 1 1;
   margin: 0;
   list-style: none;
 
+  &:hover {
+    background-color: $darken-3;
+  }
+
+  &.active {
+    color: #fff;
+    background-color: $blue;
+  }
+
   a {
     position: relative;
-    display: block;
+    // flex: 1 1;
+    width: 100%;
+    // display: block;
 
     padding: 4px $space-2;
     margin-right: -$space-2;
@@ -74,15 +91,16 @@ $sidebar-color: $gray;
     color: $sidebar-color;
     text-decoration: none;
 
-    &:hover {
-      background-color: $darken-3;
-    }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-    &.active {
-      color: #fff;
-      background-color: $blue;
-    }
 
+  }
+
+  .removable {
+    width: 20px;
+    margin-left: auto;
   }
 
 }
