@@ -30,7 +30,7 @@ class Sidebar extends Component {
     });
 
     return (
-      <li className="sidebar-nav-list-item" key={key}>
+      <li className="sidebar-nav-list__item" key={key}>
         <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
         <a href="#" className="removable" onClick={onRemoveClick.bind(this, feed)}>x</a>
       </li>
@@ -46,7 +46,7 @@ class Sidebar extends Component {
     });
 
     return (
-      <li className="sidebar-nav-list-item" key={key}>
+      <li className="sidebar-nav-list__item" key={key}>
         <Link to={path} className={cls}>{label}</Link>
       </li>
     );

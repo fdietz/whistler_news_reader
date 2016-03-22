@@ -61,15 +61,19 @@ $sidebar-color: $gray;
   flex-direction: column;
 }
 
-.sidebar-nav-list-item {
+.sidebar-nav-list__item {
   display: flex;
-  align-items: center;
-  flex: 1 1;
   margin: 0;
   list-style: none;
+  align-items: center;
+  flex: 1 1;
 
   &:hover {
     background-color: $darken-3;
+
+    .removable {
+      visibility: visible;
+    }
   }
 
   &.active {
@@ -79,28 +83,25 @@ $sidebar-color: $gray;
 
   a {
     position: relative;
-    // flex: 1 1;
     width: 100%;
-    // display: block;
 
     padding: 4px $space-2;
     margin-right: -$space-2;
     margin-left: -$space-2;
 
+    overflow: hidden;
     font-size: 1rem;
     color: $sidebar-color;
     text-decoration: none;
 
-    white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
-
-
+    white-space: nowrap;
   }
 
   .removable {
     width: 20px;
     margin-left: auto;
+    visibility: hidden;
   }
 
 }
