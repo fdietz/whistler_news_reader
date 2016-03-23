@@ -97,6 +97,10 @@ $sidebar-color: $gray;
 
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    &.active {
+      color: #fff;
+    }
   }
 
   .removable {
