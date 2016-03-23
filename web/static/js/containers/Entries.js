@@ -153,7 +153,6 @@ class Entries extends Component {
     event.preventDefault();
 
     dispatch(createFeedAction(this.state.feedUrl)).then((result) => {
-      console.log("result", result)
       if (!result.errors) {
         this.setState({ feedUrl: "" });
         this.closeNewFeedModal();

@@ -13,24 +13,11 @@ export function requestCreateFeed(feedUrl) {
     { headers: { Authorization: AuthToken.getToken() }});
 }
 
-export function requestCreateSubscription(feedId) {
-  return axios.post("http://localhost:4000/api/subscriptions",
-    { feed_id: feedId },
-    { headers: { Authorization: AuthToken.getToken() }});
-}
-
 export default function createFeedAction(feedUrl) {
-  let feed = null;
-  return (dispatch, getState) => {
-    return requestCreateFeed(feedUrl)
-    .then((response) => {
-      console.log("create feed", response.data)
-      feed = response.data;
-      return requestCreateSubscription(response.data.id);
-    }).
+  return (dispatch) => {
+    return requestCreateFeed(feedUrl).
     then((response) => {
-      console.log("done", response.data)
-
+      const feed = response.data;
       // navigate to new feed
       dispatch(push(`/feeds/${feed.id}`));
       // refresh feed entries
@@ -41,7 +28,6 @@ export default function createFeedAction(feedUrl) {
       return response.data;
     }).
     catch((response) => {
-      console.log("createFeedAction", response)
       dispatch(createFeed({ errors: response.data.errors }));
       return response.data;
     });

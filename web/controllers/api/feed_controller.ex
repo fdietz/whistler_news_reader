@@ -15,32 +15,20 @@ defmodule WhistlerNewsReader.Api.FeedController do
   end
 
   def create(conn, %{"feed_url" => feed_url} = _params) do
-    case FeedImporter.import_feed(feed_url) do
-      {:ok, feed_attrs} ->
-        case save_feed(feed_url, feed_attrs) do
-          {:ok, feed} ->
-            conn
-            |> put_status(:created)
-            |> render("created_feed.json", feed: feed)
-          {:error, changeset} ->
-            conn
-            |> put_status(:unprocessable_entity)
-            |> render(WhistlerNewsReader.Api.ErrorView, "error.json", changeset: changeset)
-        end
+    case FeedImporter.import_feed(current_user(conn), feed_url) do
+      {:ok, feed} ->
+        conn
+        |> put_status(:created)
+        |> render("created_feed.json", feed: feed)
       {:error, :not_found} ->
         conn
         |> put_status(:not_found)
         |> render(WhistlerNewsReader.Api.ErrorView, "not_found.json")
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(WhistlerNewsReader.Api.ErrorView, "error.json", changeset: changeset)
     end
-  end
-
-  defp save_feed(feed_url, feed_attrs) do
-    changeset = Feed.changeset(%Feed{}, %{
-      title: feed_attrs.title,
-      feed_url: feed_url,
-      site_url: feed_attrs.url
-    })
-    Repo.insert(changeset)
   end
 
   defp current_user(conn) do

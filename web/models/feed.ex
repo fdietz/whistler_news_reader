@@ -36,4 +36,8 @@ defmodule WhistlerNewsReader.Feed do
     preload: [subscriptions: c]
   end
 
+  def for_feed_url(query, feed_url) do
+    from p in query,
+    where: p.feed_url == ^feed_url
+  end
 end
