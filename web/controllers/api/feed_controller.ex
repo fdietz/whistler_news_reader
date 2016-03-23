@@ -35,8 +35,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
     Repo.delete!(List.first(feed.subscriptions))
 
     conn
-    |> put_status(204)
-    |> render("feed.json", feed: feed)
+    |> send_resp(204, "")
   end
 
   defp current_user(conn) do
