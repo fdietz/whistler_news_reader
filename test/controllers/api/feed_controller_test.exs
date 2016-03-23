@@ -72,4 +72,12 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
 
     assert json_response(conn, 404)
   end
+
+  test "DELETE /api/feeds/:id succeeds", %{conn: conn, jwt: jwt, feed: feed} do
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = delete conn, feed_path(conn, :delete, feed.id)
+
+    assert json_response(conn, 204)
+    refute Repo.get_by(Subscription, feed_id: feed.id)
+  end
 end

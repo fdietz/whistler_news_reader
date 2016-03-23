@@ -9,7 +9,6 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
   def index(conn, %{} = _params) do
     feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
-    IO.inspect feeds
     render(conn, "index.json", feeds: feeds)
   end
 
