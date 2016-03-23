@@ -43,7 +43,7 @@ class AuthenticatedContainer extends Component {
 
   handleOnRemove(feed) {
     const { dispatch } = this.props;
-    dispatch(requestRemoveFeed(feed.subscription_id));
+    dispatch(requestRemoveFeed(feed.id));
   }
 
   componentDidMount() {

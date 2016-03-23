@@ -28,12 +28,12 @@ export function requestFetchFeeds() {
   };
 }
 
-export function requestRemoveFeed(subscriptionId) {
+export function requestRemoveFeed(feedId) {
   return dispatch => {
-    axios.delete(`http://localhost:4000/api/subscriptions/${subscriptionId}`,
+    axios.delete(`http://localhost:4000/api/feeds/${feedId}`,
       { headers: { Authorization: AuthToken.getToken() }})
-    .then((response) => {
-      dispatch(removeFeed({ subscription_id: subscriptionId }));
+    .then(() => {
+      dispatch(removeFeed({ id: feedId }));
     })
     .catch((response) => {
       dispatch(removeFeed(new Error(response.data.error)));
@@ -79,7 +79,7 @@ export default function reducer(state = initial, action) {
   case REMOVE_FEED:
     if (action.payload) {
       const index = state.items.findIndex((element, i) => {
-        if (element.subscription_id === action.payload.subscription_id) {
+        if (element.id === action.payload.id) {
           return true;
         }
 

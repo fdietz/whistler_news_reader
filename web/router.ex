@@ -32,8 +32,8 @@ defmodule WhistlerNewsReader.Router do
     resources "/entries", Api.EntryController, only: [:index]
     put "/entries/refresh", Api.EntryController, :refresh
     put "entries/:id/mark_as_read", Api.EntryController, :mark_as_read
-    resources "/feeds", Api.FeedController, only: [:index, :create]
-    resources "/subscriptions", Api.SubscriptionController, only: [:create, :delete]
+    resources "/feeds", Api.FeedController, only: [:index, :create, :delete]
+    # resources "/subscriptions", Api.SubscriptionController, only: [:create, :delete]
   end
 
   scope "/", WhistlerNewsReader do

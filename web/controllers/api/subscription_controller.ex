@@ -19,14 +19,6 @@ defmodule WhistlerNewsReader.Api.SubscriptionController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    subscription = Repo.get!(Subscription, id)
-    Repo.delete!(subscription)
-    conn
-    |> put_status(204)
-    |> render("show.json", subscription: subscription)
-  end
-
   defp current_user(conn) do
     Guardian.Plug.current_resource(conn)
   end
