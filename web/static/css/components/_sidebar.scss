@@ -54,17 +54,17 @@ $sidebar-color: $gray;
 }
 
 .sidebar-nav-list {
+  display: flex;
   padding: 0;
   margin: 0 0 $space-3;
 
-  display: flex;
   flex-direction: column;
 }
 
 .sidebar-nav-list__item {
   display: flex;
-  margin: 0 -1rem;
   padding: 0 $space-2;
+  margin: 0 -1rem;
   list-style: none;
   align-items: center;
   flex: 1 1;
@@ -75,11 +75,6 @@ $sidebar-color: $gray;
     .removable {
       visibility: visible;
     }
-  }
-
-  &.active {
-    color: #fff;
-    background-color: $blue;
   }
 
   a {
