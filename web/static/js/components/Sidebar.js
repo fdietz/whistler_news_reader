@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from "react";
 import { Link } from "react-router";
 import classNames from "classnames";
 
+import Icon from "../components/Icon";
 import imageProfile from "../../assets/images/profile.jpg";
 
 // import imageArrowDown from "../../assets/images/arrow-down.svg";
@@ -32,7 +33,9 @@ class Sidebar extends Component {
     return (
       <li className="sidebar-nav-list__item" key={key}>
         <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
-        <a href="#" className="removable" onClick={onRemoveClick.bind(this, feed)}>x</a>
+        <a href="#" className="removable" onClick={onRemoveClick.bind(this, feed)}>
+          <Icon name="cross" size="small"/>
+        </a>
       </li>
     );
   }
