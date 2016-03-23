@@ -43,8 +43,10 @@ defmodule WhistlerNewsReader.FeedImporterTest do
     assert :not_found == error
   end
 
-  test "import_feed succeeds" do
-    {:ok, feed_attrs } = FeedImporter.import_feed(@feed_url)
-    assert "http://www.theverge.com/" == feed_attrs.url
+  test "import_feed succeeds", %{user: user} do
+    {:ok, feed } = FeedImporter.import_feed(user, @feed_url)
+    assert Repo.get_by!(Subscription, feed_id: feed.id)
+    assert "http://www.theverge.com/" == feed.site_url
+    assert "http://www.theverge.com/rss/frontpage" == feed.feed_url
   end
 end

@@ -6,7 +6,6 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.FeedImporter
-  alias WhistlerNewsReader.Subscription
 
   def index(conn, %{} = _params) do
     feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
