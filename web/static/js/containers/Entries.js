@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import Modal from "react-modal";
+import { push } from "react-router-redux";
 
 import LayoutPane from "../components/LayoutPane";
 import LayoutHeader from "../components/LayoutHeader";
 import LayoutContent from "../components/LayoutContent";
 import LayoutMasterSplit from "../components/LayoutMasterSplit";
+
+import NewFeedForm from "../containers/NewFeedForm";
 
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
@@ -55,8 +57,8 @@ class Entries extends Component {
     // this.createFeed = this.createFeed.bind(this);
     this.openNewFeedModal = this.openNewFeedModal.bind(this);
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
-    this.handleNewFeedChange = this.handleNewFeedChange.bind(this);
-    this.submitForm = this.submitForm.bind(this);
+    // this.handleNewFeedChange = this.handleNewFeedChange.bind(this);
+    // this.submitForm = this.submitForm.bind(this);
     this.handleEntryShown = this.handleEntryShown.bind(this);
   }
 
@@ -133,31 +135,14 @@ class Entries extends Component {
   }
 
   openNewFeedModal() {
+    const { dispatch } = this.props;
+
     this.setState({ newFeedModalIsOpen: true });
   }
 
   closeNewFeedModal(event) {
     const { dispatch } = this.props;
-
     this.setState({ newFeedModalIsOpen: false });
-    if (event) event.preventDefault();
-    dispatch(createFeedResetForm());
-  }
-
-  handleNewFeedChange(event) {
-    this.setState({ feedUrl: event.target.value });
-  }
-
-  submitForm(event) {
-    const { dispatch} = this.props;
-    event.preventDefault();
-
-    dispatch(createFeedAction(this.state.feedUrl)).then((result) => {
-      if (!result.errors) {
-        this.setState({ feedUrl: "" });
-        this.closeNewFeedModal();
-      }
-    });
   }
 
   handleEntryShown(entry) {
@@ -204,28 +189,6 @@ class Entries extends Component {
       </InfiniteScroll>);
     }
 
-    const customStyles = {
-      overlay: {
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.75)"
-      },
-      content: {
-        top: "50%",
-        left: "50%",
-        right: "auto",
-        bottom: "auto",
-        marginRight: "-50%",
-        transform: "translate(-50%, -50%)",
-        border: "2",
-        borderRadius: "2px",
-        padding: 0
-      }
-    };
-
     return (
       <LayoutMasterSplit>
         <LayoutPane size={30}>
@@ -264,48 +227,9 @@ class Entries extends Component {
           </LayoutContent>
         </LayoutPane>
 
-        <Modal
+        <NewFeedForm
           isOpen={this.state.newFeedModalIsOpen}
-          onRequestClose={this.closeNewFeedModal}
-          style={customStyles}>
-
-          <div className="modal-header">
-            <h2>Add new feed</h2>
-            <a className="modal-close-link" onClick={this.closeNewFeedModal}>
-              <Icon name="cross"/>
-            </a>
-          </div>
-
-          <div className="modal-content">
-            <form onSubmit={this.submitForm} className="form-prominent2">
-              <input className="field"
-                type="text"
-                placeholder="Website or feed"
-                value={this.state.feedUrl}
-                onChange={(event) => this.handleNewFeedChange(event)}
-                autoFocus={true}/>
-              {this.props.createFeed &&
-                this.props.createFeed.errors &&
-                this.props.createFeed.errors[0]["feed_url"] &&
-                <p>
-                  Error creating feed:
-                  {this.props.createFeed.errors[0]["feed_url"]}
-                </p>
-              }
-            </form>
-          </div>
-
-          <div className="modal-footer">
-            <button
-              onClick={this.closeNewFeedModal}
-              className="btn">Close</button>
-            <button
-              type="submit"
-              className="btn btn-primary bg-blue white"
-              disabled={!this.state.feedUrl}
-              onClick={this.submitForm}>Add Feed</button>
-          </div>
-        </Modal>
+          closeNewFeedModal={this.closeNewFeedModal}/>
       </LayoutMasterSplit>
     );
   }

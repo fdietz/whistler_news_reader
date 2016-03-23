@@ -1,9 +1,24 @@
-import React from "react";
+import React, { Component, PropTypes } from "react";
+import { connect } from "react-redux";
 
-const MainLayout = ({ children }) => {
-  return (
-    <div className="main-layout">{children}</div>
-  );
-};
+class MainLayout extends Component {
 
-export default MainLayout;
+  static propTypes = {
+    children: PropTypes.node
+  }
+
+  render() {
+    return (
+      <div className="main-layout">
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+function mapStateToProps(state, ownProps) {
+  return {
+  };
+}
+
+export default connect(mapStateToProps)(MainLayout);
