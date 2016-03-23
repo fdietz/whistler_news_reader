@@ -75,6 +75,10 @@ $sidebar-color: $gray;
     .removable {
       visibility: visible;
     }
+
+    .badge {
+      visibility: hidden;
+    }
   }
 
   a {
@@ -103,6 +107,13 @@ $sidebar-color: $gray;
     padding: 0 $space-1;
     margin-left: auto;
     visibility: hidden;
+  }
+
+  .badge {
+    width: 20px;
+    // padding: 0 $space-1;
+    margin-left: auto;
+    color: $sidebar-color;
   }
 
 }

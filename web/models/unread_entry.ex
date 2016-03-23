@@ -32,6 +32,13 @@ defmodule WhistlerNewsReader.UnreadEntry do
     where: p.feed_id == ^feed_id
   end
 
+  def count_for_feeds(query, feed_ids) do
+    from p in query,
+    where: p.feed_id in ^feed_ids,
+    group_by: p.feed_id,
+    select: [p.feed_id, count(p.id)]
+  end
+
   def for_user(query, user_id) do
     from p in query,
     where: p.user_id == ^user_id

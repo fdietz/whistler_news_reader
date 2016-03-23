@@ -5,11 +5,15 @@ defmodule WhistlerNewsReader.Api.FeedController do
   plug Guardian.Plug.EnsureAuthenticated, handler: WhistlerNewsReader.Api.SessionController
 
   alias WhistlerNewsReader.Feed
+  alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.FeedImporter
 
   def index(conn, %{} = _params) do
     feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
-    render(conn, "index.json", feeds: feeds)
+    unread_entries_count = UnreadEntry |> UnreadEntry.count_for_feeds(Enum.map(feeds, fn(f) -> f.id end)) |> Repo.all
+    IO.inspect unread_entries_count
+
+    render(conn, "index.json", feeds: feeds, unread_entries_count: unread_entries_count)
   end
 
   def create(conn, %{"feed_url" => feed_url} = _params) do

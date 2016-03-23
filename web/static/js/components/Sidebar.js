@@ -36,6 +36,7 @@ class Sidebar extends Component {
         <a href="#" className="removable" onClick={onRemoveClick.bind(this, feed)}>
           <Icon name="cross" size="small"/>
         </a>
+        <span className="badge">{feed.unread_count}</span>
       </li>
     );
   }

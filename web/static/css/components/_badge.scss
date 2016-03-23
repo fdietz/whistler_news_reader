@@ -1,0 +1,12 @@
+.badge {
+  display: inline-block;
+  // min-width: 10px;
+  padding: .1em .5em;
+  font-size: .7rem;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: rgba(0, 0, 0, .3);
+  border-radius: $space-1;
+}
