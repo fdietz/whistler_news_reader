@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import classNames from "classnames";
 
 import Icon from "../components/Icon";
+import Badge from "../components/Badge";
 import imageProfile from "../../assets/images/profile.jpg";
 
 // import imageArrowDown from "../../assets/images/arrow-down.svg";
@@ -36,7 +37,7 @@ class Sidebar extends Component {
         <a href="#" className="removable" onClick={onRemoveClick.bind(this, feed)}>
           <Icon name="cross" size="small"/>
         </a>
-        <span className="badge">{feed.unread_count}</span>
+        <Badge count={feed.unread_count}/>
       </li>
     );
   }

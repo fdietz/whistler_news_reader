@@ -63,7 +63,7 @@ $sidebar-color: $gray;
 
 .sidebar-nav-list__item {
   display: flex;
-  padding: 0 $space-2;
+  padding: 3px $space-2;
   margin: 0 -1rem;
   list-style: none;
   align-items: center;
@@ -73,24 +73,24 @@ $sidebar-color: $gray;
     background-color: $darken-3;
 
     .removable {
-      visibility: visible;
+      display: block;
     }
 
     .badge {
-      visibility: hidden;
+      display: none;
     }
   }
 
   a {
     position: relative;
-    width: 100%;
+    width: 80%;
 
-    padding: 4px $space-2;
+    padding: 0 $space-2;
     margin-right: -$space-2;
     margin-left: -$space-2;
 
     overflow: hidden;
-    font-size: 1rem;
+    font-size: .9rem;
     color: $sidebar-color;
     text-decoration: none;
 
@@ -103,15 +103,18 @@ $sidebar-color: $gray;
   }
 
   .removable {
-    width: 20px;
-    padding: 0 $space-1;
+    display: none;
+    width: 30px;
+    padding: 0;
+    margin-right: 0;
     margin-left: auto;
-    visibility: hidden;
+    text-align: center;
   }
 
   .badge {
+    display: block;
     width: 20px;
-    // padding: 0 $space-1;
+    margin-right: 0;
     margin-left: auto;
     color: $sidebar-color;
   }
