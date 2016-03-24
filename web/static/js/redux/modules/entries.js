@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../utils/APIHelper";
 import { createAction } from "redux-actions";
 import { createNotification, resetNotification } from "./notification";
 
@@ -15,9 +15,7 @@ export const updateEntry      = createAction(UPDATE_ENTRY);
 
 export function requestMarkEntryAsRead(entry) {
   return dispatch => {
-    const authToken = localStorage.getItem("phoenixAuthToken");
-    axios.put(`/api/entries/${entry.id}/mark_as_read`, {},
-      { headers: { Authorization: authToken } })
+    axios.put(`/api/entries/${entry.id}/mark_as_read`)
     .then((response) => {
       dispatch(updateEntry({ item: response.data }));
     })
@@ -29,11 +27,10 @@ export function requestMarkEntryAsRead(entry) {
 
 export function requestFetchEntries(options = {}) {
   return dispatch => {
-    const authToken = localStorage.getItem("phoenixAuthToken");
     const params = Object.assign({}, options, { limit: 20 });
     dispatch(fetchEntries(params));
     dispatch(createNotification({ message: "Fetching entries", type: "info" }));
-    axios.get("/api/entries", { params: params, headers: { Authorization: authToken } })
+    axios.get("/api/entries", { params: params })
     .then((response) => {
       dispatch(fetchEntries({
         items: response.data.entries,
@@ -52,11 +49,10 @@ export function requestFetchEntries(options = {}) {
 export function requestFetchMoreEntries(options = {}) {
   return dispatch => {
     const params = Object.assign({}, options, { limit: 20 });
-    const authToken = localStorage.getItem("phoenixAuthToken");
     dispatch(fetchMoreEntries(params));
     dispatch(createNotification({ message: "Fetching more entries", type: "info" }));
 
-    axios.get("/api/entries", { params: params, headers: { Authorization: authToken } })
+    axios.get("/api/entries", { params: params })
     .then((response) => {
       dispatch(fetchMoreEntries({
         items: response.data.entries,
@@ -74,12 +70,11 @@ export function requestFetchMoreEntries(options = {}) {
 
 export function requestRefreshEntries(options = {}) {
   return dispatch => {
-    const authToken = localStorage.getItem("phoenixAuthToken");
     const params = Object.assign(options, {});
     dispatch(refreshEntries(params));
     dispatch(createNotification({ message: "Refresh entries", type: "info" }));
 
-    axios.put("/api/entries/refresh", params, { headers: { Authorization: authToken } })
+    axios.put("/api/entries/refresh", params)
     .then(() => {
       dispatch(refreshEntries());
       dispatch(requestFetchEntries(options));

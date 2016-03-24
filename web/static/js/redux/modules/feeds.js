@@ -1,6 +1,6 @@
-import axios from "axios";
 import { createAction } from "redux-actions";
-import AuthToken from "../../utils/AuthToken";
+
+import axios from "../../utils/APIHelper";
 
 export const UPDATE_FEED = "UPDATE_FEED";
 export const REMOVE_FEED = "REMOVE_FEED";
@@ -15,10 +15,9 @@ export const fetchFeeds = createAction(FETCH_FEEDS);
 
 export function requestFetchFeeds() {
   return dispatch => {
-    const authToken = localStorage.getItem("phoenixAuthToken");
     dispatch(fetchFeeds());
 
-    axios.get("/api/feeds", { headers: { Authorization: authToken } })
+    axios.get("/api/feeds")
     .then((response) => {
       dispatch(fetchFeeds({ items: response.data.feeds }));
     })
@@ -30,8 +29,7 @@ export function requestFetchFeeds() {
 
 export function requestRemoveFeed(feedId) {
   return dispatch => {
-    axios.delete(`http://localhost:4000/api/feeds/${feedId}`,
-      { headers: { Authorization: AuthToken.getToken() }})
+    axios.delete(`http://localhost:4000/api/feeds/${feedId}`)
     .then(() => {
       dispatch(removeFeed({ id: feedId }));
     })

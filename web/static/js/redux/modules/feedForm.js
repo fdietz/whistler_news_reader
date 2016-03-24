@@ -1,6 +1,5 @@
 import { createAction } from "redux-actions";
-import axios from "axios";
-import AuthToken from "../../utils/AuthToken";
+import axios from "../../utils/APIHelper";
 
 export const FEED_FORM_UPDATE = "FEED_FORM_UPDATE";
 export const FEED_FORM_RESET = "FEED_FORM_RESET";
@@ -9,9 +8,7 @@ export const feedFormUpdate = createAction(FEED_FORM_UPDATE);
 export const feedFormReset  = createAction(FEED_FORM_RESET);
 
 export function requestCreateFeed(feedUrl) {
-  return axios.post("http://localhost:4000/api/feeds",
-    { feed_url: feedUrl },
-    { headers: { Authorization: AuthToken.getToken() }});
+  return axios.post("http://localhost:4000/api/feeds", { feed_url: feedUrl });
 }
 
 const initial = {
