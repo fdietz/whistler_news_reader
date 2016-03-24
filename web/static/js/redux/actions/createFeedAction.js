@@ -1,17 +1,8 @@
 import { push } from "react-router-redux";
-import axios from "axios";
-
-import AuthToken from "../../utils/AuthToken";
 
 import { requestRefreshEntries } from "../modules/entries";
 import { addFeed } from "../modules/feeds";
-import { createFeed } from "../modules/createFeed";
-
-export function requestCreateFeed(feedUrl) {
-  return axios.post("http://localhost:4000/api/feeds",
-    { feed_url: feedUrl },
-    { headers: { Authorization: AuthToken.getToken() }});
-}
+import { requestCreateFeed, feedFormUpdate } from "../modules/feedForm";
 
 export default function createFeedAction(feedUrl) {
   return (dispatch) => {
@@ -28,7 +19,7 @@ export default function createFeedAction(feedUrl) {
       return response.data;
     }).
     catch((response) => {
-      dispatch(createFeed({ errors: response.data.errors }));
+      dispatch(feedFormUpdate({ errors: response.data.errors }));
       return response.data;
     });
   };

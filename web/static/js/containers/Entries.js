@@ -25,8 +25,6 @@ import {
 } from "../redux/modules/entries";
 
 import { selectEntry } from "../redux/modules/currentEntry";
-import createFeedAction from "../redux/actions/createFeedAction";
-import { createFeedResetForm } from "../redux/modules/createFeed";
 
 class Entries extends Component {
 
@@ -54,11 +52,8 @@ class Entries extends Component {
     this.refreshEntries = this.refreshEntries.bind(this);
     this.nextEntry = this.nextEntry.bind(this);
     this.previousEntry = this.previousEntry.bind(this);
-    // this.createFeed = this.createFeed.bind(this);
     this.openNewFeedModal = this.openNewFeedModal.bind(this);
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
-    // this.handleNewFeedChange = this.handleNewFeedChange.bind(this);
-    // this.submitForm = this.submitForm.bind(this);
     this.handleEntryShown = this.handleEntryShown.bind(this);
   }
 
@@ -135,13 +130,10 @@ class Entries extends Component {
   }
 
   openNewFeedModal() {
-    const { dispatch } = this.props;
-
     this.setState({ newFeedModalIsOpen: true });
   }
 
   closeNewFeedModal(event) {
-    const { dispatch } = this.props;
     this.setState({ newFeedModalIsOpen: false });
   }
 
@@ -239,7 +231,6 @@ function mapStateToProps(state, ownProps) {
   return {
     entries: state.entries,
     currentEntry: state.currentEntry,
-    createFeed: state.createFeed,
     location: ownProps.location
   };
 }

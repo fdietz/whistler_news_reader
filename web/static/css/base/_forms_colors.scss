@@ -65,6 +65,10 @@ $field-error-color: $red;
   color: $gray-3;
 }
 
+.errors {
+  color: $red;
+}
+
 ::-webkit-input-placeholder {
    color: $border-color;
 }

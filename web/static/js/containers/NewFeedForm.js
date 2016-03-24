@@ -4,13 +4,15 @@ import Modal from "react-modal";
 
 import Icon from "../components/Icon";
 
-import { createFeedResetForm } from "../redux/modules/createFeed";
+import { feedFormUpdate, feedFormReset } from "../redux/modules/feedForm";
 import createFeedAction from "../redux/actions/createFeedAction";
+
+import { reduceErrorsToString } from "../utils/ErrorHelper";
 
 class NewFeedForm extends Component {
 
   static propTypes = {
-    createFeed: PropTypes.object,
+    feedForm: PropTypes.object,
     isOpen: PropTypes.bool.isRequired,
     closeNewFeedModal: PropTypes.func.isRequired
   };
@@ -18,42 +20,38 @@ class NewFeedForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      feedUrl: ""
-    };
-
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
     this.handleNewFeedChange = this.handleNewFeedChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
   }
 
   handleNewFeedChange(event) {
-    this.setState({ feedUrl: event.target.value });
+    const { dispatch } = this.props;
+    dispatch(feedFormUpdate({ feedUrl: event.target.value }));
   }
 
   closeNewFeedModal(event) {
     const { dispatch } = this.props;
 
     if (event) event.preventDefault();
-    this.setState({ feedUrl: "" });
-    dispatch(createFeedResetForm());
+    dispatch(feedFormReset());
     this.props.closeNewFeedModal();
   }
 
   submitForm(event) {
-    const { dispatch} = this.props;
+    const { dispatch, feedForm } = this.props;
     event.preventDefault();
 
-    dispatch(createFeedAction(this.state.feedUrl)).then((result) => {
+    dispatch(createFeedAction(feedForm.feedUrl)).then((result) => {
       if (!result.errors) {
-        this.setState({ feedUrl: "" });
+        dispatch(feedFormReset());
         this.props.closeNewFeedModal();
       }
     });
   }
 
   render() {
-    const { isOpen } = this.props;
+    const { isOpen, feedForm } = this.props;
 
     const customStyles = {
       overlay: {
@@ -77,6 +75,8 @@ class NewFeedForm extends Component {
       }
     };
 
+    const errors = feedForm.errors ? reduceErrorsToString(feedForm.errors) : "";
+
     return (
       <Modal
         isOpen={isOpen}
@@ -95,16 +95,11 @@ class NewFeedForm extends Component {
             <input className="field"
               type="text"
               placeholder="Website or feed"
-              value={this.state.feedUrl}
+              value={feedForm.feedUrl}
               onChange={(event) => this.handleNewFeedChange(event)}
               autoFocus={true}/>
-            {this.props.createFeed &&
-              this.props.createFeed.errors &&
-              this.props.createFeed.errors[0]["feed_url"] &&
-              <p>
-                Error creating feed:
-                {this.props.createFeed.errors[0]["feed_url"]}
-              </p>
+            {errors &&
+              <p className="errors">{errors}</p>
             }
           </form>
         </div>
@@ -116,7 +111,7 @@ class NewFeedForm extends Component {
           <button
             type="submit"
             className="btn btn-primary bg-blue white"
-            disabled={!this.state.feedUrl}
+            disabled={!feedForm.feedUrl}
             onClick={this.submitForm}>Add Feed</button>
         </div>
       </Modal>
@@ -126,7 +121,7 @@ class NewFeedForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    createFeed: state.createFeed
+    feedForm: state.feedForm
   };
 }
 
