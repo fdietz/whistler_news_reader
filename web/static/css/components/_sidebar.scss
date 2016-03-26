@@ -7,11 +7,10 @@ $sidebar-color: $gray;
   flex-direction: column;
 
   .sidebar-content {
-    padding: $space-3 $space-2;
-    flex: 1 1;
+    padding: $space-2;
     overflow-y: auto;
+    flex: 1 1;
   }
-
 }
 
 .sidebar-header,
