@@ -24,6 +24,7 @@ import {
   requestMarkEntryAsRead
 } from "../redux/modules/entries";
 
+import { decrementUnreadCount } from "../redux/modules/feeds";
 import { selectEntry } from "../redux/modules/currentEntry";
 
 class Entries extends Component {
@@ -133,13 +134,14 @@ class Entries extends Component {
     this.setState({ newFeedModalIsOpen: true });
   }
 
-  closeNewFeedModal(event) {
+  closeNewFeedModal() {
     this.setState({ newFeedModalIsOpen: false });
   }
 
   handleEntryShown(entry) {
     const { dispatch} = this.props;
     dispatch(requestMarkEntryAsRead(entry));
+    dispatch(decrementUnreadCount({ id: entry.feed.id }));
   }
 
   render() {

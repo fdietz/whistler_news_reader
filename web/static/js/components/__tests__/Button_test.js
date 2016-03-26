@@ -1,16 +1,14 @@
+import test from "ava";
 import React from "react";
-import { expect } from "chai";
 import { shallow } from "enzyme";
 import Button from "../Button";
 
-describe("Button", () => {
-  it("render children", () => {
-    const wrapper = shallow(<Button>Click me</Button>).contains("Click me");
-    expect(wrapper).to.equal(true);
-  });
+test("Button render children", t => {
+  const wrapper = shallow(<Button>Click me</Button>).contains("Click me");
+  t.true(wrapper);
+});
 
-  it("set className from props", () => {
-    const wrapper = shallow(<Button type="btn-header"/>);
-    expect(wrapper.is(".btn-header")).to.equal(true);
-  });
+test("Button set className from props", t => {
+  const wrapper = shallow(<Button type="btn-header"/>);
+  t.true(wrapper.is(".btn-header"));
 });

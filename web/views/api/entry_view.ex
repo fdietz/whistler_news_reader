@@ -17,6 +17,7 @@ defmodule WhistlerNewsReader.Api.EntryView do
           url: entry.url,
           unread: unread?(entry, current_user),
           feed: %{
+            id: entry.feed.id,
             title: entry.feed.title
           }
         }
@@ -35,6 +36,7 @@ defmodule WhistlerNewsReader.Api.EntryView do
       url: entry.url,
       unread: unread?(entry, current_user),
       feed: %{
+        id: entry.feed.id,
         title: entry.feed.title
       }
     }

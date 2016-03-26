@@ -1,7 +1,9 @@
 {
   "scripts": {
-    "test": "mocha test/js/test_helper.js web/static/js/**/*_test.js --compilers js:babel-core/register",
-    "test:watch": "npm test -- --watch"
+    "test": "ava 'web/static/js/**/__tests__/*.js' --require 'babel-core/register' --require './test/js/test_helper.js' --verbose"
+  },
+  "ava": {
+    "babel": "inherit"
   },
   "repository": {},
   "dependencies": {
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
+    "ava": "^0.13.0",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.1.2",
     "babel-eslint": "^5.0.0",
@@ -44,6 +47,7 @@
     "mocha": "^2.4.5",
     "nock": "^7.2.2",
     "node-sass": "^3.4.1",
+    "nyc": "^6.1.1",
     "react-addons-test-utils": "^0.14.7",
     "react-hot-loader": "^1.3.0",
     "redux-mock-store": "0.0.6",
