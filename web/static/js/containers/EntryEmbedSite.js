@@ -44,13 +44,11 @@ class EntryEmbedSite extends Component {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.75)"
+        backgroundColor: "rgba(0, 0, 0, 0.5)"
       },
       content: {
         top: "0",
         left: "0",
-        // right: "0",
-        // width: "100%",
         bottom: "0",
         border: "2",
         borderRadius: "2px",

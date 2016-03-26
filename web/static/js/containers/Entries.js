@@ -229,7 +229,7 @@ class Entries extends Component {
             <Icon name="arrow-right3" size="small"/>
           </Button>
         </ButtonGroup>
-        <ButtonGroup className="btn-group-rounded ml1">
+        <ButtonGroup className="btn-group-rounded ml2">
           <Button type="btn-header" onClick={this.openEntryEmbedSite}>
             <Icon name="resize-enlarge" size="small"/>
           </Button>
