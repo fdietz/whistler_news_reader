@@ -7,6 +7,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.FeedImporter
+  alias WhistlerNewsReader.StoreEntryHelper
 
   def index(conn, %{} = _params) do
     feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
@@ -40,6 +41,13 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
     conn
     |> send_resp(204, "")
+  end
+
+  def mark_as_read(conn, %{"id" => id}) do
+    feed = Repo.get!(Feed, id)
+    StoreEntryHelper.mark_feed_as_read(current_user(conn), feed)
+
+    conn |> send_resp(204, "")
   end
 
   defp current_user(conn) do

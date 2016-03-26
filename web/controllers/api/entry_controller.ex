@@ -62,15 +62,10 @@ defmodule WhistlerNewsReader.Api.EntryController do
     conn |> send_resp(204, "")
   end
 
-  # TODO: add unit test
   def mark_as_read(conn, %{"id" => id}) do
     entry = Repo.get!(Entry, id)
-    StoreEntryHelper.mark_as_read(current_user(conn), entry)
-    entry = Entry |> Entry.read(current_user(conn).id) |> Repo.get!(id) |> Repo.preload(:feed)
-
-    conn
-    |> put_status(:created)
-    |> render("entry.json", entry: entry, current_user: current_user(conn))
+    StoreEntryHelper.mark_entry_as_read(current_user(conn), entry)
+    conn |> send_resp(204, "")
   end
 
   defp load_more(query, last_published, limit) do

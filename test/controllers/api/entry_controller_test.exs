@@ -6,6 +6,7 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
   alias WhistlerNewsReader.User
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Entry
+  alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.Subscription
 
   @valid_feed_attrs %{
@@ -51,6 +52,10 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     entry  = Repo.insert!(%Entry{feed_id: feed.id, title: "test1", published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
     entry2 = Repo.insert!(%Entry{feed_id: feed2.id, title: "test2", published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
     entry3 = Repo.insert!(%Entry{feed_id: feed3.id, title: "test3", published: {{year, month, day-2}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
+
+    Repo.insert!(%UnreadEntry{feed_id: feed.id, entry_id: entry.id, user_id: user.id})
+    Repo.insert!(%UnreadEntry{feed_id: feed2.id, entry_id: entry2.id, user_id: user.id})
+    Repo.insert!(%UnreadEntry{feed_id: feed3.id, entry_id: entry3.id, user_id: user.id})
 
     conn = conn() |> put_req_header("accept", "application/json")
     {:ok, conn: conn, jwt: jwt, feed: feed, feed2: feed2, feed3: feed3, entry: entry, entry2: entry2, entry3: entry3}
@@ -98,5 +103,14 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
   test "GET /api/entries fails if no token", %{conn: conn} do
     conn = get conn, entry_path(conn, :index, %{"feed_id" => 1})
     assert json_response(conn, 403)["error"] == "Not Authenticated"
+  end
+
+  test "PUT /api/entries/:id/mark_as_read succeeds", %{conn: conn, jwt: jwt, feed: feed, entry: entry} do
+    assert Repo.get_by(UnreadEntry, feed_id: feed.id, entry_id: entry.id)
+
+    conn = conn |> put_req_header("authorization", jwt)
+    put conn, entry_path(conn, :mark_as_read, entry)
+
+    refute Repo.get_by(UnreadEntry, feed_id: feed.id, entry_id: entry.id)
   end
 end

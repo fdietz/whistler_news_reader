@@ -31,7 +31,7 @@ defmodule WhistlerNewsReader.Api.FeedView do
     arr = Enum.find(unread_entries_count, fn(arr) -> feed.id == List.first(arr) end)
 
     case arr do
-      [feed_id, count] ->
+      [_feed_id, count] ->
         count
       nil -> 0
     end

@@ -17,7 +17,7 @@ export function requestMarkEntryAsRead(entry) {
   return dispatch => {
     axios.put(`/api/entries/${entry.id}/mark_as_read`)
     .then((response) => {
-      dispatch(updateEntry({ item: response.data }));
+      dispatch(updateEntry({ item: { unread: false} }));
     })
     .catch((response) => {
       dispatch(updateEntry(new Error(response.data.error)));
@@ -139,15 +139,12 @@ export default function reducer(state = initial, action) {
         error: action.payload.message
       });
     } else if (action.payload && action.payload.item) {
-      console.log("UPDATE_ENTRY", action)
-
       return {
         items: state.items.map((item) => {
           if (item.id === action.payload.item.id) {
             return Object.assign({}, item, action.payload.item);
-          } else {
-            return item;
           }
+          return item;
         }),
         isLoading: false
       };
