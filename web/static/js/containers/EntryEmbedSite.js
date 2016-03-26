@@ -15,7 +15,12 @@ class EntryEmbedSite extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      isLoading: true
+    };
+
     this.onClose = this.onClose.bind(this);
+    this.onLoad = this.onLoad.bind(this);
   }
 
   onClose(event) {
@@ -23,6 +28,10 @@ class EntryEmbedSite extends Component {
 
     if (event) event.preventDefault();
     this.props.onClose();
+  }
+
+  onLoad() {
+    this.setState({ isLoading: false });
   }
 
   render() {
@@ -39,8 +48,9 @@ class EntryEmbedSite extends Component {
       },
       content: {
         top: "0",
-        left: "25%",
-        right: "0",
+        left: "0",
+        // right: "0",
+        // width: "100%",
         bottom: "0",
         border: "2",
         borderRadius: "2px",
@@ -55,15 +65,24 @@ class EntryEmbedSite extends Component {
         onRequestClose={this.onClose}
         className="entry-embed-site-modal">
 
-        <div className="modal-header">
-          <h2>{currentEntry.title}</h2>
+        <div className="entry-embed-site-modal-header">
           <a className="modal-close-link" onClick={this.onClose}>
             <Icon name="resize-shrink" size="small"/>
           </a>
+          <div className="centered">
+            <h2>{currentEntry.title}</h2>
+            <a href={currentEntry.url}><h6>{currentEntry.url}</h6></a>
+          </div>
+          <span className="loading-indicator">
+            {this.state.isLoading && <Icon name="spinner"/>}
+          </span>
         </div>
 
-        <div className="modal-content">
-          <iframe src={currentEntry.url} className="entry-embed-site"/>
+        <div className="entry-embed-site-modal-content">
+          <iframe
+            src={currentEntry.url}
+            onLoad={this.onLoad}
+            className="entry-embed-site"/>
         </div>
 
       </Modal>

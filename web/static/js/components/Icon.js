@@ -2,14 +2,16 @@ import React, { Component, PropTypes } from "react";
 
 export default class Icon extends Component {
 
-  static PropTypes = {
-    children: PropTypes.node.isRequired,
+  static propTypes = {
+    children: PropTypes.node,
     name: PropTypes.string.isRequired,
-    size: PropTypes.number
+    size: PropTypes.string
   };
 
   render() {
-    const { name, size, children } = this.props;
+    const { name, children } = this.props;
+
+    let size = this.props.size || "medium";
     const iconClassName = `svg-entypo-icon-${name}`;
     const iconClassSize = `svg-icon-${size}`;
     const cls = `${iconClassName} ${iconClassSize}`;
