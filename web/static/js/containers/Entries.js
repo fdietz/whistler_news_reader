@@ -8,6 +8,7 @@ import LayoutContent from "../components/LayoutContent";
 import LayoutMasterSplit from "../components/LayoutMasterSplit";
 
 import NewFeedForm from "../containers/NewFeedForm";
+import EntryEmbedSite from "../containers/EntryEmbedSite";
 
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
@@ -47,7 +48,7 @@ class Entries extends Component {
 
     this.state = {
       newFeedModalIsOpen: false,
-      feedUrl: ""
+      entryEmbedSiteIsOpen: false
     };
 
     this.loadMore = this.loadMore.bind(this);
@@ -58,6 +59,8 @@ class Entries extends Component {
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
     this.handleEntryShown = this.handleEntryShown.bind(this);
     this.markAsRead = this.markAsRead.bind(this);
+    this.openEntryEmbedSite = this.openEntryEmbedSite.bind(this);
+    this.closeEntryEmbedSite = this.closeEntryEmbedSite.bind(this);
   }
 
   componentDidMount() {
@@ -160,6 +163,14 @@ class Entries extends Component {
     }
   }
 
+  openEntryEmbedSite() {
+    this.setState({ entryEmbedSiteIsOpen: true });
+  }
+
+  closeEntryEmbedSite() {
+    this.setState({ entryEmbedSiteIsOpen: false });
+  }
+
   render() {
     const { dispatch, entries, currentEntry } = this.props;
 
@@ -213,6 +224,11 @@ class Entries extends Component {
             <Icon name="arrow-right3" size="small"/>
           </Button>
         </ButtonGroup>
+        <ButtonGroup className="btn-group-rounded">
+          <Button type="btn-header" onClick={this.openEntryEmbedSite}>
+            <Icon name="resize-enlarge" size="small"/>
+          </Button>
+        </ButtonGroup>
         <ButtonGroup className="mx-l-auto">
           <Button type="btn btn-primary" onClick={this.openNewFeedModal}>
             + Add Feed
@@ -235,6 +251,12 @@ class Entries extends Component {
         <NewFeedForm
           isOpen={this.state.newFeedModalIsOpen}
           closeNewFeedModal={this.closeNewFeedModal}/>
+
+        {this.state.entryEmbedSiteIsOpen &&
+          <EntryEmbedSite
+            isOpen={this.state.entryEmbedSiteIsOpen}
+            onClose={this.closeEntryEmbedSite}/>
+        }
       </LayoutMasterSplit>
     );
   }

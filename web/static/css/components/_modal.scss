@@ -17,6 +17,15 @@
 }
 
 .modal-header {
+  border-bottom: 2px solid $darken-2;
+
+  h2 {
+    width: 95%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .modal-close-link {
     margin-left: auto;
     cursor: pointer;
