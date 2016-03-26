@@ -52,6 +52,7 @@ class EntryEmbedSite extends Component {
       <Modal
         isOpen={isOpen}
         style={customStyles}
+        onRequestClose={this.onClose}
         className="entry-embed-site-modal">
 
         <div className="modal-header">
