@@ -61,6 +61,7 @@ class Entries extends Component {
     this.markAsRead = this.markAsRead.bind(this);
     this.openEntryEmbedSite = this.openEntryEmbedSite.bind(this);
     this.closeEntryEmbedSite = this.closeEntryEmbedSite.bind(this);
+    this.openExternal = this.openExternal.bind(this);
   }
 
   componentDidMount() {
@@ -171,6 +172,10 @@ class Entries extends Component {
     this.setState({ entryEmbedSiteIsOpen: false });
   }
 
+  openExternal() {
+    window.open(this.props.currentEntry.url, "_blank");
+  }
+
   render() {
     const { dispatch, entries, currentEntry } = this.props;
 
@@ -224,9 +229,12 @@ class Entries extends Component {
             <Icon name="arrow-right3" size="small"/>
           </Button>
         </ButtonGroup>
-        <ButtonGroup className="btn-group-rounded">
+        <ButtonGroup className="btn-group-rounded ml1">
           <Button type="btn-header" onClick={this.openEntryEmbedSite}>
             <Icon name="resize-enlarge" size="small"/>
+          </Button>
+          <Button type="btn-header" onClick={this.openExternal}>
+            <Icon name="earth" size="small"/>
           </Button>
         </ButtonGroup>
         <ButtonGroup className="mx-l-auto">
