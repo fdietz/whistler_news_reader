@@ -6,21 +6,34 @@ export const FETCH_ENTRIES      = "FETCH_ENTRIES";
 export const FETCH_MORE_ENTRIES = "FETCH_MORE_ENTRIES";
 export const REFRESH_ENTRIES    = "REFRESH_ENTRIES";
 export const UPDATE_ENTRY       = "UPDATE_ENTRY";
+export const MARK_ALL_FEED_ENTRIES_AS_READ = "MARK_ALL_FEED_ENTRIES_AS_READ";
 
 export const fetchEntries     = createAction(FETCH_ENTRIES);
 export const fetchMoreEntries = createAction(FETCH_MORE_ENTRIES);
 export const refreshEntries   = createAction(REFRESH_ENTRIES);
 export const updateEntry      = createAction(UPDATE_ENTRY);
-
+export const markAllFeedEntriesAsRead = createAction(MARK_ALL_FEED_ENTRIES_AS_READ);
 
 export function requestMarkEntryAsRead(entry) {
   return dispatch => {
     axios.put(`/api/entries/${entry.id}/mark_as_read`)
     .then((response) => {
-      dispatch(updateEntry({ item: { unread: false} }));
+      dispatch(updateEntry({ item: { id: entry.id, unread: false} }));
     })
     .catch((response) => {
       dispatch(updateEntry(new Error(response.data.error)));
+    });
+  };
+}
+
+export function requestMarkAllFeedEntriesAsRead(feedId) {
+  return dispatch => {
+    axios.put(`/api/feeds/${feedId}/mark_as_read`)
+    .then((response) => {
+      dispatch(markAllFeedEntriesAsRead({ feed_id: feedId }));
+    })
+    .catch((response) => {
+      dispatch(markAllFeedEntriesAsRead(new Error(response.data.error)));
     });
   };
 }
@@ -112,9 +125,7 @@ export default function reducer(state = initial, action) {
         isLoading: false
       };
     }
-    return Object.assign({}, state, {
-      isLoading: true
-    });
+    return state;
   case FETCH_MORE_ENTRIES:
     if (action.error) {
       return Object.assign({}, state, {
@@ -129,10 +140,7 @@ export default function reducer(state = initial, action) {
         isLoading: false
       };
     }
-    return Object.assign({}, state, {
-      isLoading: true
-    });
-
+    return state;
   case UPDATE_ENTRY:
     if (action.error) {
       return Object.assign({}, state, {
@@ -149,10 +157,20 @@ export default function reducer(state = initial, action) {
         isLoading: false
       };
     }
-    return Object.assign({}, state, {
-      isLoading: true
-    });
-
+    return state;
+  case MARK_ALL_FEED_ENTRIES_AS_READ:
+    if (action.payload && action.payload.feed_id) {
+      return {
+        items: state.items.map((item) => {
+          if (item.feed.id === action.payload.feed_id) {
+            return Object.assign({}, item, { unread: false });
+          }
+          return item;
+        }),
+        isLoading: false
+      };
+    }
+    return state;
   default:
     return state;
   }

@@ -8,12 +8,14 @@ export const REMOVE_FEED = "REMOVE_FEED";
 export const FETCH_FEEDS = "FETCH_FEEDS";
 export const ADD_FEED    = "ADD_FEED";
 export const DECREMENT_UNREAD_COUNT = "DECREMENT_UNREAD_COUNT";
+export const RESET_UNREAD_COUNT = "RESET_UNREAD_COUNT";
 
 export const addFeed    = createAction(ADD_FEED);
 export const updateFeed = createAction(UPDATE_FEED);
 export const removeFeed = createAction(REMOVE_FEED);
 export const fetchFeeds = createAction(FETCH_FEEDS);
 export const decrementUnreadCount = createAction(DECREMENT_UNREAD_COUNT);
+export const resetUnreadCount = createAction(RESET_UNREAD_COUNT);
 
 export function requestFetchFeeds() {
   return dispatch => {
@@ -94,6 +96,18 @@ export default function reducer(state = initial, action) {
         items: state.items.map((item) => {
           if (item.id === action.payload.id) {
             return Object.assign({}, item, { unread_count: item.unread_count-1 });
+          }
+          return item;
+        })
+      });
+    }
+    break;
+  case RESET_UNREAD_COUNT:
+    if (action.payload) {
+      return Object.assign({}, state, {
+        items: state.items.map((item) => {
+          if (item.id === action.payload.id) {
+            return Object.assign({}, item, { unread_count: 0 });
           }
           return item;
         })

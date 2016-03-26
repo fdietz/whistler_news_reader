@@ -21,10 +21,11 @@ import {
   requestFetchEntries,
   requestFetchMoreEntries,
   requestRefreshEntries,
-  requestMarkEntryAsRead
+  requestMarkEntryAsRead,
+  requestMarkAllFeedEntriesAsRead
 } from "../redux/modules/entries";
 
-import { decrementUnreadCount } from "../redux/modules/feeds";
+import { decrementUnreadCount, resetUnreadCount } from "../redux/modules/feeds";
 import { selectEntry } from "../redux/modules/currentEntry";
 
 class Entries extends Component {
@@ -56,6 +57,7 @@ class Entries extends Component {
     this.openNewFeedModal = this.openNewFeedModal.bind(this);
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
     this.handleEntryShown = this.handleEntryShown.bind(this);
+    this.markAsRead = this.markAsRead.bind(this);
   }
 
   componentDidMount() {
@@ -148,6 +150,16 @@ class Entries extends Component {
     dispatch(decrementUnreadCount({ id: entry.feed.id }));
   }
 
+  markAsRead() {
+    const { dispatch} = this.props;
+    const params = this.requestParams(this.props);
+
+    if (params.feed_id) {
+      dispatch(requestMarkAllFeedEntriesAsRead(+params.feed_id));
+      dispatch(resetUnreadCount({ id: +params.feed_id }));
+    }
+  }
+
   render() {
     const { dispatch, entries, currentEntry } = this.props;
 
@@ -192,7 +204,7 @@ class Entries extends Component {
         <LayoutPane size={30}>
           <LayoutHeader>
             <ButtonGroup>
-              <Button type="btn-header">
+              <Button type="btn-header" onClick={this.markAsRead}>
                 <Icon name="checkmark" size="small"/>
               </Button>
               <Button type="btn-header" onClick={this.refreshEntries}>

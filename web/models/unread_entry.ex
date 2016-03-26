@@ -25,6 +25,7 @@ defmodule WhistlerNewsReader.UnreadEntry do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> unique_constraint(:entry_id, name: :unread_entries_entry_id_user_id_index)
   end
 
   def for_feed(query, feed_id) do

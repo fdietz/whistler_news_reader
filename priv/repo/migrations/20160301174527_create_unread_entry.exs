@@ -10,6 +10,6 @@ defmodule WhistlerNewsReader.Repo.Migrations.CreateUnreadEntry do
       timestamps
     end
 
-    create unique_index(:unread_entries, [:entry_id, :user_id])
+    create unique_index(:unread_entries, [:entry_id, :user_id], name: :unread_entries_entry_id_user_id_index)
   end
 end
