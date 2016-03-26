@@ -14,7 +14,6 @@ class SignUp extends Component {
   }
 
   componentDidMount() {
-    console.log("======")
     setDocumentTitle("Sign up");
   }
 
@@ -38,36 +37,35 @@ class SignUp extends Component {
     const { errors } = this.props;
 
     return (
-      <div className="view-container registrations new">
-        <main>
+      <div className="panel-container">
+        <div className="panel">
           <header>
-            <div className="logo" />
+            <div className="logo">
+              whistl'er news reader
+            </div>
           </header>
           <form onSubmit={this._handleSubmit}>
-            <div className="field">
-              <input ref="firstName" type="text" placeholder="First name" required={true} />
-              {renderErrorsFor(errors, "first_name")}
+            <input ref="firstName" className="field mb1" type="text" placeholder="First name" focus={true}/>
+            {renderErrorsFor(errors, "first_name")}
+
+            <input ref="lastName" className="field mb1" type="text" placeholder="Last name"/>
+            {renderErrorsFor(errors, "last_name")}
+
+            <input ref="email" className="field mb1" type="email" placeholder="Email"/>
+            {renderErrorsFor(errors, "email")}
+
+            <input ref="password" className="field mb1" type="password" placeholder="Password"/>
+            {renderErrorsFor(errors, "password")}
+
+            <input ref="passwordConfirmation" className="field mb1" type="password" placeholder="Confirm password"/>
+            {renderErrorsFor(errors, "password_confirmation")}
+
+            <div className="button-bar mt2">
+              <Link to="/sign_in">Login</Link>
+              <button type="submit" className="btn btn-primary block ml2">Register</button>
             </div>
-            <div className="field">
-              <input ref="lastName" type="text" placeholder="Last name" required={true} />
-              {renderErrorsFor(errors, "last_name")}
-            </div>
-            <div className="field">
-              <input ref="email" type="email" placeholder="Email" required={true} />
-              {renderErrorsFor(errors, "email")}
-            </div>
-            <div className="field">
-              <input ref="password" type="password" placeholder="Password" required={true} />
-              {renderErrorsFor(errors, "password")}
-            </div>
-            <div className="field">
-              <input ref="passwordConfirmation" type="password" placeholder="Confirm password" required={true} />
-              {renderErrorsFor(errors, "password_confirmation")}
-            </div>
-            <button type="submit">Sign up</button>
           </form>
-          <Link to="/sign_in">Sign in</Link>
-        </main>
+        </div>
       </div>
     );
   }

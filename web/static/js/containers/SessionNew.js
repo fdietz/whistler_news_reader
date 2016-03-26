@@ -41,23 +41,25 @@ class SessionNew extends Component {
 
   render() {
     return (
-      <div className="view-container sessions new">
-        <main>
+
+      <div className="panel-container">
+        <div className="panel">
           <header>
-            <div className="logo" />
+            <div className="logo">
+              whistl'er news reader
+            </div>
           </header>
           <form onSubmit={this.handleSubmit}>
             {this.renderError()}
-            <div className="field">
-              <input ref="email" type="Email" placeholder="Email" required="true" focus="true" placeholder="yourmail@mail.com"/>
-            </div>
-            <div className="field">
-              <input ref="password" type="password" placeholder="Password" required="true" placeholder="password"/>
-            </div>
-            <button type="submit">Sign in</button>
+            <input ref="email" className="field mb1" type="Email" placeholder="Email" focus={true} placeholder="yourmail@mail.com"/>
+            <input ref="password" className="field mb1" type="password" placeholder="Password" placeholder="password"/>
+
+            <div className="button-bar mt2">
+              <Link to="/sign_up">Create new account</Link>
+              <button type="submit" className="btn btn-primary block ml2">Login</button>
+              </div>
           </form>
-          <Link to="/sign_up">Create new account</Link>
-        </main>
+        </div>
       </div>
     );
   }
