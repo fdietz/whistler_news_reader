@@ -105,6 +105,10 @@ class Entries extends Component {
     if (this.isNextEntry()) {
       const entry = entries.items[this.currentIndex()+1];
       dispatch(selectEntry({ entry: entry }));
+    } else {
+      this.loadMore().then(() => {
+        this.nextEntry();
+      });
     }
   }
 

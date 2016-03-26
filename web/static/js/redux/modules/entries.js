@@ -52,7 +52,7 @@ export function requestFetchMoreEntries(options = {}) {
     dispatch(fetchMoreEntries(params));
     dispatch(createNotification({ message: "Fetching more entries", type: "info" }));
 
-    axios.get("/api/entries", { params: params })
+    return axios.get("/api/entries", { params: params })
     .then((response) => {
       dispatch(fetchMoreEntries({
         items: response.data.entries,
