@@ -163,78 +163,73 @@ class Entries extends Component {
   render() {
     const { dispatch, entries, currentEntry } = this.props;
 
-    let content;
-    if (currentEntry) {
-      content = (
-        <FeedEntryContent
-          entry={currentEntry}
-          onEntryShown={this.handleEntryShown}/>
-      );
-    }
+    const content = (
+      <FeedEntryContent
+        entry={currentEntry}
+        onEntryShown={this.handleEntryShown}/>
+    );
 
-    let items = (<FeedEntryList
+    const items = (<FeedEntryList
       entries={entries.items}
       currentEntry={currentEntry}
       onEntryClick={entry => dispatch(selectEntry({ entry: entry })) }/>
     );
 
-    let paginatedItems;
-    if (entries.items.length > 0) {
-      let noMoreContent;
-      if (!entries.hasMoreEntries) {
-        noMoreContent = (
-          <div className="item no-more-content">
-            <p className="hint">No more contents. You are all done!</p>
-            <div className="smile">:-)</div>
-          </div>
-        );
-      }
+    const noMoreContent = (
+      <div className="item no-more-content">
+        <p className="hint">No more contents. You are all done!</p>
+        <div className="smile">:-)</div>
+      </div>
+    );
 
-      paginatedItems = (<InfiniteScroll
-        threshold={300}
-        loadMore={this.loadMore}
-        hasMore={entries.hasMoreEntries}>
-        {items}
-        {noMoreContent}
-      </InfiniteScroll>);
-    }
+    const paginatedItems = (<InfiniteScroll
+      threshold={300}
+      loadMore={this.loadMore}
+      hasMore={entries.hasMoreEntries}>
+      {entries.items.length > 0 && items}
+      {!entries.hasMoreEntries && noMoreContent}
+    </InfiniteScroll>);
+
+    const listHeader = (
+      <LayoutHeader>
+        <ButtonGroup className="btn-group-rounded">
+          <Button type="btn-header" onClick={this.markAsRead}>
+            <Icon name="checkmark" size="small"/>
+          </Button>
+          <Button type="btn-header" onClick={this.refreshEntries}>
+            <Icon name="cycle" size="small"/>
+          </Button>
+        </ButtonGroup>
+      </LayoutHeader>
+    );
+
+    const entryHeader = (
+      <LayoutHeader>
+        <ButtonGroup className="btn-group-rounded">
+          <Button type="btn-header" onClick={this.previousEntry}>
+            <Icon name="arrow-left3" size="small"/>
+          </Button>
+          <Button type="btn-header" onClick={this.nextEntry}>
+            <Icon name="arrow-right3" size="small"/>
+          </Button>
+        </ButtonGroup>
+        <ButtonGroup className="mx-l-auto">
+          <Button type="btn btn-primary" onClick={this.openNewFeedModal}>
+            + Add Feed
+          </Button>
+        </ButtonGroup>
+      </LayoutHeader>
+    );
 
     return (
       <LayoutMasterSplit>
         <LayoutPane size={30}>
-          <LayoutHeader>
-            <ButtonGroup>
-              <Button type="btn-header" onClick={this.markAsRead}>
-                <Icon name="checkmark" size="small"/>
-              </Button>
-              <Button type="btn-header" onClick={this.refreshEntries}>
-                <Icon name="cycle" size="small"/>
-              </Button>
-            </ButtonGroup>
-          </LayoutHeader>
-          <LayoutContent>
-            {paginatedItems}
-          </LayoutContent>
+          {listHeader}
+          <LayoutContent>{paginatedItems}</LayoutContent>
         </LayoutPane>
         <LayoutPane size={70}>
-          <LayoutHeader>
-            <ButtonGroup>
-              <Button type="btn-header" onClick={this.previousEntry}>
-                <Icon name="arrow-left3" size="small"/>
-              </Button>
-              <Button type="btn-header" onClick={this.nextEntry}>
-                <Icon name="arrow-right3" size="small"/>
-              </Button>
-            </ButtonGroup>
-            <ButtonGroup className="mx-l-auto">
-              <Button type="btn-header" onClick={this.openNewFeedModal}>
-                <Icon name="plus" size="small"/>
-              </Button>
-            </ButtonGroup>
-          </LayoutHeader>
-          <LayoutContent>
-            {content}
-          </LayoutContent>
+          {entryHeader}
+          <LayoutContent>{currentEntry && content}</LayoutContent>
         </LayoutPane>
 
         <NewFeedForm

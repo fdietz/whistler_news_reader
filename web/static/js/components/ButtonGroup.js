@@ -8,7 +8,7 @@ export default class ButtonGroup extends Component {
   };
 
   className() {
-    return `btn-group btn-group-rounded ${this.props.className}`;
+    return `btn-group ${this.props.className}`;
   }
 
   render() {
