@@ -87,7 +87,7 @@ export function requestRefreshEntries(options = {}) {
     dispatch(refreshEntries(params));
     dispatch(createNotification({ message: "Refresh entries", type: "info" }));
 
-    axios.put("/api/entries/refresh", params)
+    return axios.put("/api/entries/refresh", params)
     .then(() => {
       dispatch(refreshEntries());
       dispatch(requestFetchEntries(options));

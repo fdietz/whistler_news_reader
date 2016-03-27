@@ -26,7 +26,12 @@ import {
   requestMarkAllFeedEntriesAsRead
 } from "../redux/modules/entries";
 
-import { decrementUnreadCount, resetUnreadCount } from "../redux/modules/feeds";
+import {
+  decrementUnreadCount,
+  resetUnreadCount,
+  requestFetchFeeds
+} from "../redux/modules/feeds";
+
 import { selectEntry } from "../redux/modules/currentEntry";
 
 class Entries extends Component {
@@ -103,7 +108,10 @@ class Entries extends Component {
 
   refreshEntries() {
     const { dispatch } = this.props;
-    dispatch(requestRefreshEntries(this.requestParams(this.props)));
+    dispatch(requestRefreshEntries(this.requestParams(this.props)))
+      .then(() => {
+        dispatch(requestFetchFeeds());
+      });
   }
 
   nextEntry() {
