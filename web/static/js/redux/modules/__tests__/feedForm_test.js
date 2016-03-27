@@ -12,26 +12,26 @@ import { ADD_FEED } from "../feeds";
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-// test.afterEach(() => {
-//   nock.cleanAll();
-// });
-//
-// test.cb("requestCreateFeed dispatches CREATE_FEED action when done", t => {
-//   const feedUrl = "http://www.theverge.com/rss/all";
-//
-//   nock("http://localhost:4000/")
-//     .post("/api/feeds", { feed_url: feedUrl })
-//     .reply(201, { title: "title", id: 1 });
-//
-//   const expectedActions = [
-//     { type: FEED_FORM_UPDATE, payload: {} },
-//     { type: FEED_FORM_UPDATE, payload: { item: { title: "title", id: 1 } } },
-//     { type: ADD_FEED, payload: { items: [ { title: "title", id: 1 } ] } }
-//   ];
-//
-//   const store = mockStore({ item: {} }, expectedActions, t.end);
-//   store.dispatch(requestCreateFeed(feedUrl));
-// });
+test.afterEach(() => {
+  nock.cleanAll();
+});
+
+test.cb("requestCreateFeed dispatches CREATE_FEED action when done", t => {
+  const feedUrl = "http://www.theverge.com/rss/all";
+
+  nock("http://localhost:4000/")
+    .post("/api/feeds", { feed_url: feedUrl })
+    .reply(201, { title: "title", id: 1 });
+
+  const expectedActions = [
+    { type: FEED_FORM_UPDATE, payload: {} },
+    { type: FEED_FORM_UPDATE, payload: { item: { title: "title", id: 1 } } },
+    { type: ADD_FEED, payload: { items: [ { title: "title", id: 1 } ] } }
+  ];
+
+  const store = mockStore({ item: {} }, expectedActions, t.end);
+  store.dispatch(requestCreateFeed(feedUrl));
+});
 
 test("feedForm reducer returns default state", t => {
   t.same(reducer(undefined, {}), {

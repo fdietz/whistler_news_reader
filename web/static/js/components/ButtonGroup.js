@@ -1,21 +1,17 @@
-import React, { Component, PropTypes } from "react";
+import React, { PropTypes } from "react";
 
-export default class ButtonGroup extends Component {
+const ButtonGroup = ({ className, children }) => {
+  const clazzName =  `btn-group ${className}`;
+  return (
+    <div className={clazzName}>
+      {children}
+    </div>
+  );
+};
 
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string
-  };
+ButtonGroup.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string
+};
 
-  className() {
-    return `btn-group ${this.props.className}`;
-  }
-
-  render() {
-    return (
-      <div className={this.className()}>
-        {this.props.children}
-      </div>
-    );
-  }
-}
+export default ButtonGroup;

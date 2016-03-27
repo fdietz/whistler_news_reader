@@ -1,21 +1,19 @@
-import React, { Component, PropTypes } from "react";
+import React, { PropTypes } from "react";
 
-export default class Button extends Component {
+const Button = ({ type, onClick, children }) => {
+  const cls = `btn ${type}`;
 
-  static propTypes = {
-    children: PropTypes.node,
-    type: PropTypes.string,
-    onClick: PropTypes.func
-  };
+  return (
+    <button onClick={onClick} className={cls}>
+      {children}
+    </button>
+  );
+};
 
-  render() {
-    const { type, onClick, children } = this.props;
-    const cls = `btn ${type}`;
+Button.propTypes = {
+  children: PropTypes.node,
+  type: PropTypes.string,
+  onClick: PropTypes.func
+};
 
-    return (
-      <button onClick={onClick} className={cls}>
-        {children}
-      </button>
-    );
-  }
-}
+export default Button;

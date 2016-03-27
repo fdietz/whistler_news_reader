@@ -1,4 +1,3 @@
-import test from "ava";
 import "babel-polyfill";
 import "babel-core/register";
 

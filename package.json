@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "ava 'web/static/js/**/__tests__/*.js' --require 'babel-core/register' --require './test/js/test_helper.js' --verbose"
+    "test": "ava 'web/static/js/**/__tests__/*.js' --require 'babel-core/register' --require './test/js/test_helper.js' --no-cache --verbose"
   },
   "ava": {
     "babel": "inherit"
@@ -42,6 +42,7 @@
     "eslint": "^2.1.0",
     "eslint-plugin-react": "^4.2.3",
     "extract-text-webpack-plugin": "^1.0.1",
+    "faucet": "0.0.1",
     "file-loader": "^0.8.5",
     "jsdom": "^8.1.0",
     "mocha": "^2.4.5",
@@ -54,6 +55,7 @@
     "sass-lint": "^1.5.1",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
+    "tape": "^4.5.1",
     "webpack": "^1.12.13",
     "webpack-dev-server": "^1.14.1"
   }

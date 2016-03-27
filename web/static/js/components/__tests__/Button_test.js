@@ -4,8 +4,8 @@ import { shallow } from "enzyme";
 import Button from "../Button";
 
 test("Button render children", t => {
-  const wrapper = shallow(<Button>Click me</Button>).contains("Click me");
-  t.true(wrapper);
+  const wrapper = shallow(<Button>Click me</Button>);
+  t.true(wrapper.contains("Click me"));
 });
 
 test("Button set className from props", t => {
