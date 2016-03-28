@@ -31,6 +31,7 @@ class Sidebar extends Component {
 
     this.onNextClick = debounce(this.onNextClick.bind(this), 100);
     this.onPreviousClick = debounce(this.onPreviousClick.bind(this), 100);
+    this.onAddClick = this.onAddClick.bind(this);
   }
 
   renderRemoveableLink(feed, index) {
@@ -100,8 +101,13 @@ class Sidebar extends Component {
     }
   }
 
+  onAddClick(e) {
+    e.preventDefault();
+    this.props.onAddClick();
+  }
+
   render() {
-    const { feeds, currentUser, onAddClick, onSignOutClick } = this.props;
+    const { feeds, currentUser, onSignOutClick } = this.props;
 
     return (
       <div className="sidebar">
@@ -117,7 +123,7 @@ class Sidebar extends Component {
 
           <h4 className="sidebar-nav-header">
             Subscriptions
-            <a href="#" onClick={onAddClick} className="action" title="Add Feed">+</a>
+            <a href="#" onClick={this.onAddClick} className="action" title="Add Feed">+</a>
           </h4>
           <ul className="sidebar-nav-list">
             {feeds.map((feed, index) => {

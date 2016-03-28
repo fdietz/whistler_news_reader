@@ -56,7 +56,6 @@ class MainApp extends Component {
       isLoading: PropTypes.bool.isRequired,
       error: PropTypes.string
     }).isRequired,
-    createFeed: PropTypes.object,
     currentEntry: PropTypes.object,
     currentUser: PropTypes.object,
     currentPath: PropTypes.string.isRequired,
