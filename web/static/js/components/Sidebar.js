@@ -1,11 +1,12 @@
 import React, {Component, PropTypes} from "react";
 import { Link } from "react-router";
 import classNames from "classnames";
-import { HotKeys } from "react-hotkeys";
 
 import Icon from "../components/Icon";
 import Badge from "../components/Badge";
 import imageProfile from "../../assets/images/profile.jpg";
+
+import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
 // import imageArrowDown from "../../assets/images/arrow-down.svg";
 // import imageArrowUp from "../../assets/images/arrow-up.svg";
@@ -72,6 +73,16 @@ class Sidebar extends Component {
     this.currentPathIndex = this.paths.indexOf(currentPathname);
   }
 
+  componentDidMount() {
+    bindHotKey("nextFeed", () => this.onNextClick());
+    bindHotKey("previousFeed", () => this.onPreviousClick());
+  }
+
+  componentWillUnmount() {
+    unbindHotKey("nextFeed");
+    unbindHotKey("previousFeed");
+  }
+
   onNextClick() {
     if (this.currentPathIndex+1 < this.paths.length) {
       const path = this.paths[this.currentPathIndex+1];
@@ -89,44 +100,33 @@ class Sidebar extends Component {
   render() {
     const { feeds, onSignOutClick } = this.props;
 
-    const map = {
-      next: ["ctrl+n", "ctrl+j", "command+option+down", "ctrl-tab"],
-      previous: ["ctrl+p", "ctrl+k", "command+option+up", "ctrl-shift-tab"]
-    };
-
-    const handlers = {
-      next: this.onNextClick,
-      previous: this.onPreviousClick
-    };
 
     return (
-      <HotKeys keyMap={map} handlers={handlers}>
-        <div className="sidebar">
-          <div className="sidebar-header">
-            <div className="logo">whistle'r</div>
-          </div>
-          <div className="sidebar-content">
-            <h4 className="sidebar-nav-header">Home</h4>
-            <ul className="sidebar-nav-list">
-              {this.renderLink("Today", "/today")}
-              {this.renderLink("All", "/all")}
-            </ul>
+      <div className="sidebar">
+        <div className="sidebar-header">
+          <div className="logo">whistle'r</div>
+        </div>
+        <div className="sidebar-content">
+          <h4 className="sidebar-nav-header">Home</h4>
+          <ul className="sidebar-nav-list">
+            {this.renderLink("Today", "/today")}
+            {this.renderLink("All", "/all")}
+          </ul>
 
-            <h4 className="sidebar-nav-header">Subscriptions</h4>
-            <ul className="sidebar-nav-list">
-              {feeds.map((feed, index) => {
-                return this.renderRemoveableLink(feed, index);
-              })}
-            </ul>
-          </div>
-          <div className="sidebar-footer">
-            <div className="avatar">
-              <img src={imageProfile}/>
-              <a onClick={onSignOutClick}>Logout</a>
-            </div>
+          <h4 className="sidebar-nav-header">Subscriptions</h4>
+          <ul className="sidebar-nav-list">
+            {feeds.map((feed, index) => {
+              return this.renderRemoveableLink(feed, index);
+            })}
+          </ul>
+        </div>
+        <div className="sidebar-footer">
+          <div className="avatar">
+            <img src={imageProfile}/>
+            <a onClick={onSignOutClick}>Logout</a>
           </div>
         </div>
-      </HotKeys>
+      </div>
     );
   }
 }

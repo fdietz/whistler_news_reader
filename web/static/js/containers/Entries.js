@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { HotKeys } from "react-hotkeys";
 
 import LayoutPane from "../components/LayoutPane";
 import LayoutHeader from "../components/LayoutHeader";
@@ -17,6 +16,8 @@ import Icon from "../components/Icon";
 import InfiniteScroll from "../components/InfiniteScroll";
 import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryContent from "../components/FeedEntryContent";
+
+import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
 import {
   requestFetchEntries,
@@ -75,6 +76,16 @@ class Entries extends Component {
     .then(() => {
       this.firstEntry();
     });
+
+    bindHotKey("nextEntry", () => this.nextEntry());
+    bindHotKey("previousEntry", () => this.previousEntry());
+    bindHotKey("openEntry", () => this.openEntryEmbedSite());
+  }
+
+  componentWillUnmount() {
+    unbindHotKey("nextEntry");
+    unbindHotKey("previousEntry");
+    unbindHotKey("openEntry");
   }
 
   componentWillReceiveProps(nextProps) {
@@ -267,41 +278,27 @@ class Entries extends Component {
       </LayoutHeader>
     );
 
-    const map = {
-      next: ["n", "j"],
-      previous: ["p", "k"],
-      preview: ["o"]
-    };
-
-    const handlers = {
-      next: this.nextEntry,
-      previous: this.previousEntry,
-      preview: this.openEntryEmbedSite
-    };
-
     return (
-      <HotKeys keyMap={map} handlers={handlers}>
-        <LayoutMasterSplit>
-          <LayoutPane size={30}>
-            {listHeader}
-            <LayoutContent>{paginatedItems}</LayoutContent>
-          </LayoutPane>
-          <LayoutPane size={70}>
-            {entryHeader}
-            <LayoutContent>{currentEntry && content}</LayoutContent>
-          </LayoutPane>
+      <LayoutMasterSplit>
+        <LayoutPane size={30}>
+          {listHeader}
+          <LayoutContent>{paginatedItems}</LayoutContent>
+        </LayoutPane>
+        <LayoutPane size={70}>
+          {entryHeader}
+          <LayoutContent>{currentEntry && content}</LayoutContent>
+        </LayoutPane>
 
-          <NewFeedForm
-            isOpen={this.state.newFeedModalIsOpen}
-            closeNewFeedModal={this.closeNewFeedModal}/>
+        <NewFeedForm
+          isOpen={this.state.newFeedModalIsOpen}
+          closeNewFeedModal={this.closeNewFeedModal}/>
 
-          {this.state.entryEmbedSiteIsOpen &&
-            <EntryEmbedSite
-              isOpen={this.state.entryEmbedSiteIsOpen}
-              onClose={this.closeEntryEmbedSite}/>
-          }
-        </LayoutMasterSplit>
-      </HotKeys>
+        {this.state.entryEmbedSiteIsOpen &&
+          <EntryEmbedSite
+            isOpen={this.state.entryEmbedSiteIsOpen}
+            onClose={this.closeEntryEmbedSite}/>
+        }
+      </LayoutMasterSplit>
     );
   }
 }
