@@ -1,40 +1,45 @@
-import React, {PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import classNames from "classnames";
 import DateTimeHelper from "../utils/DateTimeHelper";
 
-const FeedEntry = ({ title, published, unread, summary, isSelected, onClick, feed }) => {
-  let cls = classNames({
-    item: true,
-    selected: isSelected,
-    unread: unread
-  });
+class FeedEntry extends Component {
 
-  const date = new Date(published);
-  const relativeDateTime = DateTimeHelper.timeDifference(date);
+  static propTypes = {
+    published: PropTypes.string.isRequired,
+    feed: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired,
+    unread: PropTypes.bool.isRequired,
+    summary: PropTypes.string,
+    onClick: PropTypes.func.isRequired,
+    isSelected: PropTypes.bool.isRequired
+  };
 
-  return (
-    <div className={cls} onClick={onClick}>
-      <div className="item-row">
-        <div className="meta">
-          <div className="feed-title">{feed.title}</div>
-          <span className="circle"></span>
-          <span className="published">{relativeDateTime}</span>
+  render() {
+    const { title, published, unread, summary, isSelected, onClick, feed } = this.props;
+
+    let cls = classNames({
+      item: true,
+      selected: isSelected,
+      unread: unread
+    });
+
+    const date = new Date(published);
+    const relativeDateTime = DateTimeHelper.timeDifference(date);
+
+    return (
+      <div className={cls} onClick={onClick}>
+        <div className="item-row">
+          <div className="meta">
+            <div className="feed-title">{feed.title}</div>
+            <span className="circle"></span>
+            <span className="published">{relativeDateTime}</span>
+          </div>
+          <div className="entry-title">{title}</div>
+          <div className="entry-summary">{summary}</div>
         </div>
-        <div className="entry-title">{title}</div>
-        <div className="entry-summary">{summary}</div>
       </div>
-    </div>
-  );
-};
-
-FeedEntry.propTypes = {
-  published: PropTypes.string.isRequired,
-  feed: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
-  unread: PropTypes.bool.isRequired,
-  summary: PropTypes.string,
-  onClick: PropTypes.func.isRequired,
-  isSelected: PropTypes.bool.isRequired
-};
+    );
+  }
+}
 
 export default FeedEntry;

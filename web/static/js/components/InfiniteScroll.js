@@ -1,14 +1,15 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 
+import { findScrollableAncestor } from "../utils/dom";
+
 export default class InfiniteScroll extends Component {
 
   static propTypes = {
     children: PropTypes.node.isRequired,
     hasMore: PropTypes.bool.isRequired,
     loadMore: PropTypes.func.isRequired,
-    threshold: PropTypes.number.isRequired,
-    className: PropTypes.string
+    threshold: PropTypes.number.isRequired
   };
 
   static defaultProps = {
@@ -23,7 +24,7 @@ export default class InfiniteScroll extends Component {
   }
 
   componentDidMount() {
-    this.scrollableAncestor = this._findScrollableAncestor();
+    this.scrollableAncestor = findScrollableAncestor(ReactDOM.findDOMNode(this));
     this.attachScrollListener();
     this.handleScrollEvent();
     window.addEventListener("resize", this.handleScrollEvent);
@@ -36,7 +37,7 @@ export default class InfiniteScroll extends Component {
 
   render() {
     return (
-      <div ref="scrollContainer" className={this.props.className}>
+      <div ref="scrollContainer" className="infinite-scroll-container">
         {this.props.children}
       </div>
     );
@@ -68,26 +69,4 @@ export default class InfiniteScroll extends Component {
     window.removeEventListener("resize", this.handleScrollEvent);
   }
 
-  _findScrollableAncestor() {
-    let node = ReactDOM.findDOMNode(this);
-
-    while (node.parentNode) {
-      node = node.parentNode;
-
-      if (node === document || node === document.documentElement) {
-        continue;
-      }
-
-      const style = window.getComputedStyle(node);
-      const overflowY = style.getPropertyValue("overflow-y") ||
-        style.getPropertyValue("overflow");
-
-      if (overflowY === "auto" || overflowY === "scroll") {
-        return node;
-      }
-    }
-
-    // fallback window
-    return window;
-  }
 }
