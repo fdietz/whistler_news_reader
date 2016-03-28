@@ -15,7 +15,8 @@ class Sidebar extends Component {
   static propTypes = {
     feeds: PropTypes.array.isRequired,
     currentPathname: PropTypes.string.isRequired,
-    onRemoveClick: PropTypes.func.isRequired
+    onRemoveClick: PropTypes.func.isRequired,
+    onSignOutClick: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -58,7 +59,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { feeds } = this.props;
+    const { feeds, onSignOutClick } = this.props;
 
     return (
       <div className="sidebar">
@@ -82,6 +83,7 @@ class Sidebar extends Component {
         <div className="sidebar-footer">
           <div className="avatar">
             <img src={imageProfile}/>
+            <a onClick={onSignOutClick}>Logout</a>
           </div>
         </div>
       </div>

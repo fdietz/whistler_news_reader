@@ -66,7 +66,8 @@ class AuthenticatedContainer extends Component {
         <Sidebar
           feeds={feeds.items}
           currentPathname={currentPath}
-          onRemoveClick={this.handleOnRemove}/>
+          onRemoveClick={this.handleOnRemove}
+          onSignOutClick={this.handleSignOut}/>
 
         {notification &&
           <Notification {...notification}/>
