@@ -15,7 +15,7 @@ defmodule WhistlerNewsReader.Api.EntryView do
           summary: entry.summary,
           content: entry.content,
           url: entry.url,
-          unread: unread?(entry, current_user),
+          unread: false,
           feed: %{
             id: entry.feed.id,
             title: entry.feed.title
@@ -34,18 +34,12 @@ defmodule WhistlerNewsReader.Api.EntryView do
       summary: entry.summary,
       content: entry.content,
       url: entry.url,
-      unread: unread?(entry, current_user),
+      unread: false,
       feed: %{
         id: entry.feed.id,
         title: entry.feed.title
       }
     }
-  end
-
-  # TODO: n+1 query! Refactor using eager loading of unread_entries association instead
-  defp unread?(entry, current_user) do
-    unread_entries = UnreadEntry |> UnreadEntry.for_entry(entry.id) |> UnreadEntry.for_user(current_user.id) |> Repo.all
-    Enum.any?(unread_entries, fn(e) -> e.entry_id == entry.id end)
   end
 
 end
