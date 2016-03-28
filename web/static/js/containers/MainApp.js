@@ -348,9 +348,11 @@ class MainApp extends Component {
           <Notification {...notification}/>
         }
 
-        <NewFeedForm
-          isOpen={this.state.newFeedModalIsOpen}
-          closeNewFeedModal={this.closeNewFeedModal}/>
+        {this.state.newFeedModalIsOpen &&
+          <NewFeedForm
+            isOpen={this.state.newFeedModalIsOpen}
+            closeNewFeedModal={this.closeNewFeedModal}/>
+        }
 
         {this.state.entryEmbedSiteIsOpen &&
           <EntryEmbedSite

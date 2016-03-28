@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
+import ReactDOM from "react-dom";
 
 import Icon from "../components/Icon";
 
@@ -23,6 +24,13 @@ class NewFeedForm extends Component {
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
     this.handleNewFeedChange = this.handleNewFeedChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      ReactDOM.findDOMNode(this.refs.input).focus();
+      console.log("focus")
+    }, 0);
   }
 
   handleNewFeedChange(event) {
@@ -95,6 +103,7 @@ class NewFeedForm extends Component {
             <input className="field"
               type="text"
               placeholder="Website or feed"
+              ref="input"
               value={feedForm.feedUrl}
               onChange={(event) => this.handleNewFeedChange(event)}
               autoFocus={true}/>

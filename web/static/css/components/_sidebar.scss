@@ -74,6 +74,7 @@ $sidebar-color: $gray;
     margin-left: auto;
     font-size: 2rem;
     color: $sidebar-color;
+    outline: none;
 
     &:hover {
       color: lighten($sidebar-color, 10%);
