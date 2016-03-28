@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import { Link } from "react-router";
 import classNames from "classnames";
+import debounce from "lodash.debounce";
 
 import Icon from "../components/Icon";
 import Badge from "../components/Badge";
@@ -26,8 +27,8 @@ class Sidebar extends Component {
   constructor(props) {
     super(props);
 
-    this.onNextClick = this.onNextClick.bind(this);
-    this.onPreviousClick = this.onPreviousClick.bind(this);
+    this.onNextClick = debounce(this.onNextClick.bind(this), 100);
+    this.onPreviousClick = debounce(this.onPreviousClick.bind(this), 100);
   }
 
   renderRemoveableLink(feed, index) {

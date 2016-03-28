@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import debounce from "lodash.debounce";
 
 import LayoutPane from "../components/LayoutPane";
 import LayoutHeader from "../components/LayoutHeader";
@@ -59,15 +60,16 @@ class Entries extends Component {
 
     this.loadMore = this.loadMore.bind(this);
     this.refreshEntries = this.refreshEntries.bind(this);
-    this.nextEntry = this.nextEntry.bind(this);
-    this.previousEntry = this.previousEntry.bind(this);
     this.openNewFeedModal = this.openNewFeedModal.bind(this);
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
     this.handleEntryShown = this.handleEntryShown.bind(this);
     this.markAsRead = this.markAsRead.bind(this);
-    this.openEntryEmbedSite = this.openEntryEmbedSite.bind(this);
     this.closeEntryEmbedSite = this.closeEntryEmbedSite.bind(this);
     this.openExternal = this.openExternal.bind(this);
+
+    this.nextEntry = debounce(this.nextEntry.bind(this), 100);
+    this.previousEntry = debounce(this.previousEntry.bind(this), 100);
+    this.openEntryEmbedSite = debounce(this.openEntryEmbedSite.bind(this), 100);
   }
 
   componentDidMount() {

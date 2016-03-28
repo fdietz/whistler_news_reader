@@ -11,6 +11,7 @@
     "babel-polyfill": "^6.6.1",
     "classnames": "^2.2.3",
     "history": "^1.17.0",
+    "lodash.debounce": "^4.0.3",
     "mousetrap": "^1.5.3",
     "normalize.css": "^3.0.3",
     "react": "^0.14.7",
