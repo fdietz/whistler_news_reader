@@ -36,11 +36,23 @@ $sidebar-color: $gray;
 }
 
 .sidebar-footer {
+  display: flex;
   background-color: $darken-2;
   border-top: 1px solid $darken-1;
+  align-items: center;
 
   .avator {
     display: flex;
+  }
+
+  .meta {
+    display: flex;
+    padding: $space-1;
+    flex-direction: column;
+
+    .author {
+      color: $white;
+    }
   }
 }
 
