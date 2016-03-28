@@ -25,7 +25,7 @@ class FeedEntryList extends Component {
 
     if (this.props.currentEntry) {
       const node = ReactDOM.findDOMNode(this.refs[currentEntry.id]);
-      node.scrollIntoView(false);
+      if (node) node.scrollIntoView(false);
     }
   }
 

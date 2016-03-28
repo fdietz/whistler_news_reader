@@ -43,7 +43,8 @@ export function requestFetchEntries(options = {}) {
     const params = Object.assign({}, options, { limit: 20 });
     dispatch(fetchEntries(params));
     dispatch(createNotification({ message: "Fetching entries", type: "info" }));
-    axios.get("/api/entries", { params: params })
+
+    return axios.get("/api/entries", { params: params })
     .then((response) => {
       dispatch(fetchEntries({
         items: response.data.entries,

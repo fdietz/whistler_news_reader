@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { push } from "react-router-redux";
 import { HotKeys } from "react-hotkeys";
 
 import LayoutPane from "../components/LayoutPane";
@@ -72,7 +71,10 @@ class Entries extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(requestFetchEntries(this.requestParams(this.props)));
+    dispatch(requestFetchEntries(this.requestParams(this.props)))
+    .then(() => {
+      this.firstEntry();
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,7 +82,10 @@ class Entries extends Component {
 
     // if we changed routes...
     if (nextProps.location.key !== this.props.location.key) {
-      dispatch(requestFetchEntries(this.requestParams(nextProps)));
+      dispatch(requestFetchEntries(this.requestParams(nextProps)))
+      .then(() => {
+        this.firstEntry();
+      });
     }
   }
 
@@ -124,6 +129,14 @@ class Entries extends Component {
       this.loadMore().then(() => {
         this.nextEntry();
       });
+    }
+  }
+
+  firstEntry() {
+    const { dispatch, entries } = this.props;
+    if (entries.items.length > 0) {
+      const entry = entries.items[0];
+      dispatch(selectEntry({ entry: entry }));
     }
   }
 

@@ -11,11 +11,11 @@ class FeedEntry extends Component {
     unread: PropTypes.bool.isRequired,
     summary: PropTypes.string,
     onClick: PropTypes.func.isRequired,
-    isSelected: PropTypes.bool.isRequired
+    isSelected: PropTypes.bool
   };
 
   render() {
-    const { title, published, unread, summary, isSelected, onClick, feed } = this.props;
+    const { title, published, unread, summary, isSelected = false, onClick, feed } = this.props;
 
     let cls = classNames({
       item: true,
