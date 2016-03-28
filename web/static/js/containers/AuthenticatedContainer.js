@@ -34,6 +34,8 @@ class AuthenticatedContainer extends Component {
 
     this.handleSignOut = this.handleSignOut.bind(this);
     this.handleOnRemove = this.handleOnRemove.bind(this);
+    this.handleOnNextFeed = this.handleOnNextFeed.bind(this);
+    this.handleOnPreviousFeed = this.handleOnPreviousFeed.bind(this);
   }
 
   handleSignOut() {
@@ -44,6 +46,16 @@ class AuthenticatedContainer extends Component {
   handleOnRemove(feed) {
     const { dispatch } = this.props;
     dispatch(requestRemoveFeed(feed.id));
+  }
+
+  handleOnNextFeed(path) {
+    const { dispatch } = this.props;
+    dispatch(routeActions.push(path));
+  }
+
+  handleOnPreviousFeed(path) {
+    const { dispatch } = this.props;
+    dispatch(routeActions.push(path));
   }
 
   componentDidMount() {
@@ -67,7 +79,9 @@ class AuthenticatedContainer extends Component {
           feeds={feeds.items}
           currentPathname={currentPath}
           onRemoveClick={this.handleOnRemove}
-          onSignOutClick={this.handleSignOut}/>
+          onSignOutClick={this.handleSignOut}
+          onNextClick={this.handleOnNextFeed}
+          onPreviousClick={this.handleOnPreviousFeed}/>
 
         {notification &&
           <Notification {...notification}/>

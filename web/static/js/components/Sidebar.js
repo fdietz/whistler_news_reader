@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import { Link } from "react-router";
 import classNames from "classnames";
+import { HotKeys } from "react-hotkeys";
 
 import Icon from "../components/Icon";
 import Badge from "../components/Badge";
@@ -16,11 +17,16 @@ class Sidebar extends Component {
     feeds: PropTypes.array.isRequired,
     currentPathname: PropTypes.string.isRequired,
     onRemoveClick: PropTypes.func.isRequired,
-    onSignOutClick: PropTypes.func.isRequired
+    onSignOutClick: PropTypes.func.isRequired,
+    onNextClick: PropTypes.func.isRequired,
+    onPreviousClick: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
+
+    this.onNextClick = this.onNextClick.bind(this);
+    this.onPreviousClick = this.onPreviousClick.bind(this);
   }
 
   renderRemoveableLink(feed, index) {
@@ -58,35 +64,69 @@ class Sidebar extends Component {
     );
   }
 
+  componentDidUpdate() {
+    const { currentPathname, feeds } = this.props;
+
+    this.paths = ["/today", "/all"];
+    this.paths = [...this.paths, ...feeds.map((feed) => `/feeds/${feed.id}`)];
+    this.currentPathIndex = this.paths.indexOf(currentPathname);
+  }
+
+  onNextClick() {
+    if (this.currentPathIndex+1 < this.paths.length) {
+      const path = this.paths[this.currentPathIndex+1];
+      this.props.onNextClick(path);
+    }
+  }
+
+  onPreviousClick() {
+    if (this.currentPathIndex-1 >= 0) {
+      const path = this.paths[this.currentPathIndex-1];
+      this.props.onPreviousClick(path);
+    }
+  }
+
   render() {
     const { feeds, onSignOutClick } = this.props;
 
-    return (
-      <div className="sidebar">
-        <div className="sidebar-header">
-          <div className="logo">whistle'r</div>
-        </div>
-        <div className="sidebar-content">
-          <h4 className="sidebar-nav-header">Home</h4>
-          <ul className="sidebar-nav-list">
-            {this.renderLink("Today", "/today")}
-            {this.renderLink("All", "/all")}
-          </ul>
+    const map = {
+      next: ["ctrl+n", "ctrl+j", "command+option+down", "ctrl-tab"],
+      previous: ["ctrl+p", "ctrl+k", "command+option+up", "ctrl-shift-tab"]
+    };
 
-          <h4 className="sidebar-nav-header">Subscriptions</h4>
-          <ul className="sidebar-nav-list">
-            {feeds.map((feed, index) => {
-              return this.renderRemoveableLink(feed, index);
-            })}
-          </ul>
-        </div>
-        <div className="sidebar-footer">
-          <div className="avatar">
-            <img src={imageProfile}/>
-            <a onClick={onSignOutClick}>Logout</a>
+    const handlers = {
+      next: this.onNextClick,
+      previous: this.onPreviousClick
+    };
+
+    return (
+      <HotKeys keyMap={map} handlers={handlers}>
+        <div className="sidebar">
+          <div className="sidebar-header">
+            <div className="logo">whistle'r</div>
+          </div>
+          <div className="sidebar-content">
+            <h4 className="sidebar-nav-header">Home</h4>
+            <ul className="sidebar-nav-list">
+              {this.renderLink("Today", "/today")}
+              {this.renderLink("All", "/all")}
+            </ul>
+
+            <h4 className="sidebar-nav-header">Subscriptions</h4>
+            <ul className="sidebar-nav-list">
+              {feeds.map((feed, index) => {
+                return this.renderRemoveableLink(feed, index);
+              })}
+            </ul>
+          </div>
+          <div className="sidebar-footer">
+            <div className="avatar">
+              <img src={imageProfile}/>
+              <a onClick={onSignOutClick}>Logout</a>
+            </div>
           </div>
         </div>
-      </div>
+      </HotKeys>
     );
   }
 }
