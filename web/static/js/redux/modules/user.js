@@ -22,7 +22,7 @@ export function requestSignUp(data) {
 
         dispatch(createSignUp({ user: response.data.user }));
 
-        dispatch(routeActions.push("/"));
+        dispatch(routeActions.push("/today"));
       })
       .catch((response) => {
         dispatch(createSignUp(new Error(response.data.errors)));
@@ -44,7 +44,7 @@ export function requestSignIn(email, password) {
 
         dispatch(createSignIn({ user: response.data.user }));
 
-        dispatch(routeActions.push("/"));
+        dispatch(routeActions.push("/today"));
       })
       .catch((response) => {
         dispatch(createSignIn(new Error(response.data.errors)));

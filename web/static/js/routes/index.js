@@ -1,9 +1,8 @@
 import React from "react";
 import { Route } from "react-router";
 
-// import App from "../containers/App";
 // import Welcome from "../containers/Welcome";
-import Entries from "../containers/Entries";
+import MainApp from "../containers/MainApp";
 import Patterns from "../containers/Patterns";
 
 import MainLayout from "../containers/MainLayout";
@@ -18,9 +17,9 @@ export default (store) => (
    <Route path="/sign_in" component={SessionNew}/>
 
    <Route path="/" component={AuthenticatedContainer}>
-     <Route path="all" component={Entries}/>
-     <Route path="today" component={Entries}/>
-     <Route path="feeds/:id" component={Entries}/>
+     <Route path="all" component={MainApp}/>
+     <Route path="today" component={MainApp}/>
+     <Route path="feeds/:id" component={MainApp}/>
     </Route>
 
    <Route path="patterns" component={Patterns}/>

@@ -51,17 +51,34 @@ $sidebar-color: $gray;
     flex-direction: column;
 
     .author {
-      color: $white;
+      color: $sidebar-color;
     }
   }
 }
 
 .sidebar-nav-header {
+  position: relative;
   margin: 0;
   margin-bottom: $space-1;
   font-size: .9rem;
   color: #fff;
   text-transform: uppercase;
+
+  .action {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    width: 20px;
+    padding: 0;
+    margin-top: -25px;
+    margin-left: auto;
+    font-size: 2rem;
+    color: $sidebar-color;
+
+    &:hover {
+      color: lighten($sidebar-color, 10%);
+    }
+  }
 }
 
 .sidebar-nav-list {

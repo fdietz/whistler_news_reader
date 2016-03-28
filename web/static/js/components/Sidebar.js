@@ -19,6 +19,7 @@ class Sidebar extends Component {
     feeds: PropTypes.array.isRequired,
     currentPathname: PropTypes.string.isRequired,
     currentUser: PropTypes.object.isRequired,
+    onAddClick: PropTypes.func.isRequired,
     onRemoveClick: PropTypes.func.isRequired,
     onSignOutClick: PropTypes.func.isRequired,
     onNextClick: PropTypes.func.isRequired,
@@ -100,7 +101,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { feeds, currentUser, onSignOutClick } = this.props;
+    const { feeds, currentUser, onAddClick, onSignOutClick } = this.props;
 
     return (
       <div className="sidebar">
@@ -114,7 +115,10 @@ class Sidebar extends Component {
             {this.renderLink("All", "/all")}
           </ul>
 
-          <h4 className="sidebar-nav-header">Subscriptions</h4>
+          <h4 className="sidebar-nav-header">
+            Subscriptions
+            <a href="#" onClick={onAddClick} className="action" title="Add Feed">+</a>
+          </h4>
           <ul className="sidebar-nav-list">
             {feeds.map((feed, index) => {
               return this.renderRemoveableLink(feed, index);

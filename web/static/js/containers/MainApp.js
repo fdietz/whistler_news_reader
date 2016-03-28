@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
+import { routeActions } from "react-router-redux";
 
 import LayoutPane from "../components/LayoutPane";
 import LayoutHeader from "../components/LayoutHeader";
@@ -17,6 +18,9 @@ import Icon from "../components/Icon";
 import InfiniteScroll from "../components/InfiniteScroll";
 import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryContent from "../components/FeedEntryContent";
+import Sidebar from "../components/Sidebar";
+import Notification from "../components/Notification";
+
 
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
@@ -31,12 +35,14 @@ import {
 import {
   decrementUnreadCount,
   resetUnreadCount,
-  requestFetchFeeds
+  requestFetchFeeds,
+  requestRemoveFeed
 } from "../redux/modules/feeds";
 
+import { requestSignOut } from "../redux/modules/user";
 import { selectEntry } from "../redux/modules/currentEntry";
 
-class Entries extends Component {
+class MainApp extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -45,8 +51,19 @@ class Entries extends Component {
       isLoading: PropTypes.bool.isRequired,
       error: PropTypes.string
     }).isRequired,
+    feeds: PropTypes.shape({
+      items: PropTypes.array.isRequired,
+      isLoading: PropTypes.bool.isRequired,
+      error: PropTypes.string
+    }).isRequired,
     createFeed: PropTypes.object,
     currentEntry: PropTypes.object,
+    currentUser: PropTypes.object,
+    currentPath: PropTypes.string.isRequired,
+    notification: PropTypes.shape({
+      message: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired
+    }),
     location: PropTypes.object.isRequired
   };
 
@@ -70,10 +87,18 @@ class Entries extends Component {
     this.nextEntry = debounce(this.nextEntry.bind(this), 100);
     this.previousEntry = debounce(this.previousEntry.bind(this), 100);
     this.openEntryEmbedSite = debounce(this.openEntryEmbedSite.bind(this), 100);
+
+    this.handleOnRemove = this.handleOnRemove.bind(this);
+    this.handleOnNextFeed = this.handleOnNextFeed.bind(this);
+    this.handleOnPreviousFeed = this.handleOnPreviousFeed.bind(this);
+
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
+
+    dispatch(requestFetchFeeds());
     dispatch(requestFetchEntries(this.requestParams(this.props)))
     .then(() => {
       this.firstEntry();
@@ -211,8 +236,28 @@ class Entries extends Component {
     window.open(this.props.currentEntry.url, "_blank");
   }
 
+  handleSignOut() {
+    const { dispatch } = this.props;
+    dispatch(requestSignOut());
+  }
+
+  handleOnRemove(feed) {
+    const { dispatch } = this.props;
+    dispatch(requestRemoveFeed(feed.id));
+  }
+
+  handleOnNextFeed(path) {
+    const { dispatch } = this.props;
+    dispatch(routeActions.push(path));
+  }
+
+  handleOnPreviousFeed(path) {
+    const { dispatch } = this.props;
+    dispatch(routeActions.push(path));
+  }
+
   render() {
-    const { dispatch, entries, currentEntry } = this.props;
+    const { dispatch, entries, feeds, currentUser, currentEntry, currentPath, notification } = this.props;
 
     const content = (
       <FeedEntryContent
@@ -272,24 +317,37 @@ class Entries extends Component {
             <Icon name="earth" size="small"/>
           </Button>
         </ButtonGroup>
-        <ButtonGroup className="mx-l-auto">
-          <Button type="btn btn-primary" onClick={this.openNewFeedModal}>
-            + Add Feed
-          </Button>
-        </ButtonGroup>
       </LayoutHeader>
     );
 
     return (
-      <LayoutMasterSplit>
-        <LayoutPane size={30}>
-          {listHeader}
-          <LayoutContent>{paginatedItems}</LayoutContent>
-        </LayoutPane>
-        <LayoutPane size={70}>
-          {entryHeader}
-          <LayoutContent>{currentEntry && content}</LayoutContent>
-        </LayoutPane>
+      <div className="main-app-container">
+
+        <Sidebar
+          feeds={feeds.items}
+          currentPathname={currentPath}
+          currentUser={currentUser}
+          onAddClick={this.openNewFeedModal}
+          onRemoveClick={this.handleOnRemove}
+          onSignOutClick={this.handleSignOut}
+          onNextClick={this.handleOnNextFeed}
+          onPreviousClick={this.handleOnPreviousFeed}/>
+
+        <LayoutMasterSplit>
+          <LayoutPane size={30}>
+            {listHeader}
+            <LayoutContent>{paginatedItems}</LayoutContent>
+          </LayoutPane>
+          <LayoutPane size={70}>
+            {entryHeader}
+            <LayoutContent>{currentEntry && content}</LayoutContent>
+          </LayoutPane>
+
+        </LayoutMasterSplit>
+
+        {notification &&
+          <Notification {...notification}/>
+        }
 
         <NewFeedForm
           isOpen={this.state.newFeedModalIsOpen}
@@ -300,17 +358,21 @@ class Entries extends Component {
             isOpen={this.state.entryEmbedSiteIsOpen}
             onClose={this.closeEntryEmbedSite}/>
         }
-      </LayoutMasterSplit>
+      </div>
     );
   }
 }
 
 function mapStateToProps(state, ownProps) {
   return {
+    currentUser: state.user.current,
+    feeds: state.feeds,
     entries: state.entries,
     currentEntry: state.currentEntry,
-    location: ownProps.location
+    location: ownProps.location,
+    currentPath: ownProps.location.pathname,
+    notification: state.notification
   };
 }
 
-export default connect(mapStateToProps)(Entries);
+export default connect(mapStateToProps)(MainApp);
