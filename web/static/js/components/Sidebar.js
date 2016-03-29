@@ -5,6 +5,7 @@ import debounce from "lodash.debounce";
 
 import Icon from "../components/Icon";
 import Badge from "../components/Badge";
+import Button from "../components/Button";
 import imageProfile from "../../assets/images/profile.jpg";
 
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
@@ -114,6 +115,12 @@ class Sidebar extends Component {
         <div className="sidebar-header">
           <div className="logo">whistle'r</div>
         </div>
+        <div className="sidebar-actions">
+          <Button
+            onClick={this.onAddClick}
+            type="primary"
+            expand={true}>+ Subscriptions</Button>
+        </div>
         <div className="sidebar-content">
           <h4 className="sidebar-nav-header">Home</h4>
           <ul className="sidebar-nav-list">
@@ -123,7 +130,6 @@ class Sidebar extends Component {
 
           <h4 className="sidebar-nav-header">
             Subscriptions
-            <a href="#" onClick={this.onAddClick} className="action" title="Add Feed">+</a>
           </h4>
           <ul className="sidebar-nav-list">
             {feeds.map((feed, index) => {

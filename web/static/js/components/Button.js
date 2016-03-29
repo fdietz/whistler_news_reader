@@ -1,7 +1,12 @@
 import React, { PropTypes } from "react";
+import classNames from "classnames";
 
-const Button = ({ type, onClick, children }) => {
-  const cls = `btn ${type}`;
+const Button = ({ type, expand, onClick, children }) => {
+  const cls = classNames({
+    btn: true,
+    "btn-expand": expand,
+    [`btn-${type}`]: type
+  });
 
   return (
     <button onClick={onClick} className={cls}>
@@ -13,6 +18,7 @@ const Button = ({ type, onClick, children }) => {
 Button.propTypes = {
   children: PropTypes.node,
   type: PropTypes.string,
+  expand: PropTypes.boolean,
   onClick: PropTypes.func
 };
 

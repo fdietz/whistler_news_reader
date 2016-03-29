@@ -290,10 +290,10 @@ class MainApp extends Component {
     const listHeader = (
       <LayoutHeader>
         <ButtonGroup className="btn-group-rounded">
-          <Button type="btn-header" onClick={this.markAsRead}>
+          <Button type="header" onClick={this.markAsRead}>
             <Icon name="checkmark" size="small"/>
           </Button>
-          <Button type="btn-header" onClick={this.refreshEntries}>
+          <Button type="header" onClick={this.refreshEntries}>
             <Icon name="cycle" size="small"/>
           </Button>
         </ButtonGroup>
@@ -303,18 +303,18 @@ class MainApp extends Component {
     const entryHeader = (
       <LayoutHeader>
         <ButtonGroup className="btn-group-rounded">
-          <Button type="btn-header" onClick={this.previousEntry}>
+          <Button type="header" onClick={this.previousEntry}>
             <Icon name="arrow-left3" size="small"/>
           </Button>
-          <Button type="btn-header" onClick={this.nextEntry}>
+          <Button type="header" onClick={this.nextEntry}>
             <Icon name="arrow-right3" size="small"/>
           </Button>
         </ButtonGroup>
         <ButtonGroup className="btn-group-rounded ml2">
-          <Button type="btn-header" onClick={this.openEntryEmbedSite}>
+          <Button type="header" onClick={this.openEntryEmbedSite}>
             <Icon name="resize-enlarge" size="small"/>
           </Button>
-          <Button type="btn-header" onClick={this.openExternal}>
+          <Button type="header" onClick={this.openExternal}>
             <Icon name="earth" size="small"/>
           </Button>
         </ButtonGroup>

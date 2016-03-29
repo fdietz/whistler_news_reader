@@ -9,6 +9,6 @@ test("Button render children", t => {
 });
 
 test("Button set className from props", t => {
-  const wrapper = shallow(<Button type="btn-header"/>);
+  const wrapper = shallow(<Button type="header"/>);
   t.true(wrapper.is(".btn-header"));
 });
