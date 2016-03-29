@@ -10,6 +10,7 @@ defmodule WhistlerNewsReader.Api.FeedView do
           feed_url: feed.feed_url,
           site_url: feed.site_url,
           last_updated: feed.last_updated,
+          category_id: 1,
           unread_count: unread_entries_count_for(feed, unread_entries_count)
          }
       end)

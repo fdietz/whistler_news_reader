@@ -18,7 +18,7 @@ const Button = ({ type, expand, onClick, children }) => {
 Button.propTypes = {
   children: PropTypes.node,
   type: PropTypes.string,
-  expand: PropTypes.boolean,
+  expand: PropTypes.bool,
   onClick: PropTypes.func
 };
 

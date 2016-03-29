@@ -43,6 +43,19 @@ export function requestRemoveFeed(feedId) {
   };
 }
 
+export function requestUpdateFeed(feedId, attributes) {
+  return dispatch => {
+    // dispatch(updateFeed({ item: { id: feedId, category_id: attributes.category_id} }));
+    return axios.put(`/api/feeds/${feedId}`, attributes)
+    .then((response) => {
+      dispatch(updateFeed({ item: response.data }));
+    })
+    .catch((response) => {
+      dispatch(updateFeed(new Error(response.data.error)));
+    });
+  };
+}
+
 const initial = {
   items: [],
   isLoading: false

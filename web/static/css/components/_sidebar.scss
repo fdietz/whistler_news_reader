@@ -99,7 +99,7 @@ $sidebar-color: $gray;
   flex: 1 1;
 
   &:hover {
-    background-color: $darken-3;
+    // background-color: $darken-3;
 
     .removable {
       display: block;
@@ -111,7 +111,7 @@ $sidebar-color: $gray;
   }
 
   &.active {
-    background-color: $blue;
+    // background-color: $blue;
 
     .badge {
       color: $white;
@@ -154,6 +154,70 @@ $sidebar-color: $gray;
     margin-right: 0;
     margin-left: auto;
     color: $sidebar-color;
+  }
+
+}
+
+.sidebar-category-list {
+  display: flex;
+  padding: 0;
+  margin: 0 0 $space-3;
+
+  flex-direction: column;
+}
+
+.sidebar-category-list__item {
+  display: flex;
+  padding: 2px $space-2;
+  margin: 0 -1rem;
+  flex-direction: column;
+
+  .meta {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    a {
+      position: relative;
+      width: 80%;
+
+      padding: 1px $space-2;
+      margin-right: -$space-2;
+      margin-left: -$space-2;
+
+      overflow: hidden;
+      font-size: .9rem;
+      color: $sidebar-color;
+      text-decoration: none;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &.active {
+        color: #fff;
+      }
+    }
+
+    .removable {
+      display: none;
+      width: 30px;
+      padding: 0;
+      margin-right: 0;
+      margin-left: auto;
+      text-align: center;
+    }
+
+    .badge {
+      display: block;
+      width: 20px;
+      margin-right: 0;
+      margin-left: auto;
+      color: $sidebar-color;
+    }
+  }
+
+  .sidebar-nav-list {
+    margin: 0;
   }
 
 }

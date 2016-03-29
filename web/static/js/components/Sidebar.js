@@ -2,29 +2,32 @@ import React, {Component, PropTypes} from "react";
 import { Link } from "react-router";
 import classNames from "classnames";
 import debounce from "lodash.debounce";
+import { DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 
 import Icon from "../components/Icon";
 import Badge from "../components/Badge";
 import Button from "../components/Button";
+import Category from "../components/Category";
+import Feed from "../components/Feed";
 import imageProfile from "../../assets/images/profile.jpg";
 
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
-
-// import imageArrowDown from "../../assets/images/arrow-down.svg";
-// import imageArrowUp from "../../assets/images/arrow-up.svg";
-// import imageProfile from "../../assets/images/profile.jpg";
 
 class Sidebar extends Component {
 
   static propTypes = {
     feeds: PropTypes.array.isRequired,
+    categories: PropTypes.array.isRequired,
     currentPathname: PropTypes.string.isRequired,
     currentUser: PropTypes.object.isRequired,
     onAddClick: PropTypes.func.isRequired,
     onRemoveClick: PropTypes.func.isRequired,
     onSignOutClick: PropTypes.func.isRequired,
     onNextClick: PropTypes.func.isRequired,
-    onPreviousClick: PropTypes.func.isRequired
+    onPreviousClick: PropTypes.func.isRequired,
+    onRemoveCategoryClick: PropTypes.func,
+    onFeedDrop: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -35,10 +38,10 @@ class Sidebar extends Component {
     this.onAddClick = this.onAddClick.bind(this);
   }
 
-  renderRemoveableLink(feed, index) {
-    const { currentPathname, onRemoveClick } = this.props;
-    const key = index || feed.title;
+  renderFeed(feed, index) {
+    const { currentPathname, onRemoveClick, onFeedDrop } = this.props;
     const path = `/feeds/${feed.id}`;
+    const active = path === currentPathname;
 
     const cls = classNames({
       active: path === currentPathname
@@ -50,13 +53,13 @@ class Sidebar extends Component {
     });
 
     return (
-      <li className={listItemCls} key={key}>
+      <Feed className={listItemCls} {...feed} active={active} onDrop={onFeedDrop}>
         <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
         <a href="#" className="removable" onClick={onRemoveClick.bind(this, feed)}>
           <Icon name="cross" size="small"/>
         </a>
         {feed.unread_count > 0 && <Badge count={feed.unread_count}/>}
-      </li>
+      </Feed>
     );
   }
 
@@ -77,6 +80,43 @@ class Sidebar extends Component {
       <li className={listItemCls} key={key}>
         <Link to={path} className={cls}>{label}</Link>
       </li>
+    );
+  }
+
+  renderCategory(category, feeds) {
+    const { currentPathname, onRemoveCategoryClick } = this.props;
+    const path = `/categories/${category.id}`;
+    const active = path === currentPathname;
+
+    const cls = classNames({
+      active: path === currentPathname
+    });
+
+    const listItemCls = classNames({
+      active: path === currentPathname,
+      "sidebar-category-list__item": true
+    });
+
+    const matchingFeeds = feeds.filter((feed) => feed.category_id === category.id);
+    return (
+      <Category className={listItemCls} {...category} active={active}>
+        <div className="meta">
+         <Icon name="arrow-right4" size="small"/>
+         <Link to={path} className={cls} title={category.title}>{category.title}</Link>
+         <a href="#" className="removable" onClick={onRemoveCategoryClick.bind(this, category)}>
+           <Icon name="cross" size="small"/>
+         </a>
+         {category.unread_count > 0 && <Badge count={category.unread_count}/>}
+        </div>
+
+        {matchingFeeds.length > 0 &&
+         <div className="sidebar-nav-list">
+            {matchingFeeds.map((feed) => {
+              return this.renderFeed(feed);
+            })}
+         </div>
+        }
+      </Category>
     );
   }
 
@@ -118,7 +158,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { feeds, currentUser, onSignOutClick } = this.props;
+    const { feeds, categories, currentUser, onSignOutClick } = this.props;
 
     return (
       <div className="sidebar">
@@ -133,19 +173,19 @@ class Sidebar extends Component {
               expand={true}>+ Subscriptions</Button>
           </div>
           <h4 className="sidebar-nav-header">Home</h4>
-          <ul className="sidebar-nav-list">
+          <div className="sidebar-nav-list">
             {this.renderLink("Today", "/today")}
             {this.renderLink("All", "/all")}
-          </ul>
+          </div>
 
           <h4 className="sidebar-nav-header">
             Subscriptions
           </h4>
-          <ul className="sidebar-nav-list">
-            {feeds.map((feed, index) => {
-              return this.renderRemoveableLink(feed, index);
+          <div className="sidebar-category-list">
+            {categories.map((category) => {
+              return this.renderCategory(category, feeds);
             })}
-          </ul>
+          </div>
         </div>
         <div className="sidebar-footer">
           <div className="avatar">
@@ -161,4 +201,4 @@ class Sidebar extends Component {
   }
 }
 
-export default Sidebar;
+export default DragDropContext(HTML5Backend)(Sidebar);

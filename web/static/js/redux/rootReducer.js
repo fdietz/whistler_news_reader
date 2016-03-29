@@ -7,11 +7,13 @@ import entries from "./modules/entries";
 import feeds from "./modules/feeds";
 import notification from "./modules/notification";
 import user from "./modules/user";
+import categories from "./modules/categories";
 
 export default combineReducers({
   feedForm,
   currentEntry,
   entries,
+  categories,
   feeds,
   notification,
   user,

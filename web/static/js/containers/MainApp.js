@@ -36,7 +36,8 @@ import {
   decrementUnreadCount,
   resetUnreadCount,
   requestFetchFeeds,
-  requestRemoveFeed
+  requestRemoveFeed,
+  requestUpdateFeed
 } from "../redux/modules/feeds";
 
 import { requestSignOut } from "../redux/modules/user";
@@ -92,6 +93,10 @@ class MainApp extends Component {
     this.handleOnPreviousFeed = this.handleOnPreviousFeed.bind(this);
 
     this.handleSignOut = this.handleSignOut.bind(this);
+
+    this.handleOnRemoveCategoryClick = this.handleOnRemoveCategoryClick.bind(this);
+
+    this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
   }
 
   componentDidMount() {
@@ -257,8 +262,18 @@ class MainApp extends Component {
     dispatch(routeActions.push(path));
   }
 
+  handleOnRemoveCategoryClick(category) {
+
+  }
+
+  handleOnFeedDrop(feedId, categoryId) {
+    const { dispatch } = this.props;
+    console.log("======== DROP", feedId, categoryId);
+    dispatch(requestUpdateFeed(feedId, { category_id: categoryId }));
+  }
+
   render() {
-    const { dispatch, entries, feeds, currentUser, currentEntry, currentPath, notification } = this.props;
+    const { dispatch, entries, categories, feeds, currentUser, currentEntry, currentPath, notification } = this.props;
 
     const content = (
       <FeedEntryContent
@@ -326,13 +341,16 @@ class MainApp extends Component {
 
         <Sidebar
           feeds={feeds.items}
+          categories={categories.items}
           currentPathname={currentPath}
           currentUser={currentUser}
           onAddClick={this.openNewFeedModal}
           onRemoveClick={this.handleOnRemove}
           onSignOutClick={this.handleSignOut}
           onNextClick={this.handleOnNextFeed}
-          onPreviousClick={this.handleOnPreviousFeed}/>
+          onPreviousClick={this.handleOnPreviousFeed}
+          onRemoveCategoryClick={this.handleOnRemoveCategoryClick}
+          onFeedDrop={this.handleOnFeedDrop}/>
 
         <LayoutMasterSplit>
           <LayoutPane size={30}>
@@ -371,6 +389,7 @@ function mapStateToProps(state, ownProps) {
     currentUser: state.user.current,
     feeds: state.feeds,
     entries: state.entries,
+    categories: state.categories,
     currentEntry: state.currentEntry,
     location: ownProps.location,
     currentPath: ownProps.location.pathname,
