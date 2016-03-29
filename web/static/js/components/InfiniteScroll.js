@@ -29,6 +29,14 @@ export default class InfiniteScroll extends Component {
     this.handleScrollEvent();
   }
 
+  componentDidUpdate() {
+    this.detachScrollListener();
+    this.detachResizeListener();
+
+    this.attachScrollListener();
+    this.handleScrollEvent();
+  }
+
   render() {
     return (
       <div ref="scrollContainer" className="infinite-scroll-container">

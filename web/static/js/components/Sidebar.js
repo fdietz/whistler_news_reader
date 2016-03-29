@@ -26,7 +26,8 @@ class Sidebar extends Component {
     onSignOutClick: PropTypes.func.isRequired,
     onNextClick: PropTypes.func.isRequired,
     onPreviousClick: PropTypes.func.isRequired,
-    onRemoveCategoryClick: PropTypes.func,
+    onRemoveCategoryClick: PropTypes.func.isRequired,
+    onCategoryExpandClick: PropTypes.func.isRequired,
     onFeedDrop: PropTypes.func.isRequired
   };
 
@@ -38,12 +39,13 @@ class Sidebar extends Component {
     this.onAddClick = this.onAddClick.bind(this);
   }
 
-  renderFeed(feed, index) {
+  renderFeed(feed) {
     const { currentPathname, onRemoveClick, onFeedDrop } = this.props;
     const path = `/feeds/${feed.id}`;
     const active = path === currentPathname;
 
     const cls = classNames({
+      name: true,
       active: path === currentPathname
     });
 
@@ -84,11 +86,12 @@ class Sidebar extends Component {
   }
 
   renderCategory(category, feeds) {
-    const { currentPathname, onRemoveCategoryClick } = this.props;
+    const { currentPathname, onRemoveCategoryClick, onCategoryExpandClick } = this.props;
     const path = `/categories/${category.id}`;
     const active = path === currentPathname;
 
     const cls = classNames({
+      name: true,
       active: path === currentPathname
     });
 
@@ -98,23 +101,34 @@ class Sidebar extends Component {
     });
 
     const matchingFeeds = feeds.filter((feed) => feed.category_id === category.id);
+    const totalUnreadCount = matchingFeeds.reduce((result, feed) => {
+      return result + feed.unread_count;
+    }, 0);
+
     return (
       <Category className={listItemCls} {...category} active={active}>
         <div className="meta">
-         <Icon name="arrow-right4" size="small"/>
+          <a href="#" onClick={onCategoryExpandClick.bind(this, category)}>
+            {category.expanded &&
+              <Icon name="arrow-down" size="small"/>
+            }
+            {!category.expanded &&
+              <Icon name="arrow-right4" size="small"/>
+            }
+         </a>
          <Link to={path} className={cls} title={category.title}>{category.title}</Link>
          <a href="#" className="removable" onClick={onRemoveCategoryClick.bind(this, category)}>
            <Icon name="cross" size="small"/>
          </a>
-         {category.unread_count > 0 && <Badge count={category.unread_count}/>}
+         {totalUnreadCount > 0 && <Badge count={totalUnreadCount}/>}
         </div>
 
-        {matchingFeeds.length > 0 &&
-         <div className="sidebar-nav-list">
+        {matchingFeeds.length > 0 && category.expanded &&
+          <div className="sidebar-nav-list">
             {matchingFeeds.map((feed) => {
               return this.renderFeed(feed);
             })}
-         </div>
+          </div>
         }
       </Category>
     );

@@ -33,11 +33,6 @@ defmodule WhistlerNewsReader.Entry do
     |> unique_constraint(:guid)
   end
 
-  # def published(query) do
-  #   from p in query,
-  #   where: p.published == true
-  # end
-
   def sorted(query) do
     from p in query,
     order_by: [desc: p.published]

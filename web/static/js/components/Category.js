@@ -10,7 +10,6 @@ export class Category extends Component {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     active: PropTypes.bool.isRequired,
-    unread_count: PropTypes.number.isRequired,
     className: PropTypes.string.isRequired
   };
 

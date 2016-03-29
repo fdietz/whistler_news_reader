@@ -40,7 +40,7 @@ import {
   requestUpdateFeedCategory
 } from "../redux/modules/feeds";
 
-import { requestFetchCategories } from "../redux/modules/categories";
+import { requestFetchCategories, toggleExpandCategory } from "../redux/modules/categories";
 import { requestSignOut } from "../redux/modules/user";
 import { selectEntry } from "../redux/modules/currentEntry";
 
@@ -96,8 +96,10 @@ class MainApp extends Component {
     this.handleSignOut = this.handleSignOut.bind(this);
 
     this.handleOnRemoveCategoryClick = this.handleOnRemoveCategoryClick.bind(this);
+    this.handleOnCategoryExpandClick = this.handleOnCategoryExpandClick.bind(this);
 
     this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
+
   }
 
   componentDidMount() {
@@ -134,8 +136,10 @@ class MainApp extends Component {
   }
 
   requestParams(props) {
-    if (props.params.id) {
+    if (props.params.id && props.location.pathname.startsWith("/feeds")) {
       return { feed_id: props.params.id };
+    } else if (props.params.id && props.location.pathname.startsWith("/categories")) {
+      return { category_id: props.params.id };
     } else if (props.location.pathname === "/all") {
       return { feed_id: "all" };
     } else if (props.location.pathname === "/today") {
@@ -268,9 +272,15 @@ class MainApp extends Component {
 
   }
 
+  handleOnCategoryExpandClick(category, event) {
+    event.preventDefault();
+
+    const { dispatch } = this.props;
+    dispatch(toggleExpandCategory({ id: category.id }))
+  }
+
   handleOnFeedDrop(feedId, categoryId) {
     const { dispatch } = this.props;
-    console.log("======== DROP", feedId, categoryId);
     dispatch(requestUpdateFeedCategory(feedId, categoryId));
   }
 
@@ -352,6 +362,7 @@ class MainApp extends Component {
           onNextClick={this.handleOnNextFeed}
           onPreviousClick={this.handleOnPreviousFeed}
           onRemoveCategoryClick={this.handleOnRemoveCategoryClick}
+          onCategoryExpandClick={this.handleOnCategoryExpandClick}
           onFeedDrop={this.handleOnFeedDrop}/>
 
         <LayoutMasterSplit>

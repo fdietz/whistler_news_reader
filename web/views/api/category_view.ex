@@ -9,7 +9,7 @@ defmodule WhistlerNewsReader.Api.CategoryView do
     %{
       id: category.id,
       title: category.title,
-      unread_count: 0
+      expanded: false
      }
   end
 

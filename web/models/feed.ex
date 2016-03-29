@@ -37,6 +37,15 @@ defmodule WhistlerNewsReader.Feed do
     preload: [subscriptions: c]
   end
 
+  def subscribed_by_user_for_category_id(query, user_id, category_id) do
+    from p in query,
+    # join condition is handled by ecto for us
+    join: c in assoc(p, :subscriptions),
+    where: c.user_id == ^user_id,
+    where: c.category_id == ^category_id,
+    preload: [subscriptions: c]
+  end
+
   def for_feed_url(query, feed_url) do
     from p in query,
     where: p.feed_url == ^feed_url

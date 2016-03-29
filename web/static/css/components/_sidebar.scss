@@ -118,13 +118,13 @@ $sidebar-color: $gray;
     }
   }
 
-  a {
+  .name {
     position: relative;
     width: 80%;
 
-    padding: 1px $space-2;
-    margin-right: -$space-2;
-    margin-left: -$space-2;
+    // padding: 1px $space-2;
+    // margin-right: -$space-2;
+    // margin-left: -$space-2;
 
     overflow: hidden;
     font-size: .9rem;
@@ -177,13 +177,13 @@ $sidebar-color: $gray;
     width: 100%;
     align-items: center;
 
-    a {
+    .name {
       position: relative;
       width: 80%;
 
-      padding: 1px $space-2;
-      margin-right: -$space-2;
-      margin-left: -$space-2;
+      // padding: 1px $space-2;
+      // margin-right: -$space-2;
+      // margin-left: -$space-2;
 
       overflow: hidden;
       font-size: .9rem;
