@@ -184,7 +184,7 @@ class MainApp extends Component {
 
   currentIndex() {
     const { entries, currentEntry } = this.props;
-    return currentEntry ? entries.items.indexOf(currentEntry) : 0;
+    return currentEntry ? entries.items.findIndex((entry) => entry.id === currentEntry.id) : 0;
   }
 
   previousEntry() {
