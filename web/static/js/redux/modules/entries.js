@@ -16,7 +16,7 @@ export const markAllFeedEntriesAsRead = createAction(MARK_ALL_FEED_ENTRIES_AS_RE
 
 export function requestMarkEntryAsRead(entry) {
   return dispatch => {
-    axios.put(`/api/entries/${entry.id}/mark_as_read`)
+    return axios.put(`/api/entries/${entry.id}/mark_as_read`)
     .then((response) => {
       dispatch(updateEntry({ item: { id: entry.id, unread: false} }));
     })
@@ -28,7 +28,7 @@ export function requestMarkEntryAsRead(entry) {
 
 export function requestMarkAllFeedEntriesAsRead(feedId) {
   return dispatch => {
-    axios.put(`/api/feeds/${feedId}/mark_as_read`)
+    return axios.put(`/api/feeds/${feedId}/mark_as_read`)
     .then((response) => {
       dispatch(markAllFeedEntriesAsRead({ feed_id: feedId }));
     })

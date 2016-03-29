@@ -209,8 +209,9 @@ class MainApp extends Component {
 
   handleEntryShown(entry) {
     const { dispatch} = this.props;
-    dispatch(requestMarkEntryAsRead(entry));
-    dispatch(decrementUnreadCount({ id: entry.feed.id }));
+    dispatch(requestMarkEntryAsRead(entry)).then(() => {
+      dispatch(decrementUnreadCount({ id: entry.feed.id }));
+    });
   }
 
   markAsRead() {
@@ -218,8 +219,9 @@ class MainApp extends Component {
     const params = this.requestParams(this.props);
 
     if (params.feed_id) {
-      dispatch(requestMarkAllFeedEntriesAsRead(+params.feed_id));
-      dispatch(resetUnreadCount({ id: +params.feed_id }));
+      dispatch(requestMarkAllFeedEntriesAsRead(+params.feed_id)).then(() => {
+        dispatch(resetUnreadCount({ id: +params.feed_id }));
+      });
     }
   }
 
