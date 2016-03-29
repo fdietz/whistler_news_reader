@@ -1,4 +1,7 @@
 import React, {Component, PropTypes} from "react";
+import ReactDOM from "react-dom";
+
+import { findScrollableAncestor  } from "../utils/dom";
 
 class FeedEntryContent extends Component {
 
@@ -12,7 +15,16 @@ class FeedEntryContent extends Component {
   }
 
   componentDidMount() {
+    this.scrollableAncestor = findScrollableAncestor(ReactDOM.findDOMNode(this));
     this.initTimer();
+  }
+
+  componentDidUpdate() {
+    const { entry } = this.props;
+
+    if (entry) {
+      this.scrollableAncestor.scrollTop = 0;
+    }
   }
 
   componentWillReceiveProps(nextProps) {
