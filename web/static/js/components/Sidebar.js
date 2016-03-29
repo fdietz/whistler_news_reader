@@ -125,13 +125,13 @@ class Sidebar extends Component {
         <div className="sidebar-header">
           <div className="logo">whistle'r</div>
         </div>
-        <div className="sidebar-actions">
-          <Button
-            onClick={this.onAddClick}
-            type="primary"
-            expand={true}>+ Subscriptions</Button>
-        </div>
         <div className="sidebar-content">
+          <div className="sidebar-actions">
+            <Button
+              onClick={this.onAddClick}
+              type="primary"
+              expand={true}>+ Subscriptions</Button>
+          </div>
           <h4 className="sidebar-nav-header">Home</h4>
           <ul className="sidebar-nav-list">
             {this.renderLink("Today", "/today")}
