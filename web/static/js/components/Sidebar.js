@@ -40,12 +40,17 @@ class Sidebar extends Component {
     const key = index || feed.title;
     const path = `/feeds/${feed.id}`;
 
-    let cls = classNames({
+    const cls = classNames({
       active: path === currentPathname
     });
 
+    const listItemCls = classNames({
+      active: path === currentPathname,
+      "sidebar-nav-list__item": true
+    });
+
     return (
-      <li className="sidebar-nav-list__item" key={key}>
+      <li className={listItemCls} key={key}>
         <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
         <a href="#" className="removable" onClick={onRemoveClick.bind(this, feed)}>
           <Icon name="cross" size="small"/>
@@ -59,12 +64,17 @@ class Sidebar extends Component {
     const { currentPathname } = this.props;
     const key = index || label;
 
-    let cls = classNames({
+    const cls = classNames({
       active: path === currentPathname
     });
 
+    const listItemCls = classNames({
+      active: path === currentPathname,
+      "sidebar-nav-list__item": true
+    });
+
     return (
-      <li className="sidebar-nav-list__item" key={key}>
+      <li className={listItemCls} key={key}>
         <Link to={path} className={cls}>{label}</Link>
       </li>
     );

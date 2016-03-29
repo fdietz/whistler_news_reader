@@ -92,7 +92,7 @@ $sidebar-color: $gray;
 
 .sidebar-nav-list__item {
   display: flex;
-  padding: 3px $space-2;
+  padding: 4px $space-2;
   margin: 0 -1rem;
   list-style: none;
   align-items: center;
@@ -110,11 +110,19 @@ $sidebar-color: $gray;
     }
   }
 
+  &.active {
+    background-color: $blue;
+
+    .badge {
+      color: $white;
+    }
+  }
+
   a {
     position: relative;
     width: 80%;
 
-    padding: 0 $space-2;
+    padding: 1px $space-2;
     margin-right: -$space-2;
     margin-left: -$space-2;
 
