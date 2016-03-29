@@ -12,14 +12,13 @@ defmodule WhistlerNewsReader.Api.FeedController do
   def index(conn, %{} = _params) do
     feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
     unread_entries_count = UnreadEntry |> UnreadEntry.count_for_feeds(Enum.map(feeds, fn(f) -> f.id end)) |> Repo.all
-    IO.inspect unread_entries_count
-
     render(conn, "index.json", feeds: feeds, unread_entries_count: unread_entries_count)
   end
 
   def create(conn, %{"feed_url" => feed_url} = _params) do
     case FeedImporter.import_feed(current_user(conn), feed_url) do
       {:ok, feed} ->
+        feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed.id)
         conn
         |> put_status(:created)
         |> render("feed.json", feed: feed)
@@ -41,6 +40,12 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
     conn
     |> send_resp(204, "")
+  end
+
+  def update_category(conn, %{"id" => id, "category_id" => category_id}) do
+    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
+    StoreEntryHelper.update_feed_category!(feed, category_id)
+    conn |> send_resp(204, "")
   end
 
   def mark_as_read(conn, %{"id" => id}) do

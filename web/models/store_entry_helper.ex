@@ -4,6 +4,7 @@ defmodule WhistlerNewsReader.StoreEntryHelper do
   alias WhistlerNewsReader.ReadEntry
   alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.Subscription
+  alias WhistlerNewsReader.Category
   alias WhistlerNewsReader.Repo
 
   def store_entry(feed, entry) do
@@ -29,6 +30,12 @@ defmodule WhistlerNewsReader.StoreEntryHelper do
       {:skipping} ->
         {:skipping}
     end
+  end
+
+  def update_feed_category!(feed, category_id) do
+    subscription = List.first(feed.subscriptions)
+    changeset = Subscription.changeset(subscription, %{category_id: category_id})
+    Repo.update!(changeset)
   end
 
   # wrap in transaction

@@ -21,7 +21,7 @@ export function requestFetchFeeds() {
   return dispatch => {
     dispatch(fetchFeeds());
 
-    axios.get("/api/feeds")
+    return axios.get("/api/feeds")
     .then((response) => {
       dispatch(fetchFeeds({ items: response.data.feeds }));
     })
@@ -43,12 +43,12 @@ export function requestRemoveFeed(feedId) {
   };
 }
 
-export function requestUpdateFeed(feedId, attributes) {
+export function requestUpdateFeedCategory(feedId, categoryId) {
   return dispatch => {
     // dispatch(updateFeed({ item: { id: feedId, category_id: attributes.category_id} }));
-    return axios.put(`/api/feeds/${feedId}`, attributes)
+    return axios.put(`/api/feeds/${feedId}/update_category`, { category_id: categoryId })
     .then((response) => {
-      dispatch(updateFeed({ item: response.data }));
+      dispatch(updateFeed({ item: { id: feedId, category_id: categoryId } }));
     })
     .catch((response) => {
       dispatch(updateFeed(new Error(response.data.error)));

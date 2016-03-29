@@ -26,14 +26,15 @@ defmodule WhistlerNewsReader.Router do
     delete "/sessions", Api.SessionController, :delete
     get "/current_user", Api.CurrentUserController, :show
 
-    # get "/entries/today", Api.EntryController, :today
-    # get "/entries/all", Api.EntryController, :all
-
     resources "/entries", Api.EntryController, only: [:index]
     put "/entries/refresh", Api.EntryController, :refresh
     put "/entries/:id/mark_as_read", Api.EntryController, :mark_as_read
+
     resources "/feeds", Api.FeedController, only: [:index, :create, :delete]
     put "/feeds/:id/mark_as_read", Api.FeedController, :mark_as_read
+    put "/feeds/:id/update_category", Api.FeedController, :update_category
+
+    resources "/categories", Api.CategoryController, only: [:index]
   end
 
   scope "/", WhistlerNewsReader do

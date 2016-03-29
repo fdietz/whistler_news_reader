@@ -2,17 +2,18 @@ defmodule WhistlerNewsReader.Subscription do
   use WhistlerNewsReader.Web, :model
 
   schema "subscriptions" do
-
     # field :user_id, :integer
     belongs_to :user, WhistlerNewsReader.User
     # field :feed_id, :integer
     belongs_to :feed, WhistlerNewsReader.Feed
 
+    field :category_id, :integer
+
     timestamps
   end
 
   @required_fields ~w(feed_id user_id)
-  @optional_fields ~w()
+  @optional_fields ~w(category_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

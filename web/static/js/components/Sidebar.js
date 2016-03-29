@@ -159,6 +159,7 @@ class Sidebar extends Component {
 
   render() {
     const { feeds, categories, currentUser, onSignOutClick } = this.props;
+    const feedsWithoutCategory = feeds.filter((feed) => !feed.category_id);
 
     return (
       <div className="sidebar">
@@ -184,6 +185,9 @@ class Sidebar extends Component {
           <div className="sidebar-category-list">
             {categories.map((category) => {
               return this.renderCategory(category, feeds);
+            })}
+            {feedsWithoutCategory.map((feed) => {
+              return this.renderFeed(feed);
             })}
           </div>
         </div>

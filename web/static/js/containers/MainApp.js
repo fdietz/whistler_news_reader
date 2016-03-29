@@ -37,9 +37,10 @@ import {
   resetUnreadCount,
   requestFetchFeeds,
   requestRemoveFeed,
-  requestUpdateFeed
+  requestUpdateFeedCategory
 } from "../redux/modules/feeds";
 
+import { requestFetchCategories } from "../redux/modules/categories";
 import { requestSignOut } from "../redux/modules/user";
 import { selectEntry } from "../redux/modules/currentEntry";
 
@@ -103,6 +104,7 @@ class MainApp extends Component {
     const { dispatch } = this.props;
 
     dispatch(requestFetchFeeds());
+    dispatch(requestFetchCategories());
     dispatch(requestFetchEntries(this.requestParams(this.props)))
     .then(() => {
       this.firstEntry();
@@ -269,7 +271,7 @@ class MainApp extends Component {
   handleOnFeedDrop(feedId, categoryId) {
     const { dispatch } = this.props;
     console.log("======== DROP", feedId, categoryId);
-    dispatch(requestUpdateFeed(feedId, { category_id: categoryId }));
+    dispatch(requestUpdateFeedCategory(feedId, categoryId));
   }
 
   render() {
