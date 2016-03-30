@@ -250,7 +250,8 @@ class MainApp extends Component {
     window.open(this.props.currentEntry.url, "_blank");
   }
 
-  handleSignOut() {
+  handleSignOut(event) {
+    event.preventDefault();
     const { dispatch } = this.props;
     dispatch(requestSignOut());
   }

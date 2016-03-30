@@ -188,7 +188,7 @@ class Sidebar extends Component {
           </div>
           <div className="meta">
             <div className="author">{currentUser.first_name} {currentUser.last_name}</div>
-            <a onClick={onSignOutClick}>Logout</a>
+            <a href="#" onClick={onSignOutClick}>Logout</a>
           </div>
         </div>
       </div>
