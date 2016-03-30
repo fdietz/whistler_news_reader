@@ -42,16 +42,16 @@ class Sidebar extends Component {
     const path = `/feeds/${feed.id}`;
     const active = path === currentPathname;
 
-    const cls = classNames({ "sidebar-list-name": true, active: active });
+    const cls = classNames({ "sidebar-nav-list__name": true, active: active });
     const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
 
     return (
       <Feed className={listItemCls} {...feed} active={active} onDrop={onFeedDrop}>
-        <div className="sidebar-list-meta">
+        <div className="sidebar-nav-list__meta">
           <div className="icon-placeholder"></div>
           <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
           {feed.unread_count > 0 &&
-            <Badge count={feed.unread_count} className="sidebar-list-badge"/>
+            <Badge count={feed.unread_count} className="sidebar-nav-list__badge"/>
           }
         </div>
       </Feed>
@@ -63,12 +63,12 @@ class Sidebar extends Component {
     const key = path;
     const active = path === currentPathname;
 
-    const cls = classNames({ "sidebar-list-name": true, active: active });
+    const cls = classNames({ "sidebar-nav-list__name": true, active: active });
     const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
 
     return (
       <li className={listItemCls} key={key}>
-        <div className="sidebar-list-meta">
+        <div className="sidebar-nav-list__meta">
           <Icon name={iconName} size="small"/>
           <Link to={path} className={cls}>{label}</Link>
         </div>
@@ -85,22 +85,22 @@ class Sidebar extends Component {
       return result + feed.unread_count;
     }, 0);
 
-    const cls = classNames({ "sidebar-list-name": true, active: active });
+    const cls = classNames({ "sidebar-nav-list__name": true, active: active });
     const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
     const categoryIconName = category.expanded ? "arrow-down" : "arrow-right4";
 
     return (
       <Category className={listItemCls} {...category} active={active}>
-        <div className="sidebar-list-meta">
+        <div className="sidebar-nav-list__meta">
           <a
             href="#"
-            className="sidebar-list-expand-toggle"
+            className="sidebar-nav-list__expand-toggle"
             onClick={onCategoryExpandClick.bind(this, category)}>
             <Icon name={categoryIconName} size="small"/>
          </a>
          <Link to={path} className={cls} title={category.title}>{category.title}</Link>
          {totalUnreadCount > 0 &&
-           <Badge count={totalUnreadCount} className="sidebar-list-badge"/>
+           <Badge count={totalUnreadCount} className="sidebar-nav-list__badge"/>
          }
         </div>
 

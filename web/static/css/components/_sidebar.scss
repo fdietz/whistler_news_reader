@@ -74,11 +74,11 @@ $sidebar-color: $gray;
 
   &.active {
 
-    > .sidebar-list-meta {
+    > .sidebar-nav-list__meta {
       background-color: $blue;
     }
 
-    > .sidebar-list-meta > .sidebar-list-badge {
+    > .sidebar-nav-list__meta > .sidebar-nav-list__badge {
       color: $white !important;
     }
   }
@@ -91,7 +91,7 @@ $sidebar-color: $gray;
   }
 }
 
-.sidebar-list-name {
+.sidebar-nav-list__name {
   position: relative;
   width: 70%;
 
@@ -111,7 +111,7 @@ $sidebar-color: $gray;
   }
 }
 
-.sidebar-list-badge {
+.sidebar-nav-list__badge {
   display: block;
   width: 20px;
   margin-right: 0;
@@ -120,7 +120,7 @@ $sidebar-color: $gray;
   font-size: .6rem !important;
 }
 
-.sidebar-list-meta {
+.sidebar-nav-list__meta {
   display: flex;
   width: 100%;
 
@@ -135,7 +135,7 @@ $sidebar-color: $gray;
   }
 }
 
-.sidebar-list-expand-toggle {
+.sidebar-nav-list__expand-toggle {
   display: flex;
 }
 
