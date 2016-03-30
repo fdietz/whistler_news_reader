@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
 import { routeActions } from "react-router-redux";
+import classNames from "classnames";
 
 import LayoutPane from "../components/LayoutPane";
 import LayoutHeader from "../components/LayoutHeader";
@@ -20,7 +21,6 @@ import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryContent from "../components/FeedEntryContent";
 import Sidebar from "../components/Sidebar";
 import Notification from "../components/Notification";
-
 
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
@@ -316,6 +316,11 @@ class MainApp extends Component {
       {!entries.hasMoreEntries && noMoreContent}
     </InfiniteScroll>);
 
+    const spinnerCls = classNames({
+      spinner: true,
+      hide: !entries.isLoading
+    });
+
     const listHeader = (
       <LayoutHeader>
         <ButtonGroup className="btn-group-rounded">
@@ -332,6 +337,9 @@ class MainApp extends Component {
             <Icon name="cog" size="small"/>
           </Button>
         </ButtonGroup>
+        <span className={spinnerCls}>
+          <Icon name="spinner" size="small"/>
+        </span>
       </LayoutHeader>
     );
 

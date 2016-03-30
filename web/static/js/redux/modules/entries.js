@@ -42,7 +42,6 @@ export function requestFetchEntries(options = {}) {
   return dispatch => {
     const params = Object.assign({}, options, { limit: 20 });
     dispatch(fetchEntries(params));
-    dispatch(createNotification({ message: "Fetching entries", type: "info" }));
 
     return axios.get("/api/entries", { params: params })
     .then((response) => {
@@ -51,11 +50,9 @@ export function requestFetchEntries(options = {}) {
         meta: options,
         hasMoreEntries: response.data.entries.length === params.limit
       }));
-      dispatch(resetNotification());
     })
     .catch((response) => {
       dispatch(fetchEntries(new Error(response.data.error)));
-      dispatch(resetNotification());
     });
   };
 }
@@ -64,7 +61,6 @@ export function requestFetchMoreEntries(options = {}) {
   return dispatch => {
     const params = Object.assign({}, options, { limit: 20 });
     dispatch(fetchMoreEntries(params));
-    dispatch(createNotification({ message: "Fetching more entries", type: "info" }));
 
     return axios.get("/api/entries", { params: params })
     .then((response) => {
@@ -73,11 +69,9 @@ export function requestFetchMoreEntries(options = {}) {
         meta: options,
         hasMoreEntries: response.data.entries.length === params.limit
       }));
-      dispatch(resetNotification());
     })
     .catch((response) => {
       dispatch(fetchMoreEntries(new Error(response.data.error)));
-      dispatch(resetNotification());
     });
   };
 }
@@ -85,18 +79,15 @@ export function requestFetchMoreEntries(options = {}) {
 export function requestRefreshEntries(options = {}) {
   return dispatch => {
     const params = Object.assign(options, {});
-    dispatch(refreshEntries(params));
-    dispatch(createNotification({ message: "Refresh entries", type: "info" }));
+    dispatch(refreshEntries());
 
     return axios.put("/api/entries/refresh", params)
     .then(() => {
-      dispatch(refreshEntries());
+      dispatch(refreshEntries({}));
       dispatch(requestFetchEntries(options));
-      dispatch(resetNotification());
     })
     .catch((response) => {
       dispatch(refreshEntries(new Error(response.data.error)));
-      dispatch(resetNotification());
     });
   };
 }
@@ -126,7 +117,9 @@ export default function reducer(state = initial, action) {
         isLoading: false
       };
     }
-    return state;
+    return Object.assign({}, state, {
+      isLoading: true
+    });
   case FETCH_MORE_ENTRIES:
     if (action.error) {
       return Object.assign({}, state, {
@@ -141,7 +134,19 @@ export default function reducer(state = initial, action) {
         isLoading: false
       };
     }
-    return state;
+    return Object.assign({}, state, {
+      isLoading: true
+    });
+  case REFRESH_ENTRIES:
+    if (action.payload) {
+      return Object.assign({}, state, {
+        isLoading: false
+      });
+    }
+
+    return Object.assign({}, state, {
+      isLoading: true
+    });
   case UPDATE_ENTRY:
     if (action.error) {
       return Object.assign({}, state, {

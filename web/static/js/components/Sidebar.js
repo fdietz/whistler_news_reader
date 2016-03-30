@@ -50,7 +50,9 @@ class Sidebar extends Component {
         <div className="sidebar-list-meta">
           <div className="icon-placeholder"></div>
           <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
-          {feed.unread_count > 0 && <Badge count={feed.unread_count} className="sidebar-list-badge"/>}
+          {feed.unread_count > 0 &&
+            <Badge count={feed.unread_count} className="sidebar-list-badge"/>
+          }
         </div>
       </Feed>
     );
@@ -85,20 +87,18 @@ class Sidebar extends Component {
 
     const cls = classNames({ "sidebar-list-name": true, active: active });
     const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
+    const categoryIconName = category.expanded ? "arrow-down" : "arrow-right4";
 
     return (
       <Category className={listItemCls} {...category} active={active}>
         <div className="sidebar-list-meta">
           <a href="#" onClick={onCategoryExpandClick.bind(this, category)}>
-            {category.expanded &&
-              <Icon name="arrow-down" size="small"/>
-            }
-            {!category.expanded &&
-              <Icon name="arrow-right4" size="small"/>
-            }
+            <Icon name={categoryIconName} size="small"/>
          </a>
          <Link to={path} className={cls} title={category.title}>{category.title}</Link>
-         {totalUnreadCount > 0 && <Badge count={totalUnreadCount} className="sidebar-list-badge"/>}
+         {totalUnreadCount > 0 &&
+           <Badge count={totalUnreadCount} className="sidebar-list-badge"/>
+         }
         </div>
 
         {matchingFeeds.length > 0 && category.expanded &&

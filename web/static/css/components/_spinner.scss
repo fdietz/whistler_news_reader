@@ -1,0 +1,11 @@
+.spinner {
+  display: flex;
+  padding: .85em 1em;
+
+  opacity: 1;
+  transition: opacity .5s ease-out;
+
+  &.hide {
+    opacity: 0;
+  }
+}
