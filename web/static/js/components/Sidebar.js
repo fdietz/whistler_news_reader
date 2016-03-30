@@ -44,43 +44,37 @@ class Sidebar extends Component {
     const path = `/feeds/${feed.id}`;
     const active = path === currentPathname;
 
-    const cls = classNames({
-      name: true,
-      active: path === currentPathname
-    });
-
-    const listItemCls = classNames({
-      active: path === currentPathname,
-      "sidebar-nav-list__item": true
-    });
+    const cls = classNames({ "sidebar-list-name": true, active: active });
+    const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
 
     return (
       <Feed className={listItemCls} {...feed} active={active} onDrop={onFeedDrop}>
-        <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
-        <a href="#" className="removable" onClick={onRemoveClick.bind(this, feed)}>
-          <Icon name="cross" size="small"/>
-        </a>
-        {feed.unread_count > 0 && <Badge count={feed.unread_count}/>}
+        <div className="sidebar-list-meta">
+          <div className="icon-placeholder"></div>
+          <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
+          <a href="#" className="sidebar-list-removable" onClick={onRemoveClick.bind(this, feed)}>
+            <Icon name="cross" size="small"/>
+          </a>
+          {feed.unread_count > 0 && <Badge count={feed.unread_count} className="sidebar-list-badge"/>}
+        </div>
       </Feed>
     );
   }
 
-  renderLink(label, path, index = null) {
+  renderLink(label, path, iconName) {
     const { currentPathname } = this.props;
-    const key = index || label;
+    const key = path;
+    const active = path === currentPathname;
 
-    const cls = classNames({
-      active: path === currentPathname
-    });
-
-    const listItemCls = classNames({
-      active: path === currentPathname,
-      "sidebar-nav-list__item": true
-    });
+    const cls = classNames({ "sidebar-list-name": true, active: active });
+    const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
 
     return (
       <li className={listItemCls} key={key}>
-        <Link to={path} className={cls}>{label}</Link>
+        <div className="sidebar-list-meta">
+          <Icon name={iconName} size="small"/>
+          <Link to={path} className={cls}>{label}</Link>
+        </div>
       </li>
     );
   }
@@ -89,25 +83,17 @@ class Sidebar extends Component {
     const { currentPathname, onRemoveCategoryClick, onCategoryExpandClick } = this.props;
     const path = `/categories/${category.id}`;
     const active = path === currentPathname;
-
-    const cls = classNames({
-      name: true,
-      active: path === currentPathname
-    });
-
-    const listItemCls = classNames({
-      active: path === currentPathname,
-      "sidebar-category-list__item": true
-    });
-
     const matchingFeeds = feeds.filter((feed) => feed.category_id === category.id);
     const totalUnreadCount = matchingFeeds.reduce((result, feed) => {
       return result + feed.unread_count;
     }, 0);
 
+    const cls = classNames({ "sidebar-list-name": true, active: active });
+    const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
+
     return (
       <Category className={listItemCls} {...category} active={active}>
-        <div className="meta">
+        <div className="sidebar-list-meta">
           <a href="#" onClick={onCategoryExpandClick.bind(this, category)}>
             {category.expanded &&
               <Icon name="arrow-down" size="small"/>
@@ -117,14 +103,14 @@ class Sidebar extends Component {
             }
          </a>
          <Link to={path} className={cls} title={category.title}>{category.title}</Link>
-         <a href="#" className="removable" onClick={onRemoveCategoryClick.bind(this, category)}>
+         <a href="#" className="sidebar-list-removable" onClick={onRemoveCategoryClick.bind(this, category)}>
            <Icon name="cross" size="small"/>
          </a>
-         {totalUnreadCount > 0 && <Badge count={totalUnreadCount}/>}
+         {totalUnreadCount > 0 && <Badge count={totalUnreadCount} className="sidebar-list-badge"/>}
         </div>
 
         {matchingFeeds.length > 0 && category.expanded &&
-          <div className="sidebar-nav-list">
+          <div className="sidebar-nav-list nested">
             {matchingFeeds.map((feed) => {
               return this.renderFeed(feed);
             })}
@@ -187,16 +173,16 @@ class Sidebar extends Component {
               type="primary"
               expand={true}>+ Subscriptions</Button>
           </div>
-          <h4 className="sidebar-nav-header">Home</h4>
+          {/*<h4 className="sidebar-nav-header">Home</h4>*/}
           <div className="sidebar-nav-list">
-            {this.renderLink("Today", "/today")}
-            {this.renderLink("All", "/all")}
+            {this.renderLink("Today", "/today", "house")}
+            {this.renderLink("All", "/all", "list")}
           </div>
 
-          <h4 className="sidebar-nav-header">
+          {/*<h4 className="sidebar-nav-header">
             Subscriptions
-          </h4>
-          <div className="sidebar-category-list">
+          </h4>*/}
+          <div className="sidebar-nav-list">
             {categories.map((category) => {
               return this.renderCategory(category, feeds);
             })}
