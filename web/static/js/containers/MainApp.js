@@ -283,7 +283,9 @@ class MainApp extends Component {
 
   handleOnFeedDrop(feedId, categoryId) {
     const { dispatch } = this.props;
-    dispatch(requestUpdateFeedCategory(feedId, categoryId));
+    dispatch(requestUpdateFeedCategory(feedId, categoryId)).then(() => {
+      dispatch(routeActions.push(`/feeds/${feedId}`));
+    });
   }
 
   render() {

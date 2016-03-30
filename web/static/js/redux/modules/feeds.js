@@ -45,7 +45,6 @@ export function requestRemoveFeed(feedId) {
 
 export function requestUpdateFeedCategory(feedId, categoryId) {
   return dispatch => {
-    // dispatch(updateFeed({ item: { id: feedId, category_id: attributes.category_id} }));
     return axios.put(`/api/feeds/${feedId}/update_category`, { category_id: categoryId })
     .then((response) => {
       dispatch(updateFeed({ item: { id: feedId, category_id: categoryId } }));
