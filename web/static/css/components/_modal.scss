@@ -1,30 +1,14 @@
-.modal-right {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 40%;
-
-  border-left: 4px solid rgba(0, 0, 0, .1);
-}
-
 .modal-header,
 .modal-footer {
   display: flex;
-  height: 65px;
-  padding: 0 25px;
-  background-color: $gray-2;
+  height: 2rem;
+  padding: 4rem;
+  // background-color: $white;
   align-items: center;
 }
 
 .modal-header {
-  border-bottom: 1px solid $darken-2;
-
-  h2 {
-    width: 95%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+  // border-bottom: 1px solid $darken-2;
 
   .modal-close-link {
     margin-left: auto;
@@ -41,36 +25,59 @@
 }
 
 .modal-content {
-  min-width: 320px;
-  min-height: 100px;
-
-  padding: 25px;
-
+  display: flex;
+  padding: 0 4rem 4rem;
   overflow-y: auto;
-  flex: 1 1;
+  align-items: center;
+  flex-direction: column;
+
   -webkit-overflow-scrolling: touch;
+
+  flex: 1 1;
 }
 
 .ReactModal__Overlay {
-  opacity: 0;
+  // position: fixed;
+  // top: 0;
+  // right: 0;
+  // bottom: 0;
+  // left: 0;
+  //
+  // background-color: rgba(0, 0, 0, .75);
 }
 
-.ReactModal__Overlay--after-open {
-  opacity: 1;
-}
+// .modal {
+//   top: 3rem;
+//   right: 3rem;
+//   bottom: 3rem;
+//   left: 3rem;
+//
+//   background-color: $white;
+// }
 
 .ReactModal__Content {
-  transform: translate3d(100%, 0, 0);
-  transition: transform .2s ease-out;
 }
 
-.ReactModal__Content--after-open {
-  transform: translate3d(5%, 0, 0);
-}
-
-.ReactModal__Overlay--before-close {
-  opacity: 0;
-}
-
-.ReactModal__Content--before-close {
-}
+// .ReactModal__Overlay {
+//   opacity: 0;
+// }
+//
+// .ReactModal__Overlay--after-open {
+//   opacity: 1;
+// }
+//
+// .ReactModal__Content {
+//   transform: translate3d(100%, 0, 0);
+//   transition: transform .2s ease-out;
+// }
+//
+// .ReactModal__Content--after-open {
+//   transform: translate3d(5%, 0, 0);
+// }
+//
+// .ReactModal__Overlay--before-close {
+//   opacity: 0;
+// }
+//
+// .ReactModal__Content--before-close {
+// }

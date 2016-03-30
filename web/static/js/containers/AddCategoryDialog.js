@@ -9,6 +9,7 @@ import { categoryFormUpdate, categoryFormReset } from "../redux/modules/category
 import createCategoryAction from "../redux/actions/createCategoryAction";
 
 import { reduceErrorsToString } from "../utils/ErrorHelper";
+import { customModalStyles } from "../utils/ModalHelper";
 
 class AddCategoryDialog extends Component {
 
@@ -59,68 +60,51 @@ class AddCategoryDialog extends Component {
 
   render() {
     const { isOpen, categoryForm } = this.props;
-
-    const customStyles = {
-      overlay: {
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.75)"
-      },
-      content: {
-        top: "50%",
-        left: "50%",
-        right: "auto",
-        bottom: "auto",
-        marginRight: "-50%",
-        transform: "translate(-50%, -50%)",
-        border: "2",
-        borderRadius: "2px",
-        padding: 0
-      }
-    };
-
     const errors = categoryForm.errors ? reduceErrorsToString(categoryForm.errors) : "";
 
     return (
       <Modal
         isOpen={isOpen}
         onRequestClose={this.close}
-        style={customStyles}>
+        style={customModalStyles}>
 
         <div className="modal-header">
-          <h2>Create New Category</h2>
           <a className="modal-close-link" onClick={this.close}>
-            <Icon name="cross"/>
+            <Icon name="cross" size="prominent"/>
           </a>
         </div>
 
         <div className="modal-content">
-          <form onSubmit={this.submitForm} className="form-prominent2">
-            <input className="field"
+          <form onSubmit={this.submitForm} className="form-prominent sm-col-6">
+            <h1>Create a new category</h1>
+            <label>Category title</label>
+            <input className="field block col-12"
               type="text"
-              placeholder="Category title"
+              placeholder="Enter title here"
               ref="input"
               value={categoryForm.title}
               onChange={(event) => this.handleChange(event)}
               autoFocus={true}/>
+
+            <div className="hint">
+              Title must be 50 characters or less and cannot contain spaces or periods
+            </div>
+
             {errors &&
               <p className="errors">{errors}</p>
             }
-          </form>
-        </div>
 
-        <div className="modal-footer">
-          <button
-            onClick={this.close}
-            className="btn">Close</button>
-          <button
-            type="submit"
-            className="btn btn-primary bg-blue white"
-            disabled={!categoryForm.title}
-            onClick={this.submitForm}>Add Category</button>
+            <div className="form-actions">
+              <button
+                type="submit"
+                className="btn btn-primary bg-blue white btn-large"
+                disabled={!categoryForm.title}
+                onClick={this.submitForm}>Add Category</button>
+              <button
+                onClick={this.close}
+                className="btn">Close</button>
+            </div>
+          </form>
         </div>
       </Modal>
     );

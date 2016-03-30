@@ -415,7 +415,7 @@ class MainApp extends Component {
         {this.state.newFeedModalIsOpen &&
           <NewFeedForm
             isOpen={this.state.newFeedModalIsOpen}
-            closeNewFeedModal={this.closeNewFeedModal}/>
+            onClose={this.closeNewFeedModal}/>
         }
 
         {this.state.entryEmbedSiteIsOpen &&

@@ -4,8 +4,8 @@ $form-field-padding-y: .5rem;
 $form-field-padding-x: .5rem;
 
 $form-label-font-size-prominent: 1.6rem;
-$form-field-font-size-prominent: 2rem;
-$form-field-height-prominent: 3.25rem;
+$form-field-font-size-prominent: 1.2rem;
+$form-field-height-prominent: 2.9rem;
 
 input,
 select,
@@ -19,6 +19,7 @@ fieldset {
 }
 
 label {
+  font-weight: bold;
   vertical-align: middle;
 }
 
@@ -54,9 +55,23 @@ input[type=radio] {
 }
 
 .form-prominent {
+
   .field {
     height: $form-field-height-prominent;
+    margin-bottom: .25em;
     font-size: $form-field-font-size-prominent;
-    border-width: 3px;
+    border-width: 1px;
+  }
+
+  label + .field {
+    margin-top: .25em;
+  }
+
+  .hint {
+    font-size: .8rem;
+  }
+
+  .form-actions {
+    margin-top: $space-3;
   }
 }
