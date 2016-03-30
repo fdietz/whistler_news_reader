@@ -135,6 +135,10 @@ $sidebar-color: $gray;
   }
 }
 
+.sidebar-list-expand-toggle {
+  display: flex;
+}
+
 .sidebar-actions {
   display: flex;
   margin-bottom: $space-2;

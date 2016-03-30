@@ -92,7 +92,10 @@ class Sidebar extends Component {
     return (
       <Category className={listItemCls} {...category} active={active}>
         <div className="sidebar-list-meta">
-          <a href="#" onClick={onCategoryExpandClick.bind(this, category)}>
+          <a
+            href="#"
+            className="sidebar-list-expand-toggle"
+            onClick={onCategoryExpandClick.bind(this, category)}>
             <Icon name={categoryIconName} size="small"/>
          </a>
          <Link to={path} className={cls} title={category.title}>{category.title}</Link>
