@@ -323,6 +323,12 @@ class MainApp extends Component {
           <Button type="header" onClick={this.refreshEntries}>
             <Icon name="cycle" size="small"/>
           </Button>
+          <Button type="header" onClick={this.handleOnRemove}>
+            <Icon name="trash" size="small"/>
+          </Button>
+          <Button type="header" onClick={this.refreshEntries}>
+            <Icon name="cog" size="small"/>
+          </Button>
         </ButtonGroup>
       </LayoutHeader>
     );

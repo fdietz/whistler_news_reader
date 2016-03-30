@@ -102,13 +102,10 @@ $sidebar-color: $gray;
 
 .sidebar-list-name {
   position: relative;
-  width: 75%;
+  width: 70%;
 
-  // padding: 1px $space-2;
-  // margin-right: -$space-2;
-  // margin-left: -$space-2;
+  padding: 3px 0;
   margin-left: $space-1;
-  padding: 4px 0;
 
   overflow: hidden;
   font-size: .9rem;
@@ -143,16 +140,18 @@ $sidebar-color: $gray;
   margin-right: 0;
   margin-left: auto;
   color: $sidebar-color !important;
+  font-size: .6rem !important;
 }
 
 .sidebar-list-meta {
   display: flex;
   width: 100%;
-  align-items: center;
 
-  padding: 1px $space-2;
+  padding: 0 $space-2;
   margin-right: -$space-2;
   margin-left: -$space-2;
+
+  align-items: center;
 
   &:hover {
     > .sidebar-list-removable {
