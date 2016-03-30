@@ -20,9 +20,7 @@ export class Category extends Component {
 
     let backgroundColor;
     if (isActive) {
-      backgroundColor = 'darkgreen';
-    } else if (canDrop) {
-      backgroundColor = 'darkkhaki';
+      backgroundColor = "rgba(0,0,0,0.5)";
     }
 
     return connectDropTarget(
