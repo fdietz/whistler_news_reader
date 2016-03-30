@@ -56,6 +56,15 @@ $sidebar-color: $gray;
   }
 }
 
+.sidebar-nav-header {
+  position: relative;
+  margin: 0;
+  margin-bottom: $space-1;
+  font-size: .9rem;
+  color: #fff;
+  text-transform: uppercase;
+}
+
 .sidebar-nav-list {
   display: flex;
   padding: 0;
@@ -93,8 +102,7 @@ $sidebar-color: $gray;
 
 .sidebar-nav-list__name {
   position: relative;
-  width: 70%;
-
+  width: 75%;
   padding: 3px 0;
   margin-left: $space-1;
 
@@ -108,6 +116,12 @@ $sidebar-color: $gray;
 
   &.active {
     color: #fff;
+  }
+
+  &.action {
+    width: auto;
+    font-style: italic;
+    border-bottom: 1px dotted $sidebar-color;
   }
 }
 

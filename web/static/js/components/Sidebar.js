@@ -26,6 +26,7 @@ class Sidebar extends Component {
     onNextClick: PropTypes.func.isRequired,
     onPreviousClick: PropTypes.func.isRequired,
     onCategoryExpandClick: PropTypes.func.isRequired,
+    onAddCategoryClick: PropTypes.func.isRequired,
     onFeedDrop: PropTypes.func.isRequired
   };
 
@@ -115,6 +116,20 @@ class Sidebar extends Component {
     );
   }
 
+  renderAddCategoryLink() {
+    return (
+      <li className="sidebar-nav-list__item" key="addCategory">
+        <div className="sidebar-nav-list__meta">
+          <Icon name="plus" size="small"/>
+          <a
+            href="#"
+            className="sidebar-nav-list__name action"
+            onClick={this.props.onAddCategoryClick}>Category</a>
+        </div>
+      </li>
+    );
+  }
+
   componentDidUpdate() {
     const { currentPathname, feeds } = this.props;
 
@@ -168,11 +183,16 @@ class Sidebar extends Component {
               type="primary"
               expand={true}>+ Subscriptions</Button>
           </div>
+
+          {/*<h4 className="sidebar-nav-header">Home</h4>*/}
           <div className="sidebar-nav-list">
             {this.renderLink("Today", "/today", "house")}
             {this.renderLink("All", "/all", "list")}
           </div>
 
+          {/*<h4 className="sidebar-nav-header">
+            Subscriptions
+          </h4>*/}
           <div className="sidebar-nav-list">
             {categories.map((category) => {
               return this.renderCategory(category, feeds);
@@ -180,6 +200,7 @@ class Sidebar extends Component {
             {feedsWithoutCategory.map((feed) => {
               return this.renderFeed(feed);
             })}
+            {this.renderAddCategoryLink()}
           </div>
         </div>
         <div className="sidebar-footer">

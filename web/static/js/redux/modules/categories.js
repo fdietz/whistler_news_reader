@@ -13,6 +13,10 @@ export const removeCategory   = createAction(REMOVE_CATEGORY);
 export const fetchCategories  = createAction(FETCH_CATEGORIES);
 export const toggleExpandCategory = createAction(TOGGLE_EXPAND_CATEGORY);
 
+export function requestCreateCategory(categoryAttributes) {
+  return axios.post("http://localhost:4000/api/categories", { category: categoryAttributes });
+}
+
 export function requestRemoveCategory(categoryId) {
   return dispatch => {
     return axios.delete(`http://localhost:4000/api/categories/${categoryId}`)
@@ -24,6 +28,7 @@ export function requestRemoveCategory(categoryId) {
     });
   };
 }
+
 export function requestFetchCategories() {
   return dispatch => {
     return axios.get("/api/categories")
@@ -42,7 +47,7 @@ const initial = {
 
 const reducer = handleActions({
   ADD_CATEGORY: (state, action) => ({
-    items: [...state, action.payload.item]
+    items: [...state.items, action.payload.category]
   }),
   FETCH_CATEGORIES: (state, action) => ({
     items: action.payload.items

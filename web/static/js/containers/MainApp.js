@@ -11,6 +11,7 @@ import LayoutMasterSplit from "../components/LayoutMasterSplit";
 
 import NewFeedForm from "../containers/NewFeedForm";
 import EntryEmbedSite from "../containers/EntryEmbedSite";
+import AddCategoryDialog from "../containers/AddCategoryDialog";
 
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
@@ -78,7 +79,8 @@ class MainApp extends Component {
 
     this.state = {
       newFeedModalIsOpen: false,
-      entryEmbedSiteIsOpen: false
+      entryEmbedSiteIsOpen: false,
+      addCategoryDialogIsOpen: false
     };
 
     this.loadMore = this.loadMore.bind(this);
@@ -101,7 +103,9 @@ class MainApp extends Component {
     // used in sidebar
     this.handleSignOut = this.handleSignOut.bind(this);
     this.handleOnCategoryExpandClick = this.handleOnCategoryExpandClick.bind(this);
+    this.handleOnAddCategoryClick = this.handleOnAddCategoryClick.bind(this);
     this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
+    this.closeAddCategoryDialog = this.closeAddCategoryDialog.bind(this);
   }
 
   componentDidMount() {
@@ -289,6 +293,15 @@ class MainApp extends Component {
     });
   }
 
+  handleOnAddCategoryClick(event) {
+    event.preventDefault();
+    this.setState({ addCategoryDialogIsOpen: true });
+  }
+
+  closeAddCategoryDialog() {
+    this.setState({ addCategoryDialogIsOpen: false });
+  }
+
   render() {
     const { dispatch, entries, categories, feeds, currentUser, currentEntry, currentPath, notification } = this.props;
 
@@ -380,6 +393,7 @@ class MainApp extends Component {
           onNextClick={this.handleOnNextFeed}
           onPreviousClick={this.handleOnPreviousFeed}
           onCategoryExpandClick={this.handleOnCategoryExpandClick}
+          onAddCategoryClick={this.handleOnAddCategoryClick}
           onFeedDrop={this.handleOnFeedDrop}/>
 
         <LayoutMasterSplit>
@@ -408,6 +422,12 @@ class MainApp extends Component {
           <EntryEmbedSite
             isOpen={this.state.entryEmbedSiteIsOpen}
             onClose={this.closeEntryEmbedSite}/>
+        }
+
+        {this.state.addCategoryDialogIsOpen &&
+          <AddCategoryDialog
+            isOpen={this.state.addCategoryDialogIsOpen}
+            onClose={this.closeAddCategoryDialog}/>
         }
       </div>
     );
