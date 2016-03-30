@@ -40,7 +40,12 @@ import {
   requestUpdateFeedCategory
 } from "../redux/modules/feeds";
 
-import { requestFetchCategories, toggleExpandCategory } from "../redux/modules/categories";
+import {
+  requestFetchCategories,
+  toggleExpandCategory,
+  requestRemoveCategory
+} from "../redux/modules/categories";
+
 import { requestSignOut } from "../redux/modules/user";
 import { selectEntry } from "../redux/modules/currentEntry";
 
@@ -253,9 +258,14 @@ class MainApp extends Component {
     dispatch(requestSignOut());
   }
 
-  handleOnRemove(feed) {
+  handleOnRemove() {
     const { dispatch } = this.props;
-    dispatch(requestRemoveFeed(feed.id));
+    const params = this.requestParams(this.props);
+    if (params.feed_id) {
+      dispatch(requestRemoveFeed(+params.feed_id));
+    } else if (params.category_id) {
+      dispatch(requestRemoveCategory(+params.category_id));
+    }
   }
 
   handleOnNextFeed(path) {
