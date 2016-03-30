@@ -2,3 +2,6 @@ linters:
   PropertySortOrder:
     enabled: true
     order: "recess"
+  StringQuotes:
+      enabled: true
+      style: double_quotes
