@@ -22,11 +22,9 @@ class Sidebar extends Component {
     currentPathname: PropTypes.string.isRequired,
     currentUser: PropTypes.object.isRequired,
     onAddClick: PropTypes.func.isRequired,
-    onRemoveClick: PropTypes.func.isRequired,
     onSignOutClick: PropTypes.func.isRequired,
     onNextClick: PropTypes.func.isRequired,
     onPreviousClick: PropTypes.func.isRequired,
-    onRemoveCategoryClick: PropTypes.func.isRequired,
     onCategoryExpandClick: PropTypes.func.isRequired,
     onFeedDrop: PropTypes.func.isRequired
   };
@@ -40,7 +38,7 @@ class Sidebar extends Component {
   }
 
   renderFeed(feed) {
-    const { currentPathname, onRemoveClick, onFeedDrop } = this.props;
+    const { currentPathname, onFeedDrop } = this.props;
     const path = `/feeds/${feed.id}`;
     const active = path === currentPathname;
 
@@ -52,9 +50,6 @@ class Sidebar extends Component {
         <div className="sidebar-list-meta">
           <div className="icon-placeholder"></div>
           <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
-          <a href="#" className="sidebar-list-removable" onClick={onRemoveClick.bind(this, feed)}>
-            <Icon name="cross" size="small"/>
-          </a>
           {feed.unread_count > 0 && <Badge count={feed.unread_count} className="sidebar-list-badge"/>}
         </div>
       </Feed>
@@ -80,7 +75,7 @@ class Sidebar extends Component {
   }
 
   renderCategory(category, feeds) {
-    const { currentPathname, onRemoveCategoryClick, onCategoryExpandClick } = this.props;
+    const { currentPathname, onCategoryExpandClick } = this.props;
     const path = `/categories/${category.id}`;
     const active = path === currentPathname;
     const matchingFeeds = feeds.filter((feed) => feed.category_id === category.id);
@@ -103,9 +98,6 @@ class Sidebar extends Component {
             }
          </a>
          <Link to={path} className={cls} title={category.title}>{category.title}</Link>
-         <a href="#" className="sidebar-list-removable" onClick={onRemoveCategoryClick.bind(this, category)}>
-           <Icon name="cross" size="small"/>
-         </a>
          {totalUnreadCount > 0 && <Badge count={totalUnreadCount} className="sidebar-list-badge"/>}
         </div>
 
@@ -173,15 +165,11 @@ class Sidebar extends Component {
               type="primary"
               expand={true}>+ Subscriptions</Button>
           </div>
-          {/*<h4 className="sidebar-nav-header">Home</h4>*/}
           <div className="sidebar-nav-list">
             {this.renderLink("Today", "/today", "house")}
             {this.renderLink("All", "/all", "list")}
           </div>
 
-          {/*<h4 className="sidebar-nav-header">
-            Subscriptions
-          </h4>*/}
           <div className="sidebar-nav-list">
             {categories.map((category) => {
               return this.renderCategory(category, feeds);

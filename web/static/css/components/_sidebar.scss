@@ -56,15 +56,6 @@ $sidebar-color: $gray;
   }
 }
 
-.sidebar-nav-header {
-  position: relative;
-  margin: 0;
-  margin-bottom: $space-1;
-  font-size: .9rem;
-  color: #fff;
-  text-transform: uppercase;
-}
-
 .sidebar-nav-list {
   display: flex;
   padding: 0;
@@ -120,20 +111,6 @@ $sidebar-color: $gray;
   }
 }
 
-.sidebar-list-removable {
-  display: none;
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  margin-right: 8px;
-  margin-left: auto;
-  text-align: center;
-
-  [class^="svg-entypo-icon-"] {
-    display: block;
-  }
-}
-
 .sidebar-list-badge {
   display: block;
   width: 20px;
@@ -154,13 +131,7 @@ $sidebar-color: $gray;
   align-items: center;
 
   &:hover {
-    > .sidebar-list-removable {
-      display: block;
-    }
-
-    > .sidebar-list-badge {
-      display: none;
-    }
+    background-color: $darken-3;
   }
 }
 

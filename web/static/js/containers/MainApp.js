@@ -98,13 +98,10 @@ class MainApp extends Component {
     this.handleOnNextFeed = this.handleOnNextFeed.bind(this);
     this.handleOnPreviousFeed = this.handleOnPreviousFeed.bind(this);
 
+    // used in sidebar
     this.handleSignOut = this.handleSignOut.bind(this);
-
-    this.handleOnRemoveCategoryClick = this.handleOnRemoveCategoryClick.bind(this);
     this.handleOnCategoryExpandClick = this.handleOnCategoryExpandClick.bind(this);
-
     this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
-
   }
 
   componentDidMount() {
@@ -278,15 +275,10 @@ class MainApp extends Component {
     dispatch(routeActions.push(path));
   }
 
-  handleOnRemoveCategoryClick(category) {
-
-  }
-
   handleOnCategoryExpandClick(category, event) {
     event.preventDefault();
-
     const { dispatch } = this.props;
-    dispatch(toggleExpandCategory({ id: category.id }))
+    dispatch(toggleExpandCategory({ id: category.id }));
   }
 
   handleOnFeedDrop(feedId, categoryId) {
@@ -373,11 +365,9 @@ class MainApp extends Component {
           currentPathname={currentPath}
           currentUser={currentUser}
           onAddClick={this.openNewFeedModal}
-          onRemoveClick={this.handleOnRemove}
           onSignOutClick={this.handleSignOut}
           onNextClick={this.handleOnNextFeed}
           onPreviousClick={this.handleOnPreviousFeed}
-          onRemoveCategoryClick={this.handleOnRemoveCategoryClick}
           onCategoryExpandClick={this.handleOnCategoryExpandClick}
           onFeedDrop={this.handleOnFeedDrop}/>
 
