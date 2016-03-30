@@ -129,14 +129,7 @@ export default function reducer(state = initial, action) {
     break;
   case REMOVE_FEED:
     if (action.payload) {
-      const index = state.items.findIndex((element) => {
-        if (element.id === action.payload.id) {
-          return true;
-        }
-
-        return false;
-      });
-
+      const index = state.items.findIndex((element) => element.id === action.payload.id);
       return Object.assign({}, state, {
         items: [
           ...state.items.slice(0, index),
