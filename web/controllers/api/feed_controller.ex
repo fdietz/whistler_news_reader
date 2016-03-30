@@ -9,14 +9,16 @@ defmodule WhistlerNewsReader.Api.FeedController do
   alias WhistlerNewsReader.FeedImporter
   alias WhistlerNewsReader.StoreEntryHelper
 
+  plug :scrub_params, "feed" when action in [:create]
+
   def index(conn, %{} = _params) do
     feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
     unread_entries_count = UnreadEntry |> UnreadEntry.count_for_feeds(Enum.map(feeds, fn(f) -> f.id end)) |> Repo.all
     render(conn, "index.json", feeds: feeds, unread_entries_count: unread_entries_count)
   end
 
-  def create(conn, %{"feed_url" => feed_url} = _params) do
-    case FeedImporter.import_feed(current_user(conn), feed_url) do
+  def create(conn, %{"feed" => feed_attributes} = _params) do
+    case FeedImporter.import_feed(current_user(conn), feed_attributes) do
       {:ok, feed} ->
         feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed.id)
         conn

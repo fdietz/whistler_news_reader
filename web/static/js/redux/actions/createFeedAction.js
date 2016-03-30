@@ -4,9 +4,9 @@ import { requestRefreshEntries } from "../modules/entries";
 import { addFeed } from "../modules/feeds";
 import { requestCreateFeed, feedFormUpdate } from "../modules/feedForm";
 
-export default function createFeedAction(feedUrl) {
+export default function createFeedAction(feedAttributes) {
   return (dispatch) => {
-    return requestCreateFeed(feedUrl).
+    return requestCreateFeed(feedAttributes).
     then((response) => {
       const feed = response.data;
       // navigate to new feed

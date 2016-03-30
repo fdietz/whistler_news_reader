@@ -15,6 +15,9 @@ class NewFeedForm extends Component {
 
   static propTypes = {
     feedForm: PropTypes.object,
+    categories: PropTypes.shape({
+      items: PropTypes.array.isRequired
+    }),
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
@@ -29,13 +32,17 @@ class NewFeedForm extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      ReactDOM.findDOMNode(this.refs.input).focus();
+      ReactDOM.findDOMNode(this.refs.feedUrl).focus();
     }, 0);
   }
 
   handleChange(event) {
     const { dispatch } = this.props;
-    dispatch(feedFormUpdate({ feedUrl: event.target.value }));
+
+    dispatch(feedFormUpdate({
+      feedUrl: ReactDOM.findDOMNode(this.refs.feedUrl).value,
+      categoryId: ReactDOM.findDOMNode(this.refs.categoryId).value
+    }));
   }
 
   close(event) {
@@ -50,7 +57,10 @@ class NewFeedForm extends Component {
     const { dispatch, feedForm } = this.props;
     event.preventDefault();
 
-    dispatch(createFeedAction(feedForm.feedUrl)).then((result) => {
+    dispatch(createFeedAction({
+      feed_url: feedForm.feedUrl,
+      category_id: feedForm.categoryId
+    })).then((result) => {
       if (!result.errors) {
         dispatch(feedFormReset());
         this.props.onClose();
@@ -59,7 +69,7 @@ class NewFeedForm extends Component {
   }
 
   render() {
-    const { isOpen, feedForm } = this.props;
+    const { isOpen, feedForm, categories } = this.props;
     const errors = feedForm.errors ? reduceErrorsToString(feedForm.errors) : "";
 
     return (
@@ -81,14 +91,26 @@ class NewFeedForm extends Component {
             <input className="field block col-12"
               type="text"
               placeholder="Enter website url or feed title here"
-              ref="input"
+              ref="feedUrl"
               value={feedForm.feedUrl}
               onChange={(event) => this.handleChange(event)}
               autoFocus={true}/>
 
-            <div className="hint">
+            <div className="hint mb2">
               Website url must start with http://
             </div>
+
+            <label>Select category</label>
+            <select className="field block col-12"
+              ref="categoryId"
+              onChange={(event) => this.handleChange(event)}
+              value={feedForm.category_id}>
+
+              <option value="">Select ...</option>
+              {categories.items.map((category) => {
+                return <option value={category.id} key={category.id}>{category.title}</option>;
+              })}
+            </select>
 
             {errors &&
               <p className="errors">{errors}</p>
@@ -113,7 +135,8 @@ class NewFeedForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    feedForm: state.feedForm
+    feedForm: state.feedForm,
+    categories: state.categories
   };
 }
 

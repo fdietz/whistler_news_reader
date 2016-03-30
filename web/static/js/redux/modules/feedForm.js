@@ -7,12 +7,13 @@ export const FEED_FORM_RESET = "FEED_FORM_RESET";
 export const feedFormUpdate = createAction(FEED_FORM_UPDATE);
 export const feedFormReset  = createAction(FEED_FORM_RESET);
 
-export function requestCreateFeed(feedUrl) {
-  return axios.post("http://localhost:4000/api/feeds", { feed_url: feedUrl });
+export function requestCreateFeed(feedAttributes) {
+  return axios.post("http://localhost:4000/api/feeds", { feed: feedAttributes });
 }
 
 const initial = {
   feedUrl: null,
+  categoryId: null,
   isLoading: false
 };
 
@@ -29,7 +30,8 @@ export default function reducer(state = initial, action) {
       });
     } else if (action.payload) {
       return Object.assign({}, state, {
-        feedUrl: action.payload.feedUrl
+        feedUrl: action.payload.feedUrl,
+        categoryId: action.payload.categoryId
       });
     }
 

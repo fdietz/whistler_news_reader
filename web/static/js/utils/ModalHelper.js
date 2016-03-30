@@ -8,10 +8,10 @@ export const customModalStyles = {
     backgroundColor: "rgba(0, 0, 0, 0.75)"
   },
   content: {
-    top: "12rem",
-    left: "12rem",
-    right: "12rem",
-    bottom: "12rem",
+    top: "10rem",
+    left: "10rem",
+    right: "10rem",
+    bottom: "10rem",
     backgroundColor: "#FAFAFF",
     border: "0",
     borderRadius: "2px",

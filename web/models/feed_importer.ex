@@ -5,10 +5,10 @@ defmodule WhistlerNewsReader.FeedImporter do
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.Repo
 
-  def import_feed(user, feed_url) do
+  def import_feed(user, %{"feed_url" => feed_url, "category_id" => category_id } = _feed_attributes) do
     case fetch_and_parse(feed_url) do
-      {:ok, feed_attrs} ->
-        store_feed_and_subscribe_user_in_transaction(user, feed_attrs, feed_url)
+      {:ok, parsed_attrs} ->
+        store_feed_and_subscribe_user_in_transaction(user, parsed_attrs, feed_url, category_id)
       {:error, :not_found} ->
         {:error, :not_found}
     end
@@ -23,9 +23,9 @@ defmodule WhistlerNewsReader.FeedImporter do
     end
   end
 
-  def store_feed_and_subscribe_user_in_transaction(user, feed_attrs, feed_url) do
-    {:ok, feed} = find_or_create(feed_attrs, feed_url)
-    case subscribe_user(user, feed) do
+  def store_feed_and_subscribe_user_in_transaction(user, parsed_attrs, feed_url, category_id) do
+    {:ok, feed} = find_or_create(parsed_attrs, feed_url)
+    case subscribe_user(user, feed, category_id) do
       {:ok, _} ->
         {:ok, feed}
       {:error, changeset } ->
@@ -33,8 +33,8 @@ defmodule WhistlerNewsReader.FeedImporter do
     end
   end
 
-  def subscribe_user(user, feed) do
-    changeset = Subscription.changeset(%Subscription{}, %{feed_id: feed.id, user_id: user.id})
+  def subscribe_user(user, feed, category_id) do
+    changeset = Subscription.changeset(%Subscription{}, %{feed_id: feed.id, user_id: user.id, category_id: category_id})
     Repo.insert(changeset)
   end
 
