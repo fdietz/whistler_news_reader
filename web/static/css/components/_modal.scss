@@ -9,6 +9,8 @@
 
 .modal-header {
   background-color: $red;
+  border-bottom: 1px solid $darken-1;
+  box-sizing: border-box;
 
   .logo {
     font-size: 2rem;
@@ -47,28 +49,6 @@
   }
 }
 
-.ReactModal__Overlay {
-  // position: fixed;
-  // top: 0;
-  // right: 0;
-  // bottom: 0;
-  // left: 0;
-  //
-  // background-color: rgba(0, 0, 0, .75);
-}
-
-// .modal {
-//   top: 3rem;
-//   right: 3rem;
-//   bottom: 3rem;
-//   left: 3rem;
-//
-//   background-color: $white;
-// }
-
-.ReactModal__Content {
-}
-
 // .ReactModal__Overlay {
 //   opacity: 0;
 // }
@@ -78,12 +58,12 @@
 // }
 //
 // .ReactModal__Content {
-//   transform: translate3d(100%, 0, 0);
+//   transform: translate3d(-80%, 0, 0);
 //   transition: transform .2s ease-out;
 // }
 //
 // .ReactModal__Content--after-open {
-//   transform: translate3d(5%, 0, 0);
+//   transform: translate3d(0%, 0, 0);
 // }
 //
 // .ReactModal__Overlay--before-close {
