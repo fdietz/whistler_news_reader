@@ -24,6 +24,8 @@ import FeedEntryContent from "../components/FeedEntryContent";
 import Sidebar from "../components/Sidebar";
 import Notification from "../components/Notification";
 
+import { getSortedFeeds, getSortedCategories } from "../redux/selectors";
+
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
 import {
@@ -498,9 +500,9 @@ class MainApp extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     currentUser: state.user.current,
-    feeds: state.feeds,
+    feeds: getSortedFeeds(state),
     entries: state.entries,
-    categories: state.categories,
+    categories: getSortedCategories(state),
     currentEntry: state.currentEntry,
     location: ownProps.location,
     currentPath: ownProps.location.pathname,
