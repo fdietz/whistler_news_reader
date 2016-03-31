@@ -17,6 +17,18 @@ export function requestCreateCategory(categoryAttributes) {
   return axios.post("http://localhost:4000/api/categories", { category: categoryAttributes });
 }
 
+export function requestUpdateCategory(categoryId, categoryAttributes) {
+  return dispatch => {
+    return axios.put(`http://localhost:4000/api/categories/${categoryId}`, { category: categoryAttributes })
+    .then((response) => {
+      return dispatch(updateCategory({ item: response.data.category }));
+    })
+    .catch((response) => {
+      return dispatch(updateCategory(new Error(response.data.error)));
+    });
+  };
+}
+
 export function requestRemoveCategory(categoryId) {
   return dispatch => {
     return axios.delete(`http://localhost:4000/api/categories/${categoryId}`)

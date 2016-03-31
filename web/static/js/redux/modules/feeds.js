@@ -31,9 +31,21 @@ export function requestFetchFeeds() {
   };
 }
 
+export function requestUpdateFeed(feedId, feedAttributes) {
+  return dispatch => {
+    return axios.put(`http://localhost:4000/api/feeds/${feedId}`, { feed: feedAttributes })
+    .then((response) => {
+      return dispatch(updateFeed({ item: response.data.feed }));
+    })
+    .catch((response) => {
+      return dispatch(updateFeed(new Error(response.data.error)));
+    });
+  };
+}
+
 export function requestRemoveFeed(feedId) {
   return dispatch => {
-    axios.delete(`http://localhost:4000/api/feeds/${feedId}`)
+    return axios.delete(`http://localhost:4000/api/feeds/${feedId}`)
     .then(() => {
       dispatch(removeFeed({ id: feedId }));
     })

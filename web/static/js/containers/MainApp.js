@@ -12,6 +12,7 @@ import LayoutMasterSplit from "../components/LayoutMasterSplit";
 import NewFeedDialog from "../containers/NewFeedDialog";
 import EntryEmbedSite from "../containers/EntryEmbedSite";
 import NewCategoryDialog from "../containers/NewCategoryDialog";
+import EditDialog from "../containers/EditDialog";
 
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
@@ -49,6 +50,7 @@ import {
 
 import { requestSignOut } from "../redux/modules/user";
 import { selectEntry } from "../redux/modules/currentEntry";
+import { changeSidebarSelection } from "../redux/modules/currentSidebarSelection";
 
 class MainApp extends Component {
 
@@ -64,6 +66,9 @@ class MainApp extends Component {
       isLoading: PropTypes.bool.isRequired,
       error: PropTypes.string
     }).isRequired,
+    categories: PropTypes.shape({
+      items: PropTypes.array.isRequired
+    }).isRequired,
     currentEntry: PropTypes.object,
     currentUser: PropTypes.object,
     currentPath: PropTypes.string.isRequired,
@@ -71,7 +76,8 @@ class MainApp extends Component {
       message: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired
     }),
-    location: PropTypes.object.isRequired
+    location: PropTypes.object.isRequired,
+    currentSidebarSelection: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -80,7 +86,8 @@ class MainApp extends Component {
     this.state = {
       newFeedModalIsOpen: false,
       entryEmbedSiteIsOpen: false,
-      addCategoryDialogIsOpen: false
+      addCategoryDialogIsOpen: false,
+      editDialogIsOpen: false
     };
 
     this.loadMore = this.loadMore.bind(this);
@@ -106,13 +113,20 @@ class MainApp extends Component {
     this.handleOnAddCategoryClick = this.handleOnAddCategoryClick.bind(this);
     this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
     this.closeAddCategoryDialog = this.closeAddCategoryDialog.bind(this);
+
+    this.openEditDialog = this.openEditDialog.bind(this);
+    this.closeEditDialog = this.closeEditDialog.bind(this);
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
 
-    dispatch(requestFetchFeeds());
-    dispatch(requestFetchCategories());
+    dispatch(requestFetchFeeds()).then(() => {
+      dispatch(requestFetchCategories()).then(() => {
+        dispatch(changeSidebarSelection(this.sidebarSelectionParams(this.props)));
+      });
+    });
+
     dispatch(requestFetchEntries(this.requestParams(this.props)))
     .then(() => {
       this.firstEntry();
@@ -134,6 +148,7 @@ class MainApp extends Component {
 
     // if we changed routes...
     if (nextProps.location.key !== this.props.location.key) {
+      dispatch(changeSidebarSelection(this.sidebarSelectionParams(nextProps)));
       dispatch(requestFetchEntries(this.requestParams(nextProps)))
       .then(() => {
         this.firstEntry();
@@ -141,6 +156,29 @@ class MainApp extends Component {
     }
   }
 
+  // TODO: simplify
+  sidebarSelectionParams(props) {
+    const { feeds, categories } = props;
+
+    const params = this.requestParams(props);
+    if (params.feed_id === "today" || params.feed_id === "all") {
+      return {};
+    } else if (params.feed_id) {
+      return {
+        selection: feeds.items.find((feed) => feed.id === +params.feed_id),
+        isFeed: true
+      };
+    } else if (params.category_id) {
+      return {
+        selection: categories.items.find((category) => category.id === +params.category_id),
+        isCategory: true
+      };
+    }
+
+    return {};
+  }
+
+  // TODO: simplify
   requestParams(props) {
     if (props.params.id && props.location.pathname.startsWith("/feeds")) {
       return { feed_id: props.params.id };
@@ -302,8 +340,25 @@ class MainApp extends Component {
     this.setState({ addCategoryDialogIsOpen: false });
   }
 
+  openEditDialog() {
+    this.setState({ editDialogIsOpen: true });
+  }
+
+  closeEditDialog() {
+    this.setState({ editDialogIsOpen: false });
+  }
+
   render() {
-    const { dispatch, entries, categories, feeds, currentUser, currentEntry, currentPath, notification } = this.props;
+    const {
+      dispatch,
+      entries,
+      categories,
+      feeds,
+      currentUser,
+      currentEntry,
+      currentPath,
+      notification
+    } = this.props;
 
     const content = (
       <FeedEntryContent
@@ -349,7 +404,7 @@ class MainApp extends Component {
           <Button type="header" onClick={this.handleOnRemove}>
             <Icon name="trash" size="small"/>
           </Button>
-          <Button type="header" onClick={this.refreshEntries}>
+          <Button type="header" onClick={this.openEditDialog}>
             <Icon name="cog" size="small"/>
           </Button>
         </ButtonGroup>
@@ -429,6 +484,12 @@ class MainApp extends Component {
             isOpen={this.state.addCategoryDialogIsOpen}
             onClose={this.closeAddCategoryDialog}/>
         }
+
+        {this.state.editDialogIsOpen &&
+          <EditDialog
+            isOpen={this.state.editDialogIsOpen}
+            onClose={this.closeEditDialog}/>
+        }
       </div>
     );
   }
@@ -443,7 +504,8 @@ function mapStateToProps(state, ownProps) {
     currentEntry: state.currentEntry,
     location: ownProps.location,
     currentPath: ownProps.location.pathname,
-    notification: state.notification
+    notification: state.notification,
+    currentSidebarSelection: state.currentSidebarSelection
   };
 }
 
