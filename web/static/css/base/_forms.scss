@@ -58,9 +58,7 @@ input[type=radio] {
 
   .field {
     height: $form-field-height-prominent;
-    margin-bottom: .25em;
     font-size: $form-field-font-size-prominent;
-    border-width: 1px;
   }
 
   label + .field {
@@ -68,10 +66,11 @@ input[type=radio] {
   }
 
   .hint {
+    margin-top: .25em;
     font-size: .8rem;
   }
 
-  .form-actions {
-    margin-top: $space-3;
+  h1 {
+    margin: 0 0 2rem 0;
   }
 }

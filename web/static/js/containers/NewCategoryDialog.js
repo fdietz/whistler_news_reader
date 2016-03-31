@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Modal from "react-modal";
 import ReactDOM from "react-dom";
 
-import Icon from "../components/Icon";
+import { CrossSVGIcon } from "../components/SVGIcon";
 
 import { categoryFormUpdate, categoryFormReset } from "../redux/modules/categoryForm";
 import createCategoryAction from "../redux/actions/createCategoryAction";
@@ -69,30 +69,36 @@ class NewCategoryDialog extends Component {
         style={customModalStyles}>
 
         <div className="modal-header">
+          <div className="logo">whistle'r</div>
           <a className="modal-close-link" onClick={this.close}>
-            <Icon name="cross" size="prominent"/>
+            <CrossSVGIcon color="white" size="medium"/>
           </a>
         </div>
 
         <div className="modal-content">
           <form onSubmit={this.submitForm} className="form-prominent sm-col-6">
-            <h1>Create a new category</h1>
-            <label>Category title</label>
-            <input className="field block col-12"
-              type="text"
-              placeholder="Enter title here"
-              ref="title"
-              value={categoryForm.title}
-              onChange={(event) => this.handleChange(event)}
-              autoFocus={true}/>
+            <h1>Add new category</h1>
 
-            <div className="hint">
-              Title must be 50 characters or less and cannot contain spaces or periods
+            <div className="sm-col-12 mb2">
+              <label>Category title</label>
+              <input className="field block col-12"
+                type="text"
+                placeholder="Enter title here"
+                ref="title"
+                value={categoryForm.title}
+                onChange={(event) => this.handleChange(event)}
+                autoFocus={true}/>
+
+              <div className="hint">
+                Title must be 50 characters or less and cannot contain spaces or periods
+              </div>
             </div>
 
-            {errors &&
-              <p className="errors">{errors}</p>
-            }
+            <div className="sm-col-12 mb3">
+              {errors &&
+                <p className="errors">{errors}</p>
+              }
+            </div>
 
             <div className="form-actions">
               <button
@@ -100,9 +106,6 @@ class NewCategoryDialog extends Component {
                 className="btn btn-primary bg-blue white btn-large"
                 disabled={!categoryForm.title}
                 onClick={this.submitForm}>Add Category</button>
-              <button
-                onClick={this.close}
-                className="btn">Close</button>
             </div>
           </form>
         </div>

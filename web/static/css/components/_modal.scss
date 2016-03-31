@@ -1,16 +1,22 @@
 .modal-header,
 .modal-footer {
   display: flex;
-  height: 2rem;
-  padding: 4rem;
-  // background-color: $white;
+  height: 65px;
+  padding: 0 $space-2;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .modal-header {
-  // border-bottom: 1px solid $darken-2;
+  background-color: $red;
+
+  .logo {
+    font-size: 2rem;
+    color: $white;
+  }
 
   .modal-close-link {
+    display: flex;
     margin-left: auto;
     cursor: pointer;
 
@@ -26,7 +32,7 @@
 
 .modal-content {
   display: flex;
-  padding: 0 4rem 4rem;
+  padding: 4rem;
   overflow-y: auto;
   align-items: center;
   flex-direction: column;
@@ -34,6 +40,11 @@
   -webkit-overflow-scrolling: touch;
 
   flex: 1 1;
+
+  h1 {
+    font-size: 1.9rem;
+    text-transform: uppercase;
+  }
 }
 
 .ReactModal__Overlay {

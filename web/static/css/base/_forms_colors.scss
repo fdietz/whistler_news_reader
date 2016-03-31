@@ -1,15 +1,21 @@
 $field-focus-color: $gray;
+$field-hover-color: $blue-3;
 $field-success-color: $green;
 $field-warning-color: $yellow;
 $field-error-color: $red;
+$field-border-color: rgba(0, 0, 0, .3);
 
 .field {
-  border-color: $border-color;
+  border-color: $field-border-color;
   border-style: solid;
   border-width: $border-width;
   border-radius: $border-radius;
 
   transition: border-color .5s;
+
+  &:hover {
+    border-color: $field-hover-color;
+  }
 }
 
 .field:focus,
@@ -62,7 +68,7 @@ $field-error-color: $red;
 }
 
 .hint {
-  color: $gray-3;
+  color: $field-border-color;
 }
 
 .errors {
@@ -70,13 +76,13 @@ $field-error-color: $red;
 }
 
 ::-webkit-input-placeholder {
-   color: $border-color;
+   color: $field-border-color;
 }
 
 ::-moz-placeholder {
-   color: $border-color;
+   color: $field-border-color;
 }
 
 :-ms-input-placeholder {
-   color: $border-color;
+   color: $field-border-color;
 }
