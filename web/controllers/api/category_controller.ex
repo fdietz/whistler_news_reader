@@ -43,6 +43,13 @@ defmodule WhistlerNewsReader.Api.CategoryController do
     end
   end
 
+  def show(conn, %{"id" => id}) do
+    category = Category |> Category.for_user_id(current_user(conn).id) |> Repo.get!(id)
+
+    conn
+    |> render("show.json", category: category)
+  end
+
   def delete(conn, %{"id" => id}) do
     category = Category |> Category.for_user_id(current_user(conn).id) |> Repo.get!(id)
     Repo.delete!(category)

@@ -51,6 +51,12 @@ defmodule WhistlerNewsReader.Api.FeedController do
     end
   end
 
+  def show(conn, %{"id" => id}) do
+    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
+    conn
+    |> render("show.json", feed: feed)
+  end
+
   def delete(conn, %{"id" => id}) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
 
