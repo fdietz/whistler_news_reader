@@ -23,11 +23,27 @@ defmodule WhistlerNewsReader.Api.FeedController do
         feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed.id)
         conn
         |> put_status(:created)
+        |> put_resp_header("location", feed_path(conn, :show, feed))
         |> render("feed.json", feed: feed)
       {:error, :not_found} ->
         conn
         |> put_status(:not_found)
         |> render(WhistlerNewsReader.Api.ErrorView, "not_found.json")
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(WhistlerNewsReader.Api.ErrorView, "error.json", changeset: changeset)
+    end
+  end
+
+  def update(conn, %{"id" => id, "feed" => feed_params} = _params) do
+    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
+    case %Feed{}
+         |> Feed.changeset(feed_params)
+         |> Repo.update do
+      {:ok, feed} ->
+        conn
+        |> send_resp(204, "")
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)

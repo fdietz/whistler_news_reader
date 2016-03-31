@@ -19,7 +19,23 @@ defmodule WhistlerNewsReader.Api.CategoryController do
       {:ok, category} ->
         conn
         |> put_status(:created)
+        |> put_resp_header("location", category_path(conn, :show, category))
         |> render("show.json", category: category)
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(WhistlerNewsReader.Api.ErrorView, "error.json", changeset: changeset)
+    end
+  end
+
+  def update(conn, %{"id" => id, "category" => category_params} = _params) do
+    category = Category |> Category.for_user_id(current_user(conn).id) |> Repo.get!(id)
+    case category
+         |> Category.changeset(category_params)
+         |> Repo.update do
+      {:ok, category} ->
+        conn
+        |> send_resp(204, "")
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
