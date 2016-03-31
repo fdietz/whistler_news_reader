@@ -80,7 +80,6 @@ class Sidebar extends Component {
       <li className={listItemCls} key={key}>
         <div className="sidebar-nav-list__meta">
           {React.createElement(iconName, { color: currentColor })}
-          <Icon name={iconName} size="small"/>
           <Link to={path} className={cls}>{label}</Link>
         </div>
       </li>
