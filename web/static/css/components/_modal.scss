@@ -49,26 +49,27 @@
   }
 }
 
-// .ReactModal__Overlay {
-//   opacity: 0;
-// }
-//
-// .ReactModal__Overlay--after-open {
-//   opacity: 1;
-// }
-//
-// .ReactModal__Content {
-//   transform: translate3d(-80%, 0, 0);
-//   transition: transform .2s ease-out;
-// }
-//
-// .ReactModal__Content--after-open {
-//   transform: translate3d(0%, 0, 0);
-// }
-//
-// .ReactModal__Overlay--before-close {
-//   opacity: 0;
-// }
-//
-// .ReactModal__Content--before-close {
-// }
+.ReactModal__Overlay {
+  opacity: 0;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+  transition: opacity 250ms cubic-bezier(.2,.8,.5,1);
+}
+
+.ReactModal__Content {
+  opacity: 0;
+  transition: opacity 150ms cubic-bezier(.2,.8,.5,1) .1s;
+}
+
+.ReactModal__Content--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+.ReactModal__Content--before-close {
+}
