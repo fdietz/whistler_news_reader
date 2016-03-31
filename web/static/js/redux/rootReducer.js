@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { routeReducer as routing } from "react-router-redux";
+import { routerReducer } from "react-router-redux";
 
 import feedForm from "./modules/feedForm";
 import categoryForm from "./modules/categoryForm";
@@ -19,5 +19,5 @@ export default combineReducers({
   feeds,
   notification,
   user,
-  routing
+  routing: routerReducer
 });
