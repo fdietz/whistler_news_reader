@@ -38,12 +38,12 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
   def update(conn, %{"id" => id, "feed" => feed_params} = _params) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
-    case %Feed{}
+    case feed
          |> Feed.changeset(feed_params)
          |> Repo.update do
       {:ok, feed} ->
         conn
-        |> send_resp(204, "")
+        |> render("show.json", feed: feed)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
