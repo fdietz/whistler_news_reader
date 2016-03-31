@@ -51,7 +51,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
   end
 
   def mark_as_read(conn, %{"id" => id}) do
-    feed = Repo.get!(Feed, id)
+    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
     StoreEntryHelper.mark_feed_as_read(current_user(conn), feed)
 
     conn |> send_resp(204, "")
