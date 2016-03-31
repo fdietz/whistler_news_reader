@@ -6,6 +6,14 @@ import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
 import Icon from "../components/Icon";
+import {
+  HouseSVGIcon,
+  ArrowDownSVGIcon,
+  ArrowRightSVGIcon ,
+  ListSVGIcon,
+  PlusSVGIcon
+} from "../components/SVGIcon";
+
 import Badge from "../components/Badge";
 import Button from "../components/Button";
 import Category from "../components/Category";
@@ -66,10 +74,12 @@ class Sidebar extends Component {
 
     const cls = classNames({ "sidebar-nav-list__name": true, active: active });
     const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
+    const currentColor = active ? "white" : "gray";
 
     return (
       <li className={listItemCls} key={key}>
         <div className="sidebar-nav-list__meta">
+          {React.createElement(iconName, { color: currentColor })}
           <Icon name={iconName} size="small"/>
           <Link to={path} className={cls}>{label}</Link>
         </div>
@@ -88,7 +98,7 @@ class Sidebar extends Component {
 
     const cls = classNames({ "sidebar-nav-list__name": true, active: active });
     const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
-    const categoryIconName = category.expanded ? "arrow-down" : "arrow-right4";
+    const currentColor = active ? "white" : "gray";
 
     return (
       <Category className={listItemCls} {...category} active={active}>
@@ -97,7 +107,8 @@ class Sidebar extends Component {
             href="#"
             className="sidebar-nav-list__expand-toggle"
             onClick={onCategoryExpandClick.bind(this, category)}>
-            <Icon name={categoryIconName} size="small"/>
+            {category.expanded && <ArrowDownSVGIcon color={currentColor}/>}
+            {!category.expanded && <ArrowRightSVGIcon color={currentColor}/>}
          </a>
          <Link to={path} className={cls} title={category.title}>{category.title}</Link>
          {totalUnreadCount > 0 &&
@@ -120,7 +131,7 @@ class Sidebar extends Component {
     return (
       <li className="sidebar-nav-list__item" key="addCategory">
         <div className="sidebar-nav-list__meta">
-          <Icon name="plus" size="small"/>
+          <PlusSVGIcon color="gray"/>
           <a
             href="#"
             className="sidebar-nav-list__name action"
@@ -186,8 +197,8 @@ class Sidebar extends Component {
 
           {/*<h4 className="sidebar-nav-header">Home</h4>*/}
           <div className="sidebar-nav-list">
-            {this.renderLink("Today", "/today", "house")}
-            {this.renderLink("All", "/all", "list")}
+            {this.renderLink("Today", "/today", HouseSVGIcon)}
+            {this.renderLink("All", "/all", ListSVGIcon)}
           </div>
 
           {/*<h4 className="sidebar-nav-header">
