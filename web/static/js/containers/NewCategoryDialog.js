@@ -11,7 +11,7 @@ import createCategoryAction from "../redux/actions/createCategoryAction";
 import { reduceErrorsToString } from "../utils/ErrorHelper";
 import { customModalStyles } from "../utils/ModalHelper";
 
-class AddCategoryDialog extends Component {
+class NewCategoryDialog extends Component {
 
   static propTypes = {
     categoryForm: PropTypes.object,
@@ -29,13 +29,13 @@ class AddCategoryDialog extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      ReactDOM.findDOMNode(this.refs.input).focus();
+      ReactDOM.findDOMNode(this.refs.title).focus();
     }, 0);
   }
 
   handleChange(event) {
     const { dispatch } = this.props;
-    dispatch(categoryFormUpdate({ title: event.target.value }));
+    dispatch(categoryFormUpdate({ title: ReactDOM.findDOMNode(this.refs.title).value }));
   }
 
   close(event) {
@@ -81,7 +81,7 @@ class AddCategoryDialog extends Component {
             <input className="field block col-12"
               type="text"
               placeholder="Enter title here"
-              ref="input"
+              ref="title"
               value={categoryForm.title}
               onChange={(event) => this.handleChange(event)}
               autoFocus={true}/>
@@ -117,4 +117,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(AddCategoryDialog);
+export default connect(mapStateToProps)(NewCategoryDialog);

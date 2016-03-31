@@ -9,9 +9,9 @@ import LayoutHeader from "../components/LayoutHeader";
 import LayoutContent from "../components/LayoutContent";
 import LayoutMasterSplit from "../components/LayoutMasterSplit";
 
-import NewFeedForm from "../containers/NewFeedForm";
+import NewFeedDialog from "../containers/NewFeedDialog";
 import EntryEmbedSite from "../containers/EntryEmbedSite";
-import AddCategoryDialog from "../containers/AddCategoryDialog";
+import NewCategoryDialog from "../containers/NewCategoryDialog";
 
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
@@ -413,7 +413,7 @@ class MainApp extends Component {
         }
 
         {this.state.newFeedModalIsOpen &&
-          <NewFeedForm
+          <NewFeedDialog
             isOpen={this.state.newFeedModalIsOpen}
             onClose={this.closeNewFeedModal}/>
         }
@@ -425,7 +425,7 @@ class MainApp extends Component {
         }
 
         {this.state.addCategoryDialogIsOpen &&
-          <AddCategoryDialog
+          <NewCategoryDialog
             isOpen={this.state.addCategoryDialogIsOpen}
             onClose={this.closeAddCategoryDialog}/>
         }

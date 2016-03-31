@@ -11,7 +11,7 @@ import createFeedAction from "../redux/actions/createFeedAction";
 import { reduceErrorsToString } from "../utils/ErrorHelper";
 import { customModalStyles } from "../utils/ModalHelper";
 
-class NewFeedForm extends Component {
+class NewFeedDialog extends Component {
 
   static propTypes = {
     feedForm: PropTypes.object,
@@ -140,4 +140,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(NewFeedForm);
+export default connect(mapStateToProps)(NewFeedDialog);
