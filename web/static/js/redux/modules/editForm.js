@@ -18,7 +18,7 @@ const initial = {
 // }
 export default function reducer(state = initial, action) {
   if (action.type === EDIT_FORM_UPDATE) {
-    if (action.payload.errors) {
+    if (action.payload && action.payload.errors) {
       return Object.assign({}, state, {
         errors: action.payload.errors
       });

@@ -5,6 +5,8 @@ import { requestCreateCategory, addCategory } from "../modules/categories";
 
 export default function createCategoryAction(categoryAttributes) {
   return (dispatch) => {
+    dispatch(categoryFormUpdate());
+
     return requestCreateCategory(categoryAttributes).
     then((response) => {
       const category = response.data.category;

@@ -33,6 +33,10 @@ $btn-font-size-large: 1.1rem;
   transition: box-shadow 300ms ease-out;
   -webkit-appearance: none;
   user-select: none;
+
+  [class^="svg-entypo-icon-"] {
+    margin-right: $space-1;
+  }
 }
 
 .btn:hover {

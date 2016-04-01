@@ -6,6 +6,8 @@ import { requestCreateFeed, feedFormUpdate } from "../modules/feedForm";
 
 export default function createFeedAction(feedAttributes) {
   return (dispatch) => {
+    dispatch(feedFormUpdate());
+
     return requestCreateFeed(feedAttributes).
     then((response) => {
       const feed = response.data;

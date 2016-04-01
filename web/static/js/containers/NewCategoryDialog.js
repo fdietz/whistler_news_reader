@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import ReactDOM from "react-dom";
 
 import { CrossSVGIcon } from "../components/SVGIcon";
+import Icon from "../components/Icon";
 
 import { categoryFormUpdate, categoryFormReset } from "../redux/modules/categoryForm";
 import createCategoryAction from "../redux/actions/createCategoryAction";
@@ -105,7 +106,10 @@ class NewCategoryDialog extends Component {
                 type="submit"
                 className="btn btn-primary bg-blue white btn-large"
                 disabled={!categoryForm.title}
-                onClick={this.submitForm}>Add Category</button>
+                onClick={this.submitForm}>
+                  {categoryForm.isLoading && <Icon name="spinner_white" size="small"/>}
+                  Add Category
+                </button>
             </div>
           </form>
         </div>

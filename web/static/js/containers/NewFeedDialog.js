@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import ReactDOM from "react-dom";
 
 import { CrossSVGIcon } from "../components/SVGIcon";
+import Icon from "../components/Icon";
 
 import { feedFormUpdate, feedFormReset } from "../redux/modules/feedForm";
 import createFeedAction from "../redux/actions/createFeedAction";
@@ -129,7 +130,10 @@ class NewFeedDialog extends Component {
                 type="submit"
                 className="btn btn-primary bg-blue white btn-large"
                 disabled={!feedForm.feedUrl}
-                onClick={this.submitForm}>Add Feed</button>
+                onClick={this.submitForm}>
+                  {feedForm.isLoading && <Icon name="spinner_white" size="small"/>}
+                  Add Feed
+              </button>
             </div>
           </form>
         </div>

@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import ReactDOM from "react-dom";
 
 import { CrossSVGIcon } from "../components/SVGIcon";
+import Icon from "../components/Icon";
 
 import { editFormUpdate, editFormReset } from "../redux/modules/editForm";
 import { requestUpdateFeed } from "../redux/modules/feeds";
@@ -58,6 +59,7 @@ class EditDialog extends Component {
 
     const action = currentSidebarSelection.isFeed ? requestUpdateFeed : requestUpdateCategory;
 
+    dispatch(editFormUpdate());
     dispatch(action(currentSidebarSelection.selection.id, { title: editForm.title })).then((result) => {
       if (!result.errors) {
         dispatch(editFormReset());
@@ -128,7 +130,10 @@ class EditDialog extends Component {
                 type="submit"
                 className="btn btn-primary bg-blue white btn-large"
                 disabled={!editForm.title}
-                onClick={this.submitForm}>Save Changes</button>
+                onClick={this.submitForm}>
+                  {editForm.isLoading && <Icon name="spinner_white" size="small"/>}
+                  Save Changes
+                </button>
             </div>
           </form>
         </div>
