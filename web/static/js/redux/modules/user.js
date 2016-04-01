@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createAction } from "redux-actions";
-import { routeActions } from "react-router-redux";
+import { push } from "react-router-redux";
 
 const CREATE_SIGN_UP = "CREATE_SIGN_UP";
 const CREATE_SIGN_IN = "CREATE_SIGN_IN";
@@ -22,7 +22,7 @@ export function requestSignUp(data) {
 
         dispatch(createSignUp({ user: response.data.user }));
 
-        dispatch(routeActions.push("/today"));
+        dispatch(push("/today"));
       })
       .catch((response) => {
         dispatch(createSignUp(new Error(response.data.errors)));
@@ -44,7 +44,7 @@ export function requestSignIn(email, password) {
 
         dispatch(createSignIn({ user: response.data.user }));
 
-        dispatch(routeActions.push("/today"));
+        dispatch(push("/today"));
       })
       .catch((response) => {
         dispatch(createSignIn(new Error(response.data.errors)));
@@ -62,7 +62,7 @@ export function requestSignOut() {
 
         dispatch(signOut());
 
-        dispatch(routeActions.push("/sign_in"));
+        dispatch(push("/sign_in"));
       })
       .catch((response) => {
         console.log("response ERROR", response.data);
@@ -81,7 +81,7 @@ export function requestSetCurrentUser() {
         dispatch(setCurrentUser({ user: response.data.user }));
       })
       .catch(() => {
-        dispatch(routeActions.push("/sign_in"));
+        dispatch(push("/sign_in"));
       });
   };
 }

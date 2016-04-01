@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
-import { routeActions } from "react-router-redux";
+import { push } from "react-router-redux";
 import classNames from "classnames";
 
 import LayoutPane from "../components/LayoutPane";
@@ -312,12 +312,12 @@ class MainApp extends Component {
 
   handleOnNextFeed(path) {
     const { dispatch } = this.props;
-    dispatch(routeActions.push(path));
+    dispatch(push(path));
   }
 
   handleOnPreviousFeed(path) {
     const { dispatch } = this.props;
-    dispatch(routeActions.push(path));
+    dispatch(push(path));
   }
 
   handleOnCategoryExpandClick(category, event) {
@@ -329,7 +329,7 @@ class MainApp extends Component {
   handleOnFeedDrop(feedId, categoryId) {
     const { dispatch } = this.props;
     dispatch(requestUpdateFeedCategory(feedId, categoryId)).then(() => {
-      dispatch(routeActions.push(`/feeds/${feedId}`));
+      dispatch(push(`/feeds/${feedId}`));
     });
   }
 

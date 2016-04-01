@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { routeActions } from "react-router-redux";
+import { push } from "react-router-redux";
 
 import { requestSetCurrentUser } from "../redux/modules/user";
 
@@ -22,7 +22,7 @@ class AuthenticatedContainer extends Component {
     if (localStorage.getItem("phoenixAuthToken")) {
       if (!currentUser) dispatch(requestSetCurrentUser());
     } else {
-      dispatch(routeActions.push("/sign_up"));
+      dispatch(push("/sign_up"));
     }
   }
 
