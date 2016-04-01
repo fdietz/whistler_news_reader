@@ -7,11 +7,11 @@ const SIZES = {
   xlarge: { width: 48, height: 48 }
 };
 
-const SVGComponent = ({ size = "small", children }) => {
+const SVGComponent = ({ size = "small", viewBox = "0 0 20 20 ", children, ...rest }) => {
   const dimensions = SIZES[size];
 
   return (
-    <svg width={dimensions.width} height={dimensions.height} viewBox="0 0 20 20">
+    <svg width={dimensions.width} height={dimensions.height} viewBox={viewBox} {...rest}>
       {children}
     </svg>
   );
@@ -19,6 +19,7 @@ const SVGComponent = ({ size = "small", children }) => {
 
 SVGComponent.propTypes = {
   size: PropTypes.string,
+  viewBox: PropTypes.string,
   children: PropTypes.node.isRequired
 };
 
