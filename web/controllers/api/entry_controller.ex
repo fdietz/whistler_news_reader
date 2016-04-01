@@ -91,9 +91,7 @@ defmodule WhistlerNewsReader.Api.EntryController do
   end
 
   def mark_all_as_read(conn, %{"feed_id" => "today"}) do
-    # entries = subscribed_feed_entries(conn) |> Entry.for_today |> Repo.update_all(set: [read: true])
     UnreadEntry |> UnreadEntry.for_today |> UnreadEntry.for_unread |> Repo.update_all(set: [read: true])
-    # StoreEntryHelper.mark_all_entries_as_read(current_user(conn), entries)
     conn |> send_resp(204, "")
   end
 

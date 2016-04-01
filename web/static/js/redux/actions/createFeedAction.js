@@ -13,8 +13,6 @@ export default function createFeedAction(feedAttributes) {
       const feed = response.data;
       // navigate to new feed
       dispatch(push(`/feeds/${feed.id}`));
-      // refresh feed entries
-      dispatch(requestRefreshEntries({ feed_id: feed.id }));
       // update sidebar feed list
       dispatch(addFeed({ items: [feed] }));
 

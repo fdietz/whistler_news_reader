@@ -32,7 +32,6 @@ defmodule WhistlerNewsReader.Router do
     put "/entries/mark_all_as_read", Api.EntryController, :mark_all_as_read
 
     resources "/feeds", Api.FeedController, only: [:index, :show, :create, :update, :delete]
-    put "/feeds/:id/mark_as_read", Api.FeedController, :mark_as_read
     put "/feeds/:id/update_category", Api.FeedController, :update_category
 
     resources "/categories", Api.CategoryController, only: [:index, :show, :create, :update, :delete]

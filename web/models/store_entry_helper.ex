@@ -43,14 +43,6 @@ defmodule WhistlerNewsReader.StoreEntryHelper do
     unread_entry |> UnreadEntry.changeset(%{read: true}) |> Repo.update!
   end
 
-  # def mark_all_entries_as_read(user, entries) do
-  #   Repo.transaction(fn ->
-  #     Enum.each(entries, fn(entry) ->
-  #       mark_entry_as_read(user, entry)
-  #     end)
-  #   end)
-  # end
-
   def mark_feed_as_read(user, feed) do
     unread_entries = UnreadEntry
                      |> UnreadEntry.for_feed(feed.id)

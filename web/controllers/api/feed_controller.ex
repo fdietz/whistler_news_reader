@@ -7,6 +7,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.FeedImporter
+  alias WhistlerNewsReader.FeedRefresher
   alias WhistlerNewsReader.StoreEntryHelper
 
   plug :scrub_params, "feed" when action in [:create]
@@ -21,10 +22,12 @@ defmodule WhistlerNewsReader.Api.FeedController do
     case FeedImporter.import_feed(current_user(conn), feed_attributes) do
       {:ok, feed} ->
         feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed.id)
+        FeedRefresher.refresh(feed)
+        unread_entries_count = UnreadEntry |> UnreadEntry.count_for_feeds([feed.id]) |> Repo.all
         conn
         |> put_status(:created)
         |> put_resp_header("location", feed_path(conn, :show, feed))
-        |> render("feed.json", feed: feed)
+        |> render("show.json", feed: feed, unread_entries_count: unread_entries_count)
       {:error, :not_found} ->
         conn
         |> put_status(:not_found)
@@ -69,13 +72,6 @@ defmodule WhistlerNewsReader.Api.FeedController do
   def update_category(conn, %{"id" => id, "category_id" => category_id}) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
     StoreEntryHelper.update_feed_category!(feed, category_id)
-    conn |> send_resp(204, "")
-  end
-
-  def mark_as_read(conn, %{"id" => id}) do
-    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
-    StoreEntryHelper.mark_feed_as_read(current_user(conn), feed)
-
     conn |> send_resp(204, "")
   end
 
