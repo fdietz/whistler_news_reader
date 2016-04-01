@@ -1,6 +1,5 @@
 import { push } from "react-router-redux";
 
-import { requestRefreshEntries } from "../modules/entries";
 import { addFeed } from "../modules/feeds";
 import { requestCreateFeed, feedFormUpdate } from "../modules/feedForm";
 
