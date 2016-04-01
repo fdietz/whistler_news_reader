@@ -12,7 +12,6 @@ defmodule WhistlerNewsReader.Entry do
     field :guid, :string
     field :published, Ecto.DateTime
     belongs_to :feed, WhistlerNewsReader.Feed
-    has_many :read_entries, WhistlerNewsReader.ReadEntry
     has_many :unread_entries, WhistlerNewsReader.UnreadEntry
 
     timestamps
@@ -76,6 +75,7 @@ defmodule WhistlerNewsReader.Entry do
     # join condition is handled by ecto for us
     join: c in assoc(p, :unread_entries),
     where: c.user_id == ^user_id,
+    where: c.read == ^false,
     preload: [unread_entries: c]
   end
 
@@ -84,6 +84,7 @@ defmodule WhistlerNewsReader.Entry do
     # join condition is handled by ecto for us
     join: c in assoc(p, :read_entries),
     where: c.user_id == ^user_id,
+    where: c.read == ^true,
     preload: [read_entries: c]
   end
 end
