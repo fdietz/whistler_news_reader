@@ -26,7 +26,7 @@ export function requestFetchFeeds() {
       dispatch(fetchFeeds({ items: response.data.feeds }));
     })
     .catch((response) => {
-      dispatch(fetchFeeds(new Error(response.data.error)));
+      dispatch(fetchFeeds(new Error(response.data.errors)));
     });
   };
 }
@@ -38,7 +38,7 @@ export function requestUpdateFeed(feedId, feedAttributes) {
       return dispatch(updateFeed({ item: response.data.feed }));
     })
     .catch((response) => {
-      return dispatch(updateFeed(new Error(response.data.error)));
+      return dispatch(updateFeed(new Error(response.data.errors)));
     });
   };
 }
@@ -50,7 +50,7 @@ export function requestRemoveFeed(feedId) {
       dispatch(removeFeed({ id: feedId }));
     })
     .catch((response) => {
-      dispatch(removeFeed(new Error(response.data.error)));
+      dispatch(removeFeed(new Error(response.data.errors)));
     });
   };
 }
@@ -62,14 +62,15 @@ export function requestUpdateFeedCategory(feedId, categoryId) {
       dispatch(updateFeed({ item: { id: feedId, category_id: categoryId } }));
     })
     .catch((response) => {
-      dispatch(updateFeed(new Error(response.data.error)));
+      dispatch(updateFeed(new Error(response.data.errors)));
     });
   };
 }
 
 const initial = {
   items: [],
-  isLoading: false
+  isLoading: false,
+  error: null
 };
 
 // feeds = {
@@ -81,61 +82,45 @@ export default function reducer(state = initial, action) {
   switch (action.type) {
   case FETCH_FEEDS:
     if (action.error) {
-      return Object.assign({}, state, {
-        error: action.payload.message
-      });
+      return { ...state, error: action.payload.message };
     } else if (action.payload) {
-      return Object.assign({}, state, {
-        items: action.payload.items
-      });
+      return { ...state, items: action.payload.items };
     }
-    return Object.assign({}, state, {
-      isLoading: true
-    });
+
+    return { isLoading: true };
   case ADD_FEED:
     if (action.payload) {
-      return Object.assign({}, state, {
-        items: [
-          ...state.items,
-          action.payload.item
-        ]
-      });
+      return { ...state, items: [ ...state.items, action.payload.item ] };
     }
     break;
   case UPDATE_FEED:
     if (action.payload) {
-      return Object.assign({}, state, {
-        items: state.items.map((item) => {
-          if (item.id === action.payload.item.id) {
-            return Object.assign({}, item, action.payload.item);
-          }
-          return item;
-        })
-      });
+      return { ...state, items: state.items.map((item) => {
+        if (item.id === action.payload.item.id) {
+          return { ...item, ...action.payload.item };
+        }
+        return item;
+      })};
     }
     break;
   case DECREMENT_UNREAD_COUNT:
     if (action.payload) {
-      return Object.assign({}, state, {
-        items: state.items.map((item) => {
-          if (item.id === action.payload.id) {
-            return Object.assign({}, item, { unread_count: item.unread_count-1 });
-          }
-          return item;
-        })
-      });
+      return { ... state, items: state.items.map((item) => {
+        if (item.id === action.payload.id) {
+          return { ...item, unread_count: item.unread_count-1 };
+        }
+        return item;
+      })};
     }
     break;
   case RESET_UNREAD_COUNT:
     if (action.payload) {
-      return Object.assign({}, state, {
-        items: state.items.map((item) => {
-          if (item.id === action.payload.id) {
-            return Object.assign({}, item, { unread_count: 0 });
-          }
-          return item;
-        })
-      });
+      return { ...state, items: state.items.map((item) => {
+        if (item.id === action.payload.id) {
+          return { ...item, unread_count: 0 };
+        }
+        return item;
+      })};
     }
     break;
   case REMOVE_FEED:

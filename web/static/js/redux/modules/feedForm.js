@@ -11,7 +11,7 @@ export function requestCreateFeed(feedAttributes) {
   return (dispatch) => {
     dispatch(feedFormUpdate());
 
-    return axios.post("http://localhost:4000/api/feeds", { feed: feedAttributes }).
+    return axios.post("/api/feeds", { feed: feedAttributes }).
     then((response) => {
       dispatch(feedFormReset());
       return response.data.feed;
