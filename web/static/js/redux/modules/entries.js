@@ -6,13 +6,13 @@ export const FETCH_ENTRIES      = "FETCH_ENTRIES";
 export const FETCH_MORE_ENTRIES = "FETCH_MORE_ENTRIES";
 export const REFRESH_ENTRIES    = "REFRESH_ENTRIES";
 export const UPDATE_ENTRY       = "UPDATE_ENTRY";
-export const MARK_ALL_FEED_ENTRIES_AS_READ = "MARK_ALL_FEED_ENTRIES_AS_READ";
+export const MARK_ALL_ENTRIES_AS_READ = "MARK_ALL_ENTRIES_AS_READ";
 
 export const fetchEntries     = createAction(FETCH_ENTRIES);
 export const fetchMoreEntries = createAction(FETCH_MORE_ENTRIES);
 export const refreshEntries   = createAction(REFRESH_ENTRIES);
 export const updateEntry      = createAction(UPDATE_ENTRY);
-export const markAllFeedEntriesAsRead = createAction(MARK_ALL_FEED_ENTRIES_AS_READ);
+export const markAllEntriesAsRead = createAction(MARK_ALL_ENTRIES_AS_READ);
 
 export function requestMarkEntryAsRead(entry) {
   return dispatch => {
@@ -26,14 +26,14 @@ export function requestMarkEntryAsRead(entry) {
   };
 }
 
-export function requestMarkAllFeedEntriesAsRead(feedId) {
+export function requestMarkAllEntriesAsRead(params) {
   return dispatch => {
-    return axios.put(`/api/feeds/${feedId}/mark_as_read`)
+    return axios.put("/api/entries/mark_all_as_read", params)
     .then((response) => {
-      dispatch(markAllFeedEntriesAsRead({ feed_id: feedId }));
+      dispatch(markAllEntriesAsRead(params));
     })
     .catch((response) => {
-      dispatch(markAllFeedEntriesAsRead(new Error(response.data.error)));
+      dispatch(markAllEntriesAsRead(new Error(response.data.error)));
     });
   };
 }
@@ -164,12 +164,31 @@ export default function reducer(state = initial, action) {
       };
     }
     return state;
-  case MARK_ALL_FEED_ENTRIES_AS_READ:
-    if (action.payload && action.payload.feed_id) {
+  case MARK_ALL_ENTRIES_AS_READ:
+    if (action.payload && action.payload.feed_id === "all") {
       return {
-        items: state.items.map((item) => {
-          if (item.feed.id === action.payload.feed_id) {
-            return Object.assign({}, item, { unread: false });
+        items: state.items.map(item => {
+          return {...item, unread: false };
+        }),
+        isLoading: false
+      };
+    } else if (action.payload && action.payload.feed_id === "today") {
+      // TODO: implement reducer
+    } else if (action.payload && action.payload.feed_id) {
+      return {
+        items: state.items.map(item => {
+          if (item.feed.id === +action.payload.feed_id) {
+            return {...item, unread: false };
+          }
+          return item;
+        }),
+        isLoading: false
+      };
+    } else if (action.payload && action.payload.category_id) {
+      return {
+        items: state.items.map(item => {
+          if (item.feed.category_id === +action.payload.category_id) {
+            return {...item, unread: false };
           }
           return item;
         }),

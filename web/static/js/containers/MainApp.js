@@ -33,7 +33,7 @@ import {
   requestFetchMoreEntries,
   requestRefreshEntries,
   requestMarkEntryAsRead,
-  requestMarkAllFeedEntriesAsRead
+  requestMarkAllEntriesAsRead
 } from "../redux/modules/entries";
 
 import {
@@ -275,11 +275,11 @@ class MainApp extends Component {
     const { dispatch} = this.props;
     const params = this.requestParams(this.props);
 
-    if (params.feed_id) {
-      dispatch(requestMarkAllFeedEntriesAsRead(+params.feed_id)).then(() => {
+    dispatch(requestMarkAllEntriesAsRead(params)).then(() => {
+      if (params.feed_id) {
         dispatch(resetUnreadCount({ id: +params.feed_id }));
-      });
-    }
+      }
+    });
   }
 
   openEntryEmbedSite() {

@@ -83,6 +83,30 @@ defmodule WhistlerNewsReader.Api.EntryController do
     conn |> send_resp(204, "")
   end
 
+  def mark_all_as_read(conn, %{"feed_id" => feed_id}) do
+    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed_id)
+    StoreEntryHelper.mark_feed_as_read(current_user(conn), feed)
+    conn |> send_resp(204, "")
+  end
+
+  def mark_all_as_read(conn, %{"feed_id" => "all"}) do
+    feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
+    StoreEntryHelper.mark_all_feeds_as_read(current_user(conn), feeds)
+    conn |> send_resp(204, "")
+  end
+
+  def mark_all_as_read(conn, %{"feed_id" => "today"}) do
+    entries = subscribed_feed_entries(conn) |> Entry.for_today |> Repo.all |> Repo.preload(:feed)
+    StoreEntryHelper.mark_all_entries_as_read(current_user(conn), entries)
+    conn |> send_resp(204, "")
+  end
+
+  def mark_all_as_read(conn, %{"category_id" => category_id}) do
+    feeds = subscribed_feeds_for_category_id(conn, category_id)
+    StoreEntryHelper.mark_all_feeds_as_read(current_user(conn), feeds)
+    conn |> send_resp(204, "")
+  end
+
   defp load_more(query, last_published, limit) do
     query |> Entry.gt_last_published(last_published) |> sort_limit_and_preload(limit)
   end
