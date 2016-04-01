@@ -38,53 +38,60 @@ defmodule WhistlerNewsReader.StoreEntryHelper do
     Repo.update!(changeset)
   end
 
-  # TODO: wrap in transaction
   def mark_entry_as_read(user, entry) do
     unread_entry = Repo.get_by!(UnreadEntry, feed_id: entry.feed_id, entry_id: entry.id, user_id: user.id)
-    Repo.delete!(unread_entry)
+    Repo.transaction(fn ->
+      Repo.delete!(unread_entry)
 
-    %ReadEntry{}
-    |> ReadEntry.changeset(%{entry_id: entry.id, feed_id: entry.feed_id, user_id: user.id})
-    |> Repo.insert!
-  end
-
-  # TODO: wrap in transaction
-  def mark_all_entries_as_read(user, entries) do
-    Enum.each(entries, fn(entry) ->
-      mark_entry_as_read(user, entry)
+      %ReadEntry{}
+      |> ReadEntry.changeset(%{entry_id: entry.id, feed_id: entry.feed_id, user_id: user.id})
+      |> Repo.insert!
     end)
   end
 
-  # TODO: wrap in transaction
+  def mark_all_entries_as_read(user, entries) do
+    Repo.transaction(fn ->
+      Enum.each(entries, fn(entry) ->
+        mark_entry_as_read(user, entry)
+      end)
+    end)
+  end
+
   def mark_feed_as_read(user, feed) do
     unread_entries = UnreadEntry
                      |> UnreadEntry.for_feed(feed.id)
                      |> UnreadEntry.for_user(user.id)
                      |> Repo.all
-    Enum.each(unread_entries, fn(entry) ->
-      Repo.delete!(entry)
 
-      %ReadEntry{}
-      |> ReadEntry.changeset(%{entry_id: entry.id, feed_id: feed.id, user_id: user.id})
-      |> Repo.insert!
+    Repo.transaction(fn ->
+      Enum.each(unread_entries, fn(entry) ->
+        Repo.delete!(entry)
+
+        %ReadEntry{}
+        |> ReadEntry.changeset(%{entry_id: entry.id, feed_id: feed.id, user_id: user.id})
+        |> Repo.insert!
+      end)
     end)
   end
 
-  # TODO: wrap in transaction
   def mark_all_feeds_as_read(user, feeds) do
-    Enum.each(feeds, fn(feed) ->
-      mark_feed_as_read(user, feed)
+    Repo.transaction(fn ->
+      Enum.each(feeds, fn(feed) ->
+        mark_feed_as_read(user, feed)
+      end)
     end)
   end
 
   defp mark_as_unread_entry(entry) do
-    subscription = Subscription
-                   |> Subscription.for_feed(entry.feed_id)
-                   |> Repo.all
-    Enum.each(subscription, fn(s) ->
-      %UnreadEntry{}
-      |> UnreadEntry.changeset(%{entry_id: entry.id, feed_id: entry.feed_id, user_id: s.user_id})
-      |> Repo.insert!
+    Repo.transaction(fn ->
+      subscription = Subscription
+                     |> Subscription.for_feed(entry.feed_id)
+                     |> Repo.all
+      Enum.each(subscription, fn(s) ->
+        %UnreadEntry{}
+        |> UnreadEntry.changeset(%{entry_id: entry.id, feed_id: entry.feed_id, user_id: s.user_id})
+        |> Repo.insert!
+      end)
     end)
   end
 
