@@ -119,6 +119,13 @@ class EditDialog extends Component {
               <div className="hint">{labels.hint}</div>
             </div>
 
+            {currentSidebarSelection.isFeed &&
+              <div className="sm-col-12 mb2">
+                <div className="hint">{currentSidebarSelection.selection.site_url}</div>
+                <div className="hint">{currentSidebarSelection.selection.feed_url}</div>
+              </div>
+            }
+
             <div className="sm-col-12 mb3">
               {errors &&
                 <p className="errors">{errors}</p>
