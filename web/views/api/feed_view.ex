@@ -21,13 +21,15 @@ defmodule WhistlerNewsReader.Api.FeedView do
   def render("show.json", %{feed: feed, unread_entries_count: unread_entries_count}) do
     # %{feed: render_one(feed, WhistlerNewsReader.Api.FeedView, "feed.json")}
     %{
-      id: feed.id,
-      title: feed.title,
-      feed_url: feed.feed_url,
-      site_url: feed.site_url,
-      last_updated: feed.last_updated,
-      category_id: category_id(feed),
-      unread_count: unread_entries_count_for(feed, unread_entries_count)
+      feed: %{
+        id: feed.id,
+        title: feed.title,
+        feed_url: feed.feed_url,
+        site_url: feed.site_url,
+        last_updated: feed.last_updated,
+        category_id: category_id(feed),
+        unread_count: unread_entries_count_for(feed, unread_entries_count)
+      }
      }
   end
 

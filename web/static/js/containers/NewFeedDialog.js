@@ -2,12 +2,13 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
 import ReactDOM from "react-dom";
+import { push } from "react-router-redux";
 
 import { CrossSVGIcon } from "../components/SVGIcon";
 import Icon from "../components/Icon";
 
-import { feedFormUpdate, feedFormReset } from "../redux/modules/feedForm";
-import createFeedAction from "../redux/actions/createFeedAction";
+import { feedFormUpdate, feedFormReset, requestCreateFeed } from "../redux/modules/feedForm";
+import { addFeed } from "../redux/modules/feeds";
 
 import { reduceErrorsToString } from "../utils/ErrorHelper";
 import { customModalStyles } from "../utils/ModalHelper";
@@ -58,13 +59,16 @@ class NewFeedDialog extends Component {
     const { dispatch, feedForm } = this.props;
     event.preventDefault();
 
-    dispatch(createFeedAction({
+    dispatch(requestCreateFeed({
       feed_url: feedForm.feedUrl,
       category_id: feedForm.categoryId
     })).then((result) => {
       if (!result.errors) {
-        dispatch(feedFormReset());
         this.props.onClose();
+        // update sidebar feed list
+        dispatch(addFeed({ item: result }));
+        // navigate to new feed
+        dispatch(push(`/feeds/${result.id}`));
       }
     });
   }

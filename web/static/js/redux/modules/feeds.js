@@ -97,7 +97,7 @@ export default function reducer(state = initial, action) {
       return Object.assign({}, state, {
         items: [
           ...state.items,
-          ...action.payload.items
+          action.payload.item
         ]
       });
     }

@@ -8,7 +8,19 @@ export const feedFormUpdate = createAction(FEED_FORM_UPDATE);
 export const feedFormReset  = createAction(FEED_FORM_RESET);
 
 export function requestCreateFeed(feedAttributes) {
-  return axios.post("http://localhost:4000/api/feeds", { feed: feedAttributes });
+  return (dispatch) => {
+    dispatch(feedFormUpdate());
+
+    return axios.post("http://localhost:4000/api/feeds", { feed: feedAttributes }).
+    then((response) => {
+      dispatch(feedFormReset());
+      return response.data.feed;
+    }).
+    catch((response) => {
+      dispatch(feedFormUpdate({ errors: response.data.errors }));
+      return response.data;
+    });
+  };
 }
 
 const initial = {
