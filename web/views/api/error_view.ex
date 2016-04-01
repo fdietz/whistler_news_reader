@@ -10,10 +10,6 @@ defmodule WhistlerNewsReader.Api.ErrorView do
     %{errors: errors}
   end
 
-  def render("not_found.json", _) do
-    %{error: "not found error"}
-  end
-
   defp render_detail({message, values}) do
     Enum.reduce(values, message, fn {k,v}, acc ->
       String.replace(acc, "%{#{k}}", to_string(v))

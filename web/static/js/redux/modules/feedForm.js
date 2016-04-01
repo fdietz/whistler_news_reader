@@ -17,8 +17,15 @@ export function requestCreateFeed(feedAttributes) {
       return response.data.feed;
     }).
     catch((response) => {
-      dispatch(feedFormUpdate({ errors: response.data.errors }));
-      return response.data;
+      let formData;
+      if (response.status === 404) {
+        formData = { errors: [ { feed_url: "Not found" }] };
+      } else {
+        formData = { errors: response.data.errors };
+      }
+      dispatch(feedFormUpdate(formData));
+
+      return formData;
     });
   };
 }
@@ -26,7 +33,8 @@ export function requestCreateFeed(feedAttributes) {
 const initial = {
   feedUrl: null,
   categoryId: null,
-  isLoading: false
+  isLoading: false,
+  errors: null
 };
 
 // feedForm = {
@@ -36,22 +44,10 @@ const initial = {
 // }
 export default function reducer(state = initial, action) {
   if (action.type === FEED_FORM_UPDATE) {
-    if (action.payload && action.payload.errors) {
-      return Object.assign({}, state, {
-        errors: action.payload.errors
-      });
-    } else if (action.payload) {
-      return Object.assign({}, state, {
-        feedUrl: action.payload.feedUrl,
-        categoryId: action.payload.categoryId
-      });
-    }
-
-    return Object.assign({}, state, {
-      isLoading: true
-    });
+    if (!action.payload) return {...state, isLoading: true };
+    return { ...state, ...action.payload, isLoading: false };
   } else if (action.type === FEED_FORM_RESET) {
-    return Object.assign({}, initial);
+    return initial;
   }
 
   return state;

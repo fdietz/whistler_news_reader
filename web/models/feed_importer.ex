@@ -9,6 +9,8 @@ defmodule WhistlerNewsReader.FeedImporter do
     case fetch_and_parse(feed_url) do
       {:ok, parsed_attrs} ->
         store_feed_and_subscribe_user_in_transaction(user, parsed_attrs, feed_url, category_id)
+      {:error, :nxdomain} ->
+        {:error, :not_found}
       {:error, :not_found} ->
         {:error, :not_found}
     end

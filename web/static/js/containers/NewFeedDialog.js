@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Modal from "react-modal";
 import ReactDOM from "react-dom";
 import { push } from "react-router-redux";
+import classNames from "classnames";
 
 import { CrossSVGIcon } from "../components/SVGIcon";
 import Icon from "../components/Icon";
@@ -10,8 +11,8 @@ import Icon from "../components/Icon";
 import { feedFormUpdate, feedFormReset, requestCreateFeed } from "../redux/modules/feedForm";
 import { addFeed } from "../redux/modules/feeds";
 
-import { reduceErrorsToString } from "../utils/ErrorHelper";
 import { customModalStyles } from "../utils/ModalHelper";
+import { renderErrorsFor } from "../utils";
 
 class NewFeedDialog extends Component {
 
@@ -75,7 +76,14 @@ class NewFeedDialog extends Component {
 
   render() {
     const { isOpen, feedForm, categories } = this.props;
-    const errors = feedForm.errors ? reduceErrorsToString(feedForm.errors) : "";
+
+    const feedUrlError = feedForm.errors && feedForm.errors.find(error => error.feed_url);
+    const feedUrlCls = classNames({
+      field: true,
+      block: true,
+      "col-12": true,
+      "is-error": feedUrlError
+    });
 
     return (
       <Modal
@@ -95,8 +103,13 @@ class NewFeedDialog extends Component {
             <h1>Add new feed</h1>
 
             <div className="sm-col-12 mb2">
+              {renderErrorsFor(feedForm.errors, "feed_url")}
+            </div>
+
+            <div className="sm-col-12 mb2">
               <label>Website address or feed title</label>
-              <input className="field block col-12"
+              <input
+                className={feedUrlCls}
                 type="text"
                 placeholder="Enter website address or feed title here"
                 ref="feedUrl"
@@ -121,12 +134,6 @@ class NewFeedDialog extends Component {
                   return <option value={category.id} key={category.id}>{category.title}</option>;
                 })}
               </select>
-            </div>
-
-            <div className="sm-col-12 mb3">
-              {errors &&
-                <p className="errors">{errors}</p>
-              }
             </div>
 
             <div className="form-actions">

@@ -30,8 +30,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
         |> render("show.json", feed: feed, unread_entries_count: unread_entries_count)
       {:error, :not_found} ->
         conn
-        |> put_status(:not_found)
-        |> render(WhistlerNewsReader.Api.ErrorView, "not_found.json")
+        |> send_resp(404, "")
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
