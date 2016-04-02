@@ -111,48 +111,31 @@ export default function reducer(state = initial, action) {
     return { ...state, isLoading: true };
   case FETCH_MORE_ENTRIES:
     if (action.error) {
-      return Object.assign({}, state, {
-        error: action.payload.message
-      });
+      return { ...state, error: action.payload.message };
     } else if (action.payload && action.payload.items) {
-      return {
-        items: [
-          ...state.items, ...action.payload.items
-        ],
-        hasMoreEntries: action.payload.hasMoreEntries,
-        isLoading: false
-      };
-    }
-    return Object.assign({}, state, {
-      isLoading: true
-    });
-  case REFRESH_ENTRIES:
-    if (action.payload) {
-      return Object.assign({}, state, {
-        isLoading: false
-      });
+      return { ...state, ...action.payload, isLoading: false };
     }
 
-    return Object.assign({}, state, {
-      isLoading: true
-    });
+    return { ...state, isLoading: true };
+  case REFRESH_ENTRIES:
+    if (action.payload) {
+      return { ...state, isLoading: false };
+    }
+
+    return { ...state, isLoading: true };
   case UPDATE_ENTRY:
     if (action.error) {
-      return Object.assign({}, state, {
-        error: action.payload.message
-      });
+      return { ...state, error: action.payload.message };
     } else if (action.payload && action.payload.item) {
-      return {
-        items: state.items.map((item) => {
-          if (item.id === action.payload.item.id) {
-            return Object.assign({}, item, action.payload.item);
-          }
-          return item;
-        }),
-        isLoading: false
-      };
+      return { ...state, items: state.items.map(item => {
+        if (item.id === action.payload.item.id) {
+          return { ...item, ...action.payload.item };
+        }
+        return item;
+      })};
     }
-    return state;
+
+    return { ...state, isLoading: true };
   case MARK_ALL_ENTRIES_AS_READ:
     if (action.payload && action.payload.feed_id === "all") {
       return {
@@ -162,7 +145,26 @@ export default function reducer(state = initial, action) {
         isLoading: false
       };
     } else if (action.payload && action.payload.feed_id === "today") {
-      // TODO: implement reducer
+      const startOfToday = new Date();
+      startOfToday.setHours(0, 0, 0, 0);
+      const endOfToday = new Date();
+      endOfToday.setDate(endOfToday.getDate()+1);
+      endOfToday.setHours(0, 0, 0, 0);
+
+      return {
+        items: state.items.map(item => {
+          const publishedDate = item.published instanceof Date
+            ? item.published
+            : new Date(item.published);
+          publishedDate.setHours(0, 0, 0, 0);
+
+          if (publishedDate >= startOfToday && publishedDate < endOfToday) {
+            return {...item, unread: false };
+          }
+          return item;
+        }),
+        isLoading: false
+      };
     } else if (action.payload && action.payload.feed_id) {
       return {
         items: state.items.map(item => {
@@ -184,7 +186,7 @@ export default function reducer(state = initial, action) {
         isLoading: false
       };
     }
-    return state;
+    return { ...state, isLoading: true };
   default:
     return initial;
   }
