@@ -139,7 +139,7 @@ class NewFeedDialog extends Component {
             <div className="form-actions">
               <button
                 type="submit"
-                className="btn btn-primary bg-blue white btn-large"
+                className="btn btn-primary bg-blue white btn-large with-icon"
                 disabled={!feedForm.feedUrl}
                 onClick={this.submitForm}>
                   {feedForm.isLoading && <Icon name="spinner_white" size="small"/>}

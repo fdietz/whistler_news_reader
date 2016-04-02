@@ -135,7 +135,7 @@ class EditDialog extends Component {
             <div className="form-actions">
               <button
                 type="submit"
-                className="btn btn-primary bg-blue white btn-large"
+                className="btn btn-primary bg-blue white btn-large with-icon"
                 disabled={!editForm.title}
                 onClick={this.submitForm}>
                   {editForm.isLoading && <Icon name="spinner_white" size="small"/>}

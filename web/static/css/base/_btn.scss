@@ -34,8 +34,10 @@ $btn-font-size-large: 1.1rem;
   -webkit-appearance: none;
   user-select: none;
 
-  [class^="svg-entypo-icon-"] {
-    margin-right: $space-1;
+  &.with-icon {
+    [class^="svg-entypo-icon-"] {
+      margin-right: $space-1;
+    }
   }
 }
 
