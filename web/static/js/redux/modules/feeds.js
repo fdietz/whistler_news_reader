@@ -87,7 +87,7 @@ export default function reducer(state = initial, action) {
       return { ...state, items: action.payload.items };
     }
 
-    return { isLoading: true };
+    return { ...state, isLoading: true };
   case ADD_FEED:
     if (action.payload) {
       return { ...state, items: [ ...state.items, action.payload.item ] };
