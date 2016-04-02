@@ -47,7 +47,6 @@ export function requestFetchEntries(options = {}) {
     .then((response) => {
       dispatch(fetchEntries({
         items: response.data.entries,
-        meta: options,
         hasMoreEntries: response.data.entries.length === params.limit
       }));
     })
@@ -66,7 +65,6 @@ export function requestFetchMoreEntries(options = {}) {
     .then((response) => {
       dispatch(fetchMoreEntries({
         items: response.data.entries,
-        meta: options,
         hasMoreEntries: response.data.entries.length === params.limit
       }));
     })
@@ -188,6 +186,6 @@ export default function reducer(state = initial, action) {
     }
     return { ...state, isLoading: true };
   default:
-    return initial;
+    return state;
   }
 }
