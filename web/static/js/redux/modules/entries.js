@@ -95,31 +95,20 @@ export function requestRefreshEntries(options = {}) {
 const initial = {
   items: [],
   isLoading: false,
-  hasMoreEntries: false
+  hasMoreEntries: false,
+  error: null
 };
 
-// entries = {
-//   items: [],
-//   isLoading: false,
-//   error: reason
-// }
 export default function reducer(state = initial, action) {
   switch (action.type) {
   case FETCH_ENTRIES:
     if (action.error) {
-      return Object.assign({}, state, {
-        error: action.payload.message
-      });
+      return { ...state, error: action.payload.message };
     } else if (action.payload && action.payload.items) {
-      return {
-        items: action.payload.items,
-        hasMoreEntries: action.payload.hasMoreEntries,
-        isLoading: false
-      };
+      return { ...state, ...action.payload, isLoading: false };
     }
-    return Object.assign({}, state, {
-      isLoading: true
-    });
+
+    return { ...state, isLoading: true };
   case FETCH_MORE_ENTRIES:
     if (action.error) {
       return Object.assign({}, state, {
@@ -197,6 +186,6 @@ export default function reducer(state = initial, action) {
     }
     return state;
   default:
-    return state;
+    return initial;
   }
 }

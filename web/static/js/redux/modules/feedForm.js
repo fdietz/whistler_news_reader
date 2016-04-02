@@ -37,11 +37,6 @@ const initial = {
   errors: null
 };
 
-// feedForm = {
-//   feedUrl: null,
-//   isLoading: false,
-//   error: reason
-// }
 export default function reducer(state = initial, action) {
   if (action.type === FEED_FORM_UPDATE) {
     if (!action.payload) return {...state, isLoading: true };

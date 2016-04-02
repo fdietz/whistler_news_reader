@@ -1,7 +1,6 @@
 import { createAction } from "redux-actions";
 
-const SELECT_ENTRY  = "SELECT_ENTRY";
-
+export const SELECT_ENTRY  = "SELECT_ENTRY";
 export const selectEntry = createAction(SELECT_ENTRY);
 
 export default function reducer(state = null, action) {

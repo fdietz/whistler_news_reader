@@ -19,7 +19,7 @@ export function requestCreateCategory(categoryAttributes) {
 
 export function requestUpdateCategory(categoryId, categoryAttributes) {
   return dispatch => {
-    return axios.put(`http://localhost:4000/api/categories/${categoryId}`, { category: categoryAttributes })
+    return axios.put(`/api/categories/${categoryId}`, { category: categoryAttributes })
     .then((response) => {
       return dispatch(updateCategory({ item: response.data.category }));
     })
@@ -31,7 +31,7 @@ export function requestUpdateCategory(categoryId, categoryAttributes) {
 
 export function requestRemoveCategory(categoryId) {
   return dispatch => {
-    return axios.delete(`http://localhost:4000/api/categories/${categoryId}`)
+    return axios.delete(`/api/categories/${categoryId}`)
     .then(() => {
       dispatch(removeCategory({ id: categoryId }));
     })
@@ -62,12 +62,12 @@ const reducer = handleActions({
     items: [...state.items, action.payload.category]
   }),
   FETCH_CATEGORIES: (state, action) => ({
-    items: action.payload.items
+    items: [...action.payload.items]
   }),
   UPDATE_CATEGORY: (state, action) => ({
     items: state.items.map((item) => {
       if (item.id === action.payload.item.id) {
-        return Object.assign({}, item, action.payload.item);
+        return { ...item, ...action.payload.item };
       }
       return item;
     })
@@ -75,7 +75,7 @@ const reducer = handleActions({
   TOGGLE_EXPAND_CATEGORY: (state, action) => ({
     items: state.items.map((item) => {
       if (item.id === action.payload.id) {
-        return Object.assign({}, item, { expanded: !item.expanded });
+        return { ...item, expanded: !item.expanded };
       }
       return item;
     })

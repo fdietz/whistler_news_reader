@@ -8,31 +8,16 @@ export const categoryFormReset  = createAction(CATEGORY_FORM_RESET);
 
 const initial = {
   title: null,
-  isLoading: false
+  isLoading: false,
+  error: null
 };
 
-// categoryForm = {
-//   title: null,
-//   isLoading: false,
-//   error: reason
-// }
 export default function reducer(state = initial, action) {
   if (action.type === CATEGORY_FORM_UPDATE) {
-    if (action.payload && action.payload.errors) {
-      return Object.assign({}, state, {
-        errors: action.payload.errors
-      });
-    } else if (action.payload) {
-      return Object.assign({}, state, {
-        title: action.payload.title
-      });
-    }
-
-    return Object.assign({}, state, {
-      isLoading: true
-    });
+    if (!action.payload) return {...state, isLoading: true };
+    return { ...state, ...action.payload, isLoading: false };
   } else if (action.type === CATEGORY_FORM_RESET) {
-    return Object.assign({}, initial);
+    return initial;
   }
 
   return state;

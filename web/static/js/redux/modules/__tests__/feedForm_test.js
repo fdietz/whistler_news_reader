@@ -41,10 +41,10 @@ test("feedForm reducer returns default state", t => {
 });
 
 test("feedForm reducer handles FEED_FORM_UPDATE with empty payload", t => {
-  t.same(reducer(undefined, { type: FEED_FORM_UPDATE, payload: {} }), {
+  t.same(reducer(undefined, { type: FEED_FORM_UPDATE, payload: null }), {
     feedUrl: null,
     categoryId: null,
-    isLoading: false,
+    isLoading: true,
     errors: null
   });
 });
