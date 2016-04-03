@@ -6,22 +6,24 @@ export class Feed extends Component {
     connectDragSource: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
+    feed: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired
+    }).isRequired,
     active: PropTypes.bool.isRequired,
-    unread_count: PropTypes.number.isRequired,
     className: PropTypes.string.isRequired,
     onDrop: PropTypes.func.isRequired
   };
 
   render() {
     const { isDragging, connectDragSource } = this.props;
-    const { id, className, children } = this.props;
+    const { className, children } = this.props;
+    const { id } = this.props.feed;
     const opacity = isDragging ? 0.4 : 1;
 
     return (
       connectDragSource(
-        <div className={className} key={id} style={{ opacity }}>
+        <div className={className} style={{ opacity }}>
           {children}
         </div>
       )

@@ -5,11 +5,10 @@ import debounce from "lodash.debounce";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 
-import Icon from "../components/Icon";
 import {
   HouseSVGIcon,
   ArrowDownSVGIcon,
-  ArrowRightSVGIcon ,
+  ArrowRightSVGIcon,
   ListSVGIcon,
   PlusSVGIcon
 } from "../components/SVGIcon";
@@ -49,13 +48,14 @@ class Sidebar extends Component {
   renderFeed(feed) {
     const { currentPathname, onFeedDrop } = this.props;
     const path = `/feeds/${feed.id}`;
+    const key = `feeds-${feed.id}`;
     const active = path === currentPathname;
 
     const cls = classNames({ "sidebar-nav-list__name": true, active: active });
     const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
 
     return (
-      <Feed className={listItemCls} {...feed} active={active} onDrop={onFeedDrop}>
+      <Feed key={key} className={listItemCls} feed={feed} active={active} onDrop={onFeedDrop}>
         <div className="sidebar-nav-list__meta">
           <div className="icon-placeholder"></div>
           <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
@@ -89,6 +89,7 @@ class Sidebar extends Component {
   renderCategory(category, feeds) {
     const { currentPathname, onCategoryExpandClick } = this.props;
     const path = `/categories/${category.id}`;
+    const key = `category-${category.id}`;
     const active = path === currentPathname;
     const matchingFeeds = feeds.filter((feed) => feed.category_id === category.id);
     const totalUnreadCount = matchingFeeds.reduce((result, feed) => {
@@ -100,7 +101,7 @@ class Sidebar extends Component {
     const currentColor = active ? "white" : "gray";
 
     return (
-      <Category className={listItemCls} {...category} active={active}>
+      <Category key={key} className={listItemCls} category={category} active={active}>
         <div className="sidebar-nav-list__meta">
           <a
             href="#"
@@ -194,15 +195,11 @@ class Sidebar extends Component {
               expand={true}>+ Subscriptions</Button>
           </div>
 
-          {/*<h4 className="sidebar-nav-header">Home</h4>*/}
           <div className="sidebar-nav-list">
             {this.renderLink("Today", "/today", HouseSVGIcon)}
             {this.renderLink("All", "/all", ListSVGIcon)}
           </div>
 
-          {/*<h4 className="sidebar-nav-header">
-            Subscriptions
-          </h4>*/}
           <div className="sidebar-nav-list">
             {categories.map((category) => {
               return this.renderCategory(category, feeds);

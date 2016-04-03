@@ -7,15 +7,18 @@ export class Category extends Component {
     isOver: PropTypes.bool.isRequired,
     canDrop: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
+    category: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired
+    }).isRequired,
     active: PropTypes.bool.isRequired,
     className: PropTypes.string.isRequired
   };
 
   render() {
     const { canDrop, isOver, connectDropTarget } = this.props;
-    const { id, className, children } = this.props;
+    const { className, children } = this.props;
+    const { id } = this.props.category;
     const isActive = canDrop && isOver;
 
     let backgroundColor;
@@ -24,7 +27,7 @@ export class Category extends Component {
     }
 
     return connectDropTarget(
-      <div key={id} style={{ backgroundColor }} className={className}>
+      <div style={{ backgroundColor }} className={className}>
         {children}
       </div>
     );
