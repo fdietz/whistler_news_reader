@@ -15,7 +15,7 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :whistler_news_reader, WhistlerNewsReader.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "fdietz",
+  username: "postgres",
   password: "postgres",
   database: "whistler_news_reader_test",
   hostname: "localhost",
