@@ -40,6 +40,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:httpoison, "~> 0.7.3"},
      {:floki, "~> 0.7.1"},
      {:comeonin, "~> 2.0"},
-     {:guardian, "~> 0.9.0"}]
+     {:guardian, "~> 0.9.0"},
+     {:ex_machina, "~> 0.6.1", only: :test}]
   end
 end

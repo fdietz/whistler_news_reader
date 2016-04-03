@@ -55,8 +55,9 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
   def show(conn, %{"id" => id}) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
+    unread_entries_count = UnreadEntry |> UnreadEntry.count_for_feeds([feed.id]) |> Repo.all
     conn
-    |> render("show.json", feed: feed)
+    |> render("show.json", feed: feed, unread_entries_count: unread_entries_count)
   end
 
   def delete(conn, %{"id" => id}) do

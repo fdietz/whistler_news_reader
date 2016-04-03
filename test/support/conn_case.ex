@@ -25,6 +25,7 @@ defmodule WhistlerNewsReader.ConnCase do
       import Ecto.Query, only: [from: 2]
 
       import WhistlerNewsReader.Router.Helpers
+      import WhistlerNewsReader.Factory
 
       # The default endpoint for testing
       @endpoint WhistlerNewsReader.Endpoint

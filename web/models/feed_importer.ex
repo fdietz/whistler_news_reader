@@ -5,10 +5,10 @@ defmodule WhistlerNewsReader.FeedImporter do
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.Repo
 
-  def import_feed(user, %{"feed_url" => feed_url, "category_id" => category_id } = _feed_attributes) do
+  def import_feed(user, %{"feed_url" => feed_url} = feed_attributes) do
     case fetch_and_parse(feed_url) do
       {:ok, parsed_attrs} ->
-        store_feed_and_subscribe_user_in_transaction(user, parsed_attrs, feed_url, category_id)
+        store_feed_and_subscribe_user_in_transaction(user, parsed_attrs, feed_url, feed_attributes["category_id"])
       {:error, :nxdomain} ->
         {:error, :not_found}
       {:error, :not_found} ->
