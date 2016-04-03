@@ -35,7 +35,7 @@ export function requestUpdateFeed(feedId, feedAttributes) {
   return dispatch => {
     return axios.put(`http://localhost:4000/api/feeds/${feedId}`, { feed: feedAttributes })
     .then((response) => {
-      return dispatch(updateFeed({ item: response.data.feed }));
+      return dispatch(updateFeed({ item: feedAttributes }));
     })
     .catch((response) => {
       return dispatch(updateFeed(new Error(response.data.errors)));

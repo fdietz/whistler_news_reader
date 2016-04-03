@@ -6,8 +6,8 @@ defmodule WhistlerNewsReader.Subscription do
     belongs_to :user, WhistlerNewsReader.User
     # field :feed_id, :integer
     belongs_to :feed, WhistlerNewsReader.Feed
-
-    field :category_id, :integer
+    # field :category_id, :integer
+    belongs_to :category, WhistlerNewsReader.Category
 
     timestamps
   end

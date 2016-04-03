@@ -35,7 +35,7 @@ defmodule WhistlerNewsReader.Api.CategoryController do
          |> Repo.update do
       {:ok, category} ->
         conn
-        |> render("show.json", category: category)
+        |> send_resp(204, "")
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)

@@ -1,8 +1,6 @@
 defmodule WhistlerNewsReader.Api.FeedControllerTest do
   use WhistlerNewsReader.ConnCase
 
-  # import WhistlerNewsReader.Factory
-
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.User
   alias WhistlerNewsReader.Feed
@@ -37,25 +35,20 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
     {:ok, jwt, _full_claims} = Guardian.encode_and_sign(user, :token)
 
     feed = create(:feed)
-    create(:subscription, user: user, feed: feed)
-    # Repo.insert!(%Subscription{feed_id: feed.id, user_id: user.id})
+    subscription = create(:subscription, user: user, feed: feed)
 
     # TODO: fix - 1 day arithmetic
     {{year, month, day}, _ } = :calendar.universal_time()
     entry = create(:entry, feed: feed, published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
     entry2 = create(:entry, feed: feed, published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
-    # entry  = Repo.insert!(%Entry{feed_id: feed.id, title: "test1", published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
-    # entry2 = Repo.insert!(%Entry{feed_id: feed.id, title: "test2", published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
 
     create(:unread_entry, user: user, feed: feed, entry: entry)
     create(:unread_entry, user: user, feed: feed, entry: entry2)
-    # Repo.insert!(%UnreadEntry{feed_id: feed.id, entry_id: entry.id, user_id: user.id})
-    # Repo.insert!(%UnreadEntry{feed_id: feed.id, entry_id: entry2.id, user_id: user.id})
-
+    
     category = create(:category, user: user)
 
     conn = conn() |> put_req_header("accept", "application/json")
-    {:ok, conn: conn, jwt: jwt, feed: feed, entry: entry, entry2: entry2, category: category}
+    {:ok, conn: conn, jwt: jwt, feed: feed, entry: entry, entry2: entry2, category: category, subscription: subscription}
   end
 
   test "GET /api/feeds succeeds", %{conn: conn, jwt: jwt, feed: feed} do
@@ -118,11 +111,27 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
     assert conn.status == 404
   end
 
+  test "PUT /api/feeds succeeds", %{conn: conn, jwt: jwt, feed: feed} do
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = put conn, feed_path(conn, :update, feed.id), feed: %{title: "new name"}
+
+    assert conn.status == 204
+    assert Repo.get!(Feed, feed.id).title, "new name"
+  end
+
   test "DELETE /api/feeds/:id succeeds", %{conn: conn, jwt: jwt, feed: feed} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = delete conn, feed_path(conn, :delete, feed.id)
     assert conn.status == 204
     refute Repo.get_by(Subscription, feed_id: feed.id)
+  end
+
+  test "PUT /api/feeds/:id/update_category succeeds", %{conn: conn, jwt: jwt, feed: feed, subscription: subscription, category: category} do
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = put conn, feed_path(conn, :update_category, feed.id), category_id: category.id
+
+    assert conn.status == 204
+    assert Repo.get!(Subscription, subscription.id).category_id == category.id
   end
 
   # test "PUT /api/feeds/:id/mark_as_read succeeds", %{conn: conn, jwt: jwt, feed: feed, entry: entry, entry2: entry2} do

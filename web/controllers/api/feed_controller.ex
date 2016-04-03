@@ -45,7 +45,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
          |> Repo.update do
       {:ok, feed} ->
         conn
-        |> render("show.json", feed: feed)
+        |> send_resp(204, "")
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -62,7 +62,6 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
   def delete(conn, %{"id" => id}) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
-
     Repo.delete!(List.first(feed.subscriptions))
 
     conn

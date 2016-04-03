@@ -28,7 +28,8 @@ defmodule WhistlerNewsReader.Factory do
   def factory(:subscription) do
     %Subscription{
       user: build(:user),
-      feed: build(:feed)
+      feed: build(:feed),
+      category: build(:category)
     }
   end
 
