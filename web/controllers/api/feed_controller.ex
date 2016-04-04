@@ -5,6 +5,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
   plug Guardian.Plug.EnsureAuthenticated, handler: WhistlerNewsReader.Api.SessionController
 
   alias WhistlerNewsReader.Feed
+  alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.FeedImporter
   alias WhistlerNewsReader.FeedRefresher
@@ -70,8 +71,14 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
   def update_category(conn, %{"id" => id, "category_id" => category_id}) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
-    StoreEntryHelper.update_feed_category!(feed, category_id)
+    update_feed_category!(feed, category_id)
     conn |> send_resp(204, "")
+  end
+
+  defp update_feed_category!(feed, category_id) do
+    subscription = List.first(feed.subscriptions)
+    changeset = Subscription.changeset(subscription, %{category_id: category_id})
+    Repo.update!(changeset)
   end
 
   defp current_user(conn) do

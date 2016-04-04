@@ -10,6 +10,7 @@ defmodule WhistlerNewsReader.Api.EntryController do
   alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.FeedRefresher
   alias WhistlerNewsReader.StoreEntryHelper
+  alias WhistlerNewsReader.MarkAsReadHelper
 
   # TODO: add unit test
   def index(conn, %{"feed_id" => "today", "last_published" => last_published, "limit" => limit} = _params) do
@@ -78,13 +79,13 @@ defmodule WhistlerNewsReader.Api.EntryController do
 
   def mark_as_read(conn, %{"id" => id}) do
     entry = Repo.get!(Entry, id)
-    StoreEntryHelper.mark_entry_as_read(current_user(conn), entry)
+    MarkAsReadHelper.mark_entry_as_read(current_user(conn), entry)
     conn |> send_resp(204, "")
   end
 
   def mark_all_as_read(conn, %{"feed_id" => "all"}) do
     feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
-    StoreEntryHelper.mark_all_feeds_as_read(current_user(conn), feeds)
+    MarkAsReadHelper.mark_all_feeds_as_read(current_user(conn), feeds)
     conn |> send_resp(204, "")
   end
 
@@ -95,13 +96,13 @@ defmodule WhistlerNewsReader.Api.EntryController do
 
   def mark_all_as_read(conn, %{"feed_id" => feed_id}) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed_id)
-    StoreEntryHelper.mark_feed_as_read(current_user(conn), feed)
+    MarkAsReadHelper.mark_feed_as_read(current_user(conn), feed)
     conn |> send_resp(204, "")
   end
 
   def mark_all_as_read(conn, %{"category_id" => category_id}) do
     feeds = subscribed_feeds_for_category_id(conn, category_id)
-    StoreEntryHelper.mark_all_feeds_as_read(current_user(conn), feeds)
+    MarkAsReadHelper.mark_all_feeds_as_read(current_user(conn), feeds)
     conn |> send_resp(204, "")
   end
 
