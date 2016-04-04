@@ -212,7 +212,7 @@ class Sidebar extends Component {
         </div>
         <div className="sidebar-footer">
           <div className="avatar">
-            <img src={imageProfile}/>
+            <img src={currentUser.image_url}/>
           </div>
           <div className="meta">
             <div className="author">{currentUser.first_name} {currentUser.last_name}</div>

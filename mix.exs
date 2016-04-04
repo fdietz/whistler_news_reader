@@ -42,6 +42,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:comeonin, "~> 2.0"},
      {:guardian, "~> 0.9.0"},
      {:ex_machina, "~> 0.6.1", only: :test},
-     {:mock, "~> 0.1.1", only: :test}]
+     {:mock, "~> 0.1.1", only: :test},
+     {:elixir_gravatar_url, "~> 1.0.0"}]
   end
 end
