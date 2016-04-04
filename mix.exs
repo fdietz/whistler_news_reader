@@ -41,6 +41,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:floki, "~> 0.7.1"},
      {:comeonin, "~> 2.0"},
      {:guardian, "~> 0.9.0"},
-     {:ex_machina, "~> 0.6.1", only: :test}]
+     {:ex_machina, "~> 0.6.1", only: :test},
+     {:mock, "~> 0.1.1", only: :test}]
   end
 end

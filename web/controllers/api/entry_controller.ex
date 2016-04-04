@@ -55,26 +55,22 @@ defmodule WhistlerNewsReader.Api.EntryController do
     render(conn, "index.json", entries: entries, current_user: current_user(conn))
   end
 
-  # TODO: add unit test
   def refresh(conn, %{"feed_id" => "all"} = _params) do
     FeedRefresher.refresh_all(subscribed_feeds(conn))
     conn |> send_resp(204, "")
   end
 
-  # TODO: add unit test
   def refresh(conn, %{"feed_id" => "today"} = _params) do
     FeedRefresher.refresh_all(subscribed_feeds(conn))
     conn |> send_resp(204, "")
   end
 
-  # TODO: add unit test
   def refresh(conn, %{"feed_id" => feed_id} = _params) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed_id)
     FeedRefresher.refresh(feed)
     conn |> send_resp(204, "")
   end
 
-  # TODO: add unit test
   def refresh(conn, %{"category_id" => category_id} = _params) do
     FeedRefresher.refresh_all(subscribed_feeds_for_category_id(conn, category_id))
     conn |> send_resp(204, "")
@@ -128,10 +124,6 @@ defmodule WhistlerNewsReader.Api.EntryController do
     |> Entry.for_feeds(subscribed_feeds_for_category_id(conn, category_id) |> Enum.map(fn(feed) -> feed.id end))
     |> Entry.unread(current_user(conn).id)
   end
-
-  # defp subscribed_feed_ids(conn) do
-  #   subscribed_feeds(conn) |> Enum.map(fn(feed) -> feed.id end)
-  # end
 
   defp subscribed_feeds(conn) do
     Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all

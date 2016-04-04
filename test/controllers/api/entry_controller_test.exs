@@ -1,36 +1,25 @@
 
 defmodule WhistlerNewsReader.Api.EntryControllerTest do
-  use WhistlerNewsReader.ConnCase
+  use WhistlerNewsReader.ConnCase, async: false
 
   alias WhistlerNewsReader.Repo
+  alias WhistlerNewsReader.Entry
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.UnreadEntry
 
-  @valid_feed_attrs %{
-    title: "The Verge 1",
-    feed_url: "http://www.theverge.com/rss/all1",
-    site_url: "http://www.theverge.com"
-  }
+  import Mock
 
-  @valid_feed_attrs2 %{
-    title: "The Verge 2",
-    feed_url: "http://www.theverge.com/rss/all2",
-    site_url: "http://www.theverge.com"
-  }
-
-  @valid_feed_attrs3 %{
-    title: "The Verge 3",
-    feed_url: "http://www.theverge.com/rss/all3",
-    site_url: "http://www.theverge.com"
-  }
+  @valid_feed_url "http://www.theverge.com/rss/full.xml"
+  @valid_feed_url2 "http://feeds.wired.com/wired/index"
+  @valid_feed_url3 "http://www.engadget.com/rss.xml"
 
   setup do
     user = create(:user)
     {:ok, jwt, _full_claims} = Guardian.encode_and_sign(user, :token)
 
-    feed = %Feed{} |> Feed.changeset(@valid_feed_attrs) |> Repo.insert!
-    feed2 = %Feed{} |> Feed.changeset(@valid_feed_attrs2) |> Repo.insert!
-    feed3 = %Feed{} |> Feed.changeset(@valid_feed_attrs3) |> Repo.insert!
+    feed = create(:feed, title: "The Verge", feed_url: @valid_feed_url)
+    feed2 = create(:feed, title: "Wired", feed_url: @valid_feed_url2)
+    feed3 = create(:feed, title: "Engadget", feed_url: @valid_feed_url3)
 
     category = create(:category, user: user)
 
@@ -48,7 +37,7 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     unread_entry3 = create(:unread_entry, user: user, feed: feed3, entry: entry3)
 
     conn = conn() |> put_req_header("accept", "application/json")
-    {:ok, conn: conn, jwt: jwt, feed: feed, feed2: feed2, feed3: feed3, category: category, entry: entry, entry2: entry2, entry3: entry3, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3}
+    {:ok, conn: conn, jwt: jwt, user: user, feed: feed, feed2: feed2, feed3: feed3, category: category, entry: entry, entry2: entry2, entry3: entry3, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3}
   end
 
   test "GET /api/entries?feed_id=1 succeeds", %{conn: conn, jwt: jwt, feed: feed, entry: entry} do
@@ -164,5 +153,59 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert Repo.get!(UnreadEntry, unread_entry.id).read == true
     assert Repo.get!(UnreadEntry, unread_entry2.id).read == false
     assert Repo.get!(UnreadEntry, unread_entry3.id).read == false
+  end
+
+  test "PUT /api/entries/refresh succeeds for feed_id", %{conn: conn, jwt: jwt, feed: feed} do
+    json_body = File.read!("test/fixtures/rss2/example1.xml")
+    with_mock WhistlerNewsReader.FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
+      conn = conn |> put_req_header("authorization", jwt)
+      conn = put conn, entry_path(conn, :refresh, %{feed_id: feed.id})
+      assert conn.status == 204
+      entries = Entry |> Entry.for_feed(feed.id) |> Entry.sorted |> Repo.all
+      assert length(entries) == 2
+      assert List.last(entries).title == "Example item title"
+    end
+  end
+
+  test "PUT /api/entries/refresh succeeds for category_id", %{conn: conn, jwt: jwt, user: user, category: category} do
+    json_body = File.read!("test/fixtures/rss2/example1.xml")
+    with_mock WhistlerNewsReader.FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
+      conn = conn |> put_req_header("authorization", jwt)
+      conn = put conn, entry_path(conn, :refresh, %{category_id: category.id})
+      assert conn.status == 204
+
+      subscribed_feed_ids = Feed |> Feed.subscribed_by_user_for_category_id(user.id, category.id) |> Repo.all |> Enum.map(fn(feed) -> feed.id end)
+      entries = Entry |> Entry.for_feeds(subscribed_feed_ids) |> Entry.sorted |> Repo.all
+      assert length(entries) == 4
+      assert List.last(entries).title == "Example item title"
+    end
+  end
+
+  test "PUT /api/entries/refresh succeeds for feed_id all", %{conn: conn, jwt: jwt, user: user} do
+    json_body = File.read!("test/fixtures/rss2/example1.xml")
+    with_mock WhistlerNewsReader.FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
+      conn = conn |> put_req_header("authorization", jwt)
+      conn = put conn, entry_path(conn, :refresh, %{feed_id: "all"})
+      assert conn.status == 204
+
+      subscribed_feed_ids = Feed |> Feed.subscribed_by_user(user.id) |> Repo.all |> Enum.map(fn(feed) -> feed.id end)
+      entries = Entry |> Entry.for_feeds(subscribed_feed_ids) |> Entry.sorted |> Repo.all
+      assert length(entries) == 4
+      assert List.last(entries).title == "Example item title"
+    end
+  end
+
+  test "PUT /api/entries/refresh succeeds for feed_id today", %{conn: conn, jwt: jwt, user: user} do
+    json_body = File.read!("test/fixtures/rss2/example1.xml")
+    with_mock WhistlerNewsReader.FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
+      conn = conn |> put_req_header("authorization", jwt)
+      conn = put conn, entry_path(conn, :refresh, %{feed_id: "today"})
+      assert conn.status == 204
+
+      subscribed_feed_ids = Feed |> Feed.subscribed_by_user(user.id) |> Repo.all |> Enum.map(fn(feed) -> feed.id end)
+      entries = Entry |> Entry.for_feeds(subscribed_feed_ids) |> Entry.for_today |> Entry.sorted |> Repo.all
+      assert length(entries) == 1
+      assert List.last(entries).title == "Entry Title"
+    end
   end
 end
