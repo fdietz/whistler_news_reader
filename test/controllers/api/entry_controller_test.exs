@@ -53,14 +53,14 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
 
 
     unread_entry = create(:unread_entry, user: user, feed: feed, entry: entry)
-    create(:unread_entry, user: user, feed: feed2, entry: entry2)
-    create(:unread_entry, user: user, feed: feed3, entry: entry3)
+    unread_entry2 = create(:unread_entry, user: user, feed: feed2, entry: entry2)
+    unread_entry3 = create(:unread_entry, user: user, feed: feed3, entry: entry3)
     # Repo.insert!(%UnreadEntry{feed_id: feed.id, entry_id: entry.id, user_id: user.id})
     # Repo.insert!(%UnreadEntry{feed_id: feed2.id, entry_id: entry2.id, user_id: user.id})
     # Repo.insert!(%UnreadEntry{feed_id: feed3.id, entry_id: entry3.id, user_id: user.id})
 
     conn = conn() |> put_req_header("accept", "application/json")
-    {:ok, conn: conn, jwt: jwt, feed: feed, feed2: feed2, feed3: feed3, category: category, entry: entry, entry2: entry2, entry3: entry3}
+    {:ok, conn: conn, jwt: jwt, feed: feed, feed2: feed2, feed3: feed3, category: category, entry: entry, entry2: entry2, entry3: entry3, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3}
   end
 
   test "GET /api/entries?feed_id=1 succeeds", %{conn: conn, jwt: jwt, feed: feed, entry: entry} do
@@ -116,8 +116,8 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert json_response(conn, 403)["error"] == "Not Authenticated"
   end
 
-  test "PUT /api/entries/:id/mark_as_read succeeds", %{conn: conn, jwt: jwt, feed: feed, entry: entry} do
-    unread_entry = Repo.get_by!(UnreadEntry, feed_id: feed.id, entry_id: entry.id, read: false)
+  test "PUT /api/entries/:id/mark_as_read succeeds", %{conn: conn, jwt: jwt, feed: feed, entry: entry, unread_entry: unread_entry} do
+    assert unread_entry.read == false
 
     conn = conn |> put_req_header("authorization", jwt)
     conn = put conn, entry_path(conn, :mark_as_read, entry)
@@ -126,15 +126,15 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert Repo.get!(UnreadEntry, unread_entry.id).read == true
   end
 
-  # test "PUT /api/entries/mark_as_read succeeds", %{conn: conn, jwt: jwt, feed: feed, entry: entry, entry2: entry2} do
-  #   assert Repo.get_by(UnreadEntry, feed_id: feed.id, entry_id: entry.id)
-  #   assert Repo.get_by(UnreadEntry, feed_id: feed.id, entry_id: entry2.id)
-  #
-  #   conn = conn |> put_req_header("authorization", jwt)
-  #   conn = put conn, entry_path(conn, :mark_all_as_read, %{feed_id: feed.id})
-  #   assert conn.status == 204
-  #
-  #   refute Repo.get_by(UnreadEntry, feed_id: feed.id, entry_id: entry.id)
-  #   refute Repo.get_by(UnreadEntry, feed_id: feed.id, entry_id: entry2.id)
-  # end
+  test "PUT /api/entries/mark_as_read succeeds", %{conn: conn, jwt: jwt, feed: feed, unread_entry: unread_entry, unread_entry2: unread_entry2} do
+    assert unread_entry.read == false
+    assert unread_entry2.read == false
+
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = put conn, entry_path(conn, :mark_all_as_read, %{feed_id: feed.id})
+    assert conn.status == 204
+
+    assert Repo.get!(UnreadEntry, unread_entry.id).read == true
+    assert Repo.get!(UnreadEntry, unread_entry2.id).read == false
+  end
 end
