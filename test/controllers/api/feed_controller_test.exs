@@ -44,7 +44,7 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
 
     create(:unread_entry, user: user, feed: feed, entry: entry)
     create(:unread_entry, user: user, feed: feed, entry: entry2)
-    
+
     category = create(:category, user: user)
 
     conn = conn() |> put_req_header("accept", "application/json")
@@ -134,15 +134,4 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
     assert Repo.get!(Subscription, subscription.id).category_id == category.id
   end
 
-  # test "PUT /api/feeds/:id/mark_as_read succeeds", %{conn: conn, jwt: jwt, feed: feed, entry: entry, entry2: entry2} do
-  #   assert Repo.get_by(UnreadEntry, feed_id: feed.id, entry_id: entry.id)
-  #   assert Repo.get_by(UnreadEntry, feed_id: feed.id, entry_id: entry2.id)
-  #
-  #   conn = conn |> put_req_header("authorization", jwt)
-  #   conn = put conn, feed_path(conn, :mark_as_read, feed)
-  #   assert conn.status == 204
-  #
-  #   refute Repo.get_by(UnreadEntry, feed_id: feed.id, entry_id: entry.id)
-  #   refute Repo.get_by(UnreadEntry, feed_id: feed.id, entry_id: entry2.id)
-  # end
 end

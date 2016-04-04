@@ -45,7 +45,8 @@ defmodule WhistlerNewsReader.Factory do
     %UnreadEntry{
       user: build(:user),
       entry: build(:entry),
-      feed: build(:feed)
+      feed: build(:feed),
+      read: false
     }
   end
 
