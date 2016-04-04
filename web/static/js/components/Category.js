@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { DropTarget } from "react-dnd";
 
-export class Category extends Component {
+class Category extends Component {
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
     isOver: PropTypes.bool.isRequired,
@@ -12,7 +12,7 @@ export class Category extends Component {
       title: PropTypes.string.isRequired
     }).isRequired,
     active: PropTypes.bool.isRequired,
-    className: PropTypes.string.isRequired
+    className: PropTypes.string
   };
 
   render() {

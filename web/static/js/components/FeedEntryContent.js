@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
 
-import { findScrollableAncestor  } from "../utils/dom";
+import { findScrollableAncestor } from "../utils/dom";
 
 class FeedEntryContent extends Component {
 
