@@ -1,6 +1,7 @@
 defmodule WhistlerNewsReader.FeedImporter do
 
   alias WhistlerNewsReader.FeedFetcher
+  alias WhistlerNewsReader.FeedParser
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.Repo
@@ -19,7 +20,7 @@ defmodule WhistlerNewsReader.FeedImporter do
   def fetch_and_parse(feed_url) do
     case FeedFetcher.fetch(feed_url) do
       {:ok, body} ->
-        {:ok, ElixirFeedParser.parse(body)}
+        {:ok, FeedParser.parse(body)}
       {:error, reason} ->
         {:error, reason}
     end
