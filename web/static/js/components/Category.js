@@ -18,7 +18,6 @@ export class Category extends Component {
   render() {
     const { canDrop, isOver, connectDropTarget } = this.props;
     const { className, children } = this.props;
-    const { id } = this.props.category;
     const isActive = canDrop && isOver;
 
     let backgroundColor;
@@ -41,8 +40,8 @@ const ItemTypes = {
 const categoryTarget = {
   drop(props) {
     return {
-      id: props.id,
-      title: props.title
+      id: props.category.id,
+      title: props.category.title
     };
   }
 };

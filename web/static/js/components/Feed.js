@@ -18,7 +18,6 @@ export class Feed extends Component {
   render() {
     const { isDragging, connectDragSource } = this.props;
     const { className, children } = this.props;
-    const { id } = this.props.feed;
     const opacity = isDragging ? 0.4 : 1;
 
     return (
@@ -38,8 +37,8 @@ const ItemTypes = {
 const feedSource = {
   beginDrag(props) {
     return {
-      title: props.title,
-      id: props.id
+      title: props.feed.title,
+      id: props.feed.id
     };
   },
 
@@ -48,7 +47,7 @@ const feedSource = {
     const dropResult = monitor.getDropResult();
 
     if (dropResult) {
-      props.onDrop(props.id, dropResult.id);
+      props.onDrop(props.feed.id, dropResult.id);
     }
   }
 };
