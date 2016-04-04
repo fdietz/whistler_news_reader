@@ -1,8 +1,6 @@
 defmodule WhistlerNewsReader.StoreEntryHelper do
 
   alias WhistlerNewsReader.Entry
-  alias WhistlerNewsReader.UnreadEntry
-  alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.MarkAsReadHelper
 

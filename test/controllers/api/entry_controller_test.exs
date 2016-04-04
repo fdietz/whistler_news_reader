@@ -96,7 +96,7 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert second["title"] == entry2.title
   end
 
-  test "GET /api/entries?feed_id=all&last_published&limit succeeds", %{conn: conn, jwt: jwt, entry: entry, entry2: entry2} do
+  test "GET /api/entries?feed_id=all&last_published&limit succeeds", %{conn: conn, jwt: jwt, entry: entry} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, entry_path(conn, :index, %{"feed_id" => "all", "last_published" => Ecto.DateTime.to_iso8601(Ecto.DateTime.utc), "limit" => 1})
 

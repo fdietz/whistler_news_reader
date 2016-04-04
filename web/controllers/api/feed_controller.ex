@@ -9,7 +9,6 @@ defmodule WhistlerNewsReader.Api.FeedController do
   alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.FeedImporter
   alias WhistlerNewsReader.FeedRefresher
-  alias WhistlerNewsReader.StoreEntryHelper
 
   plug :scrub_params, "feed" when action in [:create]
 

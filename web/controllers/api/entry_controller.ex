@@ -9,7 +9,6 @@ defmodule WhistlerNewsReader.Api.EntryController do
   alias WhistlerNewsReader.Entry
   alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.FeedRefresher
-  alias WhistlerNewsReader.StoreEntryHelper
   alias WhistlerNewsReader.MarkAsReadHelper
 
   def index(conn, %{"feed_id" => "today", "last_published" => last_published, "limit" => limit} = _params) do
