@@ -68,16 +68,29 @@ test("entries reducer FETCH_MORE_ENTRIES with empty payload", t => {
 });
 
 test("entries reducer FETCH_MORE_ENTRIES with payload", t => {
-  t.same(reducer(undefined, {
+  const newState = reducer(undefined, {
     type: FETCH_MORE_ENTRIES,
-    payload: { items: [ { id: 1 }]}
-  }), {
+    payload: { items: [ { id: 1 }], hasMoreEntries: false }
+  });
+  t.same(newState, {
     items: [ { id: 1 }],
     isLoading: false,
     hasMoreEntries: false,
     error: null
   });
 });
+
+// test("entries reducer FETCH_MORE_ENTRIES with payload and existing entries", t => {
+//   t.same(reducer({ items: [ { id: 2 } ] }, {
+//     type: FETCH_MORE_ENTRIES,
+//     payload: { items: [ { id: 1 }]}
+//   }), {
+//     items: [ { id: 2 }, { id: 1 }],
+//     isLoading: false,
+//     hasMoreEntries: false,
+//     error: null
+//   });
+// });
 
 test("entries reducer FETCH_MORE_ENTRIES with error", t => {
   t.same(reducer(undefined, {

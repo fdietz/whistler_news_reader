@@ -111,7 +111,12 @@ export default function reducer(state = initial, action) {
     if (action.error) {
       return { ...state, error: action.payload.message };
     } else if (action.payload && action.payload.items) {
-      return { ...state, ...action.payload, isLoading: false };
+      return {
+        ...state,
+        items: [...state.items, ...action.payload.items],
+        hasMoreEntries: action.payload.hasMoreEntries,
+        isLoading: false
+      };
     }
 
     return { ...state, isLoading: true };
