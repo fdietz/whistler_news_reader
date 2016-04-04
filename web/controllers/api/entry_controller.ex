@@ -86,27 +86,23 @@ defmodule WhistlerNewsReader.Api.EntryController do
     conn |> send_resp(204, "")
   end
 
-  # TODO: add unit test
   def mark_all_as_read(conn, %{"feed_id" => "all"}) do
     feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
     StoreEntryHelper.mark_all_feeds_as_read(current_user(conn), feeds)
     conn |> send_resp(204, "")
   end
 
-  # TODO: add unit test
   def mark_all_as_read(conn, %{"feed_id" => "today"}) do
     UnreadEntry |> UnreadEntry.for_today |> UnreadEntry.for_unread |> Repo.update_all(set: [read: true])
     conn |> send_resp(204, "")
   end
 
-  # TODO: add unit test
   def mark_all_as_read(conn, %{"feed_id" => feed_id}) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed_id)
     StoreEntryHelper.mark_feed_as_read(current_user(conn), feed)
     conn |> send_resp(204, "")
   end
 
-  # TODO: add unit test
   def mark_all_as_read(conn, %{"category_id" => category_id}) do
     feeds = subscribed_feeds_for_category_id(conn, category_id)
     StoreEntryHelper.mark_all_feeds_as_read(current_user(conn), feeds)

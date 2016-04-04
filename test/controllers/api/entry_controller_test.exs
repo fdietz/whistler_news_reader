@@ -126,7 +126,7 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert Repo.get!(UnreadEntry, unread_entry.id).read == true
   end
 
-  test "PUT /api/entries/mark_as_read succeeds", %{conn: conn, jwt: jwt, feed: feed, unread_entry: unread_entry, unread_entry2: unread_entry2} do
+  test "PUT /api/entries/mark_all_as_read succeeds for feed_id", %{conn: conn, jwt: jwt, feed: feed, unread_entry: unread_entry, unread_entry2: unread_entry2} do
     assert unread_entry.read == false
     assert unread_entry2.read == false
 
@@ -136,5 +136,45 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
 
     assert Repo.get!(UnreadEntry, unread_entry.id).read == true
     assert Repo.get!(UnreadEntry, unread_entry2.id).read == false
+  end
+
+  test "PUT /api/entries/mark_all_as_read succeeds for category_id", %{conn: conn, jwt: jwt, feed: feed, category: category, unread_entry: unread_entry, unread_entry2: unread_entry2} do
+    assert unread_entry.read == false
+    assert unread_entry2.read == false
+
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = put conn, entry_path(conn, :mark_all_as_read, %{category_id: category.id})
+    assert conn.status == 204
+
+    assert Repo.get!(UnreadEntry, unread_entry.id).read == true
+    assert Repo.get!(UnreadEntry, unread_entry2.id).read == true
+  end
+
+  test "PUT /api/entries/mark_all_as_read succeeds for feed_id all", %{conn: conn, jwt: jwt, feed: feed, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3} do
+    assert unread_entry.read == false
+    assert unread_entry2.read == false
+    assert unread_entry3.read == false
+
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = put conn, entry_path(conn, :mark_all_as_read, %{feed_id: "all"})
+    assert conn.status == 204
+
+    assert Repo.get!(UnreadEntry, unread_entry.id).read == true
+    assert Repo.get!(UnreadEntry, unread_entry2.id).read == true
+    assert Repo.get!(UnreadEntry, unread_entry3.id).read == false
+  end
+
+  test "PUT /api/entries/mark_all_as_read succeeds for feed_id today", %{conn: conn, jwt: jwt, feed: feed, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3} do
+    assert unread_entry.read == false
+    assert unread_entry2.read == false
+    assert unread_entry3.read == false
+
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = put conn, entry_path(conn, :mark_all_as_read, %{feed_id: "today"})
+    assert conn.status == 204
+
+    assert Repo.get!(UnreadEntry, unread_entry.id).read == true
+    assert Repo.get!(UnreadEntry, unread_entry2.id).read == false
+    assert Repo.get!(UnreadEntry, unread_entry3.id).read == false
   end
 end
