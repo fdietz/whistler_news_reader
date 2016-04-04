@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 
-import { findScrollableAncestor, isElementInViewport } from "../utils/dom";
 import FeedEntry from "./FeedEntry";
 
 class FeedEntryList extends Component {
@@ -15,21 +13,6 @@ class FeedEntryList extends Component {
     }),
     onEntryClick: PropTypes.func.isRequired
   };
-
-  componentDidMount() {
-    this.scrollableAncestor = findScrollableAncestor(ReactDOM.findDOMNode(this));
-  }
-
-  componentDidUpdate() {
-    const { currentEntry } = this.props;
-
-    if (this.props.currentEntry) {
-      const node = ReactDOM.findDOMNode(this.refs[currentEntry.id]);
-      if (node && !isElementInViewport(node)) {
-        node.scrollIntoView(false);
-      }
-    }
-  }
 
   render() {
     const { entries, currentEntry, onEntryClick } = this.props;
