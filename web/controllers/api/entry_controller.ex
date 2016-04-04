@@ -12,25 +12,21 @@ defmodule WhistlerNewsReader.Api.EntryController do
   alias WhistlerNewsReader.StoreEntryHelper
   alias WhistlerNewsReader.MarkAsReadHelper
 
-  # TODO: add unit test
   def index(conn, %{"feed_id" => "today", "last_published" => last_published, "limit" => limit} = _params) do
     entries = subscribed_feed_entries(conn) |> Entry.for_today |> load_more(last_published, limit)
     render(conn, "index.json", entries: entries, current_user: current_user(conn))
   end
 
-  # TODO: add unit test
   def index(conn, %{"feed_id" => "all", "last_published" => last_published, "limit" => limit} = _params) do
     entries = subscribed_feed_entries(conn) |> load_more(last_published, limit)
     render(conn, "index.json", entries: entries, current_user: current_user(conn))
   end
 
-  # TODO: add unit test
   def index(conn, %{"feed_id" => feed_id, "last_published" => last_published, "limit" => limit} = _params) do
     entries = subscribed_feed_entries(conn) |> Entry.for_feed(feed_id) |> load_more(last_published, limit)
     render(conn, "index.json", entries: entries, current_user: current_user(conn))
   end
 
-  # TODO: add unit test
   def index(conn, %{"category_id" => category_id, "last_published" => last_published, "limit" => limit} = _params) do
     entries = subscribed_feed_entries_for_category_id(conn, category_id) |> load_more(last_published, limit)
     render(conn, "index.json", entries: entries, current_user: current_user(conn))

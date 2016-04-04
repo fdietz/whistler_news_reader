@@ -49,6 +49,15 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert result["title"] == entry.title
   end
 
+  test "GET /api/entries?feed_id=1&last_published&limit succeeds", %{conn: conn, jwt: jwt, feed: feed, entry: entry} do
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = get conn, entry_path(conn, :index, %{"feed_id" => feed.id, "last_published" => Ecto.DateTime.to_iso8601(Ecto.DateTime.utc), "limit" => 1})
+
+    result = Enum.at(json_response(conn, 200)["entries"], 0)
+    assert result["id"] == entry.id
+    assert result["title"] == entry.title
+  end
+
   test "GET /api/entries?feed_id=1 returns empty array if not subscribed to feed", %{conn: conn, jwt: jwt, feed3: feed3} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, entry_path(conn, :index, %{"feed_id" => feed3.id})
@@ -57,6 +66,15 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
   end
 
   test "GET /api/entries?category_id=1 succeeds", %{conn: conn, jwt: jwt, category: category, entry: entry} do
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = get conn, entry_path(conn, :index, %{"category_id" => category.id, "last_published" => Ecto.DateTime.to_iso8601(Ecto.DateTime.utc), "limit" => 1})
+
+    result = Enum.at(json_response(conn, 200)["entries"], 0)
+    assert result["id"] == entry.id
+    assert result["title"] == entry.title
+  end
+
+  test "GET /api/entries?category_id=1&last_published&limit succeeds", %{conn: conn, jwt: jwt, category: category, entry: entry} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, entry_path(conn, :index, %{"category_id" => category.id})
 
@@ -78,9 +96,29 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert second["title"] == entry2.title
   end
 
+  test "GET /api/entries?feed_id=all&last_published&limit succeeds", %{conn: conn, jwt: jwt, entry: entry, entry2: entry2} do
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = get conn, entry_path(conn, :index, %{"feed_id" => "all", "last_published" => Ecto.DateTime.to_iso8601(Ecto.DateTime.utc), "limit" => 1})
+
+    first = Enum.at(json_response(conn, 200)["entries"], 0)
+
+    assert first["id"] == entry.id
+    assert first["title"] == entry.title
+  end
+
   test "GET /api/entries?feed_id=today succeeds", %{conn: conn, jwt: jwt, entry: entry} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, entry_path(conn, :index, %{"feed_id" => "today"})
+
+    assert 1 == length json_response(conn, 200)["entries"]
+    first = Enum.at(json_response(conn, 200)["entries"], 0)
+    assert first["id"] == entry.id
+    assert first["title"] == entry.title
+  end
+
+  test "GET /api/entries?feed_id=today&last_published&limit succeeds", %{conn: conn, jwt: jwt, entry: entry} do
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = get conn, entry_path(conn, :index, %{"feed_id" => "today", "last_published" => Ecto.DateTime.to_iso8601(Ecto.DateTime.utc), "limit" => 1})
 
     assert 1 == length json_response(conn, 200)["entries"]
     first = Enum.at(json_response(conn, 200)["entries"], 0)
