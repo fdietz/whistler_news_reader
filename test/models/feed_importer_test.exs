@@ -4,7 +4,6 @@ defmodule WhistlerNewsReader.FeedImporterTest do
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.FeedImporter
-  alias WhistlerNewsReader.User
 
   @feed_url "http://www.theverge.com/rss/frontpage"
   @not_existing_feed_url "http://www.theverge.com/404"
@@ -19,13 +18,7 @@ defmodule WhistlerNewsReader.FeedImporterTest do
   @invalid_attrs %{}
 
   setup do
-    user = Repo.insert!(%User{
-      email: "test@test.de",
-      first_name: "Donald",
-      last_name: "Duck",
-      encrypted_password: "password"
-    })
-
+    user = create(:user)
     {:ok, user: user}
   end
 
@@ -44,7 +37,7 @@ defmodule WhistlerNewsReader.FeedImporterTest do
   end
 
   test "import_feed succeeds", %{user: user} do
-    {:ok, feed } = FeedImporter.import_feed(user, @feed_url)
+    {:ok, feed } = FeedImporter.import_feed(user, %{"feed_url" => @feed_url})
     assert Repo.get_by!(Subscription, feed_id: feed.id)
     assert "http://www.theverge.com/" == feed.site_url
     assert "http://www.theverge.com/rss/frontpage" == feed.feed_url

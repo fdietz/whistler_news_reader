@@ -3,11 +3,8 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
   use WhistlerNewsReader.ConnCase
 
   alias WhistlerNewsReader.Repo
-  alias WhistlerNewsReader.User
   alias WhistlerNewsReader.Feed
-  alias WhistlerNewsReader.Entry
   alias WhistlerNewsReader.UnreadEntry
-  alias WhistlerNewsReader.Subscription
 
   @valid_feed_attrs %{
     title: "The Verge 1",
@@ -37,27 +34,18 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
 
     category = create(:category, user: user)
 
-    subscription = create(:subscription, feed: feed, user: user, category: category)
-    subscription2 = create(:subscription, feed: feed2, user: user, category: category)
-    # Repo.insert!(%Subscription{feed_id: feed.id, user_id: user.id})
-    # Repo.insert!(%Subscription{feed_id: feed2.id, user_id: user.id})
+    create(:subscription, feed: feed, user: user, category: category)
+    create(:subscription, feed: feed2, user: user, category: category)
 
     # TODO: fix - 1 day arithmetic
     {{year, month, day}, _ } = :calendar.universal_time()
     entry = create(:entry, feed: feed, published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
     entry2 = create(:entry, feed: feed2, published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
     entry3 = create(:entry, feed: feed3, published: {{year, month, day-2}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
-    # entry  = Repo.insert!(%Entry{feed_id: feed.id, title: "test1", published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
-    # entry2 = Repo.insert!(%Entry{feed_id: feed2.id, title: "test2", published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
-    # entry3 = Repo.insert!(%Entry{feed_id: feed3.id, title: "test3", published: {{year, month, day-2}, {0, 0, 0}} |> Ecto.DateTime.from_erl})
-
 
     unread_entry = create(:unread_entry, user: user, feed: feed, entry: entry)
     unread_entry2 = create(:unread_entry, user: user, feed: feed2, entry: entry2)
     unread_entry3 = create(:unread_entry, user: user, feed: feed3, entry: entry3)
-    # Repo.insert!(%UnreadEntry{feed_id: feed.id, entry_id: entry.id, user_id: user.id})
-    # Repo.insert!(%UnreadEntry{feed_id: feed2.id, entry_id: entry2.id, user_id: user.id})
-    # Repo.insert!(%UnreadEntry{feed_id: feed3.id, entry_id: entry3.id, user_id: user.id})
 
     conn = conn() |> put_req_header("accept", "application/json")
     {:ok, conn: conn, jwt: jwt, feed: feed, feed2: feed2, feed3: feed3, category: category, entry: entry, entry2: entry2, entry3: entry3, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3}
@@ -116,7 +104,7 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert json_response(conn, 403)["error"] == "Not Authenticated"
   end
 
-  test "PUT /api/entries/:id/mark_as_read succeeds", %{conn: conn, jwt: jwt, feed: feed, entry: entry, unread_entry: unread_entry} do
+  test "PUT /api/entries/:id/mark_as_read succeeds", %{conn: conn, jwt: jwt, entry: entry, unread_entry: unread_entry} do
     assert unread_entry.read == false
 
     conn = conn |> put_req_header("authorization", jwt)
@@ -138,7 +126,7 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert Repo.get!(UnreadEntry, unread_entry2.id).read == false
   end
 
-  test "PUT /api/entries/mark_all_as_read succeeds for category_id", %{conn: conn, jwt: jwt, feed: feed, category: category, unread_entry: unread_entry, unread_entry2: unread_entry2} do
+  test "PUT /api/entries/mark_all_as_read succeeds for category_id", %{conn: conn, jwt: jwt, category: category, unread_entry: unread_entry, unread_entry2: unread_entry2} do
     assert unread_entry.read == false
     assert unread_entry2.read == false
 
@@ -150,7 +138,7 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert Repo.get!(UnreadEntry, unread_entry2.id).read == true
   end
 
-  test "PUT /api/entries/mark_all_as_read succeeds for feed_id all", %{conn: conn, jwt: jwt, feed: feed, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3} do
+  test "PUT /api/entries/mark_all_as_read succeeds for feed_id all", %{conn: conn, jwt: jwt, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3} do
     assert unread_entry.read == false
     assert unread_entry2.read == false
     assert unread_entry3.read == false
@@ -164,7 +152,7 @@ defmodule WhistlerNewsReader.Api.EntryControllerTest do
     assert Repo.get!(UnreadEntry, unread_entry3.id).read == false
   end
 
-  test "PUT /api/entries/mark_all_as_read succeeds for feed_id today", %{conn: conn, jwt: jwt, feed: feed, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3} do
+  test "PUT /api/entries/mark_all_as_read succeeds for feed_id today", %{conn: conn, jwt: jwt, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3} do
     assert unread_entry.read == false
     assert unread_entry2.read == false
     assert unread_entry3.read == false

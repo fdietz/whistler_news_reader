@@ -2,7 +2,6 @@ defmodule WhistlerNewsReader.Api.CategoryControllerTest do
   use WhistlerNewsReader.ConnCase
 
   alias WhistlerNewsReader.Repo
-  alias WhistlerNewsReader.User
   alias WhistlerNewsReader.Category
 
   setup do
@@ -38,7 +37,7 @@ defmodule WhistlerNewsReader.Api.CategoryControllerTest do
     assert result["title"] == category.title
   end
 
-  test "POST /api/categories succeeds", %{conn: conn, jwt: jwt, user: user} do
+  test "POST /api/categories succeeds", %{conn: conn, jwt: jwt} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = post conn, category_path(conn, :create), category: %{title: "title"}
 
@@ -47,7 +46,7 @@ defmodule WhistlerNewsReader.Api.CategoryControllerTest do
     assert Repo.get!(Category, category_id)
   end
 
-  test "POST /api/categories fails if data invalid", %{conn: conn, jwt: jwt, user: user} do
+  test "POST /api/categories fails if data invalid", %{conn: conn, jwt: jwt} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = post conn, category_path(conn, :create), category: %{}
 

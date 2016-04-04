@@ -43,7 +43,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
     case feed
          |> Feed.changeset(feed_params)
          |> Repo.update do
-      {:ok, feed} ->
+      {:ok, _feed} ->
         conn
         |> send_resp(204, "")
       {:error, changeset} ->

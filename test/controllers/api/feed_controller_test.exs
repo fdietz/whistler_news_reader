@@ -2,10 +2,7 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
   use WhistlerNewsReader.ConnCase
 
   alias WhistlerNewsReader.Repo
-  alias WhistlerNewsReader.User
   alias WhistlerNewsReader.Feed
-  alias WhistlerNewsReader.Entry
-  alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.Subscription
 
   @feed_url "http://www.theverge.com/rss/frontpage"

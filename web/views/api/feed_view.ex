@@ -1,36 +1,24 @@
 defmodule WhistlerNewsReader.Api.FeedView do
   use WhistlerNewsReader.Web, :view
 
+  # TODO: is there a more elegant way to do this using render_many?
   def render("index.json", %{feeds: feeds, unread_entries_count: unread_entries_count}) do
     %{
       feeds: Enum.map(feeds, fn(feed) ->
-        %{
-          id: feed.id,
-          title: feed.title,
-          feed_url: feed.feed_url,
-          site_url: feed.site_url,
-          last_updated: feed.last_updated,
-          category_id: category_id(feed),
-          unread_count: unread_entries_count_for(feed, unread_entries_count)
-         }
+        result = render("feed.json", feed: feed)
+        Map.put(result, :unread_count, unread_entries_count_for(feed, unread_entries_count))
       end)
     }
-    # %{feeds: render_many(feeds, WhistlerNewsReader.Api.FeedView, "feed.json")}
   end
 
+  # TODO: is there a more elegant way to do this using render_one?
   def render("show.json", %{feed: feed, unread_entries_count: unread_entries_count}) do
-    # %{feed: render_one(feed, WhistlerNewsReader.Api.FeedView, "feed.json")}
+    # result = %{feed: render_one(feed, WhistlerNewsReader.Api.FeedView, "feed.json")}
+    result = render("feed.json", feed: feed)
+    result = Map.put(result, :unread_count, unread_entries_count_for(feed, unread_entries_count))
     %{
-      feed: %{
-        id: feed.id,
-        title: feed.title,
-        feed_url: feed.feed_url,
-        site_url: feed.site_url,
-        last_updated: feed.last_updated,
-        category_id: category_id(feed),
-        unread_count: unread_entries_count_for(feed, unread_entries_count)
-      }
-     }
+      feed:  result
+    }
   end
 
   def render("feed.json", %{feed: feed}) do

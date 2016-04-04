@@ -1,10 +1,8 @@
 defmodule WhistlerNewsReader.StoreEntryHelper do
 
   alias WhistlerNewsReader.Entry
-  alias WhistlerNewsReader.ReadEntry
   alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.Subscription
-  alias WhistlerNewsReader.Category
   alias WhistlerNewsReader.Repo
 
   def store_entry(feed, entry) do
@@ -44,10 +42,10 @@ defmodule WhistlerNewsReader.StoreEntryHelper do
   end
 
   def mark_feed_as_read(user, feed) do
-    unread_entries = UnreadEntry
-                     |> UnreadEntry.for_feed(feed.id)
-                     |> UnreadEntry.for_user(user.id)
-                     |> Repo.update_all(set: [read: true])
+    UnreadEntry
+    |> UnreadEntry.for_feed(feed.id)
+    |> UnreadEntry.for_user(user.id)
+    |> Repo.update_all(set: [read: true])
   end
 
   def mark_all_feeds_as_read(user, feeds) do

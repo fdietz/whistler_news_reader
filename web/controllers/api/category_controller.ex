@@ -33,7 +33,7 @@ defmodule WhistlerNewsReader.Api.CategoryController do
     case category
          |> Category.changeset(category_params)
          |> Repo.update do
-      {:ok, category} ->
+      {:ok, _category} ->
         conn
         |> send_resp(204, "")
       {:error, changeset} ->

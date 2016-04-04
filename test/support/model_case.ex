@@ -20,6 +20,7 @@ defmodule WhistlerNewsReader.ModelCase do
       import Ecto.Model
       import Ecto.Query, only: [from: 2]
       import WhistlerNewsReader.ModelCase
+      import WhistlerNewsReader.Factory
     end
   end
 
