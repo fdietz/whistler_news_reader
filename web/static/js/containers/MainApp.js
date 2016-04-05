@@ -10,7 +10,7 @@ import LayoutContent from "../components/LayoutContent";
 import LayoutMasterSplit from "../components/LayoutMasterSplit";
 
 import NewFeedDialog from "../containers/NewFeedDialog";
-import EntryEmbedSite from "../containers/EntryEmbedSite";
+import EntryContentOverlay from "../containers/EntryContentOverlay";
 import NewCategoryDialog from "../containers/NewCategoryDialog";
 import EditDialog from "../containers/EditDialog";
 
@@ -87,7 +87,7 @@ class MainApp extends Component {
 
     this.state = {
       newFeedModalIsOpen: false,
-      entryEmbedSiteIsOpen: false,
+      entryContentOverlayIsOpen: false,
       addCategoryDialogIsOpen: false,
       editDialogIsOpen: false
     };
@@ -98,7 +98,7 @@ class MainApp extends Component {
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
     this.handleEntryShown = this.handleEntryShown.bind(this);
     this.markAsRead = this.markAsRead.bind(this);
-    this.closeEntryEmbedSite = this.closeEntryEmbedSite.bind(this);
+    this.closeEntryContentOverlay = this.closeEntryContentOverlay.bind(this);
     this.openExternal = this.openExternal.bind(this);
 
     this.nextEntry = debounce(this.nextEntry.bind(this), 100);
@@ -289,11 +289,11 @@ class MainApp extends Component {
   }
 
   openEntryEmbedSite() {
-    this.setState({ entryEmbedSiteIsOpen: true });
+    this.setState({ entryContentOverlayIsOpen: true });
   }
 
-  closeEntryEmbedSite() {
-    this.setState({ entryEmbedSiteIsOpen: false });
+  closeEntryContentOverlay() {
+    this.setState({ entryContentOverlayIsOpen: false });
   }
 
   openExternal() {
@@ -481,10 +481,13 @@ class MainApp extends Component {
             onClose={this.closeNewFeedModal}/>
         }
 
-        {this.state.entryEmbedSiteIsOpen &&
-          <EntryEmbedSite
-            isOpen={this.state.entryEmbedSiteIsOpen}
-            onClose={this.closeEntryEmbedSite}/>
+        {this.state.entryContentOverlayIsOpen &&
+          <EntryContentOverlay
+            isOpen={this.state.entryContentOverlayIsOpen}
+            onClose={this.closeEntryContentOverlay}
+            onPreviousClick={this.previousEntry}
+            onNextClick={this.nextEntry}
+            onOpenExternalClick={this.openExternal}/>
         }
 
         {this.state.addCategoryDialogIsOpen &&
