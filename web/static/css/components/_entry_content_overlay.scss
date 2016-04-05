@@ -17,21 +17,6 @@
     display: flex;
   }
 
-  // .centered {
-  //   display: flex;
-  //   flex: 1 1;
-  //   flex-direction: column;
-  // }
-  //
-  // h2,
-  // h6 {
-  //   margin: 0 $space-1;
-  //   overflow: hidden;
-  //   color: $black-3;
-  //   text-overflow: ellipsis;
-  //   white-space: nowrap;
-  // }
-
   .modal-close-link {
     margin-left: auto;
     cursor: pointer;
@@ -40,21 +25,11 @@
       opacity: .75;
     }
   }
-
-  // .loading-indicator {
-  //   margin-left: auto;
-  //   margin-right: $space-1;
-  //   opacity: 1;
-  //   transition: opacity .5s ease-in-out;
-  // }
 }
 
 .entry-content-overlay-content {
-  // height: 100%;
-  // margin-top: $space-3;
-  // height: calc(100% - 65px);
-  flex: 1 1;
   overflow: auto;
+  flex: 1 1;
 }
 
 .entry-embed-site {
