@@ -1,3 +1,4 @@
+import axios from "../../utils/APIHelper";
 import { createAction } from "redux-actions";
 
 export const CATEGORY_FORM_UPDATE = "CATEGORY_FORM_UPDATE";
@@ -5,6 +6,22 @@ export const CATEGORY_FORM_RESET = "CATEGORY_FORM_RESET";
 
 export const categoryFormUpdate = createAction(CATEGORY_FORM_UPDATE);
 export const categoryFormReset  = createAction(CATEGORY_FORM_RESET);
+
+export function requestCreateCategory(categoryAttributes) {
+  return (dispatch) => {
+    dispatch(categoryFormUpdate());
+
+    return axios.post("http://localhost:4000/api/categories", { category: categoryAttributes }).
+    then((response) => {
+      dispatch(categoryFormReset());
+      return response.data.category;
+    }).
+    catch((response) => {
+      dispatch(categoryFormUpdate({ errors: response.data.errors }));
+      return response.data;
+    });
+  };
+}
 
 const initial = {
   title: null,

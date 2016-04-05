@@ -13,10 +13,6 @@ export const removeCategory   = createAction(REMOVE_CATEGORY);
 export const fetchCategories  = createAction(FETCH_CATEGORIES);
 export const toggleExpandCategory = createAction(TOGGLE_EXPAND_CATEGORY);
 
-export function requestCreateCategory(categoryAttributes) {
-  return axios.post("http://localhost:4000/api/categories", { category: categoryAttributes });
-}
-
 export function requestUpdateCategory(categoryId, categoryAttributes) {
   return dispatch => {
     return axios.put(`/api/categories/${categoryId}`, { category: categoryAttributes })

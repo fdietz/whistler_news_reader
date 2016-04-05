@@ -2,12 +2,18 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
 import ReactDOM from "react-dom";
+import { push } from "react-router-redux";
 
 import { CrossSVGIcon } from "../components/SVGIcon";
 import Icon from "../components/Icon";
 
-import { categoryFormUpdate, categoryFormReset } from "../redux/modules/categoryForm";
-import createCategoryAction from "../redux/actions/createCategoryAction";
+import {
+  categoryFormUpdate,
+  categoryFormReset,
+  requestCreateCategory
+} from "../redux/modules/categoryForm";
+
+import { addCategory } from "../redux/modules/categories";
 
 import { reduceErrorsToString } from "../utils/ErrorHelper";
 import { customModalStyles } from "../utils/ModalHelper";
@@ -51,10 +57,11 @@ class NewCategoryDialog extends Component {
     const { dispatch, categoryForm, onClose } = this.props;
     event.preventDefault();
 
-    dispatch(createCategoryAction({ title: categoryForm.title })).then((result) => {
+    dispatch(requestCreateCategory({ title: categoryForm.title})).then((result) => {
       if (!result.errors) {
-        dispatch(categoryFormReset());
         onClose();
+        dispatch(push(`/categories/${result.id}`));
+        dispatch(addCategory({ category: result }));
       }
     });
   }
