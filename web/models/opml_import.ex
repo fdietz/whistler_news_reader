@@ -14,7 +14,7 @@ defmodule WhistlerNewsReader.OpmlImport do
 
       category = %Category{}
       |> Category.changeset(%{title: category[:title], user_id: user.id})
-      |> Repo.insert!(category)
+      |> Repo.insert!
 
       Enum.each(category[:feeds], fn(feed) ->
         Logger.info "OpmlImport - create feed: #{feed[:title]}"
