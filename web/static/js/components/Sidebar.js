@@ -17,7 +17,6 @@ import Badge from "../components/Badge";
 import Button from "../components/Button";
 import Category from "../components/Category";
 import Feed from "../components/Feed";
-import imageProfile from "../../assets/images/profile.jpg";
 
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
