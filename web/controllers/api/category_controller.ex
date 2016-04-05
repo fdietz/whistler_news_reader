@@ -4,6 +4,7 @@ defmodule WhistlerNewsReader.Api.CategoryController do
   plug Guardian.Plug.EnsureAuthenticated, handler: WhistlerNewsReader.Api.SessionController
 
   alias WhistlerNewsReader.Category
+  alias WhistlerNewsReader.Feed
 
   plug :scrub_params, "category" when action in [:create]
 
@@ -52,10 +53,16 @@ defmodule WhistlerNewsReader.Api.CategoryController do
 
   def delete(conn, %{"id" => id}) do
     category = Category |> Category.for_user_id(current_user(conn).id) |> Repo.get!(id)
-    Repo.delete!(category)
+    count = Feed |> Feed.count_for_user_id_and_category_id(current_user(conn).id, id) |> Repo.one
 
-    conn
-    |> send_resp(204, "")
+    if count > 0 do
+      conn
+      |> send_resp(422, "")
+    else
+      Repo.delete!(category)
+      conn
+      |> send_resp(204, "")
+    end
   end
 
   defp current_user(conn) do

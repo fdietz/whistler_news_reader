@@ -50,4 +50,13 @@ defmodule WhistlerNewsReader.Feed do
     from p in query,
     where: p.feed_url == ^feed_url
   end
+
+  def count_for_user_id_and_category_id(query, user_id, category_id) do
+    from p in query,
+    # join condition is handled by ecto for us
+    join: c in assoc(p, :subscriptions),
+    where: c.user_id == ^user_id,
+    where: c.category_id == ^category_id,
+    select: count(p.id)
+  end
 end

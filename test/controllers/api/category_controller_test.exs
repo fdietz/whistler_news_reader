@@ -68,4 +68,14 @@ defmodule WhistlerNewsReader.Api.CategoryControllerTest do
     assert conn.status == 204
     refute Repo.get(Category, category.id)
   end
+
+  test "DELETE /api/categories/:id fails if feed exists", %{conn: conn, jwt: jwt, user: user, category: category} do
+    feed = create(:feed)
+    create(:subscription, user: user, feed: feed, category: category)
+
+    conn = conn |> put_req_header("authorization", jwt)
+    conn = delete conn, category_path(conn, :delete, category.id)
+    assert conn.status == 422
+    assert Repo.get(Category, category.id)
+  end
 end

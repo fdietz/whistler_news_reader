@@ -3,7 +3,7 @@ defmodule WhistlerNewsReader.Category do
 
   schema "categories" do
     field :title, :string
-    
+
     # field :user_id, :integer
     belongs_to :user, WhistlerNewsReader.User
 
