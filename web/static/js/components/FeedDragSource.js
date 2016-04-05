@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { DragSource } from "react-dnd";
 
-class Feed extends Component {
+class FeedDragSource extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
@@ -59,4 +59,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default DragSource(ItemTypes.FEED, feedSource, collect)(Feed);
+export default DragSource(ItemTypes.FEED, feedSource, collect)(FeedDragSource);

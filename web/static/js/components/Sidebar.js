@@ -15,8 +15,8 @@ import {
 
 import Badge from "../components/Badge";
 import Button from "../components/Button";
-import Category from "../components/Category";
-import Feed from "../components/Feed";
+import CategoryDropTarget from "../components/CategoryDropTarget";
+import FeedDragSource from "../components/FeedDragSource";
 
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
@@ -54,7 +54,7 @@ class Sidebar extends Component {
     const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
 
     return (
-      <Feed key={key} className={listItemCls} feed={feed} active={active} onDrop={onFeedDrop}>
+      <FeedDragSource key={key} className={listItemCls} feed={feed} active={active} onDrop={onFeedDrop}>
         <div className="sidebar-nav-list__meta">
           <div className="icon-placeholder"></div>
           <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
@@ -62,7 +62,7 @@ class Sidebar extends Component {
             <Badge count={feed.unread_count} className="sidebar-nav-list__badge"/>
           }
         </div>
-      </Feed>
+      </FeedDragSource>
     );
   }
 
@@ -100,7 +100,7 @@ class Sidebar extends Component {
     const currentColor = active ? "white" : "gray";
 
     return (
-      <Category key={key} className={listItemCls} category={category} active={active}>
+      <CategoryDropTarget key={key} className={listItemCls} category={category} active={active}>
         <div className="sidebar-nav-list__meta">
           <a
             href="#"
@@ -122,7 +122,7 @@ class Sidebar extends Component {
             })}
           </div>
         }
-      </Category>
+      </CategoryDropTarget>
     );
   }
 

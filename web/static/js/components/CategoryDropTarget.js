@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from "react";
 import { DropTarget } from "react-dnd";
 
-class Category extends Component {
+class CategoryDropTarget extends Component {
   static propTypes = {
     connectDropTarget: PropTypes.func.isRequired,
     isOver: PropTypes.bool.isRequired,
@@ -54,4 +54,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default DropTarget(ItemTypes.FEED, categoryTarget, collect)(Category);
+export default DropTarget(ItemTypes.FEED, categoryTarget, collect)(CategoryDropTarget);
