@@ -69,12 +69,23 @@ test("feeds reducer DECREMENT_UNREAD_COUNT", t => {
   });
 });
 
-test("feeds reducer RESET_UNREAD_COUNT", t => {
-  t.same(reducer({ items: [{ id: 1, unread_count: 2 }] }, {
+test("feeds reducer RESET_UNREAD_COUNT for feed_id", t => {
+  const newState = reducer({ items: [{ id: 1, unread_count: 2, category_id: 1 }] }, {
     type: RESET_UNREAD_COUNT,
     payload: { id: 1 }
-  }), {
-    items: [{ id: 1, unread_count: 0 }]
+  });
+  t.same(newState, {
+    items: [{ id: 1, unread_count: 0, category_id: 1 }]
+  });
+});
+
+test("feeds reducer RESET_UNREAD_COUNT for category_id", t => {
+  const newState = reducer({ items: [{ id: 1, unread_count: 2, category_id: 1 }] }, {
+    type: RESET_UNREAD_COUNT,
+    payload: { category_id: 1 }
+  });
+  t.same(newState, {
+    items: [{ id: 1, unread_count: 0, category_id: 1 }]
   });
 });
 

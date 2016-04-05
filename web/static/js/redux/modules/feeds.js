@@ -95,7 +95,7 @@ export default function reducer(state = initial, action) {
     break;
   case UPDATE_FEED:
     if (action.payload) {
-      return { ...state, items: state.items.map((item) => {
+      return { ...state, items: state.items.map(item => {
         if (item.id === action.payload.item.id) {
           return { ...item, ...action.payload.item };
         }
@@ -105,7 +105,7 @@ export default function reducer(state = initial, action) {
     break;
   case DECREMENT_UNREAD_COUNT:
     if (action.payload) {
-      return { ... state, items: state.items.map((item) => {
+      return { ... state, items: state.items.map(item => {
         if (item.id === action.payload.id) {
           return { ...item, unread_count: item.unread_count-1 };
         }
@@ -115,14 +115,14 @@ export default function reducer(state = initial, action) {
     break;
   case RESET_UNREAD_COUNT:
     if (action.payload.id) {
-      return { ...state, items: state.items.map((item) => {
+      return { ...state, items: state.items.map(item => {
         if (item.id === action.payload.id) {
           return { ...item, unread_count: 0 };
         }
         return item;
       })};
     } else if (action.payload.category_id) {
-      return { ...state, items: state.items.map((item) => {
+      return { ...state, items: state.items.map(item => {
         if (item.category_id === action.payload.category_id) {
           return { ...item, unread_count: 0 };
         }
@@ -132,7 +132,7 @@ export default function reducer(state = initial, action) {
     break;
   case REMOVE_FEED:
     if (action.payload) {
-      const index = state.items.findIndex((element) => element.id === action.payload.id);
+      const index = state.items.findIndex(element => element.id === action.payload.id);
       if (index === -1) return state;
 
       return Object.assign({}, state, {
