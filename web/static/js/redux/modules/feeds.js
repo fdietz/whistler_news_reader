@@ -114,9 +114,16 @@ export default function reducer(state = initial, action) {
     }
     break;
   case RESET_UNREAD_COUNT:
-    if (action.payload) {
+    if (action.payload.id) {
       return { ...state, items: state.items.map((item) => {
         if (item.id === action.payload.id) {
+          return { ...item, unread_count: 0 };
+        }
+        return item;
+      })};
+    } else if (action.payload.category_id) {
+      return { ...state, items: state.items.map((item) => {
+        if (item.category_id === action.payload.category_id) {
           return { ...item, unread_count: 0 };
         }
         return item;

@@ -1,6 +1,5 @@
 import axios from "../../utils/APIHelper";
 import { createAction } from "redux-actions";
-import { createNotification, resetNotification } from "./notification";
 
 export const FETCH_ENTRIES      = "FETCH_ENTRIES";
 export const FETCH_MORE_ENTRIES = "FETCH_MORE_ENTRIES";

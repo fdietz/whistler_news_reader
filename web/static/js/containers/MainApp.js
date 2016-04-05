@@ -276,8 +276,14 @@ class MainApp extends Component {
     const params = this.requestParams(this.props);
 
     dispatch(requestMarkAllEntriesAsRead(params)).then(() => {
-      if (params.feed_id) {
+      if (params.feed_id === "all" || params.feed_id === "today") {
+        dispatch(requestFetchFeeds()).then(() => {
+          dispatch(requestFetchCategories());
+        });
+      } else if (params.feed_id) {
         dispatch(resetUnreadCount({ id: +params.feed_id }));
+      } else if (params.category_id) {
+        dispatch(resetUnreadCount({ category_id: +params.category_id }));
       }
     });
   }
