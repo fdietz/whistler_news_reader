@@ -27,7 +27,7 @@ input {
   height: $form-field-height;
   padding: $form-field-padding-y $form-field-padding-x;
   vertical-align: middle;
-  -webkit-appearance: none;
+  // -webkit-appearance: none;
 }
 
 select {
@@ -73,4 +73,18 @@ input[type=radio] {
   h1 {
     margin: 0 0 2rem 0;
   }
+}
+
+.dropdown-field {
+  width: auto;
+  height: 1.2rem;
+}
+
+.dropdown-label {
+  display: block;
+  font-weight: normal;
+}
+
+input[type=radio].dropdown-field {
+  margin: 0 $space-1 0 0;
 }

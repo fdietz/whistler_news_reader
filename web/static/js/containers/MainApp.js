@@ -15,8 +15,22 @@ import NewCategoryDialog from "../containers/NewCategoryDialog";
 import EditDialog from "../containers/EditDialog";
 
 import Button from "../components/Button";
+// import ToggleButton from "../components/ToggleButton";
 import ButtonGroup from "../components/ButtonGroup";
+// import Dropdown from "../components/Dropdown";
+// import DropdownContainer from "../components/DropdownContainer";
+import ViewSwitcherDropdown from "../components/ViewSwitcherDropdown";
+
 import Icon from "../components/Icon";
+import {
+  CheckmarkSVGIcon,
+  TrashSVGIcon,
+  CycleSVGIcon,
+  ArrowLeftBoldSVGIcon,
+  ArrowRightBoldSVGIcon,
+  EarthSVGIcon,
+  ResizeEnlargeSVGIcon
+} from "../components/SVGIcon";
 
 import InfiniteScroll from "../components/InfiniteScroll";
 import FeedEntryList from "../components/FeedEntryList";
@@ -89,7 +103,8 @@ class MainApp extends Component {
       newFeedModalIsOpen: false,
       entryContentOverlayIsOpen: false,
       addCategoryDialogIsOpen: false,
-      editDialogIsOpen: false
+      editDialogIsOpen: false,
+      currentViewLayout: "list"
     };
 
     this.loadMore = this.loadMore.bind(this);
@@ -118,6 +133,8 @@ class MainApp extends Component {
 
     this.openEditDialog = this.openEditDialog.bind(this);
     this.closeEditDialog = this.closeEditDialog.bind(this);
+
+    this.handleViewLayoutChange = this.handleViewLayoutChange.bind(this);
   }
 
   componentDidMount() {
@@ -356,17 +373,15 @@ class MainApp extends Component {
     this.setState({ editDialogIsOpen: false });
   }
 
+  handleViewLayoutChange(value) {
+    this.setState({ currentViewLayout: value });
+  }
+
   render() {
-    const {
-      dispatch,
-      entries,
-      categories,
-      feeds,
-      currentUser,
-      currentEntry,
-      currentPath,
-      notification
-    } = this.props;
+    const { dispatch, entries, categories, feeds, currentUser,
+      currentEntry, currentPath, notification } = this.props;
+
+    const { currentViewLayout } = this.state;
 
     const content = (
       <FeedEntryContent
@@ -404,18 +419,57 @@ class MainApp extends Component {
       <LayoutHeader>
         <ButtonGroup className="btn-group-rounded">
           <Button type="header" onClick={this.markAsRead}>
-            <Icon name="checkmark" size="small"/>
+            <CheckmarkSVGIcon color="light-gray" size="small"/>
           </Button>
           <Button type="header" onClick={this.refreshEntries}>
-            <Icon name="cycle" size="small"/>
+            <CycleSVGIcon color="light-gray" size="small"/>
           </Button>
           <Button type="header" onClick={this.handleOnRemove}>
-            <Icon name="trash" size="small"/>
-          </Button>
-          <Button type="header" onClick={this.openEditDialog}>
-            <Icon name="cog" size="small"/>
+            <TrashSVGIcon color="light-gray" size="small"/>
           </Button>
         </ButtonGroup>
+        <ViewSwitcherDropdown className="ml1">
+          <ul className="dropdown__list">
+            <li className="dropdown__list-item">
+              <label className="dropdown-label">
+                <input
+                  type="radio"
+                  name="currrent_view_layout"
+                  checked={currentViewLayout === "list"}
+                  onChange={this.handleViewLayoutChange.bind(this, "list")}
+                  className="field dropdown-field"/>
+                List
+              </label>
+            </li>
+            <li className="dropdown__list-item">
+              <label className="dropdown-label">
+                <input
+                  type="radio"
+                  name="currrent_view_layout"
+                  checked={currentViewLayout === "compact_list"}
+                  onChange={this.handleViewLayoutChange.bind(this, "compact_list")}
+                  className="field dropdown-field"/>
+                Compact List
+              </label>
+            </li>
+            <li className="dropdown__list-item">
+              <label className="dropdown-label">
+                <input
+                  type="radio"
+                  name="currrent_view_layout"
+                  checked={currentViewLayout === "grid"}
+                  onChange={this.handleViewLayoutChange.bind(this, "grid")}
+                  className="field dropdown-field"/>
+                Grid
+              </label>
+            </li>
+            <li className="dropdown__list-separator"></li>
+            <li className="dropdown__list-item" onClick={this.openEditDialog}>
+              <div className="placeholder"/>Settings
+            </li>
+
+          </ul>
+        </ViewSwitcherDropdown>
         <span className={spinnerCls}>
           <Icon name="spinner" size="small"/>
         </span>
@@ -426,18 +480,18 @@ class MainApp extends Component {
       <LayoutHeader>
         <ButtonGroup className="btn-group-rounded">
           <Button type="header" onClick={this.previousEntry}>
-            <Icon name="arrow-left3" size="small"/>
+            <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
           </Button>
           <Button type="header" onClick={this.nextEntry}>
-            <Icon name="arrow-right3" size="small"/>
+            <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
           </Button>
         </ButtonGroup>
         <ButtonGroup className="btn-group-rounded ml2">
           <Button type="header" onClick={this.openEntryEmbedSite}>
-            <Icon name="resize-enlarge" size="small"/>
+            <ResizeEnlargeSVGIcon color="light-gray" size="small"/>
           </Button>
           <Button type="header" onClick={this.openExternal}>
-            <Icon name="earth" size="small"/>
+            <EarthSVGIcon color="light-gray" size="small"/>
           </Button>
         </ButtonGroup>
       </LayoutHeader>

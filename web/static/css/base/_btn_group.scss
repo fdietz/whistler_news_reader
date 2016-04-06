@@ -1,5 +1,7 @@
 .btn-group {
-
+  display: flex;
+  align-items: center;
+  
   &.btn-group-rounded {
 
     .btn {

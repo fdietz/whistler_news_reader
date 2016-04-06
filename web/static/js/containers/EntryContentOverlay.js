@@ -2,7 +2,13 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
 
-import Icon from "../components/Icon";
+import {
+  ArrowLeftBoldSVGIcon,
+  ArrowRightBoldSVGIcon,
+  EarthSVGIcon,
+  ResizeShrinkSVGIcon
+} from "../components/SVGIcon";
+
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
 import FeedEntryContent from "../components/FeedEntryContent";
@@ -70,20 +76,20 @@ class EntryContentOverlay extends Component {
           <div className="actions">
             <ButtonGroup className="btn-group-rounded">
               <Button type="header" onClick={onPreviousClick}>
-                <Icon name="arrow-left3" size="small"/>
+                <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
               </Button>
               <Button type="header" onClick={onNextClick}>
-                <Icon name="arrow-right3" size="small"/>
+                <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
               </Button>
             </ButtonGroup>
             <ButtonGroup className="btn-group-rounded ml2">
               <Button type="header" onClick={onOpenExternalClick}>
-                <Icon name="earth" size="small"/>
+                <EarthSVGIcon color="light-gray" size="small"/>
               </Button>
             </ButtonGroup>
           </div>
           <a className="modal-close-link" onClick={this.onClose}>
-            <Icon name="resize-shrink" size="small"/>
+            <ResizeShrinkSVGIcon color="gray" size="small"/>
           </a>
         </div>
 
