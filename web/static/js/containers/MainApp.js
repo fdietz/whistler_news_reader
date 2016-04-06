@@ -136,6 +136,8 @@ class MainApp extends Component {
     this.closeEditDialog = this.closeEditDialog.bind(this);
 
     this.handleViewLayoutChange = this.handleViewLayoutChange.bind(this);
+
+    this.handleSelectCurrentEntry = this.handleSelectCurrentEntry.bind(this);
   }
 
   componentDidMount() {
@@ -378,6 +380,16 @@ class MainApp extends Component {
     this.setState({ currentViewLayout: value });
   }
 
+  handleSelectCurrentEntry(entry) {
+    const { dispatch } = this.props;
+    const { currentViewLayout } = this.state;
+
+    dispatch(selectEntry({ entry: entry }));
+    if (currentViewLayout === "grid") {
+      this.openEntryEmbedSite();
+    }
+  }
+
   render() {
     const { dispatch, entries, categories, feeds, currentUser,
       currentEntry, currentPath, notification } = this.props;
@@ -395,20 +407,20 @@ class MainApp extends Component {
       items = (<FeedEntryList
         entries={entries.items}
         currentEntry={currentEntry}
-        onEntryClick={entry => dispatch(selectEntry({ entry: entry }))}/>
+        onEntryClick={entry => this.handleSelectCurrentEntry(entry)}/>
       );
     } else if (currentViewLayout === "compact_list") {
       items = (<FeedEntryList
         entries={entries.items}
         currentEntry={currentEntry}
-        onEntryClick={entry => dispatch(selectEntry({ entry: entry }))}
+        onEntryClick={entry => this.handleSelectCurrentEntry(entry)}
         className="compact"/>
       );
     } else if (currentViewLayout === "grid") {
       items = (<FeedEntryGrid
         entries={entries.items}
         currentEntry={currentEntry}
-        onEntryClick={entry => dispatch(selectEntry({ entry: entry }))}/>
+        onEntryClick={entry => this.handleSelectCurrentEntry(entry)}/>
       );
     } else {
       throw Error(`Unknown currentViewLayout ${currentViewLayout}`);
