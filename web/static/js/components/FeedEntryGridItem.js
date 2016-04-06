@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import classNames from "classnames";
 import DateTimeHelper from "../utils/DateTimeHelper";
 
-class FeedEntry extends Component {
+class FeedEntryGridItem extends Component {
 
   static propTypes = {
     published: PropTypes.string.isRequired,
@@ -10,35 +10,50 @@ class FeedEntry extends Component {
     title: PropTypes.string.isRequired,
     unread: PropTypes.bool.isRequired,
     summary: PropTypes.string,
+    content: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
-    isSelected: PropTypes.bool
+    isSelected: PropTypes.bool,
+    className: PropTypes.string
   };
 
-  render() {
-    const { title, published, unread, summary, isSelected = false, onClick, feed } = this.props;
+  extractUrl(str) {
+    let m;
+    let urls = [];
+    const rex = /<img[^>]+src="?([^"\s]+)"?\s*\/>/g;
 
-    let cls = classNames("item", {
+    while (m = rex.exec(str)) {
+      urls.push(m[1]);
+    }
+
+    return urls[0];
+  }
+
+  render() {
+    const { title, published, content, unread, summary, isSelected = false, onClick, feed, className } = this.props;
+
+    let cls = classNames("item", className, {
       selected: isSelected,
       unread: unread
     });
 
     const date = new Date(published);
     const relativeDateTime = DateTimeHelper.timeDifference(date);
+    const imageUrl = this.extractUrl(content);
 
     return (
       <div className={cls} onClick={onClick}>
-        <div className="item-row">
+        <img src={imageUrl} alt="image"/>
+        <div className="caption">
+          <div className="entry-title">{title}</div>
           <div className="meta">
             <div className="feed-title">{feed.title}</div>
             <span className="circle"></span>
             <span className="published">{relativeDateTime}</span>
           </div>
-          <div className="entry-title">{title}</div>
-          <div className="entry-summary">{summary}</div>
         </div>
       </div>
     );
   }
 }
 
-export default FeedEntry;
+export default FeedEntryGridItem;

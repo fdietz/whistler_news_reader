@@ -34,6 +34,7 @@ import {
 
 import InfiniteScroll from "../components/InfiniteScroll";
 import FeedEntryList from "../components/FeedEntryList";
+import FeedEntryGrid from "../components/FeedEntryGrid";
 import FeedEntryContent from "../components/FeedEntryContent";
 import Sidebar from "../components/Sidebar";
 import Notification from "../components/Notification";
@@ -389,11 +390,29 @@ class MainApp extends Component {
         onEntryShown={this.handleEntryShown}/>
     );
 
-    const items = (<FeedEntryList
-      entries={entries.items}
-      currentEntry={currentEntry}
-      onEntryClick={entry => dispatch(selectEntry({ entry: entry })) }/>
-    );
+    let items;
+    if (currentViewLayout === "list") {
+      items = (<FeedEntryList
+        entries={entries.items}
+        currentEntry={currentEntry}
+        onEntryClick={entry => dispatch(selectEntry({ entry: entry }))}/>
+      );
+    } else if (currentViewLayout === "compact_list") {
+      items = (<FeedEntryList
+        entries={entries.items}
+        currentEntry={currentEntry}
+        onEntryClick={entry => dispatch(selectEntry({ entry: entry }))}
+        className="compact"/>
+      );
+    } else if (currentViewLayout === "grid") {
+      items = (<FeedEntryGrid
+        entries={entries.items}
+        currentEntry={currentEntry}
+        onEntryClick={entry => dispatch(selectEntry({ entry: entry }))}/>
+      );
+    } else {
+      throw Error(`Unknown currentViewLayout ${currentViewLayout}`);
+    }
 
     const noMoreContent = (
       <div className="item no-more-content">
@@ -467,6 +486,26 @@ class MainApp extends Component {
             </li>
           </ul>
         </ViewSwitcherDropdown>
+        {currentViewLayout === "grid" &&
+          <ButtonGroup className="btn-group-rounded ml2">
+            <Button type="header" onClick={this.previousEntry}>
+              <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
+            </Button>
+            <Button type="header" onClick={this.nextEntry}>
+              <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
+            </Button>
+          </ButtonGroup>
+        }
+        {currentViewLayout === "grid" &&
+          <ButtonGroup className="btn-group-rounded ml2">
+            <Button type="header" onClick={this.openEntryEmbedSite}>
+              <ResizeEnlargeSVGIcon color="light-gray" size="small"/>
+            </Button>
+            <Button type="header" onClick={this.openExternal}>
+              <EarthSVGIcon color="light-gray" size="small"/>
+            </Button>
+          </ButtonGroup>
+        }
         <span className={spinnerCls}>
           <Icon name="spinner" size="small"/>
         </span>
@@ -510,17 +549,38 @@ class MainApp extends Component {
           onAddCategoryClick={this.handleOnAddCategoryClick}
           onFeedDrop={this.handleOnFeedDrop}/>
 
-        <LayoutMasterSplit>
-          <LayoutPane size={30}>
-            {listHeader}
-            <LayoutContent>{paginatedItems}</LayoutContent>
-          </LayoutPane>
-          <LayoutPane size={70}>
-            {entryHeader}
-            <LayoutContent>{currentEntry && content}</LayoutContent>
-          </LayoutPane>
-
-        </LayoutMasterSplit>
+          {currentViewLayout === "list" &&
+            <LayoutMasterSplit>
+              <LayoutPane size={30}>
+                {listHeader}
+                <LayoutContent>{paginatedItems}</LayoutContent>
+              </LayoutPane>
+              <LayoutPane size={70}>
+                {entryHeader}
+                <LayoutContent>{currentEntry && content}</LayoutContent>
+              </LayoutPane>
+            </LayoutMasterSplit>
+          }
+          {currentViewLayout === "compact_list" &&
+            <LayoutMasterSplit>
+              <LayoutPane size={30}>
+                {listHeader}
+                <LayoutContent>{paginatedItems}</LayoutContent>
+              </LayoutPane>
+              <LayoutPane size={70}>
+                {entryHeader}
+                <LayoutContent>{currentEntry && content}</LayoutContent>
+              </LayoutPane>
+            </LayoutMasterSplit>
+          }
+          {currentViewLayout === "grid" &&
+            <LayoutMasterSplit>
+              <LayoutPane size={100}>
+                {listHeader}
+                <LayoutContent>{paginatedItems}</LayoutContent>
+              </LayoutPane>
+            </LayoutMasterSplit>
+          }
 
         {notification &&
           <Notification {...notification}/>
