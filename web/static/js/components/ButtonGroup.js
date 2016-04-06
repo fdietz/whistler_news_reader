@@ -1,9 +1,10 @@
 import React, { PropTypes } from "react";
+import classNames from "classnames";
 
 const ButtonGroup = ({ className, children }) => {
-  const clazzName =  `btn-group ${className}`;
+  const cls =  classNames("btn-group", className);
   return (
-    <div className={clazzName}>
+    <div className={cls}>
       {children}
     </div>
   );

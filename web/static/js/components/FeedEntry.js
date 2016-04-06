@@ -17,8 +17,7 @@ class FeedEntry extends Component {
   render() {
     const { title, published, unread, summary, isSelected = false, onClick, feed } = this.props;
 
-    let cls = classNames({
-      item: true,
+    let cls = classNames("item", {
       selected: isSelected,
       unread: unread
     });

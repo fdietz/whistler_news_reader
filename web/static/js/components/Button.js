@@ -1,9 +1,8 @@
 import React, { PropTypes } from "react";
 import classNames from "classnames";
 
-const Button = ({ type, expand, onClick, children }) => {
-  const cls = classNames({
-    btn: true,
+const Button = ({ type, expand, onClick, className, children }) => {
+  const cls = classNames("btn", className, {
     "btn-expand": expand,
     [`btn-${type}`]: type
   });
@@ -19,7 +18,8 @@ Button.propTypes = {
   children: PropTypes.node,
   type: PropTypes.string,
   expand: PropTypes.bool,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  className: PropTypes.string
 };
 
 export default Button;
