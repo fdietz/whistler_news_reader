@@ -31,6 +31,7 @@ body {
     display: flex;
     width: 50vw;
     height: 100%;
+    background-color: $gray-2;
     flex-direction: column;
 
     &.layout-master-pane-size-30 { width: 30vw; }
@@ -63,6 +64,6 @@ body {
 
 .layout-master-content {
   overflow-y: auto;
-  // background-color: $white;
+  background-color: $white;
   flex: 1 1;
 }
