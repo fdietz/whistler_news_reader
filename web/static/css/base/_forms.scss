@@ -24,7 +24,7 @@ label {
 }
 
 input {
-  height: $form-field-height;
+  // height: $form-field-height;
   padding: $form-field-padding-y $form-field-padding-x;
   vertical-align: middle;
   // -webkit-appearance: none;
@@ -36,7 +36,7 @@ select {
 }
 
 select:not([multiple]) {
-  height: $form-field-height;
+  // height: $form-field-height;
   vertical-align: middle;
 }
 
@@ -52,6 +52,7 @@ input[type=radio] {
 
 .field {
   width: 100%;
+  height: $form-field-height;
 }
 
 .form-prominent {
@@ -76,15 +77,11 @@ input[type=radio] {
 }
 
 .dropdown-field {
-  width: auto;
-  height: 1.2rem;
+  // width: auto;
+  margin: 0;
 }
 
 .dropdown-label {
-  display: block;
+  // display: block;
   font-weight: normal;
-}
-
-input[type=radio].dropdown-field {
-  margin: 0 $space-1 0 0;
 }

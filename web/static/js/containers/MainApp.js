@@ -431,43 +431,40 @@ class MainApp extends Component {
         <ViewSwitcherDropdown className="ml1">
           <ul className="dropdown__list">
             <li className="dropdown__list-item">
-              <label className="dropdown-label">
                 <input
                   type="radio"
+                  id="list"
                   name="currrent_view_layout"
                   checked={currentViewLayout === "list"}
                   onChange={this.handleViewLayoutChange.bind(this, "list")}
-                  className="field dropdown-field"/>
-                List
-              </label>
+                  className="dropdown-field media"/>
+                <label htmlFor="list" className="dropdown-label content">List</label>
             </li>
             <li className="dropdown__list-item">
-              <label className="dropdown-label">
                 <input
                   type="radio"
+                  id="compact_list"
                   name="currrent_view_layout"
                   checked={currentViewLayout === "compact_list"}
                   onChange={this.handleViewLayoutChange.bind(this, "compact_list")}
-                  className="field dropdown-field"/>
-                Compact List
-              </label>
+                  className="dropdown-field media"/>
+                <label htmlFor="compact_list" className="dropdown-label content">Compact List</label>
             </li>
             <li className="dropdown__list-item">
-              <label className="dropdown-label">
                 <input
                   type="radio"
+                  id="grid"
                   name="currrent_view_layout"
                   checked={currentViewLayout === "grid"}
                   onChange={this.handleViewLayoutChange.bind(this, "grid")}
-                  className="field dropdown-field"/>
-                Grid
-              </label>
+                  className="dropdown-field media"/>
+                <label htmlFor="grid" className="dropdown-label content">Grid</label>
             </li>
-            <li className="dropdown__list-separator"></li>
+            <li className="dropdown__list-separator"/>
             <li className="dropdown__list-item" onClick={this.openEditDialog}>
-              <div className="placeholder"/>Settings
+              <div className="media"/>
+              <div className="content">Settings</div>
             </li>
-
           </ul>
         </ViewSwitcherDropdown>
         <span className={spinnerCls}>
