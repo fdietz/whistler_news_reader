@@ -86,6 +86,7 @@ $item-list-secondary-color: $gray-3;
     max-height: 4rem;
     overflow: hidden;
     color: $item-list-secondary-color;
+    word-break: break-word;
   }
 
 }
