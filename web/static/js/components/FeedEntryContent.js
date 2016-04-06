@@ -12,6 +12,8 @@ class FeedEntryContent extends Component {
 
   constructor(props) {
     super(props);
+
+    this.shouldScrollToTop = false;
   }
 
   componentDidMount() {
@@ -22,13 +24,15 @@ class FeedEntryContent extends Component {
   componentDidUpdate() {
     const { entry } = this.props;
 
-    if (entry) {
+    if (entry && this.shouldScrollToTop) {
       this.scrollableAncestor.scrollTop = 0;
+      this.shouldScrollToTop = false;
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.entry.id !== this.props.entry.id) {
+      this.shouldScrollToTop = true;
       this.initTimer();
     }
   }
