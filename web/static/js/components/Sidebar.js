@@ -185,6 +185,7 @@ class Sidebar extends Component {
       <div className="sidebar">
         <div className="sidebar-header">
           <div className="logo">whistle'r</div>
+          <div className="subtitle">news reader</div>
         </div>
         <div className="sidebar-content">
           <div className="sidebar-actions">

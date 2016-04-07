@@ -28,10 +28,20 @@ $sidebar-color: $gray;
 .sidebar-header {
   background-color: $red;
   border-bottom: 1px solid $darken-1;
+  justify-content: center;
 
   .logo {
     font-size: 2rem;
     color: #fff;
+  }
+
+  .subtitle {
+    margin-bottom: $space-2;
+    overflow: hidden;
+    font-size: .8rem;
+    color: $white;
+    white-space: nowrap;
+    align-self: flex-end;
   }
 }
 
