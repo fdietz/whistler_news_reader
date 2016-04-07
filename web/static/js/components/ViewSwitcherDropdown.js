@@ -21,10 +21,10 @@ class ViewSwitcherDropdown extends Component {
 
     this.toggleActive = this.toggleActive.bind(this);
     this.onWindowClick = this.onWindowClick.bind(this);
-    this.onDropdownClick = this.onDropdownClick.bind(this);
   }
 
-  toggleActive() {
+  toggleActive(event) {
+    event.stopPropagation();
     this.toggle();
   }
 
@@ -36,14 +36,13 @@ class ViewSwitcherDropdown extends Component {
     window.removeEventListener("click", this.onWindowClick);
   }
 
-  onDropdownClick(event) {
-    this.hide();
-  }
-
   render() {
     const { children, className } = this.props;
     const { active } = this.state;
     const cls = classNames("dropdown-container", className);
+    const dropdownCls = classNames("dropdown", {
+      hidden: !active
+    });
 
     return (
       <div className={cls}>
@@ -52,11 +51,9 @@ class ViewSwitcherDropdown extends Component {
           {!active && <ArrowDownSVGIcon color="light-gray" size="small"/>}
           {active && <ArrowUpSVGIcon color="light-gray" size="small"/>}
         </Button>
-        {active &&
-          <div className="dropdown" onClick={this.onDropdownClick}>
+          <div className={dropdownCls} ref="dropdown">
             {children}
           </div>
-        }
       </div>
     );
   }
@@ -74,8 +71,16 @@ class ViewSwitcherDropdown extends Component {
   }
 
   onWindowClick(event) {
-    const dropdown = ReactDOM.findDOMNode(this);
-    if (event.target !== dropdown && !dropdown.contains(event.target) && this.state.active) {
+    const dropdownContainer = ReactDOM.findDOMNode(this);
+    const dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
+
+    if (event.target !== dropdownContainer &&
+        !dropdownContainer.contains(event.target) &&
+        this.state.active) {
+      this.hide();
+    }
+
+    if (this.state.active && dropdown.contains(event.target)) {
       this.hide();
     }
   }

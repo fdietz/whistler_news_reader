@@ -6,12 +6,19 @@
   position: absolute;
   top: 100%;
   left: 0;
+  margin-top: -1px;
   z-index: 10;
 
+  display: block;
   background-color: $white;
   border: 1px solid $border-color;
   border-radius: $border-radius;
   box-shadow: 2px 2px 2px 0 $darken-2;
+
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .dropdown__list {
@@ -24,7 +31,8 @@
   display: flex;
   width: 100%;
   padding: .2em $space-2;
-  font-size: .9rem;
+  font-size: .8rem;
+  line-height: 1rem;
   white-space: nowrap;
   cursor: pointer;
   align-items: center;
@@ -41,8 +49,8 @@
   }
 
   .content {
-    flex: 1 1;
     cursor: inherit;
+    flex: 1 1;
   }
 }
 
