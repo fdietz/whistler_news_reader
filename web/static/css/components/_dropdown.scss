@@ -1,8 +1,25 @@
-.dropdown-container {
+.dropdown {
   position: relative;
 }
 
-.dropdown {
+.dropdown__trigger {
+
+  .arrow-up {
+    display: none;
+  }
+
+  &.active {
+    .arrow-up {
+      display: block;
+    }
+
+    .arrow-down {
+      display: none;
+    }
+  }
+}
+
+.dropdown__content {
   position: absolute;
   top: 100%;
   left: 0;
@@ -14,7 +31,6 @@
   border: 1px solid $border-color;
   border-radius: $border-radius;
   box-shadow: 2px 2px 2px 0 $darken-2;
-
 
   &.hidden {
     display: none;

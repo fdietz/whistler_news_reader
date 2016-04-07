@@ -6,7 +6,7 @@ import { findScrollableAncestor } from "../utils/dom";
 class FeedEntryContent extends Component {
 
   static propTypes = {
-    entry: PropTypes.object.isRequired,
+    entry: PropTypes.object,
     onEntryShown: PropTypes.func
   };
 

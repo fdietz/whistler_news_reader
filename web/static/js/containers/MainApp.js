@@ -15,11 +15,10 @@ import NewCategoryDialog from "../containers/NewCategoryDialog";
 import EditDialog from "../containers/EditDialog";
 
 import Button from "../components/Button";
-// import ToggleButton from "../components/ToggleButton";
+import DropdownTrigger from "../components/DropdownTrigger";
+import DropdownContent from "../components/DropdownContent";
 import ButtonGroup from "../components/ButtonGroup";
-// import Dropdown from "../components/Dropdown";
-// import DropdownContainer from "../components/DropdownContainer";
-import ViewSwitcherDropdown from "../components/ViewSwitcherDropdown";
+import Dropdown from "../components/Dropdown";
 
 import Icon from "../components/Icon";
 import {
@@ -29,7 +28,10 @@ import {
   ArrowLeftBoldSVGIcon,
   ArrowRightBoldSVGIcon,
   EarthSVGIcon,
-  ResizeEnlargeSVGIcon
+  ResizeEnlargeSVGIcon,
+  CogSVGIcon,
+  ArrowDownSVGIcon,
+  ArrowUpSVGIcon
 } from "../components/SVGIcon";
 
 import InfiniteScroll from "../components/InfiniteScroll";
@@ -459,45 +461,64 @@ class MainApp extends Component {
             <TrashSVGIcon color="light-gray" size="small"/>
           </Button>
         </ButtonGroup>
-        <ViewSwitcherDropdown className="ml1">
-          <ul className="dropdown__list">
-            <li className="dropdown__list-item">
-                <input
-                  type="radio"
-                  id="list"
-                  name="currrent_view_layout"
-                  checked={currentViewLayout === "list"}
-                  onChange={this.handleViewLayoutChange.bind(this, "list")}
-                  className="dropdown-field media"/>
-                <label htmlFor="list" className="dropdown-label content">List</label>
-            </li>
-            <li className="dropdown__list-item">
-                <input
-                  type="radio"
-                  id="compact_list"
-                  name="currrent_view_layout"
-                  checked={currentViewLayout === "compact_list"}
-                  onChange={this.handleViewLayoutChange.bind(this, "compact_list")}
-                  className="dropdown-field media"/>
-                <label htmlFor="compact_list" className="dropdown-label content">Compact List</label>
-            </li>
-            <li className="dropdown__list-item">
-                <input
-                  type="radio"
-                  id="grid"
-                  name="currrent_view_layout"
-                  checked={currentViewLayout === "grid"}
-                  onChange={this.handleViewLayoutChange.bind(this, "grid")}
-                  className="dropdown-field media"/>
-                <label htmlFor="grid" className="dropdown-label content">Grid</label>
-            </li>
-            <li className="dropdown__list-separator"/>
-            <li className="dropdown__list-item" onClick={this.openEditDialog}>
-              <div className="media"/>
-              <div className="content">Settings</div>
-            </li>
-          </ul>
-        </ViewSwitcherDropdown>
+        <Dropdown className="ml1">
+          <DropdownTrigger className="btn btn-header">
+            <CogSVGIcon color="light-gray" size="small"/>
+            <ArrowDownSVGIcon color="light-gray" size="small" className="arrow-down"/>
+            <ArrowUpSVGIcon color="light-gray" size="small" className="arrow-up"/>
+          </DropdownTrigger>
+          <DropdownContent>
+            <ul className="dropdown__list">
+              <li
+                className="dropdown__list-item"
+                onClick={this.handleViewLayoutChange.bind(this, "list")}>
+                  <input
+                    type="radio"
+                    id="list"
+                    name="currrent_view_layout"
+                    checked={currentViewLayout === "list"}
+                    className="dropdown-field media"/>
+                  <label
+                    htmlFor="list"
+                    className="dropdown-label content">List</label>
+              </li>
+              <li
+                className="dropdown__list-item"
+                onClick={this.handleViewLayoutChange.bind(this, "compact_list")}>
+                  <input
+                    type="radio"
+                    id="compact_list"
+                    name="currrent_view_layout"
+                    checked={currentViewLayout === "compact_list"}
+                    className="dropdown-field media"/>
+                  <label
+                    htmlFor="compact_list"
+                    className="dropdown-label
+                    content">Compact List</label>
+              </li>
+              <li
+                className="dropdown__list-item"
+                onClick={this.handleViewLayoutChange.bind(this, "grid")}>
+                  <input
+                    type="radio"
+                    id="grid"
+                    name="currrent_view_layout"
+                    checked={currentViewLayout === "grid"}
+                    className="dropdown-field media"/>
+                  <label
+                    htmlFor="grid"
+                    className="dropdown-label content">Grid</label>
+              </li>
+              <li className="dropdown__list-separator"/>
+              <li
+                className="dropdown__list-item"
+                onClick={this.openEditDialog}>
+                <div className="media"/>
+                <div className="content">Settings</div>
+              </li>
+            </ul>
+          </DropdownContent>
+        </Dropdown>
         {currentViewLayout === "grid" &&
           <ButtonGroup className="btn-group-rounded ml2">
             <Button type="header" onClick={this.previousEntry}>
