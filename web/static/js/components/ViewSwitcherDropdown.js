@@ -45,7 +45,7 @@ class ViewSwitcherDropdown extends Component {
     });
 
     return (
-      <div className={cls}>
+      <div className={cls} ref="dropdownContainer">
         <Button type="header" onClick={this.toggleActive}>
           <CogSVGIcon color="light-gray" size="small"/>
           {!active && <ArrowDownSVGIcon color="light-gray" size="small"/>}
@@ -71,7 +71,7 @@ class ViewSwitcherDropdown extends Component {
   }
 
   onWindowClick(event) {
-    const dropdownContainer = ReactDOM.findDOMNode(this);
+    const dropdownContainer = ReactDOM.findDOMNode(this.refs.dropdownContainer);
     const dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
 
     if (event.target !== dropdownContainer &&

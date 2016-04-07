@@ -6,10 +6,10 @@
   position: absolute;
   top: 100%;
   left: 0;
-  margin-top: -1px;
   z-index: 10;
-
   display: block;
+  margin-top: -1px;
+
   background-color: $white;
   border: 1px solid $border-color;
   border-radius: $border-radius;
@@ -30,7 +30,7 @@
 .dropdown__list-item {
   display: flex;
   width: 100%;
-  padding: .2em $space-2;
+  padding: .4em $space-2;
   font-size: .8rem;
   line-height: 1rem;
   white-space: nowrap;
