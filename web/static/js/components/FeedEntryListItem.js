@@ -29,13 +29,13 @@ class FeedEntryListItem extends Component {
     return (
       <div className={cls} onClick={onClick}>
         <div className="item-row">
+          <div className="entry-title">{title}</div>
+          <div className="entry-summary">{summary}</div>
           <div className="meta">
             <div className="feed-title">{feed.title}</div>
             <span className="circle"></span>
             <span className="published">{relativeDateTime}</span>
           </div>
-          <div className="entry-title">{title}</div>
-          <div className="entry-summary">{summary}</div>
         </div>
       </div>
     );

@@ -46,8 +46,8 @@ $entry-list-secondary-color: $gray-3;
 }
 
 .item.no-more-content {
-  flex-direction: column;
   text-align: center;
+  flex-direction: column;
 
   .smile {
     font-size: 2rem;
@@ -63,8 +63,8 @@ $entry-list-secondary-color: $gray-3;
 
   .meta {
     display: flex;
-    font-size: .8rem;
-    color: $entry-list-secondary-color;
+    font-size: .7rem;
+    color: $darken-4;
     align-items: center;
 
     .feed-title {
@@ -85,7 +85,6 @@ $entry-list-secondary-color: $gray-3;
 
     .published {
       margin-left: auto;
-      font-size: .7rem;
       text-align: right;
     }
 
@@ -99,7 +98,7 @@ $entry-list-secondary-color: $gray-3;
   }
 
   .entry-summary {
-    max-height: 4rem;
+    max-height: 2.7rem;
     overflow: hidden;
     color: $entry-list-secondary-color;
     word-break: break-word;
