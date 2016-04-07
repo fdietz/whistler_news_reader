@@ -39,7 +39,7 @@ class FeedEntryGridItem extends Component {
     const date = new Date(published);
     const relativeDateTime = DateTimeHelper.timeDifference(date);
     const imageUrl = this.extractUrl(content);
-    const imageStyle = { "background-image": `url(${imageUrl})`};
+    const imageStyle = { backgroundImage: `url(${imageUrl})` };
 
     return (
       <div className={cls} onClick={onClick}>
