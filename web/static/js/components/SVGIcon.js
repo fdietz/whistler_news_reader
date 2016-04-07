@@ -3,7 +3,7 @@ import SVGComponent from "./SVGComponent";
 
 const COLORS = {
   white: "#FAFAFF",
-  gray: "#798ca7",
+  gray: "#8CA2C1",
   "light-gray": "#98B0D2",
   black: "#555"
 };
