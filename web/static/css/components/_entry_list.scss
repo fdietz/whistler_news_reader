@@ -14,10 +14,6 @@ $entry-list-secondary-color: $gray-3;
     .entry-summary {
       display: none;
     }
-
-    .entry-title {
-      margin-bottom: 0;
-    }
   }
 }
 
@@ -90,7 +86,6 @@ $entry-list-secondary-color: $gray-3;
   }
 
   .entry-title {
-    margin-bottom: .3rem;
     font-size: .9rem;
     font-weight: 600;
     line-height: 1.2rem;
@@ -98,10 +93,12 @@ $entry-list-secondary-color: $gray-3;
   }
 
   .entry-summary {
-    max-height: 1.8rem;
+    max-height: 2rem;
+    margin-top: .3rem;
+    margin-bottom: .2rem;
     overflow: hidden;
     font-size: .8rem;
-    line-height: .9rem;
+    line-height: 1rem;
     color: $entry-list-secondary-color;
     word-break: break-word;
   }

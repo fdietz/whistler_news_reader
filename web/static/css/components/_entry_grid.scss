@@ -14,12 +14,11 @@ $entry-grid-secondary-color: $gray-3;
 .entry-grid__item {
   display: flex;
   padding: $space-1;
-  margin: 0 $space-1 $space-1 0;
+  margin: 0 $space-2 $space-2 0;
   color: $entry-grid-color;
   cursor: pointer;
   background-color: $entry-grid-bg-color;
   border-radius: $border-radius;
-  flex: 0 0 24%;
   flex-direction: column;
 
   &.selected {
@@ -31,7 +30,7 @@ $entry-grid-secondary-color: $gray-3;
   }
 
   &.unread {
-    .caption .meta .circle {
+    .entry-grid__caption .meta .circle {
       display: inline-block;
     }
   }
