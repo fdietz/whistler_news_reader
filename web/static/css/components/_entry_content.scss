@@ -1,0 +1,85 @@
+.feed-entry-content {
+  max-width: 640px;
+  padding: $space-3;
+  margin-right: auto;
+  margin-left: auto;
+  color: $black-3;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.feed-entry-content__header {
+  margin-bottom: .5rem;
+
+  .title {
+    margin: 0;
+
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+.feed-entry-content__subheader {
+  margin-bottom: 1.5rem;
+
+  font-size: .8rem;
+  color: $entry-list-secondary-color;
+}
+
+.feed-entry-content__content {
+  font-family: $font-family-serif;
+  font-size: .8rem;
+  font-weight: 300;
+  line-height: 1.3rem;
+  letter-spacing: .01rem;
+  text-rendering: optimizeLegibility;
+  white-space: normal;
+
+  p {
+    margin-top: 0;
+    margin-bottom: $space-2;
+  }
+
+  strong {
+    font-weight: 400;
+  }
+
+  hr {
+    margin-top: 0;
+    margin-bottom: $space-2;
+    border: 1px solid $darken-2;
+  }
+
+  img {
+    height: auto;
+    max-width: 100%;
+    margin-top: 0;
+    margin-bottom: $space-2;
+    border-radius: $border-radius;
+  }
+
+  img + caption,
+  img + .caption {
+    margin-top: -$space-2;
+  }
+
+  blockquote,
+  q {
+    display: block;
+    padding: $space-2;
+    margin-bottom: $space-2;
+    font-size: .9rem;
+    background-color: rgba(0, 0, 0, .03);
+    border-right: 2px solid transparent;
+    border-left: 2px solid $darken-1;
+    quotes: "“" "”" "‘" "’";
+  }
+
+  // hide ugly feedburner feed links
+  .feedflare {
+    display: none;
+  }
+}

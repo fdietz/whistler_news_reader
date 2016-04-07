@@ -57,16 +57,16 @@ class FeedEntryContent extends Component {
 
   render() {
     return (
-      <div className="item-content">
-        <div className="header">
+      <div className="feed-entry-content">
+        <div className="feed-entry-content__header">
           <h2 className="title">
             <a href={this.props.entry.url} target="_blank">{this.props.entry.title}</a>
           </h2>
         </div>
-        <div className="subheader">
+        <div className="feed-entry-content__subheader">
           {this.props.entry.feed.title} by {this.props.entry.author} / {this.props.entry.published}
         </div>
-        <div className="item-content-content" dangerouslySetInnerHTML={this.rawContent()}/>
+        <div className="feed-entry-content__content" dangerouslySetInnerHTML={this.rawContent()}/>
       </div>
     );
   }
