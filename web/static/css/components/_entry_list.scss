@@ -17,7 +17,6 @@ $entry-list-secondary-color: $gray-3;
 
     .entry-title {
       margin-bottom: 0;
-      font-size: .9rem;;
     }
   }
 }
@@ -92,14 +91,17 @@ $entry-list-secondary-color: $gray-3;
 
   .entry-title {
     margin-bottom: .3rem;
-    font-size: 1rem;
+    font-size: .9rem;
     font-weight: 600;
+    line-height: 1.2rem;
     flex: 1;
   }
 
   .entry-summary {
-    max-height: 2.7rem;
+    max-height: 1.8rem;
     overflow: hidden;
+    font-size: .8rem;
+    line-height: .9rem;
     color: $entry-list-secondary-color;
     word-break: break-word;
   }

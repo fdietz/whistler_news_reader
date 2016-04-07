@@ -1,5 +1,5 @@
 $entry-grid-color: $black-3;
-$entry-grid-bg-color: #FFF;
+$entry-grid-bg-color: $gray-2;
 $entry-grid-hover-bg-color: $white;
 $entry-grid-secondary-color: $gray-3;
 
@@ -13,14 +13,11 @@ $entry-grid-secondary-color: $gray-3;
 
 .entry-grid__item {
   display: flex;
-  // width: 12rem;
-  // height: 12rem;
   padding: $space-1;
   margin: 0 $space-1 $space-1 0;
   color: $entry-grid-color;
   cursor: pointer;
   background-color: $entry-grid-bg-color;
-  border: 1px solid $gray-4;
   border-radius: $border-radius;
   flex: 0 0 24%;
   flex-direction: column;
@@ -66,7 +63,6 @@ $entry-grid-secondary-color: $gray-3;
 
   .meta {
     display: flex;
-    margin-top: .2rem;
     font-size: .7rem;
     color: $darken-4;
     align-items: center;
