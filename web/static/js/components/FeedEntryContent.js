@@ -17,8 +17,12 @@ class FeedEntryContent extends Component {
   }
 
   componentDidMount() {
+    const { entry } = this.props;
+
     this.scrollableAncestor = findScrollableAncestor(ReactDOM.findDOMNode(this));
     this.initTimer();
+
+    if (entry) this.updateLinksWithTargetBlank();
   }
 
   componentDidUpdate() {
@@ -28,6 +32,8 @@ class FeedEntryContent extends Component {
       this.scrollableAncestor.scrollTop = 0;
       this.shouldScrollToTop = false;
     }
+
+    if (entry) this.updateLinksWithTargetBlank();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -39,6 +45,13 @@ class FeedEntryContent extends Component {
 
   componentWillUnmount() {
     if (this.timeout) clearTimeout(this.timeout);
+  }
+
+  updateLinksWithTargetBlank() {
+    const anchors = ReactDOM.findDOMNode(this).getElementsByTagName("a");
+    for (let i=0; i<anchors.length; i++) {
+      anchors[i].setAttribute("target", "_blank");
+    }
   }
 
   initTimer() {
