@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router";
+import { Route, Redirect } from "react-router";
 
 // import Welcome from "../containers/Welcome";
 import MainApp from "../containers/MainApp";
@@ -16,11 +16,13 @@ export default (store) => (
    <Route path="/sign_up" component={SignUp}/>
    <Route path="/sign_in" component={SessionNew}/>
 
+   <Redirect from="/" to="/all"/>
+
    <Route path="/" component={AuthenticatedContainer}>
-     <Route path="all" component={MainApp}/>
-     <Route path="today" component={MainApp}/>
-     <Route path="feeds/:id" component={MainApp}/>
-     <Route path="categories/:id" component={MainApp}/>
+     <Route path="/all" component={MainApp}/>
+     <Route path="/today" component={MainApp}/>
+     <Route path="/feeds/:id" component={MainApp}/>
+     <Route path="/categories/:id" component={MainApp}/>
     </Route>
 
    <Route path="patterns" component={Patterns}/>
