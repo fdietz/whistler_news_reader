@@ -1,5 +1,4 @@
 import React, { PropTypes, Component, cloneElement } from "react";
-import ReactDOM from "react-dom";
 import classNames from "classnames";
 
 import DropdownTrigger from "./DropdownTrigger";
@@ -86,8 +85,8 @@ class Dropdown extends Component {
   }
 
   onWindowClick(event) {
-    const dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
-    const dropdownContent = ReactDOM.findDOMNode(this.refs.dropdownContent);
+    const dropdown = this.refs.dropdown;
+    const dropdownContent = this.refs.dropdownContent;
 
     if (event.target !== dropdown &&
         !dropdown.contains(event.target) &&
