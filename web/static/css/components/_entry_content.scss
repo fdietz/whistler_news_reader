@@ -70,12 +70,15 @@
   q {
     display: block;
     padding: $space-2;
-    margin-bottom: $space-2;
-    font-size: .9rem;
+    margin: 0 0 $space-2 0;
     background-color: rgba(0, 0, 0, .03);
     border-right: 2px solid transparent;
     border-left: 2px solid $darken-1;
     quotes: "“" "”" "‘" "’";
+
+    p:last-child {
+      margin-bottom: 0;
+    }
   }
 
   // hide ugly feedburner feed links
