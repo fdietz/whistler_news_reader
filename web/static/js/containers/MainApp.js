@@ -315,7 +315,7 @@ class MainApp extends Component {
     const { feedsActions, categoriesActions } = this.props;
     const params = this.requestParams(this.props);
     if (params.feed_id) {
-      feedsActions.requeastRemoveFeed(+params.feed_id);
+      feedsActions.requestRemoveFeed(+params.feed_id);
     } else if (params.category_id) {
       categoriesActions.requestRemoveCategory(+params.category_id);
     }
