@@ -1,4 +1,6 @@
 import React, { PropTypes, Component, cloneElement } from "react";
+import ReactDOM from "react-dom";
+
 import classNames from "classnames";
 
 import DropdownTrigger from "./DropdownTrigger";
@@ -27,7 +29,6 @@ class Dropdown extends Component {
 
   toggleActive(event) {
     event.preventDefault();
-    event.stopPropagation();
     this.toggle();
   }
 
@@ -86,15 +87,15 @@ class Dropdown extends Component {
 
   onWindowClick(event) {
     const dropdown = this.refs.dropdown;
-    const dropdownContent = this.refs.dropdownContent;
+    const dropdownContent = ReactDOM.findDOMNode(this.refs.dropdownContent);
 
-    if (event.target !== dropdown &&
-        !dropdown.contains(event.target) &&
-        this.state.active) {
+    // click outside
+    if (this.state.active && !dropdown.contains(event.target)) {
       this.hide();
     }
 
-    if (this.state.active && dropdownContent.contains(event.target)) {
+    // click inside
+    if (this.state.active && dropdownContent && dropdownContent.contains(event.target)) {
       this.hide();
     }
   }
