@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
-import { push } from "react-router-redux";
+import { routerActions } from "react-router-redux";
 import classNames from "classnames";
 
 import LayoutPane from "../components/LayoutPane";
@@ -45,36 +46,16 @@ import { getSortedFeeds, getSortedCategories } from "../redux/selectors";
 
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
-import {
-  requestFetchEntries,
-  requestFetchMoreEntries,
-  requestRefreshEntries,
-  requestMarkEntryAsRead,
-  requestMarkAllEntriesAsRead
-} from "../redux/modules/entries";
-
-import {
-  decrementUnreadCount,
-  resetUnreadCount,
-  requestFetchFeeds,
-  requestRemoveFeed,
-  requestUpdateFeedCategory
-} from "../redux/modules/feeds";
-
-import {
-  requestFetchCategories,
-  toggleExpandCategory,
-  requestRemoveCategory
-} from "../redux/modules/categories";
-
-import { requestSignOut } from "../redux/modules/user";
-import { selectEntry } from "../redux/modules/currentEntry";
-import { changeSidebarSelection } from "../redux/modules/currentSidebarSelection";
+import * as UserActions from "../redux/modules/user";
+import * as EntriesActions from "../redux/modules/entries";
+import * as FeedsActions from "../redux/modules/feeds";
+import * as CategoriesActions from "../redux/modules/categories";
+import * as CurrentEntryActions from "../redux/modules/currentEntry";
+import * as CurrentSidebarSelectionActions from "../redux/modules/currentSidebarSelection";
 
 class MainApp extends Component {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     entries: PropTypes.shape({
       items: PropTypes.array.isRequired,
       isLoading: PropTypes.bool.isRequired,
@@ -96,7 +77,15 @@ class MainApp extends Component {
       type: PropTypes.string.isRequired
     }),
     location: PropTypes.object.isRequired,
-    currentSidebarSelection: PropTypes.object.isRequired
+    currentSidebarSelection: PropTypes.object.isRequired,
+
+    // actions
+    userActions: PropTypes.object.isRequired,
+    feedsActions: PropTypes.object.isRequired,
+    categoriesActions: PropTypes.object.isRequired,
+    entriesActions: PropTypes.object.isRequired,
+    currentEntryActions: PropTypes.object.isRequired,
+    currentSidebarSelectionActions: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -128,7 +117,7 @@ class MainApp extends Component {
     this.handleOnPreviousFeed = this.handleOnPreviousFeed.bind(this);
 
     // used in sidebar
-    this.handleSignOut = this.handleSignOut.bind(this);
+    // this.handleSignOut = this.handleSignOut.bind(this);
     this.handleOnCategoryExpandClick = this.handleOnCategoryExpandClick.bind(this);
     this.handleOnAddCategoryClick = this.handleOnAddCategoryClick.bind(this);
     this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
@@ -143,15 +132,20 @@ class MainApp extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {
+      feedsActions,
+      categoriesActions,
+      currentSidebarSelectionActions,
+      entriesActions
+    } = this.props;
 
-    dispatch(requestFetchFeeds()).then(() => {
-      dispatch(requestFetchCategories()).then(() => {
-        dispatch(changeSidebarSelection(this.sidebarSelectionParams(this.props)));
+    feedsActions.requestFetchFeeds().then(() => {
+      categoriesActions.requestFetchCategories().then(() => {
+        currentSidebarSelectionActions(this.sidebarSelectionParams(this.props));
       });
     });
 
-    dispatch(requestFetchEntries(this.requestParams(this.props)))
+    entriesActions.requestFetchEntries(this.requestParams(this.props))
     .then(() => {
       this.firstEntry();
     });
@@ -168,12 +162,12 @@ class MainApp extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatch } = this.props;
+    const { currentSidebarSelectionActions, entriesActions } = this.props;
 
     // if we changed routes...
     if (nextProps.location.key !== this.props.location.key) {
-      dispatch(changeSidebarSelection(this.sidebarSelectionParams(nextProps)));
-      dispatch(requestFetchEntries(this.requestParams(nextProps)))
+      currentSidebarSelectionActions.changeSidebarSelection(this.sidebarSelectionParams(nextProps));
+      entriesActions.requestFetchEntries(this.requestParams(nextProps))
       .then(() => {
         this.firstEntry();
       });
@@ -218,29 +212,29 @@ class MainApp extends Component {
   }
 
   loadMore() {
-    const { dispatch, entries } = this.props;
+    const { entriesActions, entries } = this.props;
     if (entries.hasMoreEntries && !entries.isLoading) {
       let oldestPublishedEntry = entries.items[entries.items.length-1].published;
       let params = Object.assign(this.requestParams(this.props), {
         last_published: oldestPublishedEntry
       });
-      dispatch(requestFetchMoreEntries(params));
+      entriesActions.requestFetchMoreEntries(params);
     }
   }
 
   refreshEntries() {
-    const { dispatch } = this.props;
-    dispatch(requestRefreshEntries(this.requestParams(this.props)))
+    const { entriesActions, feedsActions } = this.props;
+    entriesActions.requestRefreshEntries(this.requestParams(this.props))
       .then(() => {
-        dispatch(requestFetchFeeds());
+        feedsActions.requestFetchFeeds();
       });
   }
 
   nextEntry() {
-    const { dispatch, entries } = this.props;
+    const { currentEntryActions, entries } = this.props;
     if (this.isNextEntry()) {
       const entry = entries.items[this.currentIndex()+1];
-      dispatch(selectEntry({ entry: entry }));
+      currentEntryActions.selectEntry({ entry: entry });
     } else {
       this.loadMore().then(() => {
         this.nextEntry();
@@ -249,10 +243,10 @@ class MainApp extends Component {
   }
 
   firstEntry() {
-    const { dispatch, entries } = this.props;
+    const { currentEntryActions, entries } = this.props;
     if (entries.items.length > 0) {
       const entry = entries.items[0];
-      dispatch(selectEntry({ entry: entry }));
+      currentEntryActions.selectEntry({ entry: entry });
     }
   }
 
@@ -267,10 +261,10 @@ class MainApp extends Component {
   }
 
   previousEntry() {
-    const { dispatch, entries } = this.props;
+    const { currentEntryActions, entries } = this.props;
     if (this.isPreviousEntry()) {
       const entry = entries.items[this.currentIndex()-1];
-      dispatch(selectEntry({ entry: entry }));
+      currentEntryActions.selectEntry({ entry: entry });
     }
   }
 
@@ -287,25 +281,25 @@ class MainApp extends Component {
   }
 
   handleEntryShown(entry) {
-    const { dispatch} = this.props;
-    dispatch(requestMarkEntryAsRead(entry)).then(() => {
-      dispatch(decrementUnreadCount({ id: entry.feed.id }));
+    const { entriesActions, feedsActions } = this.props;
+    entriesActions.requestMarkEntryAsRead(entry).then(() => {
+      feedsActions.decrementUnreadCount({ id: entry.feed.id });
     });
   }
 
   markAsRead() {
-    const { dispatch} = this.props;
+    const { feedsActions, categoriesActions, entriesActions } = this.props;
     const params = this.requestParams(this.props);
 
-    dispatch(requestMarkAllEntriesAsRead(params)).then(() => {
+    entriesActions.requestMarkAllEntriesAsRead(params).then(() => {
       if (params.feed_id === "all" || params.feed_id === "today") {
-        dispatch(requestFetchFeeds()).then(() => {
-          dispatch(requestFetchCategories());
+        feedsActions.requestFetchFeeds().then(() => {
+          categoriesActions.requestFetchCategories();
         });
       } else if (params.feed_id) {
-        dispatch(resetUnreadCount({ id: +params.feed_id }));
+        feedsActions.resetUnreadCount({ id: +params.feed_id });
       } else if (params.category_id) {
-        dispatch(resetUnreadCount({ category_id: +params.category_id }));
+        feedsActions.resetUnreadCount({ category_id: +params.category_id });
       }
     });
   }
@@ -322,42 +316,34 @@ class MainApp extends Component {
     window.open(this.props.currentEntry.url, "_blank");
   }
 
-  handleSignOut(event) {
-    event.preventDefault();
-    const { dispatch } = this.props;
-    dispatch(requestSignOut());
-  }
-
   handleOnRemove() {
-    const { dispatch } = this.props;
+    const { feedsActions, categoriesActions } = this.props;
     const params = this.requestParams(this.props);
     if (params.feed_id) {
-      dispatch(requestRemoveFeed(+params.feed_id));
+      feedsActions.requeastRemoveFeed(+params.feed_id);
     } else if (params.category_id) {
-      dispatch(requestRemoveCategory(+params.category_id));
+      categoriesActions.requestRemoveCategory(+params.category_id);
     }
   }
 
   handleOnNextFeed(path) {
-    const { dispatch } = this.props;
-    dispatch(push(path));
+    routerActions.push(path);
   }
 
   handleOnPreviousFeed(path) {
-    const { dispatch } = this.props;
-    dispatch(push(path));
+    routerActions.push(path);
   }
 
   handleOnCategoryExpandClick(category, event) {
     event.preventDefault();
-    const { dispatch } = this.props;
-    dispatch(toggleExpandCategory({ id: category.id }));
+    const { categoriesActions } = this.props;
+    categoriesActions.toggleExpandCategory({ id: category.id });
   }
 
   handleOnFeedDrop(feedId, categoryId) {
-    const { dispatch } = this.props;
-    dispatch(requestUpdateFeedCategory(feedId, categoryId)).then(() => {
-      dispatch(push(`/feeds/${feedId}`));
+    const { categoriesActions } = this.props;
+    categoriesActions.requestUpdateFeedCategory(feedId, categoryId).then(() => {
+      routerActions.push(`/feeds/${feedId}`);
     });
   }
 
@@ -383,18 +369,18 @@ class MainApp extends Component {
   }
 
   handleSelectCurrentEntry(entry) {
-    const { dispatch } = this.props;
+    const { currentEntryActions } = this.props;
     const { currentViewLayout } = this.state;
 
-    dispatch(selectEntry({ entry: entry }));
+    currentEntryActions.selectEntry({ entry: entry });
     if (currentViewLayout === "grid") {
       this.openEntryEmbedSite();
     }
   }
 
   render() {
-    const { dispatch, entries, categories, feeds, currentUser,
-      currentEntry, currentPath, notification } = this.props;
+    const { entries, categories, feeds, currentUser,
+      currentEntry, currentPath, notification, userActions } = this.props;
 
     const { currentViewLayout } = this.state;
 
@@ -575,7 +561,7 @@ class MainApp extends Component {
           currentPathname={currentPath}
           currentUser={currentUser}
           onAddClick={this.openNewFeedModal}
-          onSignOutClick={this.handleSignOut}
+          userActions={userActions}
           onNextClick={this.handleOnNextFeed}
           onPreviousClick={this.handleOnPreviousFeed}
           onCategoryExpandClick={this.handleOnCategoryExpandClick}
@@ -664,4 +650,15 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps)(MainApp);
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators(UserActions, dispatch),
+    entriesActions: bindActionCreators(EntriesActions, dispatch),
+    feedsActions: bindActionCreators(FeedsActions, dispatch),
+    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
+    currentEntryActions: bindActionCreators(CurrentEntryActions, dispatch),
+    currentSidebarSelectionActions: bindActionCreators(CurrentSidebarSelectionActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainApp);

@@ -28,7 +28,7 @@ class Sidebar extends Component {
     currentPathname: PropTypes.string.isRequired,
     currentUser: PropTypes.object.isRequired,
     onAddClick: PropTypes.func.isRequired,
-    onSignOutClick: PropTypes.func.isRequired,
+    userActions: PropTypes.object.isRequired,
     onNextClick: PropTypes.func.isRequired,
     onPreviousClick: PropTypes.func.isRequired,
     onCategoryExpandClick: PropTypes.func.isRequired,
@@ -42,6 +42,8 @@ class Sidebar extends Component {
     this.onNextClick = debounce(this.onNextClick.bind(this), 100);
     this.onPreviousClick = debounce(this.onPreviousClick.bind(this), 100);
     this.onAddClick = this.onAddClick.bind(this);
+
+    this.onSignOutClick = this.onSignOutClick.bind(this);
   }
 
   renderFeed(feed) {
@@ -177,8 +179,13 @@ class Sidebar extends Component {
     this.props.onAddClick();
   }
 
+  onSignOutClick(event) {
+    event.preventDefault();
+    this.props.userActions.requestSignOut();
+  }
+
   render() {
-    const { feeds, categories, currentUser, onSignOutClick } = this.props;
+    const { feeds, categories, currentUser } = this.props;
     const feedsWithoutCategory = feeds.filter((feed) => !feed.category_id);
 
     return (
@@ -216,7 +223,7 @@ class Sidebar extends Component {
           </div>
           <div className="meta">
             <div className="author">{currentUser.first_name} {currentUser.last_name}</div>
-            <a href="#" onClick={onSignOutClick}>Logout</a>
+            <a href="#" onClick={this.onSignOutClick}>Logout</a>
           </div>
         </div>
       </div>
