@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import { routerActions } from "react-router-redux";
 import { Link } from "react-router";
 import classNames from "classnames";
 import debounce from "lodash.debounce";
@@ -29,11 +30,9 @@ class Sidebar extends Component {
     currentUser: PropTypes.object.isRequired,
     onAddClick: PropTypes.func.isRequired,
     userActions: PropTypes.object.isRequired,
-    onNextClick: PropTypes.func.isRequired,
-    onPreviousClick: PropTypes.func.isRequired,
-    onCategoryExpandClick: PropTypes.func.isRequired,
-    onAddCategoryClick: PropTypes.func.isRequired,
-    onFeedDrop: PropTypes.func.isRequired
+    feedsActions: PropTypes.object.isRequired,
+    categoriesActions: PropTypes.object.isRequired,
+    onAddCategoryClick: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -44,10 +43,13 @@ class Sidebar extends Component {
     this.onAddClick = this.onAddClick.bind(this);
 
     this.onSignOutClick = this.onSignOutClick.bind(this);
+
+    this.onCategoryExpandClick = this.onCategoryExpandClick.bind(this);
+    this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
   }
 
   renderFeed(feed) {
-    const { currentPathname, onFeedDrop } = this.props;
+    const { currentPathname } = this.props;
     const path = `/feeds/${feed.id}`;
     const key = `feeds-${feed.id}`;
     const active = path === currentPathname;
@@ -56,7 +58,12 @@ class Sidebar extends Component {
     const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
 
     return (
-      <FeedDragSource key={key} className={listItemCls} feed={feed} active={active} onDrop={onFeedDrop}>
+      <FeedDragSource
+        key={key}
+        className={listItemCls}
+        feed={feed}
+        active={active}
+        onDrop={this.handleOnFeedDrop}>
         <div className="sidebar-nav-list__meta">
           <div className="icon-placeholder"></div>
           <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
@@ -88,7 +95,7 @@ class Sidebar extends Component {
   }
 
   renderCategory(category, feeds) {
-    const { currentPathname, onCategoryExpandClick } = this.props;
+    const { currentPathname } = this.props;
     const path = `/categories/${category.id}`;
     const key = `category-${category.id}`;
     const active = path === currentPathname;
@@ -107,7 +114,7 @@ class Sidebar extends Component {
           <a
             href="#"
             className="sidebar-nav-list__expand-toggle"
-            onClick={onCategoryExpandClick.bind(this, category)}>
+            onClick={this.onCategoryExpandClick.bind(this, category)}>
             {category.expanded && <ArrowDownSVGIcon color={currentColor}/>}
             {!category.expanded && <ArrowRightSVGIcon color={currentColor}/>}
          </a>
@@ -163,14 +170,14 @@ class Sidebar extends Component {
   onNextClick() {
     if (this.currentPathIndex+1 < this.paths.length) {
       const path = this.paths[this.currentPathIndex+1];
-      this.props.onNextClick(path);
+      routerActions.push(path);
     }
   }
 
   onPreviousClick() {
     if (this.currentPathIndex-1 >= 0) {
       const path = this.paths[this.currentPathIndex-1];
-      this.props.onPreviousClick(path);
+      routerActions.push(path);
     }
   }
 
@@ -182,6 +189,19 @@ class Sidebar extends Component {
   onSignOutClick(event) {
     event.preventDefault();
     this.props.userActions.requestSignOut();
+  }
+
+  onCategoryExpandClick(category, event) {
+    event.preventDefault();
+    const { categoriesActions } = this.props;
+    categoriesActions.toggleExpandCategory({ id: category.id });
+  }
+
+  handleOnFeedDrop(feedId, categoryId) {
+    const { feedsActions } = this.props;
+    feedsActions.requestUpdateFeedCategory(feedId, categoryId).then(() => {
+      routerActions.push(`/feeds/${feedId}`);
+    });
   }
 
   render() {

@@ -112,15 +112,10 @@ class MainApp extends Component {
     this.previousEntry = debounce(this.previousEntry.bind(this), 100);
     this.openEntryEmbedSite = debounce(this.openEntryEmbedSite.bind(this), 100);
 
-    this.handleOnRemove = this.handleOnRemove.bind(this);
-    this.handleOnNextFeed = this.handleOnNextFeed.bind(this);
-    this.handleOnPreviousFeed = this.handleOnPreviousFeed.bind(this);
 
     // used in sidebar
-    // this.handleSignOut = this.handleSignOut.bind(this);
-    this.handleOnCategoryExpandClick = this.handleOnCategoryExpandClick.bind(this);
+    this.handleOnRemove = this.handleOnRemove.bind(this);
     this.handleOnAddCategoryClick = this.handleOnAddCategoryClick.bind(this);
-    this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
     this.closeAddCategoryDialog = this.closeAddCategoryDialog.bind(this);
 
     this.openEditDialog = this.openEditDialog.bind(this);
@@ -326,27 +321,6 @@ class MainApp extends Component {
     }
   }
 
-  handleOnNextFeed(path) {
-    routerActions.push(path);
-  }
-
-  handleOnPreviousFeed(path) {
-    routerActions.push(path);
-  }
-
-  handleOnCategoryExpandClick(category, event) {
-    event.preventDefault();
-    const { categoriesActions } = this.props;
-    categoriesActions.toggleExpandCategory({ id: category.id });
-  }
-
-  handleOnFeedDrop(feedId, categoryId) {
-    const { categoriesActions } = this.props;
-    categoriesActions.requestUpdateFeedCategory(feedId, categoryId).then(() => {
-      routerActions.push(`/feeds/${feedId}`);
-    });
-  }
-
   handleOnAddCategoryClick(event) {
     event.preventDefault();
     this.setState({ addCategoryDialogIsOpen: true });
@@ -380,7 +354,8 @@ class MainApp extends Component {
 
   render() {
     const { entries, categories, feeds, currentUser,
-      currentEntry, currentPath, notification, userActions } = this.props;
+      currentEntry, currentPath, notification, userActions,
+    categoriesActions, feedsActions } = this.props;
 
     const { currentViewLayout } = this.state;
 
@@ -562,11 +537,10 @@ class MainApp extends Component {
           currentUser={currentUser}
           onAddClick={this.openNewFeedModal}
           userActions={userActions}
-          onNextClick={this.handleOnNextFeed}
-          onPreviousClick={this.handleOnPreviousFeed}
-          onCategoryExpandClick={this.handleOnCategoryExpandClick}
-          onAddCategoryClick={this.handleOnAddCategoryClick}
-          onFeedDrop={this.handleOnFeedDrop}/>
+          feedsActions={feedsActions}
+          categoriesActions={categoriesActions}
+          routerActions={routerActions}
+          onAddCategoryClick={this.handleOnAddCategoryClick}/>
 
           {currentViewLayout === "list" &&
             <LayoutMasterSplit>
