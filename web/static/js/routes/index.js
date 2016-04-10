@@ -1,7 +1,6 @@
 import React from "react";
-import { Route, Redirect } from "react-router";
+import { Route, IndexRedirect } from "react-router";
 
-// import Welcome from "../containers/Welcome";
 import MainApp from "../containers/MainApp";
 import Patterns from "../containers/Patterns";
 
@@ -16,9 +15,10 @@ export default (store) => (
    <Route path="/sign_up" component={SignUp}/>
    <Route path="/sign_in" component={SessionNew}/>
 
-   <Redirect from="/" to="/all"/>
 
    <Route path="/" component={AuthenticatedContainer}>
+     <IndexRedirect to="/all"/>
+
      <Route path="/all" component={MainApp}/>
      <Route path="/today" component={MainApp}/>
      <Route path="/feeds/:id" component={MainApp}/>
