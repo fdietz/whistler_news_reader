@@ -41,18 +41,21 @@ const EntryListToolbar = ({
     <ButtonGroup className="btn-group-rounded">
         <Button
           type="header"
-          onClick={onMarkAsReadClick}>
+          onClick={onMarkAsReadClick}
+          title="Mark all stories as read">
           <CheckmarkSVGIcon color="light-gray" size="small"/>
         </Button>
         <Button
           type="header"
-          onClick={onRefreshEntriesClick}>
+          onClick={onRefreshEntriesClick}
+          title="Fetch new stories">
           <CycleSVGIcon color="light-gray" size="small"/>
         </Button>
         <Button
           type="header"
           onClick={onRemoveFeedOrCategoryClick}
-          disabled={isFeedOrCategorySelected}>
+          disabled={isFeedOrCategorySelected}
+          title="Delete selected feed or category">
           <TrashSVGIcon color="light-gray" size="small"/>
         </Button>
       </ButtonGroup>

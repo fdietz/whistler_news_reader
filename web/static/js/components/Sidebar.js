@@ -144,7 +144,8 @@ class Sidebar extends Component {
           <a
             href="#"
             className="sidebar-nav-list__name action"
-            onClick={this.onNewCategoryClick}>Category</a>
+            onClick={this.onNewCategoryClick}
+            title="Add new category">Category</a>
         </div>
       </li>
     );
@@ -225,7 +226,8 @@ class Sidebar extends Component {
             <Button
               onClick={this.onAddClick}
               type="primary"
-              expand={true}>+ Subscriptions</Button>
+              expand={true}
+              title="Add new Subscription">+ Subscriptions</Button>
           </div>
 
           <div className="sidebar-nav-list">

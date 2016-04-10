@@ -23,13 +23,15 @@ const EntryContentToolbar = ({
         <Button
           type="header"
           onClick={onPreviousEntryClick}
-          disabled={!currentEntry.hasPreviousEntry}>
+          disabled={!currentEntry.hasPreviousEntry}
+          title="Select previous story">
           <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
         </Button>
         <Button
           type="header"
           onClick={onNextEntryClick}
-          disabled={!currentEntry.hasNextEntry}>
+          disabled={!currentEntry.hasNextEntry}
+          title="Select next story">
           <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
         </Button>
       </ButtonGroup>
@@ -37,13 +39,15 @@ const EntryContentToolbar = ({
         <Button
           type="header"
           onClick={onOpenEntryContentModalClick}
-          disabled={!currentEntry.entry}>
+          disabled={!currentEntry.entry}
+          title="Open story in large preview">
           <ResizeEnlargeSVGIcon color="light-gray" size="small"/>
         </Button>
         <Button
           type="header"
           onClick={onOpenExternalClick}
-          disabled={!currentEntry.entry}>
+          disabled={!currentEntry.entry}
+          title="Open story in new browser tab or window">
           <EarthSVGIcon color="light-gray" size="small"/>
         </Button>
       </ButtonGroup>

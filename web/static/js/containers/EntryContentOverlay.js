@@ -80,21 +80,24 @@ class EntryContentOverlay extends Component {
               <Button
                 type="header"
                 onClick={onPreviousClick}
-                disabled={!currentEntry.hasPreviousEntry}>
+                disabled={!currentEntry.hasPreviousEntry}
+                title="Select previous story">
                 <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
               </Button>
               <Button
                 type="header"
                 onClick={onNextClick}
-                disabled={!currentEntry.hasNextEntry}>
+                disabled={!currentEntry.hasNextEntry}
+                title="Select next story">
                 <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
               </Button>
             </ButtonGroup>
             <ButtonGroup className="btn-group-rounded ml2">
               <Button
-                type="header" 
+                type="header"
                 onClick={onOpenExternalClick}
-                disabled={!currentEntry.entry}>
+                disabled={!currentEntry.entry}
+                title="Open story in new browser tab or window">
                 <EarthSVGIcon color="light-gray" size="small"/>
               </Button>
             </ButtonGroup>
