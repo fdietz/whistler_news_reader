@@ -94,7 +94,7 @@ class EntryContentOverlay extends Component {
         </div>
 
         <div className="entry-content-overlay-content">
-            <FeedEntryContent entry={currentEntry}/>
+            <FeedEntryContent entry={currentEntry.entry}/>
         </div>
       </Modal>
     );

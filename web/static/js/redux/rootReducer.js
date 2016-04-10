@@ -11,6 +11,7 @@ import notification from "./modules/notification";
 import user from "./modules/user";
 import categories from "./modules/categories";
 import currentSidebarSelection from "./modules/currentSidebarSelection";
+import modals from "./modules/modals";
 
 export default combineReducers({
   feedForm,
@@ -23,5 +24,6 @@ export default combineReducers({
   notification,
   user,
   currentSidebarSelection,
+  modals,
   routing: routerReducer
 });

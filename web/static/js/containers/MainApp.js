@@ -38,6 +38,7 @@ import * as FeedsActions from "../redux/modules/feeds";
 import * as CategoriesActions from "../redux/modules/categories";
 import * as CurrentEntryActions from "../redux/modules/currentEntry";
 import * as CurrentSidebarSelectionActions from "../redux/modules/currentSidebarSelection";
+import * as ModalsActions from "../redux/modules/modals";
 
 import { getSortedFeeds, getSortedCategories } from "../redux/selectors";
 
@@ -68,6 +69,7 @@ class MainApp extends Component {
     }),
     location: PropTypes.object.isRequired,
     currentSidebarSelection: PropTypes.object.isRequired,
+    modals: PropTypes.object.isRequired,
 
     // actions
     userActions: PropTypes.object.isRequired,
@@ -75,43 +77,32 @@ class MainApp extends Component {
     categoriesActions: PropTypes.object.isRequired,
     entriesActions: PropTypes.object.isRequired,
     currentEntryActions: PropTypes.object.isRequired,
-    currentSidebarSelectionActions: PropTypes.object.isRequired
+    currentSidebarSelectionActions: PropTypes.object.isRequired,
+    modalsActions: PropTypes.object.isRequired
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      newFeedModalIsOpen: false,
-      entryContentOverlayIsOpen: false,
-      addCategoryDialogIsOpen: false,
-      editDialogIsOpen: false,
       currentViewLayout: "list"
     };
 
     this.refreshEntries = this.refreshEntries.bind(this);
-    this.openNewFeedModal = this.openNewFeedModal.bind(this);
-    this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
     this.handleEntryShown = this.handleEntryShown.bind(this);
     this.markAsRead = this.markAsRead.bind(this);
-    this.closeEntryContentOverlay = this.closeEntryContentOverlay.bind(this);
     this.openExternal = this.openExternal.bind(this);
 
     this.nextEntry = this.nextEntry.bind(this);
     this.previousEntry = this.previousEntry.bind(this);
-    this.openEntryEmbedSite = this.openEntryEmbedSite.bind(this);
+    this.openEntryContentModal = this.openEntryContentModal.bind(this);
 
     this.debouncedNextEntry = debounce(this.nextEntry, 100);
     this.debouncedPreviousEntry = debounce(this.previousEntry, 100);
-    this.debouncedOpenEntryEmbedSite = debounce(this.openEntryEmbedSite, 100);
+    this.debouncedOpenEntryContentModal = debounce(this.openEntryContentModal, 100);
 
     // used in sidebar
     this.handleOnRemove = this.handleOnRemove.bind(this);
-    this.handleOnAddCategoryClick = this.handleOnAddCategoryClick.bind(this);
-    this.closeAddCategoryDialog = this.closeAddCategoryDialog.bind(this);
-
-    this.openEditDialog = this.openEditDialog.bind(this);
-    this.closeEditDialog = this.closeEditDialog.bind(this);
 
     this.handleViewLayoutChange = this.handleViewLayoutChange.bind(this);
 
@@ -137,7 +128,7 @@ class MainApp extends Component {
 
     bindHotKey("nextEntry", () => this.debouncedNextEntry());
     bindHotKey("previousEntry", () => this.debouncedPreviousEntry());
-    bindHotKey("openEntry", () => this.debouncedOpenEntryEmbedSite());
+    bindHotKey("openEntry", () => this.debouncedOpenEntryContentModal());
   }
 
   componentWillUnmount() {
@@ -225,14 +216,6 @@ class MainApp extends Component {
     currentEntryActions.requestPreviousEntry();
   }
 
-  openNewFeedModal() {
-    this.setState({ newFeedModalIsOpen: true });
-  }
-
-  closeNewFeedModal() {
-    this.setState({ newFeedModalIsOpen: false });
-  }
-
   handleEntryShown(entry) {
     const { entriesActions, feedsActions } = this.props;
     entriesActions.requestMarkEntryAsRead(entry).then(() => {
@@ -257,12 +240,9 @@ class MainApp extends Component {
     });
   }
 
-  openEntryEmbedSite() {
-    this.setState({ entryContentOverlayIsOpen: true });
-  }
-
-  closeEntryContentOverlay() {
-    this.setState({ entryContentOverlayIsOpen: false });
+  openEntryContentModal() {
+    const { modalsActions } = this.props;
+    modalsActions.openEntryContentModal();
   }
 
   openExternal() {
@@ -280,41 +260,24 @@ class MainApp extends Component {
     }
   }
 
-  handleOnAddCategoryClick(event) {
-    event.preventDefault();
-    this.setState({ addCategoryDialogIsOpen: true });
-  }
-
-  closeAddCategoryDialog() {
-    this.setState({ addCategoryDialogIsOpen: false });
-  }
-
-  openEditDialog() {
-    this.setState({ editDialogIsOpen: true });
-  }
-
-  closeEditDialog() {
-    this.setState({ editDialogIsOpen: false });
-  }
-
   handleViewLayoutChange(value) {
     this.setState({ currentViewLayout: value });
   }
 
   handleSelectCurrentEntry(entry) {
-    const { currentEntryActions } = this.props;
+    const { currentEntryActions, modalsActions } = this.props;
     const { currentViewLayout } = this.state;
 
     currentEntryActions.selectEntry({ entry: entry });
     if (currentViewLayout === "grid") {
-      this.openEntryEmbedSite();
+      modalsActions.openEntryContentModal();
     }
   }
 
   render() {
     const { entries, categories, feeds, currentUser,
-      currentEntry, currentPath, notification, userActions,
-      categoriesActions, feedsActions, entriesActions } = this.props;
+      currentEntry, currentPath, notification, modals, userActions,
+      categoriesActions, feedsActions, entriesActions, modalsActions } = this.props;
 
     const { currentViewLayout } = this.state;
 
@@ -425,7 +388,7 @@ class MainApp extends Component {
               <li className="dropdown__list-separator"/>
               <li
                 className="dropdown__list-item"
-                onClick={this.openEditDialog}>
+                onClick={modalsActions.openEditFeedOrCategoryModal}>
                 <div className="media"/>
                 <div className="content">Settings</div>
               </li>
@@ -444,7 +407,7 @@ class MainApp extends Component {
         }
         {currentViewLayout === "grid" &&
           <ButtonGroup className="btn-group-rounded ml2">
-            <Button type="header" onClick={this.openEntryEmbedSite}>
+            <Button type="header" onClick={modalsActions.openEntryContentModal}>
               <ResizeEnlargeSVGIcon color="light-gray" size="small"/>
             </Button>
             <Button type="header" onClick={this.openExternal}>
@@ -469,7 +432,7 @@ class MainApp extends Component {
           </Button>
         </ButtonGroup>
         <ButtonGroup className="btn-group-rounded ml2">
-          <Button type="header" onClick={this.openEntryEmbedSite}>
+          <Button type="header" onClick={modalsActions.openEntryContentModal}>
             <ResizeEnlargeSVGIcon color="light-gray" size="small"/>
           </Button>
           <Button type="header" onClick={this.openExternal}>
@@ -487,12 +450,12 @@ class MainApp extends Component {
           categories={categories.items}
           currentPathname={currentPath}
           currentUser={currentUser}
-          onAddClick={this.openNewFeedModal}
+          onAddClick={modalsActions.openNewFeedModal}
           userActions={userActions}
           feedsActions={feedsActions}
           categoriesActions={categoriesActions}
           routerActions={routerActions}
-          onAddCategoryClick={this.handleOnAddCategoryClick}/>
+          onAddCategoryClick={modalsActions.openNewCategoryModal}/>
 
           {currentViewLayout === "list" &&
             <LayoutMasterSplit>
@@ -531,31 +494,31 @@ class MainApp extends Component {
           <Notification {...notification}/>
         }
 
-        {this.state.newFeedModalIsOpen &&
+        {modals.newFeedModalIsOpen &&
           <NewFeedDialog
-            isOpen={this.state.newFeedModalIsOpen}
-            onClose={this.closeNewFeedModal}/>
+            isOpen={modals.newFeedModalIsOpen}
+            onClose={modalsActions.closeNewFeedModal}/>
         }
 
-        {this.state.entryContentOverlayIsOpen &&
+        {modals.entryContentModalIsOpen &&
           <EntryContentOverlay
-            isOpen={this.state.entryContentOverlayIsOpen}
-            onClose={this.closeEntryContentOverlay}
+            isOpen={modals.entryContentModalIsOpen}
+            onClose={modalsActions.closeEntryContentModal}
             onPreviousClick={this.previousEntry}
             onNextClick={this.nextEntry}
             onOpenExternalClick={this.openExternal}/>
         }
 
-        {this.state.addCategoryDialogIsOpen &&
+        {modals.newCategoryModalIsOpen &&
           <NewCategoryDialog
-            isOpen={this.state.addCategoryDialogIsOpen}
-            onClose={this.closeAddCategoryDialog}/>
+            isOpen={modals.newCategoryModalIsOpen}
+            onClose={modalsActions.closeNewCategoryModal}/>
         }
 
-        {this.state.editDialogIsOpen &&
+        {modals.editFeedOrCategoryModalIsOpen &&
           <EditDialog
-            isOpen={this.state.editDialogIsOpen}
-            onClose={this.closeEditDialog}/>
+            isOpen={modals.editFeedOrCategoryModalIsOpen}
+            onClose={modalsActions.closeEditFeedOrCategoryModal}/>
         }
       </div>
     );
@@ -572,7 +535,8 @@ function mapStateToProps(state, ownProps) {
     location: ownProps.location,
     currentPath: ownProps.location.pathname,
     notification: state.notification,
-    currentSidebarSelection: state.currentSidebarSelection
+    currentSidebarSelection: state.currentSidebarSelection,
+    modals: state.modals
   };
 }
 
@@ -583,7 +547,8 @@ function mapDispatchToProps(dispatch) {
     feedsActions: bindActionCreators(FeedsActions, dispatch),
     categoriesActions: bindActionCreators(CategoriesActions, dispatch),
     currentEntryActions: bindActionCreators(CurrentEntryActions, dispatch),
-    currentSidebarSelectionActions: bindActionCreators(CurrentSidebarSelectionActions, dispatch)
+    currentSidebarSelectionActions: bindActionCreators(CurrentSidebarSelectionActions, dispatch),
+    modalsActions: bindActionCreators(ModalsActions, dispatch)
   };
 }
 

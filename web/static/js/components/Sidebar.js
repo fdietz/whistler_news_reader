@@ -45,6 +45,7 @@ class Sidebar extends Component {
     this.onSignOutClick = this.onSignOutClick.bind(this);
 
     this.onCategoryExpandClick = this.onCategoryExpandClick.bind(this);
+    this.onNewCategoryClick = this.onNewCategoryClick.bind(this);
     this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
   }
 
@@ -143,7 +144,7 @@ class Sidebar extends Component {
           <a
             href="#"
             className="sidebar-nav-list__name action"
-            onClick={this.props.onAddCategoryClick}>Category</a>
+            onClick={this.onNewCategoryClick}>Category</a>
         </div>
       </li>
     );
@@ -195,6 +196,11 @@ class Sidebar extends Component {
     event.preventDefault();
     const { categoriesActions } = this.props;
     categoriesActions.toggleExpandCategory({ id: category.id });
+  }
+
+  onNewCategoryClick(event) {
+    event.preventDefault();
+    this.props.onAddCategoryClick();
   }
 
   handleOnFeedDrop(feedId, categoryId) {
