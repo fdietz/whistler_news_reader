@@ -25,6 +25,7 @@ $entry-list-secondary-color: $gray-3;
   cursor: pointer;
   background-color: $entry-list-bg-color;
   border-bottom: 1px solid $darken-1;
+  opacity: .7;
   flex-direction: column;
 
   &.selected {
@@ -36,6 +37,12 @@ $entry-list-secondary-color: $gray-3;
   }
 
   &.unread {
+    opacity: 1;
+
+    .entry-title {
+      font-weight: 600;
+    }
+
     .meta .circle {
       display: inline-block;
     }
@@ -43,7 +50,6 @@ $entry-list-secondary-color: $gray-3;
 
   .entry-title {
     font-size: .9rem;
-    font-weight: 600;
     line-height: 1.2rem;
     flex: 1;
   }

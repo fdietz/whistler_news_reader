@@ -20,7 +20,7 @@ class FeedEntryContent extends Component {
     const { entry } = this.props;
 
     this.scrollableAncestor = findScrollableAncestor(ReactDOM.findDOMNode(this));
-    this.initTimer();
+    this.initTimer(entry);
 
     if (entry) this.updateLinksWithTargetBlank();
   }
@@ -39,7 +39,7 @@ class FeedEntryContent extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.entry.id !== this.props.entry.id) {
       this.shouldScrollToTop = true;
-      this.initTimer();
+      this.initTimer(nextProps.entry);
     }
   }
 
@@ -54,8 +54,7 @@ class FeedEntryContent extends Component {
     }
   }
 
-  initTimer() {
-    const { entry } = this.props;
+  initTimer(entry) {
     if (this.timeout) clearTimeout(this.timeout);
 
     if (entry.unread) {
