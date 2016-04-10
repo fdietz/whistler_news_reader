@@ -39,6 +39,15 @@ export const ArrowDownSVGIcon = ({ color = "white", ...props }) => {
 };
 ArrowDownSVGIcon.propTypes = { color: PropTypes.string };
 
+export const ArrowDownBoldSVGIcon = ({ color = "white", ...props }) => {
+  return (
+    <SVGComponent {...props}>
+      <path fill={mapColor(color)} d="M15.483 8.563c-0.407 0.418-4.695 4.503-4.695 4.503-0.218 0.223-0.503 0.334-0.788 0.334s-0.571-0.111-0.788-0.334c0 0-4.288-4.085-4.696-4.503s-0.435-1.169 0-1.616c0.436-0.446 1.043-0.481 1.576 0l3.908 3.748 3.907-3.747c0.534-0.481 1.142-0.446 1.576 0 0.436 0.446 0.409 1.198 0 1.615z"></path>
+    </SVGComponent>
+  );
+};
+ArrowDownBoldSVGIcon.propTypes = { color: PropTypes.string };
+
 export const ArrowUpSVGIcon = ({ color = "white", ...props }) => {
   return (
     <SVGComponent {...props}>
@@ -47,6 +56,15 @@ export const ArrowUpSVGIcon = ({ color = "white", ...props }) => {
   );
 };
 ArrowUpSVGIcon.propTypes = { color: PropTypes.string };
+
+export const ArrowUpBoldSVGIcon = ({ color = "white", ...props }) => {
+  return (
+    <SVGComponent {...props}>
+      <path fill={mapColor(color)} d="M15.483 11.437c-0.407-0.418-4.695-4.502-4.695-4.502-0.218-0.223-0.503-0.335-0.788-0.335s-0.571 0.112-0.788 0.335c0 0-4.288 4.084-4.696 4.502s-0.435 1.17 0 1.616c0.436 0.445 1.043 0.481 1.576 0l3.908-3.747 3.907 3.747c0.534 0.481 1.142 0.445 1.576 0 0.436-0.447 0.409-1.199 0-1.616z"></path>
+    </SVGComponent>
+  );
+};
+ArrowUpBoldSVGIcon.propTypes = { color: PropTypes.string };
 
 export const ArrowRightSVGIcon = ({ color = "white", ...props }) => {
   return (

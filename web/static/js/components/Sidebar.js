@@ -8,8 +8,8 @@ import HTML5Backend from "react-dnd-html5-backend";
 
 import {
   HouseSVGIcon,
-  ArrowDownSVGIcon,
-  ArrowRightSVGIcon,
+  ArrowDownBoldSVGIcon,
+  ArrowRightBoldSVGIcon,
   ListSVGIcon,
   PlusSVGIcon
 } from "../components/SVGIcon";
@@ -116,8 +116,8 @@ class Sidebar extends Component {
             href="#"
             className="sidebar-nav-list__expand-toggle"
             onClick={this.onCategoryExpandClick.bind(this, category)}>
-            {category.expanded && <ArrowDownSVGIcon color={currentColor}/>}
-            {!category.expanded && <ArrowRightSVGIcon color={currentColor}/>}
+            {category.expanded && <ArrowDownBoldSVGIcon color={currentColor}/>}
+            {!category.expanded && <ArrowRightBoldSVGIcon color={currentColor}/>}
          </a>
          <Link to={path} className={cls} title={category.title}>{category.title}</Link>
          {totalUnreadCount > 0 &&
