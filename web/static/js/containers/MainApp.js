@@ -3,29 +3,10 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import debounce from "lodash.debounce";
 import { routerActions } from "react-router-redux";
-import classNames from "classnames";
 
-import LayoutPane from "../components/LayoutPane";
-import LayoutHeader from "../components/LayoutHeader";
-import LayoutContent from "../components/LayoutContent";
-import LayoutMasterSplit from "../components/LayoutMasterSplit";
-import Button from "../components/Button";
-import DropdownTrigger from "../components/DropdownTrigger";
-import DropdownContent from "../components/DropdownContent";
-import ButtonGroup from "../components/ButtonGroup";
-import Dropdown from "../components/Dropdown";
-import InfiniteScroll from "../components/InfiniteScroll";
-import FeedEntryList from "../components/FeedEntryList";
-import FeedEntryGrid from "../components/FeedEntryGrid";
-import FeedEntryContent from "../components/FeedEntryContent";
 import Sidebar from "../components/Sidebar";
 import Notification from "../components/Notification";
-import NoMoreContent from "../components/NoMoreContent";
-
-import Icon from "../components/Icon";
-import { CheckmarkSVGIcon, TrashSVGIcon, CycleSVGIcon, ArrowLeftBoldSVGIcon,
-  ArrowRightBoldSVGIcon, EarthSVGIcon, ResizeEnlargeSVGIcon, CogSVGIcon,
-  ArrowDownSVGIcon, ArrowUpSVGIcon } from "../components/SVGIcon";
+import MainAppViewLayout from "../components/MainAppViewLayout";
 
 import NewFeedDialog from "../containers/NewFeedDialog";
 import EntryContentOverlay from "../containers/EntryContentOverlay";
@@ -84,12 +65,7 @@ class MainApp extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      currentViewLayout: "list"
-    };
-
     this.refreshEntries = this.refreshEntries.bind(this);
-    this.handleEntryShown = this.handleEntryShown.bind(this);
     this.markAsRead = this.markAsRead.bind(this);
     this.openExternal = this.openExternal.bind(this);
 
@@ -101,12 +77,7 @@ class MainApp extends Component {
     this.debouncedPreviousEntry = debounce(this.previousEntry, 100);
     this.debouncedOpenEntryContentModal = debounce(this.openEntryContentModal, 100);
 
-    // used in sidebar
-    this.handleOnRemove = this.handleOnRemove.bind(this);
-
-    this.handleViewLayoutChange = this.handleViewLayoutChange.bind(this);
-
-    this.handleSelectCurrentEntry = this.handleSelectCurrentEntry.bind(this);
+    this.handleOnRemoveFeedOrCategory = this.handleOnRemoveFeedOrCategory.bind(this);
   }
 
   componentDidMount() {
@@ -216,13 +187,6 @@ class MainApp extends Component {
     currentEntryActions.requestPreviousEntry();
   }
 
-  handleEntryShown(entry) {
-    const { entriesActions, feedsActions } = this.props;
-    entriesActions.requestMarkEntryAsRead(entry).then(() => {
-      feedsActions.decrementUnreadCount({ id: entry.feed.id });
-    });
-  }
-
   markAsRead() {
     const { feedsActions, categoriesActions, entriesActions } = this.props;
     const params = this.requestParams(this.props);
@@ -246,10 +210,10 @@ class MainApp extends Component {
   }
 
   openExternal() {
-    window.open(this.props.currentEntry.url, "_blank");
+    window.open(this.props.currentEntry.entry.url, "_blank");
   }
 
-  handleOnRemove() {
+  handleOnRemoveFeedOrCategory() {
     const { feedsActions, categoriesActions } = this.props;
     const params = this.requestParams(this.props);
 
@@ -260,187 +224,26 @@ class MainApp extends Component {
     }
   }
 
-  handleViewLayoutChange(value) {
-    this.setState({ currentViewLayout: value });
-  }
-
-  handleSelectCurrentEntry(entry) {
-    const { currentEntryActions, modalsActions } = this.props;
-    const { currentViewLayout } = this.state;
-
-    currentEntryActions.selectEntry({ entry: entry });
-    if (currentViewLayout === "grid") {
-      modalsActions.openEntryContentModal();
-    }
-  }
-
   render() {
-    const { entries, categories, feeds, currentUser,
-      currentEntry, currentPath, notification, modals, userActions,
-      categoriesActions, feedsActions, entriesActions, modalsActions } = this.props;
+    const {
+      entries,
+      categories,
+      feeds,
+      currentUser,
+      currentEntry,
+      currentPath,
+      notification,
+      modals
+    } = this.props;
 
-    const { currentViewLayout } = this.state;
-
-    const content = (
-      <FeedEntryContent
-        entry={currentEntry.entry}
-        onEntryShown={this.handleEntryShown}/>
-    );
-
-    let items;
-    if (currentViewLayout === "list") {
-      items = (<FeedEntryList
-        entries={entries.items}
-        currentEntry={currentEntry.entry}
-        onEntryClick={entry => this.handleSelectCurrentEntry(entry)}/>
-      );
-    } else if (currentViewLayout === "compact_list") {
-      items = (<FeedEntryList
-        entries={entries.items}
-        currentEntry={currentEntry.entry}
-        onEntryClick={entry => this.handleSelectCurrentEntry(entry)}
-        className="compact"/>
-      );
-    } else if (currentViewLayout === "grid") {
-      items = (<FeedEntryGrid
-        entries={entries.items}
-        currentEntry={currentEntry.entry}
-        onEntryClick={entry => this.handleSelectCurrentEntry(entry)}/>
-      );
-    } else {
-      throw Error(`Unknown currentViewLayout ${currentViewLayout}`);
-    }
-
-    const paginatedItems = (<InfiniteScroll
-      threshold={300}
-      loadMore={() => entriesActions.requestLoadMore(this.requestParams(this.props))}
-      hasMore={entries.hasMoreEntries}>
-      {entries.items.length > 0 && items}
-      {!entries.hasMoreEntries && <NoMoreContent/>}
-    </InfiniteScroll>);
-
-    const spinnerCls = classNames({
-      spinner: true,
-      hide: !entries.isLoading
-    });
-
-    const listHeader = (
-      <LayoutHeader>
-        <ButtonGroup className="btn-group-rounded">
-          <Button type="header" onClick={this.markAsRead}>
-            <CheckmarkSVGIcon color="light-gray" size="small"/>
-          </Button>
-          <Button type="header" onClick={this.refreshEntries}>
-            <CycleSVGIcon color="light-gray" size="small"/>
-          </Button>
-          <Button type="header" onClick={this.handleOnRemove}>
-            <TrashSVGIcon color="light-gray" size="small"/>
-          </Button>
-        </ButtonGroup>
-        <Dropdown className="ml1">
-          <DropdownTrigger className="btn btn-header">
-            <CogSVGIcon color="light-gray" size="small"/>
-            <ArrowDownSVGIcon color="light-gray" size="small" className="arrow-down"/>
-            <ArrowUpSVGIcon color="light-gray" size="small" className="arrow-up"/>
-          </DropdownTrigger>
-          <DropdownContent>
-            <ul className="dropdown__list">
-              <li
-                className="dropdown__list-item"
-                onClick={this.handleViewLayoutChange.bind(this, "list")}>
-                  <input
-                    type="radio"
-                    id="list"
-                    name="currrent_view_layout"
-                    checked={currentViewLayout === "list"}
-                    className="dropdown-field media"/>
-                  <label
-                    htmlFor="list"
-                    className="dropdown-label content">List</label>
-              </li>
-              <li
-                className="dropdown__list-item"
-                onClick={this.handleViewLayoutChange.bind(this, "compact_list")}>
-                  <input
-                    type="radio"
-                    id="compact_list"
-                    name="currrent_view_layout"
-                    checked={currentViewLayout === "compact_list"}
-                    className="dropdown-field media"/>
-                  <label
-                    htmlFor="compact_list"
-                    className="dropdown-label
-                    content">Compact List</label>
-              </li>
-              <li
-                className="dropdown__list-item"
-                onClick={this.handleViewLayoutChange.bind(this, "grid")}>
-                  <input
-                    type="radio"
-                    id="grid"
-                    name="currrent_view_layout"
-                    checked={currentViewLayout === "grid"}
-                    className="dropdown-field media"/>
-                  <label
-                    htmlFor="grid"
-                    className="dropdown-label content">Grid</label>
-              </li>
-              <li className="dropdown__list-separator"/>
-              <li
-                className="dropdown__list-item"
-                onClick={modalsActions.openEditFeedOrCategoryModal}>
-                <div className="media"/>
-                <div className="content">Settings</div>
-              </li>
-            </ul>
-          </DropdownContent>
-        </Dropdown>
-        {currentViewLayout === "grid" &&
-          <ButtonGroup className="btn-group-rounded ml2">
-            <Button type="header" onClick={this.previousEntry}>
-              <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
-            </Button>
-            <Button type="header" onClick={this.nextEntry}>
-              <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
-            </Button>
-          </ButtonGroup>
-        }
-        {currentViewLayout === "grid" &&
-          <ButtonGroup className="btn-group-rounded ml2">
-            <Button type="header" onClick={modalsActions.openEntryContentModal}>
-              <ResizeEnlargeSVGIcon color="light-gray" size="small"/>
-            </Button>
-            <Button type="header" onClick={this.openExternal}>
-              <EarthSVGIcon color="light-gray" size="small"/>
-            </Button>
-          </ButtonGroup>
-        }
-        <span className={spinnerCls}>
-          <Icon name="spinner" size="small"/>
-        </span>
-      </LayoutHeader>
-    );
-
-    const entryHeader = (
-      <LayoutHeader>
-        <ButtonGroup className="btn-group-rounded">
-          <Button type="header" onClick={this.previousEntry}>
-            <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
-          </Button>
-          <Button type="header" onClick={this.nextEntry}>
-            <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
-          </Button>
-        </ButtonGroup>
-        <ButtonGroup className="btn-group-rounded ml2">
-          <Button type="header" onClick={modalsActions.openEntryContentModal}>
-            <ResizeEnlargeSVGIcon color="light-gray" size="small"/>
-          </Button>
-          <Button type="header" onClick={this.openExternal}>
-            <EarthSVGIcon color="light-gray" size="small"/>
-          </Button>
-        </ButtonGroup>
-      </LayoutHeader>
-    );
+    const {
+      userActions,
+      categoriesActions,
+      feedsActions,
+      entriesActions,
+      currentEntryActions,
+      modalsActions
+    } = this.props;
 
     return (
       <div className="main-app-container">
@@ -456,38 +259,21 @@ class MainApp extends Component {
           modalsActions={modalsActions}
           routerActions={routerActions}/>
 
-          {currentViewLayout === "list" &&
-            <LayoutMasterSplit>
-              <LayoutPane size={30}>
-                {listHeader}
-                <LayoutContent>{paginatedItems}</LayoutContent>
-              </LayoutPane>
-              <LayoutPane size={70}>
-                {entryHeader}
-                <LayoutContent>{currentEntry.entry && content}</LayoutContent>
-              </LayoutPane>
-            </LayoutMasterSplit>
-          }
-          {currentViewLayout === "compact_list" &&
-            <LayoutMasterSplit>
-              <LayoutPane size={30}>
-                {listHeader}
-                <LayoutContent>{paginatedItems}</LayoutContent>
-              </LayoutPane>
-              <LayoutPane size={70}>
-                {entryHeader}
-                <LayoutContent>{currentEntry.entry && content}</LayoutContent>
-              </LayoutPane>
-            </LayoutMasterSplit>
-          }
-          {currentViewLayout === "grid" &&
-            <LayoutMasterSplit>
-              <LayoutPane size={100}>
-                {listHeader}
-                <LayoutContent>{paginatedItems}</LayoutContent>
-              </LayoutPane>
-            </LayoutMasterSplit>
-          }
+        <MainAppViewLayout
+          entries={entries}
+          currentEntry={currentEntry}
+          entriesActions={entriesActions}
+          currentEntryActions={currentEntryActions}
+          feedsActions={feedsActions}
+          modalsActions={modalsActions}
+          onNextEntryClick={this.nextEntry}
+          onPreviousEntryClick={this.previousEntry}
+          onOpenExternalClick={this.openExternal}
+          onMarkAsReadClick={this.markAsRead}
+          onRefreshEntriesClick={this.refreshEntries}
+          onRemoveFeedOrCategoryClick={this.handleOnRemoveFeedOrCategory}
+          onLoadMore={() => entriesActions.requestLoadMore(this.requestParams(this.props))}
+          />
 
         {notification &&
           <Notification {...notification}/>
