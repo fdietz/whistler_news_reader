@@ -206,6 +206,7 @@ class MainApp extends Component {
     return {};
   }
 
+  // TODO: refactor loadMore into action function
   loadMore() {
     const { entriesActions, entries } = this.props;
     if (entries.hasMoreEntries && !entries.isLoading) {
@@ -213,8 +214,10 @@ class MainApp extends Component {
       let params = Object.assign(this.requestParams(this.props), {
         last_published: oldestPublishedEntry
       });
-      entriesActions.requestFetchMoreEntries(params);
+      return entriesActions.requestFetchMoreEntries(params);
     }
+
+    return Promise.resolve();
   }
 
   refreshEntries() {
@@ -226,45 +229,24 @@ class MainApp extends Component {
   }
 
   nextEntry() {
-    const { currentEntryActions, entries } = this.props;
-    if (this.isNextEntry()) {
-      const entry = entries.items[this.currentIndex()+1];
-      currentEntryActions.selectEntry({ entry: entry });
+    const { currentEntryActions, currentEntry } = this.props;
+    if (currentEntry.hasNextEntry) {
+      currentEntryActions.requestNextEntry();
     } else {
       this.loadMore().then(() => {
-        this.nextEntry();
+        currentEntryActions.requestNextEntry();
       });
     }
   }
 
   firstEntry() {
-    const { currentEntryActions, entries } = this.props;
-    if (entries.items.length > 0) {
-      const entry = entries.items[0];
-      currentEntryActions.selectEntry({ entry: entry });
-    }
-  }
-
-  isNextEntry() {
-    const { entries } = this.props;
-    return this.currentIndex()+1 < entries.items.length;
-  }
-
-  currentIndex() {
-    const { entries, currentEntry } = this.props;
-    return currentEntry ? entries.items.findIndex((entry) => entry.id === currentEntry.id) : 0;
+    const { currentEntryActions } = this.props;
+    currentEntryActions.requestFirstEntry();
   }
 
   previousEntry() {
-    const { currentEntryActions, entries } = this.props;
-    if (this.isPreviousEntry()) {
-      const entry = entries.items[this.currentIndex()-1];
-      currentEntryActions.selectEntry({ entry: entry });
-    }
-  }
-
-  isPreviousEntry() {
-    return this.currentIndex()-1 >= 0;
+    const { currentEntryActions } = this.props;
+    currentEntryActions.requestPreviousEntry();
   }
 
   openNewFeedModal() {
@@ -361,7 +343,7 @@ class MainApp extends Component {
 
     const content = (
       <FeedEntryContent
-        entry={currentEntry}
+        entry={currentEntry.entry}
         onEntryShown={this.handleEntryShown}/>
     );
 
@@ -369,20 +351,20 @@ class MainApp extends Component {
     if (currentViewLayout === "list") {
       items = (<FeedEntryList
         entries={entries.items}
-        currentEntry={currentEntry}
+        currentEntry={currentEntry.entry}
         onEntryClick={entry => this.handleSelectCurrentEntry(entry)}/>
       );
     } else if (currentViewLayout === "compact_list") {
       items = (<FeedEntryList
         entries={entries.items}
-        currentEntry={currentEntry}
+        currentEntry={currentEntry.entry}
         onEntryClick={entry => this.handleSelectCurrentEntry(entry)}
         className="compact"/>
       );
     } else if (currentViewLayout === "grid") {
       items = (<FeedEntryGrid
         entries={entries.items}
-        currentEntry={currentEntry}
+        currentEntry={currentEntry.entry}
         onEntryClick={entry => this.handleSelectCurrentEntry(entry)}/>
       );
     } else {
@@ -550,7 +532,7 @@ class MainApp extends Component {
               </LayoutPane>
               <LayoutPane size={70}>
                 {entryHeader}
-                <LayoutContent>{currentEntry && content}</LayoutContent>
+                <LayoutContent>{currentEntry.entry && content}</LayoutContent>
               </LayoutPane>
             </LayoutMasterSplit>
           }
@@ -562,7 +544,7 @@ class MainApp extends Component {
               </LayoutPane>
               <LayoutPane size={70}>
                 {entryHeader}
-                <LayoutContent>{currentEntry && content}</LayoutContent>
+                <LayoutContent>{currentEntry.entry && content}</LayoutContent>
               </LayoutPane>
             </LayoutMasterSplit>
           }
