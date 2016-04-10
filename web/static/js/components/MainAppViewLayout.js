@@ -90,66 +90,59 @@ class MainAppViewLayout extends Component {
     );
 
     let items;
-    if (currentViewLayout === "list") {
-      items = (<FeedEntryList
-        entries={entries.items}
-        currentEntry={currentEntry.entry}
-        onEntryClick={entry => this.handleSelectCurrentEntry(entry)}/>
-      );
-    } else if (currentViewLayout === "compact_list") {
-      items = (<FeedEntryList
-        entries={entries.items}
-        currentEntry={currentEntry.entry}
-        onEntryClick={entry => this.handleSelectCurrentEntry(entry)}
-        className="compact"/>
+    if (currentViewLayout === "list" || currentViewLayout === "compact_list") {
+      items = (
+        <FeedEntryList
+          entries={entries.items}
+          currentEntry={currentEntry.entry}
+          onEntryClick={entry => this.handleSelectCurrentEntry(entry)}
+          className={currentViewLayout === "compact_list" ? "compact" : "" }/>
       );
     } else if (currentViewLayout === "grid") {
-      items = (<FeedEntryGrid
-        entries={entries.items}
-        currentEntry={currentEntry.entry}
-        onEntryClick={entry => this.handleSelectCurrentEntry(entry)}/>
+      items = (
+        <FeedEntryGrid
+          entries={entries.items}
+          currentEntry={currentEntry.entry}
+          onEntryClick={entry => this.handleSelectCurrentEntry(entry)}/>
       );
     } else {
       throw Error(`Unknown currentViewLayout ${currentViewLayout}`);
     }
 
-    const paginatedItems = (<InfiniteScroll
-      threshold={300}
-      loadMore={onLoadMore}
-      hasMore={entries.hasMoreEntries}>
-      {entries.items.length > 0 && items}
-      {!entries.hasMoreEntries && <NoMoreContent/>}
-    </InfiniteScroll>);
+    const paginatedItems = (
+      <InfiniteScroll
+        threshold={300}
+        loadMore={onLoadMore}
+        hasMore={entries.hasMoreEntries}>
 
-
-    const listHeader = (
-      <LayoutHeader>
-        <EntryListToolbar
-          currentViewLayout={currentViewLayout}
-          entries={entries}
-          onMarkAsReadClick={onMarkAsReadClick}
-          onRefreshEntriesClick={onRefreshEntriesClick}
-          onRemoveFeedOrCategoryClick={onRemoveFeedOrCategoryClick}
-          onViewLayoutChangeClick={this.handleViewLayoutChange}
-          onOpenEditFeedOrCategoryModalClick={modalsActions.openEditFeedOrCategoryModal}
-          onPreviousEntryClick={onPreviousEntryClick}
-          onNextEntryClick={onNextEntryClick}
-          onOpenExternalClick={onOpenExternalClick}
-          onOpenEntryContentModalClick={modalsActions.openEntryContentModal}
-          />
-
-      </LayoutHeader>
+        {entries.items.length > 0 && items}
+        {!entries.hasMoreEntries && <NoMoreContent/>}
+      </InfiniteScroll>
     );
 
-    const entryHeader = (
-      <LayoutHeader>
-        <EntryContentToolbar
-          onPreviousEntryClick={onPreviousEntryClick}
-          onNextEntryClick={onNextEntryClick}
-          onOpenExternalClick={onOpenExternalClick}
-          onOpenEntryContentModalClick={modalsActions.openEntryContentModal}
-          />
-      </LayoutHeader>
+    const entryListToolbar= (
+      <EntryListToolbar
+        currentViewLayout={currentViewLayout}
+        entries={entries}
+        onMarkAsReadClick={onMarkAsReadClick}
+        onRefreshEntriesClick={onRefreshEntriesClick}
+        onRemoveFeedOrCategoryClick={onRemoveFeedOrCategoryClick}
+        onViewLayoutChangeClick={this.handleViewLayoutChange}
+        onOpenEditFeedOrCategoryModalClick={modalsActions.openEditFeedOrCategoryModal}
+        onPreviousEntryClick={onPreviousEntryClick}
+        onNextEntryClick={onNextEntryClick}
+        onOpenExternalClick={onOpenExternalClick}
+        onOpenEntryContentModalClick={modalsActions.openEntryContentModal}
+        />
+    );
+
+    const entryContentToolbar = (
+      <EntryContentToolbar
+        onPreviousEntryClick={onPreviousEntryClick}
+        onNextEntryClick={onNextEntryClick}
+        onOpenExternalClick={onOpenExternalClick}
+        onOpenEntryContentModalClick={modalsActions.openEntryContentModal}
+        />
     );
 
     return (
@@ -157,11 +150,11 @@ class MainAppViewLayout extends Component {
         {currentViewLayout === "list" &&
           <LayoutMasterSplit>
             <LayoutPane size={30}>
-              {listHeader}
+              <LayoutHeader>{entryListToolbar}</LayoutHeader>
               <LayoutContent>{paginatedItems}</LayoutContent>
             </LayoutPane>
             <LayoutPane size={70}>
-              {entryHeader}
+              <LayoutHeader>{entryContentToolbar}</LayoutHeader>
               <LayoutContent>{currentEntry.entry && content}</LayoutContent>
             </LayoutPane>
           </LayoutMasterSplit>
@@ -169,11 +162,11 @@ class MainAppViewLayout extends Component {
         {currentViewLayout === "compact_list" &&
           <LayoutMasterSplit>
             <LayoutPane size={30}>
-              {listHeader}
+              <LayoutHeader>{entryListToolbar}</LayoutHeader>
               <LayoutContent>{paginatedItems}</LayoutContent>
             </LayoutPane>
             <LayoutPane size={70}>
-              {entryHeader}
+              <LayoutHeader>{entryContentToolbar}</LayoutHeader>
               <LayoutContent>{currentEntry.entry && content}</LayoutContent>
             </LayoutPane>
           </LayoutMasterSplit>
@@ -181,7 +174,7 @@ class MainAppViewLayout extends Component {
         {currentViewLayout === "grid" &&
           <LayoutMasterSplit>
             <LayoutPane size={100}>
-              {listHeader}
+              <LayoutHeader>{entryListToolbar}</LayoutHeader>
               <LayoutContent>{paginatedItems}</LayoutContent>
             </LayoutPane>
           </LayoutMasterSplit>
