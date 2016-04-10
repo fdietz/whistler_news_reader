@@ -28,22 +28,22 @@ class Sidebar extends Component {
     categories: PropTypes.array.isRequired,
     currentPathname: PropTypes.string.isRequired,
     currentUser: PropTypes.object.isRequired,
-    onAddClick: PropTypes.func.isRequired,
     userActions: PropTypes.object.isRequired,
     feedsActions: PropTypes.object.isRequired,
-    categoriesActions: PropTypes.object.isRequired,
-    onAddCategoryClick: PropTypes.func.isRequired
+    modalsActions: PropTypes.object.isRequired,
+    categoriesActions: PropTypes.object.isRequired
   };
 
   constructor(props) {
     super(props);
 
-    this.onNextClick = debounce(this.onNextClick.bind(this), 100);
-    this.onPreviousClick = debounce(this.onPreviousClick.bind(this), 100);
+    this.onNextClick = this.onNextClick.bind(this);
+    this.onPreviousClick = this.onPreviousClick.bind(this);
+    this.debouncedOnNextClick = debounce(this.onNextClick, 100);
+    this.debouncedOnPreviousClick = debounce(this.onPreviousClick, 100);
+
     this.onAddClick = this.onAddClick.bind(this);
-
     this.onSignOutClick = this.onSignOutClick.bind(this);
-
     this.onCategoryExpandClick = this.onCategoryExpandClick.bind(this);
     this.onNewCategoryClick = this.onNewCategoryClick.bind(this);
     this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
@@ -159,8 +159,8 @@ class Sidebar extends Component {
   }
 
   componentDidMount() {
-    bindHotKey("nextFeed", () => this.onNextClick());
-    bindHotKey("previousFeed", () => this.onPreviousClick());
+    bindHotKey("nextFeed", () => this.debouncedOnNextClick());
+    bindHotKey("previousFeed", () => this.debouncedOnPreviousClick());
   }
 
   componentWillUnmount() {
@@ -184,7 +184,7 @@ class Sidebar extends Component {
 
   onAddClick(e) {
     e.preventDefault();
-    this.props.onAddClick();
+    this.props.modalsActions.openNewFeedModal();
   }
 
   onSignOutClick(event) {
@@ -200,7 +200,7 @@ class Sidebar extends Component {
 
   onNewCategoryClick(event) {
     event.preventDefault();
-    this.props.onAddCategoryClick();
+    this.props.modalsActions.openNewCategoryModal();
   }
 
   handleOnFeedDrop(feedId, categoryId) {

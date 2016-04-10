@@ -450,12 +450,11 @@ class MainApp extends Component {
           categories={categories.items}
           currentPathname={currentPath}
           currentUser={currentUser}
-          onAddClick={modalsActions.openNewFeedModal}
           userActions={userActions}
           feedsActions={feedsActions}
           categoriesActions={categoriesActions}
-          routerActions={routerActions}
-          onAddCategoryClick={modalsActions.openNewCategoryModal}/>
+          modalsActions={modalsActions}
+          routerActions={routerActions}/>
 
           {currentViewLayout === "list" &&
             <LayoutMasterSplit>
