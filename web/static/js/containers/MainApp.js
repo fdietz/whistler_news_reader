@@ -9,42 +9,28 @@ import LayoutPane from "../components/LayoutPane";
 import LayoutHeader from "../components/LayoutHeader";
 import LayoutContent from "../components/LayoutContent";
 import LayoutMasterSplit from "../components/LayoutMasterSplit";
-
-import NewFeedDialog from "../containers/NewFeedDialog";
-import EntryContentOverlay from "../containers/EntryContentOverlay";
-import NewCategoryDialog from "../containers/NewCategoryDialog";
-import EditDialog from "../containers/EditDialog";
-
 import Button from "../components/Button";
 import DropdownTrigger from "../components/DropdownTrigger";
 import DropdownContent from "../components/DropdownContent";
 import ButtonGroup from "../components/ButtonGroup";
 import Dropdown from "../components/Dropdown";
-
-import Icon from "../components/Icon";
-import {
-  CheckmarkSVGIcon,
-  TrashSVGIcon,
-  CycleSVGIcon,
-  ArrowLeftBoldSVGIcon,
-  ArrowRightBoldSVGIcon,
-  EarthSVGIcon,
-  ResizeEnlargeSVGIcon,
-  CogSVGIcon,
-  ArrowDownSVGIcon,
-  ArrowUpSVGIcon
-} from "../components/SVGIcon";
-
 import InfiniteScroll from "../components/InfiniteScroll";
 import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryGrid from "../components/FeedEntryGrid";
 import FeedEntryContent from "../components/FeedEntryContent";
 import Sidebar from "../components/Sidebar";
 import Notification from "../components/Notification";
+import NoMoreContent from "../components/NoMoreContent";
 
-import { getSortedFeeds, getSortedCategories } from "../redux/selectors";
+import Icon from "../components/Icon";
+import { CheckmarkSVGIcon, TrashSVGIcon, CycleSVGIcon, ArrowLeftBoldSVGIcon,
+  ArrowRightBoldSVGIcon, EarthSVGIcon, ResizeEnlargeSVGIcon, CogSVGIcon,
+  ArrowDownSVGIcon, ArrowUpSVGIcon } from "../components/SVGIcon";
 
-import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
+import NewFeedDialog from "../containers/NewFeedDialog";
+import EntryContentOverlay from "../containers/EntryContentOverlay";
+import NewCategoryDialog from "../containers/NewCategoryDialog";
+import EditDialog from "../containers/EditDialog";
 
 import * as UserActions from "../redux/modules/user";
 import * as EntriesActions from "../redux/modules/entries";
@@ -52,6 +38,10 @@ import * as FeedsActions from "../redux/modules/feeds";
 import * as CategoriesActions from "../redux/modules/categories";
 import * as CurrentEntryActions from "../redux/modules/currentEntry";
 import * as CurrentSidebarSelectionActions from "../redux/modules/currentSidebarSelection";
+
+import { getSortedFeeds, getSortedCategories } from "../redux/selectors";
+
+import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
 class MainApp extends Component {
 
@@ -129,17 +119,15 @@ class MainApp extends Component {
   }
 
   componentDidMount() {
-    const {
-      feedsActions,
-      categoriesActions,
-      currentSidebarSelectionActions,
-      entriesActions
-    } = this.props;
+    const { feedsActions, categoriesActions, currentSidebarSelectionActions,
+      entriesActions } = this.props;
 
-    feedsActions.requestFetchFeeds().then(() => {
-      categoriesActions.requestFetchCategories().then(() => {
-        currentSidebarSelectionActions(this.sidebarSelectionParams(this.props));
-      });
+    Promise.all([
+      feedsActions.requestFetchFeeds(),
+      categoriesActions.requestFetchCategories()
+    ]).then(() => {
+      currentSidebarSelectionActions.changeSidebarSelection(
+        this.sidebarSelectionParams(this.props));
     });
 
     entriesActions.requestFetchEntries(this.requestParams(this.props))
@@ -284,6 +272,7 @@ class MainApp extends Component {
   handleOnRemove() {
     const { feedsActions, categoriesActions } = this.props;
     const params = this.requestParams(this.props);
+
     if (params.feed_id) {
       feedsActions.requestRemoveFeed(+params.feed_id);
     } else if (params.category_id) {
@@ -325,7 +314,7 @@ class MainApp extends Component {
   render() {
     const { entries, categories, feeds, currentUser,
       currentEntry, currentPath, notification, userActions,
-    categoriesActions, feedsActions, entriesActions } = this.props;
+      categoriesActions, feedsActions, entriesActions } = this.props;
 
     const { currentViewLayout } = this.state;
 
@@ -359,19 +348,12 @@ class MainApp extends Component {
       throw Error(`Unknown currentViewLayout ${currentViewLayout}`);
     }
 
-    const noMoreContent = (
-      <div className="item no-more-content">
-        <p className="hint">No more contents. You are all done!</p>
-        <div className="smile">:-)</div>
-      </div>
-    );
-
     const paginatedItems = (<InfiniteScroll
       threshold={300}
       loadMore={() => entriesActions.requestLoadMore(this.requestParams(this.props))}
       hasMore={entries.hasMoreEntries}>
       {entries.items.length > 0 && items}
-      {!entries.hasMoreEntries && noMoreContent}
+      {!entries.hasMoreEntries && <NoMoreContent/>}
     </InfiniteScroll>);
 
     const spinnerCls = classNames({
