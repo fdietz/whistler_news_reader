@@ -66,10 +66,27 @@ export function requestFetchMoreEntries(options = {}) {
         items: response.data.entries,
         hasMoreEntries: response.data.entries.length === params.limit
       }));
+      return Promise.resolve();
     })
     .catch((response) => {
       dispatch(fetchMoreEntries(new Error(response.data.error)));
+      return Promise.reject();
     });
+  };
+}
+
+export function requestLoadMore(requestParams) {
+  return (dispatch, getState) => {
+    const entries = getState().entries;
+
+    if (entries.hasMoreEntries && !entries.isLoading) {
+      let oldestPublishedEntry = entries.items[entries.items.length-1].published;
+      let params = { ...requestParams, last_published: oldestPublishedEntry };
+
+      return dispatch(requestFetchMoreEntries(params));
+    }
+
+    return Promise.resolve();
   };
 }
 

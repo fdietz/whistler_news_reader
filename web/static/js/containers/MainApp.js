@@ -206,18 +206,9 @@ class MainApp extends Component {
     return {};
   }
 
-  // TODO: refactor loadMore into action function
   loadMore() {
-    const { entriesActions, entries } = this.props;
-    if (entries.hasMoreEntries && !entries.isLoading) {
-      let oldestPublishedEntry = entries.items[entries.items.length-1].published;
-      let params = Object.assign(this.requestParams(this.props), {
-        last_published: oldestPublishedEntry
-      });
-      return entriesActions.requestFetchMoreEntries(params);
-    }
-
-    return Promise.resolve();
+    const { entriesActions } = this.props;
+    return entriesActions.requestLoadMore(this.requestParams(this.props));
   }
 
   refreshEntries() {
