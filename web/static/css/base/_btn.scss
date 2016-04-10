@@ -51,6 +51,12 @@ $btn-font-size-large: 1.1rem;
   outline: none;
 }
 
+.btn:disabled,
+[disabled=disabled] {
+  cursor: not-allowed;
+  opacity: .4;
+}
+
 ::-moz-focus-inner {
   padding: 0;
   border: 0;

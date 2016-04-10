@@ -15,6 +15,7 @@ import Dropdown from "../components/Dropdown";
 const EntryListToolbar = ({
   currentViewLayout,
   entries,
+  currentSidebarSelection,
   onMarkAsReadClick,
   onRefreshEntriesClick,
   onRemoveFeedOrCategoryClick,
@@ -30,16 +31,28 @@ const EntryListToolbar = ({
     hide: !entries.isLoading
   });
 
+  const isFeedOrCategorySelected = !currentSidebarSelection.selection;
+  const editFeedOrCategoryCls = classNames("dropdown__list-item", {
+    disabled: isFeedOrCategorySelected
+  });
+
   return (
   <div className="toolbar">
     <ButtonGroup className="btn-group-rounded">
-        <Button type="header" onClick={onMarkAsReadClick}>
+        <Button
+          type="header"
+          onClick={onMarkAsReadClick}>
           <CheckmarkSVGIcon color="light-gray" size="small"/>
         </Button>
-        <Button type="header" onClick={onRefreshEntriesClick}>
+        <Button
+          type="header"
+          onClick={onRefreshEntriesClick}>
           <CycleSVGIcon color="light-gray" size="small"/>
         </Button>
-        <Button type="header" onClick={onRemoveFeedOrCategoryClick}>
+        <Button
+          type="header"
+          onClick={onRemoveFeedOrCategoryClick}
+          disabled={isFeedOrCategorySelected}>
           <TrashSVGIcon color="light-gray" size="small"/>
         </Button>
       </ButtonGroup>
@@ -93,7 +106,7 @@ const EntryListToolbar = ({
             </li>
             <li className="dropdown__list-separator"/>
             <li
-              className="dropdown__list-item"
+              className={editFeedOrCategoryCls}
               onClick={onOpenEditFeedOrCategoryModalClick}>
               <div className="media"/>
               <div className="content">Settings</div>
@@ -131,6 +144,7 @@ const EntryListToolbar = ({
 EntryListToolbar.propTypes = {
   currentViewLayout: PropTypes.string.isRequired,
   entries: PropTypes.object.isRequired,
+  currentSidebarSelection: PropTypes.object.isRequired,
   onMarkAsReadClick: PropTypes.func.isRequired,
   onRefreshEntriesClick: PropTypes.func.isRequired,
   onRemoveFeedOrCategoryClick: PropTypes.func.isRequired,

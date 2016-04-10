@@ -57,6 +57,11 @@
     background-color: $darken-1;
   }
 
+  &.disabled {
+    cursor: not-allowed;
+    opacity: .4;
+  }
+
   .media {
     width: 1rem;
     margin-right: $space-1;

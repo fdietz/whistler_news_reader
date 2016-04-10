@@ -22,6 +22,7 @@ class MainAppViewLayout extends Component {
       error: PropTypes.string
     }).isRequired,
     currentEntry: PropTypes.object,
+    currentSidebarSelection: PropTypes.object,
     feedsActions: PropTypes.object.isRequired,
     entriesActions: PropTypes.object.isRequired,
     currentEntryActions: PropTypes.object.isRequired,
@@ -59,7 +60,7 @@ class MainAppViewLayout extends Component {
     const { currentEntryActions, modalsActions } = this.props;
     const { currentViewLayout } = this.state;
 
-    currentEntryActions.selectEntry({ entry: entry });
+    currentEntryActions.requestSelectEntry(entry);
     if (currentViewLayout === "grid") {
       modalsActions.openEntryContentModal();
     }
@@ -71,7 +72,7 @@ class MainAppViewLayout extends Component {
 
   render() {
     const { currentViewLayout } = this.state;
-    const { entries, currentEntry } = this.props;
+    const { entries, currentEntry, currentSidebarSelection } = this.props;
     const { modalsActions } = this.props;
     const {
       onNextEntryClick,
@@ -124,6 +125,7 @@ class MainAppViewLayout extends Component {
       <EntryListToolbar
         currentViewLayout={currentViewLayout}
         entries={entries}
+        currentSidebarSelection={currentSidebarSelection}
         onMarkAsReadClick={onMarkAsReadClick}
         onRefreshEntriesClick={onRefreshEntriesClick}
         onRemoveFeedOrCategoryClick={onRemoveFeedOrCategoryClick}
@@ -138,6 +140,7 @@ class MainAppViewLayout extends Component {
 
     const entryContentToolbar = (
       <EntryContentToolbar
+        currentEntry={currentEntry}
         onPreviousEntryClick={onPreviousEntryClick}
         onNextEntryClick={onNextEntryClick}
         onOpenExternalClick={onOpenExternalClick}

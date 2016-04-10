@@ -231,6 +231,7 @@ class MainApp extends Component {
       feeds,
       currentUser,
       currentEntry,
+      currentSidebarSelection,
       currentPath,
       notification,
       modals
@@ -262,6 +263,7 @@ class MainApp extends Component {
         <MainAppViewLayout
           entries={entries}
           currentEntry={currentEntry}
+          currentSidebarSelection={currentSidebarSelection}
           entriesActions={entriesActions}
           currentEntryActions={currentEntryActions}
           feedsActions={feedsActions}

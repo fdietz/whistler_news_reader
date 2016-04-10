@@ -55,11 +55,13 @@ class EntryContentOverlay extends Component {
         overflow: "hidden"
       },
       content: {
+        position: "absolute",
         top: "0",
         right: "0",
         left: "35%",
         bottom: "0",
         border: 0,
+        backgroundColor: "#FAFAFF",
         borderRadius: 0,
         padding: 0
       }
@@ -75,15 +77,24 @@ class EntryContentOverlay extends Component {
         <div className="entry-content-overlay-header">
           <div className="actions">
             <ButtonGroup className="btn-group-rounded">
-              <Button type="header" onClick={onPreviousClick}>
+              <Button
+                type="header"
+                onClick={onPreviousClick}
+                disabled={!currentEntry.hasPreviousEntry}>
                 <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
               </Button>
-              <Button type="header" onClick={onNextClick}>
+              <Button
+                type="header"
+                onClick={onNextClick}
+                disabled={!currentEntry.hasNextEntry}>
                 <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
               </Button>
             </ButtonGroup>
             <ButtonGroup className="btn-group-rounded ml2">
-              <Button type="header" onClick={onOpenExternalClick}>
+              <Button
+                type="header" 
+                onClick={onOpenExternalClick}
+                disabled={!currentEntry.entry}>
                 <EarthSVGIcon color="light-gray" size="small"/>
               </Button>
             </ButtonGroup>

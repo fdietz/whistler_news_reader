@@ -55,11 +55,12 @@ class FeedEntryContent extends Component {
   }
 
   initTimer() {
+    const { entry } = this.props;
     if (this.timeout) clearTimeout(this.timeout);
 
-    if (this.props.entry.unread) {
+    if (entry.unread) {
       this.timeout = setTimeout(() => {
-        if (this.props.onEntryShown) this.props.onEntryShown(this.props.entry);
+        if (this.props.onEntryShown) this.props.onEntryShown(entry);
       }, 2000);
     }
   }
@@ -69,15 +70,17 @@ class FeedEntryContent extends Component {
   }
 
   render() {
+    const { entry } = this.props;
+
     return (
       <div className="feed-entry-content">
         <div className="feed-entry-content__header">
           <h2 className="title">
-            <a href={this.props.entry.url} target="_blank">{this.props.entry.title}</a>
+            <a href={entry.url} target="_blank">{entry.title}</a>
           </h2>
         </div>
         <div className="feed-entry-content__subheader">
-          {this.props.entry.feed.title} by {this.props.entry.author} / {this.props.entry.published}
+          {entry.feed.title} by {entry.author} / {entry.published}
         </div>
         <div className="feed-entry-content__content" dangerouslySetInnerHTML={this.rawContent()}/>
       </div>
