@@ -99,7 +99,6 @@ class MainApp extends Component {
       currentViewLayout: "list"
     };
 
-    this.loadMore = this.loadMore.bind(this);
     this.refreshEntries = this.refreshEntries.bind(this);
     this.openNewFeedModal = this.openNewFeedModal.bind(this);
     this.closeNewFeedModal = this.closeNewFeedModal.bind(this);
@@ -108,10 +107,13 @@ class MainApp extends Component {
     this.closeEntryContentOverlay = this.closeEntryContentOverlay.bind(this);
     this.openExternal = this.openExternal.bind(this);
 
-    this.nextEntry = debounce(this.nextEntry.bind(this), 100);
-    this.previousEntry = debounce(this.previousEntry.bind(this), 100);
-    this.openEntryEmbedSite = debounce(this.openEntryEmbedSite.bind(this), 100);
+    this.nextEntry = this.nextEntry.bind(this);
+    this.previousEntry = this.previousEntry.bind(this);
+    this.openEntryEmbedSite = this.openEntryEmbedSite.bind(this);
 
+    this.debouncedNextEntry = debounce(this.nextEntry, 100);
+    this.debouncedPreviousEntry = debounce(this.previousEntry, 100);
+    this.debouncedOpenEntryEmbedSite = debounce(this.openEntryEmbedSite, 100);
 
     // used in sidebar
     this.handleOnRemove = this.handleOnRemove.bind(this);
@@ -145,9 +147,9 @@ class MainApp extends Component {
       this.firstEntry();
     });
 
-    bindHotKey("nextEntry", () => this.nextEntry());
-    bindHotKey("previousEntry", () => this.previousEntry());
-    bindHotKey("openEntry", () => this.openEntryEmbedSite());
+    bindHotKey("nextEntry", () => this.debouncedNextEntry());
+    bindHotKey("previousEntry", () => this.debouncedPreviousEntry());
+    bindHotKey("openEntry", () => this.debouncedOpenEntryEmbedSite());
   }
 
   componentWillUnmount() {
@@ -178,12 +180,12 @@ class MainApp extends Component {
       return {};
     } else if (params.feed_id) {
       return {
-        selection: feeds.items.find((feed) => feed.id === +params.feed_id),
+        selection: feeds.items.find(feed => feed.id === +params.feed_id),
         isFeed: true
       };
     } else if (params.category_id) {
       return {
-        selection: categories.items.find((category) => category.id === +params.category_id),
+        selection: categories.items.find(category => category.id === +params.category_id),
         isCategory: true
       };
     }
@@ -206,11 +208,6 @@ class MainApp extends Component {
     return {};
   }
 
-  loadMore() {
-    const { entriesActions } = this.props;
-    return entriesActions.requestLoadMore(this.requestParams(this.props));
-  }
-
   refreshEntries() {
     const { entriesActions, feedsActions } = this.props;
     entriesActions.requestRefreshEntries(this.requestParams(this.props))
@@ -220,11 +217,11 @@ class MainApp extends Component {
   }
 
   nextEntry() {
-    const { currentEntryActions, currentEntry } = this.props;
+    const { currentEntryActions, entriesActions, currentEntry } = this.props;
     if (currentEntry.hasNextEntry) {
       currentEntryActions.requestNextEntry();
     } else {
-      this.loadMore().then(() => {
+      entriesActions.requestLoadMore(this.requestParams(this.props)).then(() => {
         currentEntryActions.requestNextEntry();
       });
     }
@@ -328,7 +325,7 @@ class MainApp extends Component {
   render() {
     const { entries, categories, feeds, currentUser,
       currentEntry, currentPath, notification, userActions,
-    categoriesActions, feedsActions } = this.props;
+    categoriesActions, feedsActions, entriesActions } = this.props;
 
     const { currentViewLayout } = this.state;
 
@@ -371,7 +368,7 @@ class MainApp extends Component {
 
     const paginatedItems = (<InfiniteScroll
       threshold={300}
-      loadMore={this.loadMore}
+      loadMore={() => entriesActions.requestLoadMore(this.requestParams(this.props))}
       hasMore={entries.hasMoreEntries}>
       {entries.items.length > 0 && items}
       {!entries.hasMoreEntries && noMoreContent}
