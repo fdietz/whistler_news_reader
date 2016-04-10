@@ -4,13 +4,13 @@ import { Route, IndexRedirect } from "react-router";
 import MainApp from "../containers/MainApp";
 import Patterns from "../containers/Patterns";
 
-import MainLayout from "../containers/MainLayout";
+import RootLayout from "../containers/RootLayout";
 import SignUp from "../containers/SignUp";
 import SessionNew from "../containers/SessionNew";
 import AuthenticatedContainer from "../containers/AuthenticatedContainer";
 
 export default (store) => (
- <Route component={MainLayout}>
+ <Route component={RootLayout}>
 
    <Route path="/sign_up" component={SignUp}/>
    <Route path="/sign_in" component={SessionNew}/>

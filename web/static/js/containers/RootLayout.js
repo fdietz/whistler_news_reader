@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 
-class MainLayout extends Component {
+class RootLayout extends Component {
 
   static propTypes = {
     children: PropTypes.node
@@ -9,7 +9,7 @@ class MainLayout extends Component {
 
   render() {
     return (
-      <div className="main-layout">
+      <div className="root-layout">
         {this.props.children}
       </div>
     );
@@ -21,4 +21,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps)(MainLayout);
+export default connect(mapStateToProps)(RootLayout);
