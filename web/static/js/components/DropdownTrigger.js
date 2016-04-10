@@ -1,13 +1,13 @@
 import React, { PropTypes} from "react";
 import classNames from "classnames";
 
-const DropdownTrigger = ({ children, className, style, active, onClick }) => {
+const DropdownTrigger = ({ children, className, style, active, onClick, ...rest }) => {
   const cls = classNames("dropdown__trigger", className, {
     active: active
   });
 
   return (
-    <a href="#" className={cls} onClick={onClick} style={style}>
+    <a href="#" className={cls} onClick={onClick} style={style} {...rest}>
       {children}
     </a>
   );
