@@ -20,10 +20,12 @@ $entry-list-secondary-color: $gray-3;
 .entry-list__item {
   display: flex;
   padding: $space-2;
+  font-size: .9rem;
   color: $entry-list-color;
   cursor: pointer;
   background-color: $entry-list-bg-color;
   border-bottom: 1px solid $darken-1;
+  flex-direction: column;
 
   &.selected {
     background-color: $gray-2;
@@ -34,27 +36,28 @@ $entry-list-secondary-color: $gray-3;
   }
 
   &.unread {
-    .item-row .circle {
+    .meta .circle {
       display: inline-block;
     }
   }
-}
 
-.item.no-more-content {
-  text-align: center;
-  flex-direction: column;
-
-  .smile {
-    font-size: 2rem;
+  .entry-title {
+    font-size: .9rem;
+    font-weight: 600;
+    line-height: 1.2rem;
+    flex: 1;
   }
-}
 
-.item-row {
-  display: flex;
-  overflow: hidden;
-  font-size: .9rem;
-  flex: 1;
-  flex-direction: column;
+  .entry-summary {
+    max-height: 2rem;
+    margin-top: .2rem;
+    margin-bottom: .2rem;
+    overflow: hidden;
+    font-size: .8rem;
+    line-height: 1rem;
+    color: $entry-list-secondary-color;
+    word-break: break-word;
+  }
 
   .meta {
     display: flex;
@@ -82,25 +85,14 @@ $entry-list-secondary-color: $gray-3;
       margin-left: auto;
       text-align: right;
     }
-
   }
+}
 
-  .entry-title {
-    font-size: .9rem;
-    font-weight: 600;
-    line-height: 1.2rem;
-    flex: 1;
+.item.no-more-content {
+  text-align: center;
+  flex-direction: column;
+
+  .smile {
+    font-size: 2rem;
   }
-
-  .entry-summary {
-    max-height: 2rem;
-    margin-top: .2rem;
-    margin-bottom: .2rem;
-    overflow: hidden;
-    font-size: .8rem;
-    line-height: 1rem;
-    color: $entry-list-secondary-color;
-    word-break: break-word;
-  }
-
 }

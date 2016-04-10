@@ -29,8 +29,8 @@ class FeedEntryList extends Component {
               isSelected={entry && currentEntry && entry.id === currentEntry.id}
               key={entry.id}
               ref={entry.id}
-              onClick={() => onEntryClick(entry)}
-              className="entry-list__item" />);
+              onClick={() => onEntryClick(entry)}/>
+          );
         })}
       </div>
     );
