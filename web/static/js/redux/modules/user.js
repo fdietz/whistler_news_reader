@@ -39,14 +39,14 @@ export function requestSignIn(email, password) {
     };
 
     axios.post("/api/sessions", { session: data })
-      .then((response) => {
+      .then(response => {
         localStorage.setItem("phoenixAuthToken", response.data.jwt);
 
         dispatch(createSignIn({ user: response.data.user }));
 
         dispatch(push("/today"));
       })
-      .catch((response) => {
+      .catch(response => {
         dispatch(createSignIn(new Error(response.data.errors)));
       });
   };
@@ -64,7 +64,7 @@ export function requestSignOut() {
 
         dispatch(push("/sign_in"));
       })
-      .catch((response) => {
+      .catch(response => {
         console.log("response ERROR", response.data);
       });
   };
@@ -78,9 +78,13 @@ export function requestSetCurrentUser() {
 
     axios.get("/api/current_user", { headers: { Authorization: authToken } })
       .then((response) => {
-        dispatch(setCurrentUser({ user: response.data.user }));
+        if (!response.data.user) {
+          dispatch(push("/sign_in"));
+        } else {
+          dispatch(setCurrentUser({ user: response.data.user }));
+        }
       })
-      .catch(() => {
+      .catch(error => {
         dispatch(push("/sign_in"));
       });
   };
