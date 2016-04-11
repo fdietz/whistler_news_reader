@@ -8,7 +8,16 @@ test("currentEntry reducer returns default state", t => {
 });
 
 test("currentEntry reducer handles SELECT_ENTRY with payload", t => {
-  t.same(reducer(null, { type: SELECT_ENTRY, payload: { entry: { id: 1 } } }), {
-    id: 1
+  t.same(reducer(null, {
+    type: SELECT_ENTRY,
+    payload: {
+      entry: { id: 1 },
+      hasNextEntry: false,
+      hasPreviousEntry: false
+    }
+  }), {
+    entry: { id: 1 },
+    hasNextEntry: false,
+    hasPreviousEntry: false
   });
 });

@@ -2,7 +2,7 @@ import test from "ava";
 import React from "react";
 import { shallow } from "enzyme";
 import FeedEntryList from "../FeedEntryList";
-import FeedEntry from "../FeedEntry";
+import FeedEntryListItem from "../FeedEntryListItem";
 
 const props = {
   id: 1,
@@ -20,6 +20,6 @@ const props = {
 
 test("FeedEntryList renders correctly", t => {
   const wrapper = shallow(<FeedEntryList entries={[props]} currentEntry={props} onEntryClick={() => {}}/>);
-  const feedEntry = wrapper.find(FeedEntry);
+  const feedEntry = wrapper.find(FeedEntryListItem);
   t.same(feedEntry.prop("title"), "title");
 });

@@ -90,7 +90,6 @@ export default function reducer(state = initial, action) {
   if (action.type === SELECT_ENTRY) {
     return { ...state, ...action.payload };
   } else if (action.type === RESET_SELECTION) {
-    console.log("111111111")
     return initial;
   }
 
