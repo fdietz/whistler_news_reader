@@ -2,6 +2,8 @@ defmodule WhistlerNewsReader.FeedRefresher do
 
   alias WhistlerNewsReader.FeedFetcher
   alias WhistlerNewsReader.FeedParser
+  alias WhistlerNewsReader.StoreEntryHelper
+
   require Logger
 
   def refresh_all(feeds) do
@@ -11,19 +13,24 @@ defmodule WhistlerNewsReader.FeedRefresher do
   end
 
   def refresh(feed) do
-    Logger.info "Refresh feed id: #{feed.id}, title: #{feed.title}"
+    Logger.info "FeedRefresher - refreshing feed id: #{feed.id}, title: #{feed.title}"
 
-    {:ok, json_body}   = FeedFetcher.fetch(feed.feed_url)
-    {:ok, parsed_feed} = FeedParser.parse(json_body)
+    with {:ok, json_body}   <- FeedFetcher.fetch(feed.feed_url),
+         {:ok, parsed_feed} <- FeedParser.parse(json_body),
+         do: store_entries(feed, parsed_feed.entries)
+  end
 
-    Enum.each(parsed_feed.entries, fn(entry) ->
-      case WhistlerNewsReader.StoreEntryHelper.store_entry(feed, entry) do
+  defp store_entries(feed, entries) do
+    Enum.each(entries, fn(entry) ->
+      case StoreEntryHelper.store_entry(feed, entry) do
+        {:ok, :skipping} ->
+          Logger.info "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} skip"
         {:ok, _new_entry} ->
-          Logger.info "Refresh feed id: #{feed.id}, entry id: #{entry.id} success"
-        {:skipping} ->
-          Logger.info "Refresh feed id: #{feed.id}, entry id: #{entry.id} skip"
-        {:error, changeset} ->
-          Logger.info "Refresh feed id: #{feed.id}, entry id: #{entry.id} error: #{inspect changeset.errors}"
+          Logger.info "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} success"
+        {:error, %Ecto.Changeset{} = changeset} ->
+          Logger.info "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} changeset error: #{inspect changeset.errors}"
+        {:error, error} ->
+          Logger.error "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} error: #{inspect error}"
       end
     end)
   end

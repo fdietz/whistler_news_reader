@@ -14,35 +14,40 @@ defmodule WhistlerNewsReader.OpmlImport do
 
   def import(user, xml_body) do
     opml = OpmlParser.parse(xml_body)
-    Enum.each(opml, fn(category) ->
-      IO.puts category[:title]
+    Enum.each(opml, fn(category_attrs) ->
+      IO.puts category_attrs[:title]
 
-      Logger.info "OpmlImport - find or create category: #{category[:title]}"
-      c = find_or_create_category(category[:title], user)
+      Logger.info "OpmlImport - find or create category: #{category_attrs[:title]}"
+      category = find_or_create_category(category_attrs[:title], user)
 
-      Enum.each(category[:feeds], fn(feed) ->
-        Logger.info "OpmlImport - importing feed: #{feed[:title]}"
+      Enum.each(category_attrs[:feeds], fn(feed_attrs) ->
+        Logger.info "OpmlImport - importing feed: #{feed_attrs[:title]}"
 
-        case FeedImporter.import_feed(user, %{"feed_url" => feed[:xmlurl], "category_id" => c.id}) do
+        attrs = %{"feed_url" => feed_attrs[:xmlurl], "category_id" => category.id}
+        case FeedImporter.import_feed(user, attrs) do
           {:ok, imported_feed} ->
-            Logger.info "OpmlImport - success for feed_url #{feed[:xmlurl]}"
+            Logger.info "OpmlImport - success for feed_url #{feed_attrs[:xmlurl]}"
           {:error, %Ecto.Changeset{} = changeset} ->
-            Logger.error "OpmlImport - failed for feed_url #{feed[:xmlurl]} with #{inspect(changeset.errors)}"
+            Logger.error "OpmlImport - failed for feed_url #{feed_attrs[:xmlurl]} with #{inspect(changeset.errors)}"
           {:error, error} ->
-            Logger.error "OpmlImport - failed for feed_url #{feed[:xmlurl]} with #{inspect(error)}"
+            Logger.error "OpmlImport - failed for feed_url #{feed_attrs[:xmlurl]} with #{inspect(error)}"
         end
       end)
     end)
   end
 
   defp find_or_create_category(title, user) do
-    case %Category{}
-         |> Category.changeset(%{title: title, user_id: user.id})
-         |> Repo.insert do
-      {:ok, new_category} ->
-        new_category
+    case create_category(title, user) do
+      {:ok, category} ->
+        category
       {:error, changeset} ->
         Repo.get_by!(Category, title: title, user_id: user.id)
     end
+  end
+
+  defp create_category(title, user) do
+    %Category{}
+      |> Category.changeset(%{title: title, user_id: user.id})
+      |> Repo.insert
   end
 end
