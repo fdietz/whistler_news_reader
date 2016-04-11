@@ -17,10 +17,10 @@ defmodule WhistlerNewsReader.StoreEntryHelperTest do
 
   test "store_entry succeeds", %{feed: feed} do
     json_body = File.read!("test/fixtures/rss2/example1.xml")
-    parsed_feed = FeedParser.parse(json_body)
+    {:ok, parsed_feed} = FeedParser.parse(json_body)
     parsed_entry = List.first(parsed_feed.entries)
     StoreEntryHelper.store_entry(feed, parsed_entry)
-    
+
     entry = Repo.get_by!(Entry, feed_id: feed.id)
     assert entry.title, "Example item title"
     assert entry.url, "http://www.example.com/items/1.html"

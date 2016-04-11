@@ -25,17 +25,9 @@ defmodule WhistlerNewsReader.FeedImporterTest do
     {:ok, user: user}
   end
 
-  test "fetch_and_parse succeeds" do
-    json_body = File.read!("test/fixtures/rss2/example1.xml")
-    with_mock FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
-      {:ok, feed_attrs } = FeedImporter.fetch_and_parse(@feed_url)
-      assert "http://www.example.com" == feed_attrs[:url]
-    end
-  end
-
-  test "fetch_and_parse fails on HTTP not found error" do
+  test "fetch_and_parse fails on HTTP not found error", %{user: user} do
     with_mock FeedFetcher, [fetch: fn(_feed_url) -> {:error, :not_found} end] do
-      assert FeedImporter.fetch_and_parse(@not_existing_feed_url) == {:error, :not_found }
+      assert FeedImporter.import_feed(user, %{"feed_url" => @feed_url}) == {:error, :not_found}
     end
   end
 
