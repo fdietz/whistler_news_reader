@@ -14,24 +14,34 @@ defmodule WhistlerNewsReader.FeedImporter do
         {:error, :not_found}
       {:error, :not_found} ->
         {:error, :not_found}
+      {:error, :internal_error} ->
+        {:error, :internal_error}
+      {:error, :timeout} ->
+        {:error, :timeout}
+      {:error, error} ->
+        {:error, error}
     end
   end
 
   def fetch_and_parse(feed_url) do
     case FeedFetcher.fetch(feed_url) do
       {:ok, body} ->
-        {:ok, FeedParser.parse(body)}
+        FeedParser.parse(body)
       {:error, reason} ->
         {:error, reason}
     end
   end
 
   def store_feed_and_subscribe_user_in_transaction(user, parsed_attrs, feed_url, category_id) do
-    {:ok, feed} = find_or_create(parsed_attrs, feed_url)
-    case subscribe_user(user, feed, category_id) do
-      {:ok, _} ->
-        {:ok, feed}
-      {:error, changeset } ->
+    case find_or_create(parsed_attrs, feed_url) do
+      {:ok, feed} ->
+        case subscribe_user(user, feed, category_id) do
+          {:ok, _} ->
+            {:ok, feed}
+          {:error, changeset } ->
+            {:error, changeset}
+        end
+      {:error, changeset} ->
         {:error, changeset}
     end
   end
@@ -46,10 +56,7 @@ defmodule WhistlerNewsReader.FeedImporter do
       {:ok, feed} -> {:ok, feed}
       {:error, changeset} ->
         if {:feed_url, "has already been taken"} in changeset.errors do
-          feed = Feed
-          |> Feed.for_feed_url(feed_url)
-          |> Repo.all
-          |> List.first
+          feed = Feed |> Feed.for_feed_url(feed_url) |> Repo.one
           {:ok, feed}
         else
           {:error, changeset}
