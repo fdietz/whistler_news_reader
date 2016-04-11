@@ -24,6 +24,8 @@ defmodule WhistlerNewsReader.StoreEntryHelper do
       {:ok, entry} ->
         MarkAsReadHelper.mark_as_unread_entry(entry)
         {:ok, entry}
+      {:error, changeset} ->
+        {:error, changeset}
       {:skipping} ->
         {:skipping}
     end
