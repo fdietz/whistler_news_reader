@@ -16,7 +16,13 @@ import DropdownTrigger from "../components/DropdownTrigger";
 import DropdownContent from "../components/DropdownContent";
 import Dropdown from "../components/Dropdown";
 
-import * as ShareHelper from "../utils/ShareHelper";
+import {
+  MailLink,
+  TwitterLink,
+  FacebookLink,
+  GooglePlusLink,
+  PinterestLink
+} from "../components/ShareButton";
 
 const EntryContentToolbar = ({
   currentEntry,
@@ -70,14 +76,19 @@ const EntryContentToolbar = ({
           {currentEntry.entry &&
             <ul className="dropdown__list">
               <li className="dropdown__list-item">
-                <a
-                  href={ShareHelper.twitterUrl(currentEntry.entry.url)}
-                  target="_blank">Twitter</a>
+                <MailLink {...currentEntry.entry}/>
               </li>
               <li className="dropdown__list-item">
-                <a
-                  href={ShareHelper.facebookUrl(currentEntry.entry.url)}
-                  target="_blank">Facebook</a>
+                <TwitterLink {...currentEntry.entry}/>
+              </li>
+              <li className="dropdown__list-item">
+                <FacebookLink {...currentEntry.entry}/>
+              </li>
+              <li className="dropdown__list-item">
+                <GooglePlusLink {...currentEntry.entry}/>
+              </li>
+              <li className="dropdown__list-item">
+                <PinterestLink {...currentEntry.entry}/>
               </li>
             </ul>
           }
