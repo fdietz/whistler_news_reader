@@ -16,5 +16,7 @@ export default {
     } else if (elapsed < msPerMonth) {
       return (previous.getMonth()+1) + "/" + previous.getDay() + "/" + previous.getFullYear();
     }
+
+    return (previous.getMonth()+1) + "/" + previous.getDay() + "/" + previous.getFullYear();
   }
 };
