@@ -29,9 +29,9 @@ const EntryContentToolbar = ({
   onPreviousEntryClick,
   onNextEntryClick,
   onOpenExternalClick,
-  onOpenEntryContentModalClick
+  onOpenEntryContentModalClick,
+  showEntryContentModalButton = false
 }) => {
-
   return (
     <div className="toolbar">
       <ButtonGroup className="btn-group-rounded">
@@ -51,13 +51,15 @@ const EntryContentToolbar = ({
         </Button>
       </ButtonGroup>
       <ButtonGroup className="btn-group-rounded ml2">
-        <Button
-          type="header"
-          onClick={onOpenEntryContentModalClick}
-          disabled={!currentEntry.entry}
-          title="Open story in large preview">
-          <ResizeEnlargeSVGIcon color="light-gray" size="small"/>
-        </Button>
+        {showEntryContentModalButton &&
+          <Button
+            type="header"
+            onClick={onOpenEntryContentModalClick}
+            disabled={!currentEntry.entry}
+            title="Open story in large preview">
+            <ResizeEnlargeSVGIcon color="light-gray" size="small"/>
+          </Button>
+        }
         <Button
           type="header"
           onClick={onOpenExternalClick}
@@ -103,7 +105,8 @@ EntryContentToolbar.propTypes = {
   onPreviousEntryClick: PropTypes.func.isRequired,
   onNextEntryClick: PropTypes.func.isRequired,
   onOpenExternalClick: PropTypes.func.isRequired,
-  onOpenEntryContentModalClick: PropTypes.func.isRequired
+  showEntryContentModalButton: PropTypes.bool.isRequired,
+  onOpenEntryContentModalClick: PropTypes.func
 };
 
 export default EntryContentToolbar;

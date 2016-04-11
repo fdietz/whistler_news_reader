@@ -145,7 +145,7 @@ class MainAppViewLayout extends Component {
         onNextEntryClick={onNextEntryClick}
         onOpenExternalClick={onOpenExternalClick}
         onOpenEntryContentModalClick={modalsActions.openEntryContentModal}
-        />
+        showEntryContentModalButton={true}/>
     );
 
     return (

@@ -12,6 +12,7 @@ import {
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
 import FeedEntryContent from "../components/FeedEntryContent";
+import EntryContentToolbar from "../components/EntryContentToolbar";
 
 class EntryContentOverlay extends Component {
 
@@ -76,31 +77,12 @@ class EntryContentOverlay extends Component {
 
         <div className="entry-content-overlay-header">
           <div className="actions">
-            <ButtonGroup className="btn-group-rounded">
-              <Button
-                type="header"
-                onClick={onPreviousClick}
-                disabled={!currentEntry.hasPreviousEntry}
-                title="Select previous story">
-                <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
-              </Button>
-              <Button
-                type="header"
-                onClick={onNextClick}
-                disabled={!currentEntry.hasNextEntry}
-                title="Select next story">
-                <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
-              </Button>
-            </ButtonGroup>
-            <ButtonGroup className="btn-group-rounded ml2">
-              <Button
-                type="header"
-                onClick={onOpenExternalClick}
-                disabled={!currentEntry.entry}
-                title="Open story in new browser tab or window">
-                <EarthSVGIcon color="light-gray" size="small"/>
-              </Button>
-            </ButtonGroup>
+            <EntryContentToolbar
+              currentEntry={currentEntry}
+              onPreviousEntryClick={onPreviousClick}
+              onNextEntryClick={onNextClick}
+              onOpenExternalClick={onOpenExternalClick}
+            />
           </div>
           <a className="modal-close-link" onClick={this.onClose}>
             <ResizeShrinkSVGIcon color="gray" size="small"/>
