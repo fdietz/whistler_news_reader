@@ -49,6 +49,7 @@
   padding: .4em $space-2;
   font-size: .8rem;
   line-height: 1rem;
+  color: $gray;
   white-space: nowrap;
   cursor: pointer;
   align-items: center;
@@ -72,6 +73,15 @@
   .content {
     cursor: inherit;
     flex: 1 1;
+  }
+
+  a {
+    display: flex;
+    color: $gray;
+
+    svg {
+      margin-right: $space-1;
+    }
   }
 }
 
