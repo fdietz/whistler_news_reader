@@ -22,10 +22,16 @@ defmodule WhistlerNewsReader.Category do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+    |> unique_constraint(:user_id, name: :categories_user_id_title_index)
   end
 
   def for_user_id(query, user_id) do
     from p in query,
     where: p.user_id == ^user_id
+  end
+
+  def for_title(query, title) do
+    from p in query,
+    where: p.title == ^title
   end
 end

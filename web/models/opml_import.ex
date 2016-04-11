@@ -17,14 +17,11 @@ defmodule WhistlerNewsReader.OpmlImport do
     Enum.each(opml, fn(category) ->
       IO.puts category[:title]
 
-      Logger.info "OpmlImport - create category: #{category[:title]}"
-
-      c = %Category{}
-      |> Category.changeset(%{title: category[:title], user_id: user.id})
-      |> Repo.insert!
+      Logger.info "OpmlImport - find or create category: #{category[:title]}"
+      c = find_or_create_category(category[:title], user)
 
       Enum.each(category[:feeds], fn(feed) ->
-        Logger.info "OpmlImport - create feed: #{feed[:title]}"
+        Logger.info "OpmlImport - importing feed: #{feed[:title]}"
 
         case FeedImporter.import_feed(user, %{"feed_url" => feed[:xmlurl], "category_id" => c.id}) do
           {:ok, imported_feed} ->
@@ -36,5 +33,16 @@ defmodule WhistlerNewsReader.OpmlImport do
         end
       end)
     end)
+  end
+
+  defp find_or_create_category(title, user) do
+    case %Category{}
+         |> Category.changeset(%{title: title, user_id: user.id})
+         |> Repo.insert do
+      {:ok, new_category} ->
+        new_category
+      {:error, changeset} ->
+        Repo.get_by!(Category, title: title, user_id: user.id)
+    end
   end
 end

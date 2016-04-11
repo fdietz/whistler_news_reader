@@ -14,7 +14,7 @@ defmodule WhistlerNewsReader.FeedRefresher do
     Logger.info "Refresh feed id: #{feed.id}, title: #{feed.title}"
 
     {:ok, json_body}   = FeedFetcher.fetch(feed.feed_url)
-    parsed_feed        = FeedParser.parse(json_body)
+    {:ok, parsed_feed} = FeedParser.parse(json_body)
 
     Enum.each(parsed_feed.entries, fn(entry) ->
       case WhistlerNewsReader.StoreEntryHelper.store_entry(feed, entry) do

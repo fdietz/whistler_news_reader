@@ -9,5 +9,6 @@ defmodule WhistlerNewsReader.Repo.Migrations.CreateCategory do
       timestamps
     end
 
+    create unique_index(:categories, [:user_id, :title], name: :categories_user_id_title_index)
   end
 end
