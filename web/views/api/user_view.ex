@@ -12,6 +12,6 @@ defmodule WhistlerNewsReader.Api.UserView do
   end
 
   defp gravatar_url(email) do
-    ElixirGravatarUrl.url(email, s: 48)  
+    ElixirGravatarUrl.url(email, s: 128)  
   end
 end
