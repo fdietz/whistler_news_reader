@@ -1,4 +1,5 @@
 import React, { PropTypes } from "react";
+import classNames from "classnames";
 
 import {
   ArrowLeftBoldSVGIcon,
@@ -32,6 +33,10 @@ const EntryContentToolbar = ({
   onOpenEntryContentModalClick,
   showEntryContentModalButton = false
 }) => {
+  const shareDropdownCls = classNames("btn btn-header", {
+    disabled: !currentEntry.entry
+  });
+
   return (
     <div className="toolbar">
       <ButtonGroup className="btn-group-rounded">
@@ -69,7 +74,7 @@ const EntryContentToolbar = ({
         </Button>
       </ButtonGroup>
         <Dropdown className="ml1">
-          <DropdownTrigger className="btn btn-header" disabled={!currentEntry.entry}>
+          <DropdownTrigger className={shareDropdownCls}>
             <ShareSVGIcon color="light-gray" size="small"/>
             <ArrowDownSVGIcon color="light-gray" size="small" className="arrow-down"/>
             <ArrowUpSVGIcon color="light-gray" size="small" className="arrow-up"/>
