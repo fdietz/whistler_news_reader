@@ -1,12 +1,14 @@
 defmodule WhistlerNewsReader.FeedWorkerSupervisor do
   use Supervisor
 
+  @pool_size 50
+
   def start_link do
     Supervisor.start_link(__MODULE__, [])
   end
 
   def init([]) do
-    pool_size = Application.get_env(:whistler_news_reader, :pool_size) || 50
+    pool_size = Application.get_env(:whistler_news_reader, :pool_size) || @pool_size
     pool_options = [
       name: {:local, :worker_pool},
       worker_module: WhistlerNewsReader.FeedWorker,

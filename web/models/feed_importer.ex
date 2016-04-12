@@ -6,7 +6,7 @@ defmodule WhistlerNewsReader.FeedImporter do
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.Repo
 
-  def import_feed(user, %{"feed_url" => feed_url} = feed_attributes) do
+  def import(user, %{"feed_url" => feed_url} = feed_attributes) do
     with {:ok, xml_body}      <- FeedFetcher.fetch(feed_url),
          {:ok, parsed_attrs}  <- FeedParser.parse(xml_body),
          {:ok, feed}          <- find_or_create(parsed_attrs, feed_url),

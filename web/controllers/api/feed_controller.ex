@@ -7,8 +7,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.UnreadEntry
-  alias WhistlerNewsReader.FeedImporter
-  alias WhistlerNewsReader.FeedRefresher
+  alias WhistlerNewsReader.FeedWorker
 
   plug :scrub_params, "feed" when action in [:create]
 
@@ -19,10 +18,10 @@ defmodule WhistlerNewsReader.Api.FeedController do
   end
 
   def create(conn, %{"feed" => feed_attributes} = _params) do
-    case FeedImporter.import_feed(current_user(conn), feed_attributes) do
+    case FeedWorker.import(current_user(conn), feed_attributes) do
       {:ok, feed} ->
         feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed.id)
-        FeedRefresher.refresh(feed)
+        FeedWorker.refresh(feed)
         unread_entries_count = UnreadEntry |> UnreadEntry.count_for_feeds([feed.id]) |> Repo.all
         conn
         |> put_status(:created)

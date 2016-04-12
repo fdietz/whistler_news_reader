@@ -10,10 +10,15 @@ defmodule WhistlerNewsReader.FeedFetcher do
   def fetch(feed_url), do: fetch(feed_url, @max_retries)
   def fetch(feed_url, 0), do: {:error, "failed after #{@max_retries} retries"}
   def fetch(feed_url, retries) when retries > 0 do
-    Logger.debug "FeedFetcher - fetching #{feed_url} for #{@max_retries - retries} time"
+    if @max_retries - retries > 0 do
+      Logger.debug "FeedFetcher - fetching #{feed_url} (#{@max_retries - retries} retries)"
+    end
 
     case HTTPoison.get(feed_url, http_headers, options) do
       {:error, %HTTPoison.Error{reason: :timeout}} ->
+        :timer.sleep(@retry_sleep)
+        fetch(feed_url, retries-1)
+      {:error, %HTTPoison.Error{reason: :connect_timeout}} ->
         :timer.sleep(@retry_sleep)
         fetch(feed_url, retries-1)
       response ->
