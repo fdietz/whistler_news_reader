@@ -44,6 +44,10 @@ defmodule WhistlerNewsReader.FeedFetcher do
   end
 
   defp options do
-    [timeout: @http_timeout]
+    [
+      timeout: @http_timeout,
+      follow_redirect: true,
+      max_redirect: 1
+    ]
   end
 end
