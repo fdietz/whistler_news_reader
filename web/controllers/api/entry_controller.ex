@@ -8,8 +8,8 @@ defmodule WhistlerNewsReader.Api.EntryController do
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Entry
   alias WhistlerNewsReader.UnreadEntry
-  alias WhistlerNewsReader.FeedRefresher
   alias WhistlerNewsReader.MarkAsReadHelper
+  alias WhistlerNewsReader.FeedWorker
 
   def index(conn, %{"feed_id" => "today", "last_published" => last_published, "limit" => limit} = _params) do
     entries = subscribed_feed_entries(conn) |> Entry.for_today |> load_more(last_published, limit)
@@ -52,23 +52,23 @@ defmodule WhistlerNewsReader.Api.EntryController do
   end
 
   def refresh(conn, %{"feed_id" => "all"} = _params) do
-    FeedRefresher.refresh_all(subscribed_feeds(conn))
+    FeedWorker.refresh_all(subscribed_feeds(conn))
     conn |> send_resp(204, "")
   end
 
   def refresh(conn, %{"feed_id" => "today"} = _params) do
-    FeedRefresher.refresh_all(subscribed_feeds(conn))
+    FeedWorker.refresh_all(subscribed_feeds(conn))
     conn |> send_resp(204, "")
   end
 
   def refresh(conn, %{"feed_id" => feed_id} = _params) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed_id)
-    FeedRefresher.refresh(feed)
+    FeedWorker.refresh(feed)
     conn |> send_resp(204, "")
   end
 
   def refresh(conn, %{"category_id" => category_id} = _params) do
-    FeedRefresher.refresh_all(subscribed_feeds_for_category_id(conn, category_id))
+    FeedWorker.refresh_all(subscribed_feeds_for_category_id(conn, category_id))
     conn |> send_resp(204, "")
   end
 

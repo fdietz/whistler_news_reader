@@ -6,12 +6,6 @@ defmodule WhistlerNewsReader.FeedRefresher do
 
   require Logger
 
-  def refresh_all(feeds) do
-    Enum.each(feeds, fn(feed) ->
-      refresh(feed)
-    end)
-  end
-
   def refresh(feed) do
     Logger.info "FeedRefresher - refreshing feed id: #{feed.id}, title: #{feed.title}"
 
