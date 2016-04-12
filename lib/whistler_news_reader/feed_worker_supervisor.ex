@@ -10,7 +10,7 @@ defmodule WhistlerNewsReader.FeedWorkerSupervisor do
   def init([]) do
     pool_size = Application.get_env(:whistler_news_reader, :pool_size) || @pool_size
     pool_options = [
-      name: {:local, :worker_pool},
+      name: {:local, :feed_worker_pool},
       worker_module: WhistlerNewsReader.FeedWorker,
       size: pool_size,
       max_overflow: 0
