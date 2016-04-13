@@ -23,8 +23,7 @@ class SignUp extends Component {
     const { dispatch } = this.props;
 
     const data = {
-      first_name: this.refs.firstName.value,
-      last_name: this.refs.lastName.value,
+      name: this.refs.name.value,
       email: this.refs.email.value,
       password: this.refs.password.value,
       password_confirmation: this.refs.passwordConfirmation.value
@@ -45,20 +44,30 @@ class SignUp extends Component {
             </div>
           </header>
           <form onSubmit={this._handleSubmit}>
-            <input ref="firstName" className="field mb1" type="text" placeholder="First name" focus={true}/>
-            {renderErrorsFor(errors, "first_name")}
 
-            <input ref="lastName" className="field mb1" type="text" placeholder="Last name"/>
-            {renderErrorsFor(errors, "last_name")}
+            <label className="field-label">
+              Name
+              <input ref="name" className="field" type="text" placeholder="Name" focus={true}/>
+              {renderErrorsFor(errors, "name")}
+            </label>
 
-            <input ref="email" className="field mb1" type="email" placeholder="Email"/>
-            {renderErrorsFor(errors, "email")}
+            <label className="field-label">
+              Email
+              <input ref="email" className="field" type="email" placeholder="Email"/>
+              {renderErrorsFor(errors, "email")}
+            </label>
 
-            <input ref="password" className="field mb1" type="password" placeholder="Password"/>
-            {renderErrorsFor(errors, "password")}
+            <label className="field-label">
+              Password
+              <input ref="password" className="field" type="password" placeholder="Password"/>
+              {renderErrorsFor(errors, "password")}
+            </label>
 
-            <input ref="passwordConfirmation" className="field mb1" type="password" placeholder="Confirm password"/>
-            {renderErrorsFor(errors, "password_confirmation")}
+            <label className="field-label">
+              Password confirmation
+              <input ref="passwordConfirmation" className="field" type="password" placeholder="Confirm password"/>
+              {renderErrorsFor(errors, "password_confirmation")}
+            </label>
 
             <div className="button-bar mt2">
               <Link to="/sign_in">Login</Link>

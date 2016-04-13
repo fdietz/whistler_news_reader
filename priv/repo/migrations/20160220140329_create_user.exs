@@ -3,8 +3,7 @@ defmodule WhistlerNewsReader.Repo.Migrations.CreateUser do
 
   def change do
     create table(:users) do
-      add :first_name, :string, null: false
-      add :last_name, :string, null: false
+      add :name, :string, null: false
       add :email, :string, null: false
       add :encrypted_password, :string, null: false
 

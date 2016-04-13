@@ -25,7 +25,9 @@ export function requestSignUp(data) {
         dispatch(push("/today"));
       })
       .catch((response) => {
-        dispatch(createSignUp(new Error(response.data.errors)));
+        const error = new Error(`Status code ${response.status}: ${response.statusText}`);
+        error.payload = response.data.errors;
+        dispatch(createSignUp(error));
       });
   };
 }
@@ -47,7 +49,9 @@ export function requestSignIn(email, password) {
         dispatch(push("/today"));
       })
       .catch(response => {
-        dispatch(createSignIn(new Error(response.data.errors)));
+        const error = new Error(`Status code ${response.status}: ${response.statusText}`);
+        error.payload = [{ password: response.data.error }];
+        dispatch(createSignIn(error));
       });
   };
 }
@@ -100,7 +104,7 @@ export default function reducer(state = initialState, action) {
   if (action.type === CREATE_SIGN_UP || action.type === CREATE_SIGN_IN) {
     if (action.error) {
       return Object.assign({}, state, {
-        errors: action.payload.errors
+        errors: action.payload.payload
       });
     } else if (action.payload && action.payload.user) {
       return Object.assign({}, state, {

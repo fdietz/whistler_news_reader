@@ -6,7 +6,7 @@ export function renderErrorsFor(errors, ref) {
   return errors.map((error, i) => {
     if (error[ref]) {
       return (
-        <div key={i} className="error errors">
+        <div key={i} className="field-errors">
           {error[ref]}
         </div>
       );

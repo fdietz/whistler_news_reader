@@ -11,7 +11,6 @@ class SessionNew extends Component {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.renderError = this.renderError.bind(this);
   }
 
   componentDidMount() {
@@ -27,19 +26,9 @@ class SessionNew extends Component {
     dispatch(requestSignIn(email.value, password.value));
   }
 
-  renderError() {
-    const { error } = this.props;
-
-    if (!error) return false;
-
-    return (
-      <div className="error">
-        {error}
-      </div>
-    );
-  }
-
   render() {
+    const { errors } = this.props;
+
     return (
 
       <div className="panel-container">
@@ -50,9 +39,16 @@ class SessionNew extends Component {
             </div>
           </header>
           <form onSubmit={this.handleSubmit}>
-            {this.renderError()}
-            <input ref="email" className="field mb1" type="Email" placeholder="Email" focus={true} placeholder="yourmail@mail.com"/>
-            <input ref="password" className="field mb1" type="password" placeholder="Password" placeholder="password"/>
+            <label className="field-label">
+              Email
+              <input ref="email" className="field" type="Email" placeholder="Email" focus={true} placeholder="yourmail@mail.com"/>
+              {renderErrorsFor(errors, "email")}
+            </label>
+            <label className="field-label">
+              Password
+              <input ref="password" className="field" type="password" placeholder="Password" placeholder="password"/>
+              {renderErrorsFor(errors, "password")}
+            </label>
 
             <div className="button-bar mt2">
               <Link to="/sign_up">Create new account</Link>
@@ -66,7 +62,7 @@ class SessionNew extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  errors: state.user.errors,
+  errors: state.user.errors
 });
 
 export default connect(mapStateToProps)(SessionNew);

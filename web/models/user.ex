@@ -2,8 +2,7 @@ defmodule WhistlerNewsReader.User do
   use WhistlerNewsReader.Web, :model
 
   schema "users" do
-    field :first_name, :string
-    field :last_name, :string
+    field :name, :string
     field :email, :string
     field :encrypted_password, :string
     field :password, :string, virtual: true
@@ -15,7 +14,7 @@ defmodule WhistlerNewsReader.User do
 
   # @derive {Poison.Encoder, only: [:id, :first_name, :last_name, :email]}
 
-  @required_fields ~w(first_name last_name email password)
+  @required_fields ~w(name email password)
   @optional_fields ~w(encrypted_password)
 
   @doc """

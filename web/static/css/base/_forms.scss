@@ -15,6 +15,7 @@ fieldset {
   margin-bottom: 0;
   font-family: $font-family;
   font-size: $form-field-font-size;
+  font-weight: normal;
   box-sizing: border-box;
 }
 
@@ -55,6 +56,15 @@ input[type=radio] {
   height: $form-field-height;
 }
 
+.field-label {
+  display: block;
+  margin-bottom: $space-2;
+
+  .field-errors {
+    margin-bottom: -$space-1;
+  }
+}
+
 .form-prominent {
 
   .field {
@@ -84,4 +94,9 @@ input[type=radio] {
 .dropdown-label {
   // display: block;
   font-weight: normal;
+}
+
+.field-errors {
+  padding: 0 $space-1;
+  font-size: .9rem;
 }

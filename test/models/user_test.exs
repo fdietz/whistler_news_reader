@@ -6,8 +6,7 @@ defmodule WhistlerNewsReader.UserTest do
   @valid_attrs %{
     email: "test@test.de",
     password: "some content",
-    first_name: "some content",
-    last_name: "some content"
+    name: "some content"
   }
   @invalid_attrs %{}
 

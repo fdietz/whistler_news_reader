@@ -6,8 +6,7 @@ defmodule WhistlerNewsReader.Api.RegistrationControllerTest do
 
   @valid_params %{
     email: "test@test.de",
-    first_name: "Donald",
-    last_name: "Duck",
+    name: "Donald Duck",
     password: "password"
   }
 

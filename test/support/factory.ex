@@ -10,10 +10,9 @@ defmodule WhistlerNewsReader.Factory do
 
   def factory(:user) do
     %User{
-      first_name: "Jane",
-      last_name: "Smith",
+      name: "Jane Smith",
       email: sequence(:email, &"email-#{&1}@example.com"),
-      encrypted_password: "password"
+      encrypted_password: "encrypted_password"
     }
   end
 
