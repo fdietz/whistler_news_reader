@@ -6,7 +6,7 @@ defmodule WhistlerNewsReader.Feed do
     field :title, :string
     field :feed_url, :string
     field :site_url, :string
-    field :last_updated, Ecto.DateTime
+    field :last_refreshed_at, Ecto.DateTime
     has_many :entries, WhistlerNewsReader.Entry
     has_many :unread_entries, WhistlerNewsReader.UnreadEntry
     has_many :subscriptions, WhistlerNewsReader.Subscription
@@ -15,7 +15,7 @@ defmodule WhistlerNewsReader.Feed do
   end
 
   @required_fields ~w(title feed_url site_url)
-  @optional_fields ~w()
+  @optional_fields ~w(last_refreshed_at)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

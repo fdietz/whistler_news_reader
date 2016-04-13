@@ -16,7 +16,7 @@ defmodule WhistlerNewsReader.OpmlImport do
       category = find_or_create_category(category_attrs[:title], user)
 
       feed_attrs_enum = Enum.map(category_attrs[:feeds], fn(feed_attrs) ->
-        attrs = %{"feed_url" => feed_attrs[:xmlurl], "category_id" => category.id}
+        %{"feed_url" => feed_attrs[:xmlurl], "category_id" => category.id}
       end)
 
       FeedWorker.import_all(user, feed_attrs_enum)

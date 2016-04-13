@@ -23,11 +23,16 @@ defmodule WhistlerNewsReader.FeedRefresherTest do
   test "refresh succeeds", %{user: user, feed: feed} do
     json_body = File.read!("test/fixtures/rss2/example1.xml")
     with_mock FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
+      assert feed.last_refreshed_at == nil
       FeedRefresher.refresh(feed)
+      
       subscribed_feed_ids = Feed |> Feed.subscribed_by_user(user.id) |> Repo.all |> Enum.map(fn(feed) -> feed.id end)
       entries = Entry |> Entry.for_feeds(subscribed_feed_ids) |> Repo.all
       assert length(entries) == 1
       assert List.last(entries).title == "Example item title"
+
+      feed = Repo.get!(Feed, feed.id)
+      assert feed.last_refreshed_at
     end
   end
 
