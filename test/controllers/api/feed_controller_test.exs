@@ -101,13 +101,6 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
     assert json_response(conn, 422)["errors"]
   end
 
-  test "POST /api/feeds fails if feed url not found", %{conn: conn, jwt: jwt} do
-    conn = conn |> put_req_header("authorization", jwt)
-    conn = post conn, feed_path(conn, :create), feed: %{feed_url: @not_existing_feed_url}
-
-    assert conn.status == 404
-  end
-
   test "PUT /api/feeds succeeds", %{conn: conn, jwt: jwt, feed: feed} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = put conn, feed_path(conn, :update, feed.id), feed: %{title: "new name"}

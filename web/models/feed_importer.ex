@@ -5,13 +5,24 @@ defmodule WhistlerNewsReader.FeedImporter do
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.Repo
+  alias WhistlerNewsReader.StoreEntryHelper
 
   def import(user, %{"feed_url" => feed_url} = feed_attributes) do
-    with {:ok, xml_body}      <- FeedFetcher.fetch(feed_url),
-         {:ok, parsed_attrs}  <- FeedParser.parse(xml_body),
-         {:ok, feed}          <- find_or_create(parsed_attrs, feed_url),
-         {:ok, _subscription} <- subscribe_user(user, feed, feed_attributes["category_id"]),
-         do: {:ok, feed}
+    with {:ok, xml_body}       <- FeedFetcher.fetch(feed_url),
+         {:ok, parsed_attrs}   <- FeedParser.parse(xml_body),
+         {:ok, feed}           <- find_or_create(parsed_attrs, feed_url),
+         {:ok, _updated_feed}  <- update_last_refreshed_at(feed),
+         {:ok, _subscription}  <- subscribe_user(user, feed, feed_attributes["category_id"]) do
+
+      StoreEntryHelper.store_entries(feed, parsed_attrs.entries)
+      {:ok, feed}
+    end
+  end
+
+  defp update_last_refreshed_at(feed) do
+    feed
+    |> Feed.changeset(%{last_refreshed_at: Ecto.DateTime.utc})
+    |> Repo.update
   end
 
   defp subscribe_user(user, feed, category_id) do
@@ -41,7 +52,8 @@ defmodule WhistlerNewsReader.FeedImporter do
     |> Feed.changeset(%{
         title: feed_attrs.title,
         feed_url: feed_url,
-        site_url: feed_attrs.url
+        site_url: feed_attrs.url,
+        last_refreshed_at: Ecto.DateTime.utc
        })
     |> Repo.insert
   end

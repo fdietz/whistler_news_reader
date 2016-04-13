@@ -21,15 +21,11 @@ defmodule WhistlerNewsReader.Api.FeedController do
     case FeedWorker.import(current_user(conn), feed_attributes) do
       {:ok, feed} ->
         feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed.id)
-        FeedWorker.refresh(feed)
         unread_entries_count = UnreadEntry |> UnreadEntry.count_for_feeds([feed.id]) |> Repo.all
         conn
         |> put_status(:created)
         |> put_resp_header("location", feed_path(conn, :show, feed))
         |> render("show.json", feed: feed, unread_entries_count: unread_entries_count)
-      {:error, :not_found} ->
-        conn
-        |> send_resp(404, "")
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
