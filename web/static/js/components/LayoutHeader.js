@@ -8,7 +8,7 @@ export default class LayoutHeader extends Component {
 
   render() {
     return (
-      <div className="layout-master-header px2">
+      <div className="layout-master-header">
         {this.props.children}
       </div>
     );

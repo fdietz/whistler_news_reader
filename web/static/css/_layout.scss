@@ -54,6 +54,7 @@ body {
 .layout-master-header {
   display: flex;
   height: 65px;
+  padding: $space-2;
 
   background-color: $gray-2;
   border-bottom: 1px solid $darken-1;

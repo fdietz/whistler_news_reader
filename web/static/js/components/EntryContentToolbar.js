@@ -55,7 +55,7 @@ const EntryContentToolbar = ({
           <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
         </Button>
       </ButtonGroup>
-      <ButtonGroup className="btn-group-rounded ml2">
+      <ButtonGroup className="btn-group-rounded ml1">
         {showEntryContentModalButton &&
           <Button
             type="header"

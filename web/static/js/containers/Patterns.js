@@ -23,10 +23,10 @@ class Patterns extends Component {
           </div>
         </div>
         <div className="layout-master with-sidebar">
-          <div className="layout-master-header px3">
+          <div className="layout-master-header">
             <h1 className="m0 blue-2">Pattern Library</h1>
           </div>
-          <div className="layout-master-content p3">
+          <div className="layout-master-content">
 
             <h2><a name="colors">Colors - Gray Palette</a></h2>
             <div className="example">
