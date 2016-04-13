@@ -27,7 +27,7 @@ defmodule WhistlerNewsReader.Api.FeedView do
       title: feed.title,
       feed_url: feed.feed_url,
       site_url: feed.site_url,
-      last_updated: feed.last_updated,
+      last_refreshed_at: feed.last_refreshed_at,
       category_id: category_id(feed)
      }
   end
