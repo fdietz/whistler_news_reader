@@ -7,9 +7,7 @@ defmodule WhistlerNewsReader.OpmlImport do
 
   require Logger
 
-  # user = WhistlerNewsReader.Repo.get!(WhistlerNewsReader.User, 1)
-  # xml_body = File.read!("test/fixtures/opml/example1.opml")
-  # WhistlerNewsReader.OpmlImport.import(user, xml_body)
+  # WhistlerNewsReader.OpmlImport.import(WhistlerNewsReader.Repo.get!(WhistlerNewsReader.User, 1), File.read!("test/fixtures/opml/example1.opml"))
 
   def import(user, xml_body) do
     opml = OpmlParser.parse(xml_body)
