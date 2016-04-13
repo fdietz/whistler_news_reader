@@ -17,7 +17,7 @@ defmodule WhistlerNewsReader.FeedWorkerSupervisor do
     ]
 
     children = [
-      :poolboy.child_spec(:worker_pool, pool_options, [])
+      :poolboy.child_spec(:feed_worker_pool, pool_options, [])
     ]
 
     supervise(children, strategy: :one_for_one)

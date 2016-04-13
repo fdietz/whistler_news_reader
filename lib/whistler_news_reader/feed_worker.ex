@@ -26,7 +26,7 @@ defmodule WhistlerNewsReader.FeedWorker do
 
   def import_async(user, feed_attrs) do
     Task.async fn ->
-      :poolboy.transaction(:worker_pool, fn(server) ->
+      :poolboy.transaction(:feed_worker_pool, fn(server) ->
         GenServer.call(server, {:import, user, feed_attrs}, @genserver_call_timeout_ms)
       end, @task_async_timeout_ms)
     end
@@ -44,7 +44,7 @@ defmodule WhistlerNewsReader.FeedWorker do
 
   def refresh_async(feed) do
     Task.async fn ->
-      :poolboy.transaction(:worker_pool, fn(server) ->
+      :poolboy.transaction(:feed_worker_pool, fn(server) ->
         GenServer.call(server, {:refresh, feed}, @genserver_call_timeout_ms)
       end, @task_async_timeout_ms)
     end
