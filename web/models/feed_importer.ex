@@ -7,7 +7,11 @@ defmodule WhistlerNewsReader.FeedImporter do
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.StoreEntryHelper
 
+  require Logger
+
   def import(user, %{"feed_url" => feed_url} = feed_attributes) do
+    Logger.info "FeedImporter - import feed #{feed_url} #{feed_attributes["category_id"]}"
+
     with {:ok, xml_body}       <- FeedFetcher.fetch(feed_url),
          {:ok, parsed_attrs}   <- FeedParser.parse(xml_body),
          {:ok, feed}           <- find_or_create(parsed_attrs, feed_url),
