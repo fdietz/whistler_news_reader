@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+import shallowEqual from "react-addons-shallow-compare";
 import { DropTarget } from "react-dnd";
 
 class CategoryDropTarget extends Component {
@@ -54,4 +55,5 @@ function collect(connect, monitor) {
   };
 }
 
-export default DropTarget(ItemTypes.FEED, categoryTarget, collect)(CategoryDropTarget);
+const options = { arePropsEqual: shallowEqual };
+export default DropTarget(ItemTypes.FEED, categoryTarget, collect, options)(CategoryDropTarget);

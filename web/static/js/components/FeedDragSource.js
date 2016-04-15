@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import shallowEqual from "react-addons-shallow-compare";
 import { DragSource } from "react-dnd";
 
 class FeedDragSource extends Component {
@@ -59,4 +60,5 @@ function collect(connect, monitor) {
   };
 }
 
-export default DragSource(ItemTypes.FEED, feedSource, collect)(FeedDragSource);
+const options = { arePropsEqual: shallowEqual };
+export default DragSource(ItemTypes.FEED, feedSource, collect, options)(FeedDragSource);
