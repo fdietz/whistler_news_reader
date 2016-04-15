@@ -61,7 +61,7 @@ class NewCategoryDialog extends Component {
       if (!result.errors) {
         onClose();
         dispatch(push(`/categories/${result.id}`));
-        dispatch(addCategory({ category: result }));
+        dispatch(addCategory(result));
       }
     });
   }

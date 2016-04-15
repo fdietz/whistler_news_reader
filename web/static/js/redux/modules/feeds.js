@@ -68,7 +68,7 @@ function isLoading(state = initialIsLoading, action) {
   case FETCH_FEEDS:
     return !action.payload ? true : initialIsLoading;
   default:
-    return initialIsLoading;
+    return state;
   }
 }
 
@@ -82,7 +82,7 @@ function error(state = initialError, action) {
   case FETCH_FEEDS:
     return action.error ? action.payload : state;
   default:
-    return initialError;
+    return state;
   }
 }
 

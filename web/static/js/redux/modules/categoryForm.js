@@ -7,19 +7,19 @@ export const CATEGORY_FORM_RESET = "CATEGORY_FORM_RESET";
 export const categoryFormUpdate = createAction(CATEGORY_FORM_UPDATE);
 export const categoryFormReset  = createAction(CATEGORY_FORM_RESET);
 
-export function requestCreateCategory(categoryAttributes) {
+export function requestCreateCategory(attrs) {
   return (dispatch) => {
     dispatch(categoryFormUpdate());
 
-    return axios.post("http://localhost:4000/api/categories", { category: categoryAttributes }).
-    then((response) => {
-      dispatch(categoryFormReset());
-      return response.data.category;
-    }).
-    catch((response) => {
-      dispatch(categoryFormUpdate({ errors: response.data.errors }));
-      return response.data;
-    });
+    return axios.post("http://localhost:4000/api/categories", { category: attrs }).
+      then((response) => {
+        dispatch(categoryFormReset());
+        return response.data.category;
+      }).
+      catch((response) => {
+        dispatch(categoryFormUpdate({ errors: response.data.errors }));
+        return response.data;
+      });
   };
 }
 

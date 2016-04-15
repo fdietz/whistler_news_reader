@@ -13,14 +13,13 @@ import { addFeed } from "../redux/modules/feeds";
 
 import { customModalStyles } from "../utils/ModalHelper";
 import { renderErrorsFor } from "../utils";
+import { getSortedCategories } from "../redux/selectors";
 
 class NewFeedDialog extends Component {
 
   static propTypes = {
     feedForm: PropTypes.object,
-    categories: PropTypes.shape({
-      items: PropTypes.array.isRequired
-    }).isRequired,
+    sortedCategories: PropTypes.array.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
@@ -67,7 +66,7 @@ class NewFeedDialog extends Component {
       if (!result.errors) {
         this.props.onClose();
         // update sidebar feed list
-        dispatch(addFeed({ item: result }));
+        dispatch(addFeed(result));
         // navigate to new feed
         dispatch(push(`/feeds/${result.id}`));
       }
@@ -75,7 +74,7 @@ class NewFeedDialog extends Component {
   }
 
   render() {
-    const { isOpen, feedForm, categories } = this.props;
+    const { isOpen, feedForm, sortedCategories } = this.props;
 
     const feedUrlError = feedForm.errors && feedForm.errors.find(error => error.feed_url);
     const feedUrlCls = classNames({
@@ -130,7 +129,7 @@ class NewFeedDialog extends Component {
                 value={feedForm.category_id}>
 
                 <option value="">Select ...</option>
-                {categories.items.map((category) => {
+                {sortedCategories.map((category) => {
                   return <option value={category.id} key={category.id}>{category.title}</option>;
                 })}
               </select>
@@ -156,7 +155,7 @@ class NewFeedDialog extends Component {
 function mapStateToProps(state) {
   return {
     feedForm: state.feedForm,
-    categories: state.categories
+    sortedCategories: getSortedCategories(state)
   };
 }
 

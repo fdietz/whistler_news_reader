@@ -35,9 +35,8 @@ class MainApp extends Component {
     }).isRequired,
     feeds: PropTypes.object.isRequired,
     sortedFeeds: PropTypes.array.isRequired,
-    categories: PropTypes.shape({
-      items: PropTypes.array.isRequired
-    }).isRequired,
+    categories: PropTypes.object.isRequired,
+    sortedCategories: PropTypes.array.isRequired,
     currentEntry: PropTypes.object,
     currentUser: PropTypes.object,
     currentPath: PropTypes.string.isRequired,
@@ -127,12 +126,12 @@ class MainApp extends Component {
       return {};
     } else if (params.feed_id) {
       return {
-        selection: feeds.listedIds.find(id => id === +params.feed_id),
+        selection: feeds.byId[+params.feed_id],
         isFeed: true
       };
     } else if (params.category_id) {
       return {
-        selection: categories.items.find(category => category.id === +params.category_id),
+        selection: categories.byId[+params.category_id],
         isCategory: true
       };
     }
@@ -224,8 +223,9 @@ class MainApp extends Component {
   render() {
     const {
       entries,
-      categories,
+      sortedCategories,
       sortedFeeds,
+      feeds,
       currentUser,
       currentEntry,
       currentSidebarSelection,
@@ -248,7 +248,7 @@ class MainApp extends Component {
 
         <Sidebar
           feeds={sortedFeeds}
-          categories={categories.items}
+          categories={sortedCategories}
           currentPathname={currentPath}
           currentUser={currentUser}
           userActions={userActions}
@@ -315,7 +315,8 @@ function mapStateToProps(state, ownProps) {
     feeds: state.feeds,
     sortedFeeds: getSortedFeeds(state),
     entries: state.entries,
-    categories: getSortedCategories(state),
+    sortedCategories: getSortedCategories(state),
+    categories: state.categories,
     currentEntry: state.currentEntry,
     location: ownProps.location,
     currentPath: ownProps.location.pathname,

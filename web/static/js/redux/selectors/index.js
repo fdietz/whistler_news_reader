@@ -16,16 +16,18 @@ export const getSortedFeeds = createSelector(
   }
 );
 
-const getCategories = (state) => state.categories;
+const getCategories = (state) => {
+  return state.categories.listedIds.map(id => state.categories.byId[id]);
+};
 
 export const getSortedCategories = createSelector(
   [getCategories], (categories) => {
-    const sortedItems = categories.items.sort((a, b) => {
+    const sortedItems = categories.sort((a, b) => {
       if (a.title < b.title) return -1;
       if (a.title > b.title) return 1;
       return 0;
     });
 
-    return {...categories, items: sortedItems };
+    return sortedItems;
   }
 );
