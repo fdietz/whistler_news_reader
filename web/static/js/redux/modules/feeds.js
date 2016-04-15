@@ -73,8 +73,6 @@ function isLoading(state = initialIsLoading, action) {
 }
 
 function error(state = initialError, action) {
-  if (!action.payload) return state;
-
   switch (action.type) {
   case ADD_FEED:
   case UPDATE_FEED:
@@ -82,7 +80,7 @@ function error(state = initialError, action) {
   case RESET_UNREAD_COUNT:
   case REMOVE_FEED:
   case FETCH_FEEDS:
-    return action.payload.error ? action.payload.error : initialError;
+    return action.error ? action.payload : state;
   default:
     return initialError;
   }
@@ -90,6 +88,7 @@ function error(state = initialError, action) {
 
 function feed(state, action) {
   if (!action.payload) return state;
+  if (action.error) return state;
 
   switch (action.type) {
   case ADD_FEED:
@@ -107,6 +106,7 @@ function feed(state, action) {
 
 function listedIds(state = initialListedIds, action) {
   if (!action.payload) return state;
+  if (action.error) return state;
 
   switch (action.type) {
   case ADD_FEED:
@@ -122,6 +122,7 @@ function listedIds(state = initialListedIds, action) {
 
 function byId(state = initialById, action) {
   if (!action.payload) return state;
+  if (action.error) return state;
 
   switch (action.type) {
   case ADD_FEED:

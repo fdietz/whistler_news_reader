@@ -14,7 +14,7 @@ instance.interceptors.response.use(function (response) {
     return Promise.reject(response);
   }
 
-  const error = new Error(`${response.status} - ${response.statusText}`);
+  const error = new Error(`${response.statusText} - Status Code: ${response.status}`);
   error.response = response;
   error.payload = response.data;
   return Promise.reject(error);
