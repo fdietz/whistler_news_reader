@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import classNames from "classnames";
+import shallowCompare from "react-addons-shallow-compare";
 
 import FeedEntryListItem from "./FeedEntryListItem";
 
@@ -16,8 +17,22 @@ class FeedEntryList extends Component {
     className: PropTypes.string
   };
 
+  constructor(props) {
+    super(props);
+
+    this.handleOnEntryClick = this.handleOnEntryClick.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
+  handleOnEntryClick(entry) {
+    this.props.onEntryClick(entry);
+  }
+
   render() {
-    const { entries, currentEntry, onEntryClick, className } = this.props;
+    const { entries, currentEntry, className } = this.props;
     const cls = classNames("entry-list", className);
 
     return (
@@ -25,11 +40,11 @@ class FeedEntryList extends Component {
         {entries.map((entry) => {
           return (
             <FeedEntryListItem
-              {...entry}
+              entry={entry}
               isSelected={entry && currentEntry && entry.id === currentEntry.id}
               key={entry.id}
               ref={entry.id}
-              onClick={() => onEntryClick(entry)}/>
+              onClick={this.handleOnEntryClick}/>
           );
         })}
       </div>
