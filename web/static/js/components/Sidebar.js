@@ -250,7 +250,7 @@ class Sidebar extends Component {
             <img src={currentUser.image_url}/>
           </div>
           <div className="meta">
-            <div className="author">{currentUser.first_name} {currentUser.last_name}</div>
+            <div className="author">{currentUser.name}</div>
             <a href="#" onClick={this.onSignOutClick}>Logout</a>
           </div>
         </div>
