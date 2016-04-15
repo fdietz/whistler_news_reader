@@ -37,7 +37,7 @@ export function requestFetchCategories() {
   return dispatch => {
     dispatch(fetchCategories());
     return axios.get("/api/categories")
-      .then(resop => dispatch(fetchCategories(resop.data.categories)))
+      .then(resp => dispatch(fetchCategories(resp.data.categories)))
       .catch((e) => dispatch(fetchCategories(e)));
   };
 }
@@ -72,6 +72,7 @@ function error(state = initialError, action) {
     return state;
   }
 }
+
 function category(state, action) {
   if (!action.payload) return state;
   if (action.error) return state;
