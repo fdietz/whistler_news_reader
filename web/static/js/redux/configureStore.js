@@ -2,16 +2,25 @@ import thunk from "redux-thunk";
 import { applyMiddleware, createStore } from "redux";
 import { browserHistory } from "react-router";
 import { routerMiddleware } from "react-router-redux";
-import createLogger from "redux-logger";
 import rootReducer from "./rootReducer";
 
+// TODO: should depend on MIX_ENV/NODE_ENV
+const __DEBUG__ = true;
+
 export default function configureStore(initialState = {}) {
-  const logger = createLogger();
+  let middlewares = [thunk, routerMiddleware(browserHistory)];
 
-  // Compose final middleware and use devtools in debug environment
-  let middleware = applyMiddleware(thunk, routerMiddleware(browserHistory), logger);
+  if (__DEBUG__) {
+    const createLogger = require("redux-logger");
+    middlewares.push(createLogger());
+    // const performance = require("../middleware/performance").performance;
+    // middlewares.push(performance);
+    const reactPerformance = require("../middleware/performance").reactPerformance;
+    middlewares.push(reactPerformance);
+  }
 
-  // Create final store and subscribe router in debug env ie. for devtools
+  let middleware = applyMiddleware(...middlewares);
+
   const store = middleware(createStore)(rootReducer, initialState);
 
   if (module.hot) {
