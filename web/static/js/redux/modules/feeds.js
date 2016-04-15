@@ -96,7 +96,7 @@ function feed(state, action) {
   case UPDATE_FEED:
     return { ...state, ...action.payload };
   case DECREMENT_UNREAD_COUNT:
-    return { ...state, unread_count: action.payload.unread_count-1 };
+    return { ...state, unread_count: state.unread_count-1 };
   case RESET_UNREAD_COUNT:
     return { ...state, unread_count: 0 };
   default:
@@ -128,12 +128,19 @@ function byId(state = initialById, action) {
   case ADD_FEED:
   case UPDATE_FEED:
   case DECREMENT_UNREAD_COUNT:
-    return { ...state, [action.payload.id]: feed(state[action.payload.id], action) };
+    return {
+      ...state,
+      [action.payload.id]: feed(state[action.payload.id], action)
+    };
   case RESET_UNREAD_COUNT:
     if (action.payload.id) {
-      return { ...state, [action.payload.id]: feed(state[action.payload.id], action) };
+      return {
+        ...state,
+        [action.payload.id]: feed(state[action.payload.id], action)
+      };
     } else if (action.payload.category_id) {
-      const matchedIds = listedIds.filter(id => state[id].category_id === action.payload.category_id);
+      const matchedIds = listedIds.filter(id =>
+        state[id].category_id === action.payload.category_id);
       return Object.keys(state).reduce((nextState, id) => {
         if (matchedIds.indexOf(id) !== -1) {
           nextState[id] = { ...feed(state[action.payload.id], action) };
