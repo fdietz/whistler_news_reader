@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { push } from "react-router-redux";
 
 import { requestSetCurrentUser } from "../redux/modules/user";
+import AuthToken from "../utils/AuthToken";
 
 class AuthenticatedContainer extends Component {
 
@@ -19,7 +20,7 @@ class AuthenticatedContainer extends Component {
   componentDidMount() {
     const { dispatch, currentUser } = this.props;
 
-    if (localStorage.getItem("phoenixAuthToken")) {
+    if (AuthToken.getToken()) {
       if (!currentUser) dispatch(requestSetCurrentUser());
     } else {
       dispatch(push("/sign_up"));
