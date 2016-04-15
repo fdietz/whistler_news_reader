@@ -8,10 +8,15 @@ const instance = axios.create({
 
 instance.interceptors.response.use(function (response) {
   return response;
-}, function (error) {
-  if (error instanceof Error) {
-    console.log("Error", error.message);
+}, function (response) {
+  if (response instanceof Error) {
+    console.error("Error", response.message, response.stack);
+    return Promise.reject(response);
   }
+
+  const error = new Error(`${response.status} - ${response.statusText}`);
+  error.response = response;
+  error.payload = response.data;
   return Promise.reject(error);
 });
 

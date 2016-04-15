@@ -33,11 +33,8 @@ class MainApp extends Component {
       isLoading: PropTypes.bool.isRequired,
       error: PropTypes.string
     }).isRequired,
-    feeds: PropTypes.shape({
-      items: PropTypes.array.isRequired,
-      isLoading: PropTypes.bool.isRequired,
-      error: PropTypes.string
-    }).isRequired,
+    feeds: PropTypes.object.isRequired,
+    sortedFeeds: PropTypes.array.isRequired,
     categories: PropTypes.shape({
       items: PropTypes.array.isRequired
     }).isRequired,
@@ -130,7 +127,7 @@ class MainApp extends Component {
       return {};
     } else if (params.feed_id) {
       return {
-        selection: feeds.items.find(feed => feed.id === +params.feed_id),
+        selection: feeds.listedIds.find(id => id === +params.feed_id),
         isFeed: true
       };
     } else if (params.category_id) {
@@ -228,7 +225,7 @@ class MainApp extends Component {
     const {
       entries,
       categories,
-      feeds,
+      sortedFeeds,
       currentUser,
       currentEntry,
       currentSidebarSelection,
@@ -250,7 +247,7 @@ class MainApp extends Component {
       <div className="main-app-container">
 
         <Sidebar
-          feeds={feeds.items}
+          feeds={sortedFeeds}
           categories={categories.items}
           currentPathname={currentPath}
           currentUser={currentUser}
@@ -315,7 +312,8 @@ class MainApp extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     currentUser: state.user.current,
-    feeds: getSortedFeeds(state),
+    feeds: state.feeds,
+    sortedFeeds: getSortedFeeds(state),
     entries: state.entries,
     categories: getSortedCategories(state),
     currentEntry: state.currentEntry,

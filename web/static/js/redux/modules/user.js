@@ -49,6 +49,7 @@ export function requestSignIn(email, password) {
         dispatch(push("/today"));
       })
       .catch(response => {
+        console.log("=======", response.stack)
         const error = new Error(`Status code ${response.status}: ${response.statusText}`);
         error.payload = [{ password: response.data.error }];
         dispatch(createSignIn(error));
