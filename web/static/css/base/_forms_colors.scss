@@ -75,6 +75,10 @@ $field-border-color: rgba(0, 0, 0, .3);
   color: $red;
 }
 
+.errors {
+  color: $red;
+}
+
 ::-webkit-input-placeholder {
    color: $field-border-color;
 }

@@ -11,16 +11,12 @@ export function requestOpmlImport(data) {
   return (dispatch) => {
     dispatch(opmlImportFormUpdate());
 
-    return axios.post("/api/imports", data).
-      then(response => {
+    return axios.post("/api/imports", data)
+      .then(response => {
         dispatch(opmlImportFormReset());
         return response.data;
-      }).
-      catch(response => {
-        const formData = { errors: response.data.errors };
-        dispatch(opmlImportFormUpdate(formData));
-        return formData;
-      });
+      })
+      .catch(e => dispatch(opmlImportFormUpdate(e)));
   };
 }
 
@@ -33,6 +29,9 @@ const initial = {
 export default function reducer(state = initial, action) {
   if (action.type === OPML_IMPORT_FORM_UPDATE) {
     if (!action.payload) return {...state, isLoading: true };
+    if (action.error) {
+      return { ...state, error: action.payload.message, isLoading: false };
+    }
     return { ...state, ...action.payload, isLoading: false };
   } else if (action.type === OPML_IMPORT_FORM_RESET) {
     return initial;

@@ -58,7 +58,7 @@ class EditDialog extends Component {
     data.append("file", file.files[0]);
 
     opmlImportFormActions.requestOpmlImport(data).then((result) => {
-      if (!result.errors) {
+      if (!result.error) {
         opmlImportFormActions.opmlImportFormReset();
         onClose();
         feedsActions.requestFetchFeeds();
@@ -68,7 +68,6 @@ class EditDialog extends Component {
 
   render() {
     const { isOpen, opmlImportForm } = this.props;
-    const errors = opmlImportForm.errors ? reduceErrorsToString(opmlImportForm.errors) : "";
 
     return (
       <Modal
@@ -103,8 +102,8 @@ class EditDialog extends Component {
             </div>
 
             <div className="sm-col-12 mb3">
-              {errors &&
-                <p className="errors">{errors}</p>
+              {opmlImportForm.error &&
+                <p className="errors">{opmlImportForm.error}</p>
               }
             </div>
 
