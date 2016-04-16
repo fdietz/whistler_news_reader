@@ -60,6 +60,10 @@ input[type=radio] {
   display: block;
   margin-bottom: $space-2;
 
+  input {
+    margin-top: .2rem;
+  }
+
   .field-errors {
     margin-bottom: -$space-1;
   }

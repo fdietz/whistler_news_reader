@@ -13,6 +13,7 @@ import categories from "./modules/categories";
 import currentSidebarSelection from "./modules/currentSidebarSelection";
 import modals from "./modules/modals";
 import opmlImportForm from "./modules/opmlImportForm";
+import randomImages from "./modules/randomImages";
 
 export default combineReducers({
   feedForm,
@@ -27,5 +28,6 @@ export default combineReducers({
   currentSidebarSelection,
   modals,
   opmlImportForm,
+  randomImages,
   routing: routerReducer
 });

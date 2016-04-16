@@ -1,11 +1,18 @@
 import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
+import classNames from "classnames";
 
-import { setDocumentTitle, renderErrorsFor } from "../utils";
+import { renderErrorsFor } from "../utils";
 import { requestSignUp } from "../redux/modules/user";
+import { requestFetchRandomImages } from "../redux/modules/randomImages";
 
 class SignUp extends Component {
+
+  static propTypes = {
+    errors: PropTypes.object,
+    randomImages: PropTypes.object
+  }
 
   constructor(props) {
     super(props);
@@ -14,7 +21,8 @@ class SignUp extends Component {
   }
 
   componentDidMount() {
-    setDocumentTitle("Sign up");
+    const { dispatch } = this.props;
+    dispatch(requestFetchRandomImages());
   }
 
   _handleSubmit(e) {
@@ -32,11 +40,29 @@ class SignUp extends Component {
     dispatch(requestSignUp(data));
   }
 
+  randomImage() {
+    const { randomImages } = this.props;
+    if (!this.currentImageIndex) {
+      this.currentImageIndex = Math.floor(Math.random() * randomImages.items.length);
+    }
+    return randomImages.items[this.currentImageIndex];
+  }
+
   render() {
     const { errors } = this.props;
 
+    const image = this.randomImage();
+    let style;
+    if (image) {
+      style = { backgroundImage: `url(${image.url})` };
+    }
+
+    const cls = classNames("image", {
+      "fade-in": image
+    });
     return (
       <div className="panel-container">
+        <div className={cls} style={style}/>
         <div className="panel">
           <header>
             <div className="logo">
@@ -81,7 +107,8 @@ class SignUp extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  errors: state.user.errors
+  errors: state.user.errors,
+  randomImages: state.randomImages
 });
 
 export default connect(mapStateToProps)(SignUp);
