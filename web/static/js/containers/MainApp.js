@@ -12,6 +12,7 @@ import NewFeedDialog from "../containers/NewFeedDialog";
 import EntryContentOverlay from "../containers/EntryContentOverlay";
 import NewCategoryDialog from "../containers/NewCategoryDialog";
 import EditDialog from "../containers/EditDialog";
+import OpmlImportDialog from "../containers/OpmlImportDialog";
 
 import * as UserActions from "../redux/modules/user";
 import * as EntriesActions from "../redux/modules/entries";
@@ -303,6 +304,12 @@ class MainApp extends Component {
           <EditDialog
             isOpen={modals.editFeedOrCategoryModalIsOpen}
             onClose={modalsActions.closeEditFeedOrCategoryModal}/>
+        }
+
+        {modals.opmlImportModalIsOpen &&
+          <OpmlImportDialog
+            isOpen={modals.opmlImportModalIsOpen}
+            onClose={modalsActions.closeOpmlImportModal}/>
         }
       </div>
     );

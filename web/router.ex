@@ -35,6 +35,8 @@ defmodule WhistlerNewsReader.Router do
     put "/feeds/:id/update_category", Api.FeedController, :update_category
 
     resources "/categories", Api.CategoryController, only: [:index, :show, :create, :update, :delete]
+
+    post "/imports", Api.ImportController, :create
   end
 
   scope "/", WhistlerNewsReader do

@@ -46,6 +46,7 @@ $sidebar-color: $gray;
 }
 
 .sidebar-footer {
+  position: relative;
   display: flex;
   background-color: $darken-2;
   border-top: 1px solid $darken-1;
@@ -67,8 +68,17 @@ $sidebar-color: $gray;
     padding: $space-1;
     flex-direction: column;
 
-    .author {
+    .user-name,
+    .user-email {
+      font-size: .8rem;
+    }
+
+    .user-name {
       color: $sidebar-color;
+    }
+
+    .user-email {
+      color: $gray-3;
     }
   }
 }

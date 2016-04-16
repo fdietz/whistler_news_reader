@@ -1,8 +1,41 @@
 .dropdown {
   position: relative;
+
+  &.west {
+    .dropdown__content {
+      right: 0;
+      left: -100px;
+    }
+  }
+
+  &.north {
+    .dropdown__content {
+      top: -100%;
+    }
+
+    .arrow-up {
+      display: flex;
+    }
+
+    .arrow-down {
+      display: none;
+    }
+
+    .dropdown__trigger.active {
+      .arrow-up {
+        display: none;
+      }
+
+      .arrow-down {
+        display: flex;
+      }
+    }
+  }
 }
 
 .dropdown__trigger {
+  display: flex;
+  align-items: center;
 
   .arrow-up {
     display: none;
@@ -10,7 +43,7 @@
 
   &.active {
     .arrow-up {
-      display: block;
+      display: flex;
     }
 
     .arrow-down {

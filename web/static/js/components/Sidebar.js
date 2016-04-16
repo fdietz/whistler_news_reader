@@ -10,10 +10,16 @@ import HTML5Backend from "react-dnd-html5-backend";
 import {
   HouseSVGIcon,
   ListSVGIcon,
-  PlusSVGIcon
+  PlusSVGIcon,
+  ArrowDownSVGIcon,
+  ArrowUpSVGIcon
 } from "../components/SVGIcon";
 
 import Button from "../components/Button";
+import DropdownTrigger from "../components/DropdownTrigger";
+import DropdownContent from "../components/DropdownContent";
+import Dropdown from "../components/Dropdown";
+
 import Feed from "./sidebar/Feed";
 import Category from "./sidebar/Category";
 import CategoryDropTarget from "./sidebar/CategoryDropTarget";
@@ -47,6 +53,7 @@ class Sidebar extends Component {
     this.onCategoryExpandClick = this.onCategoryExpandClick.bind(this);
     this.onNewCategoryClick = this.onNewCategoryClick.bind(this);
     this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
+    this.onOPMLImportClick = this.onOPMLImportClick.bind(this);
   }
 
   renderFeed(feed) {
@@ -219,6 +226,11 @@ class Sidebar extends Component {
     this.props.userActions.requestSignOut();
   }
 
+  onOPMLImportClick(event) {
+    event.preventDefault();
+    this.props.modalsActions.openOpmlImportModal();
+  }
+
   onCategoryExpandClick(category, event) {
     event.preventDefault();
     const { categoriesActions } = this.props;
@@ -276,9 +288,26 @@ class Sidebar extends Component {
             <img src={currentUser.image_url}/>
           </div>
           <div className="meta">
-            <div className="author">{currentUser.name}</div>
-            <a href="#" onClick={this.onSignOutClick}>Logout</a>
+            <div className="user-name">{currentUser.name}</div>
+            <div className="user-email">{currentUser.email}</div>
           </div>
+
+          <Dropdown className="north west mx-l-auto">
+            <DropdownTrigger className="btn btn-outline">
+              <ArrowDownSVGIcon color="light-gray" size="medium" className="arrow-down"/>
+            <ArrowUpSVGIcon color="light-gray" size="medium" className="arrow-up"/>
+            </DropdownTrigger>
+            <DropdownContent>
+              <ul className="dropdown__list">
+                <li className="dropdown__list-item">
+                  <a href="#" onClick={this.onOPMLImportClick}>OPML Import</a>
+                </li>
+                <li className="dropdown__list-item">
+                  <a href="#" onClick={this.onSignOutClick}>Logout</a>
+                </li>
+              </ul>
+            </DropdownContent>
+          </Dropdown>
         </div>
       </div>
     );

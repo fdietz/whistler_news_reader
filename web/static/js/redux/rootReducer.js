@@ -12,6 +12,7 @@ import user from "./modules/user";
 import categories from "./modules/categories";
 import currentSidebarSelection from "./modules/currentSidebarSelection";
 import modals from "./modules/modals";
+import opmlImportForm from "./modules/opmlImportForm";
 
 export default combineReducers({
   feedForm,
@@ -25,5 +26,6 @@ export default combineReducers({
   user,
   currentSidebarSelection,
   modals,
+  opmlImportForm,
   routing: routerReducer
 });
