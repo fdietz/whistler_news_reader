@@ -17,10 +17,10 @@ export default function configureStore(initialState = {}) {
   }
 
   if (__PERFORMANCE_DEBUG__) {
-    const performance = require("../middleware/performance").performance;
-    middlewares.push(performance);
-    // const reactPerformance = require("../middleware/performance").reactPerformance;
-    // middlewares.push(reactPerformance);
+    // const performance = require("../middleware/performance").performance;
+    // middlewares.push(performance);
+    const reactPerformance = require("../middleware/performance").reactPerformance;
+    middlewares.push(reactPerformance);
   }
 
   let middleware = applyMiddleware(...middlewares);

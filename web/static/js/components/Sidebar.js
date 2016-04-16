@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from "react";
+import shallowCompare from "react-addons-shallow-compare";
 import { routerActions } from "react-router-redux";
 import { Link } from "react-router";
 import classNames from "classnames";
@@ -8,16 +9,15 @@ import HTML5Backend from "react-dnd-html5-backend";
 
 import {
   HouseSVGIcon,
-  ArrowDownBoldSVGIcon,
-  ArrowRightBoldSVGIcon,
   ListSVGIcon,
   PlusSVGIcon
 } from "../components/SVGIcon";
 
-import Badge from "../components/Badge";
 import Button from "../components/Button";
-import CategoryDropTarget from "../components/CategoryDropTarget";
-import FeedDragSource from "../components/FeedDragSource";
+import Feed from "./sidebar/Feed";
+import Category from "./sidebar/Category";
+import CategoryDropTarget from "./sidebar/CategoryDropTarget";
+import FeedDragSource from "./sidebar/FeedDragSource";
 
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
@@ -55,25 +55,31 @@ class Sidebar extends Component {
     const key = `feeds-${feed.id}`;
     const active = path === currentPathname;
 
-    const cls = classNames({ "sidebar-nav-list__name": true, active: active });
-    const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
+    // const cls = classNames({ "sidebar-nav-list__name": true, active: active });
+    // const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
 
     return (
-      <FeedDragSource
+      <Feed
         key={key}
-        className={listItemCls}
         feed={feed}
-        active={active}
-        onDrop={this.handleOnFeedDrop}>
-        <div className="sidebar-nav-list__meta">
-          <div className="icon-placeholder"></div>
-          <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
-          {feed.unread_count > 0 &&
-            <Badge count={feed.unread_count} className="sidebar-nav-list__badge"/>
-          }
-        </div>
-      </FeedDragSource>
+        active={active}/>
     );
+    // return (
+    //   <FeedDragSource
+    //     key={key}
+    //     className={listItemCls}
+    //     feed={feed}
+    //     active={active}
+    //     onDrop={this.handleOnFeedDrop}>
+    //     <div className="sidebar-nav-list__meta">
+    //       <div className="icon-placeholder"></div>
+    //       <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
+    //       {feed.unread_count > 0 &&
+    //         <Badge count={feed.unread_count} className="sidebar-nav-list__badge"/>
+    //       }
+    //     </div>
+    //   </FeedDragSource>
+    // );
   }
 
   renderLink(label, path, iconName) {
@@ -105,35 +111,51 @@ class Sidebar extends Component {
       return result + feed.unread_count;
     }, 0);
 
-    const cls = classNames({ "sidebar-nav-list__name": true, active: active });
-    const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
-    const currentColor = active ? "white" : "gray";
+    // const cls = classNames({ "sidebar-nav-list__name": true, active: active });
+    // const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
+    // const currentColor = active ? "white" : "gray";
 
     return (
-      <CategoryDropTarget key={key} className={listItemCls} category={category} active={active}>
-        <div className="sidebar-nav-list__meta">
-          <a
-            href="#"
-            className="sidebar-nav-list__expand-toggle"
-            onClick={this.onCategoryExpandClick.bind(this, category)}>
-            {category.expanded && <ArrowDownBoldSVGIcon color={currentColor}/>}
-            {!category.expanded && <ArrowRightBoldSVGIcon color={currentColor}/>}
-         </a>
-         <Link to={path} className={cls} title={category.title}>{category.title}</Link>
-         {totalUnreadCount > 0 &&
-           <Badge count={totalUnreadCount} className="sidebar-nav-list__badge"/>
+      <Category
+        key={key}
+        category={category}
+        active={active}
+        totalUnreadCount={totalUnreadCount}
+        onExpandClick={this.onCategoryExpandClick}>
+         {matchingFeeds.length > 0 && category.expanded &&
+           <div className="sidebar-nav-list nested">
+             {matchingFeeds.map((feed) => {
+               return this.renderFeed(feed);
+             })}
+           </div>
          }
-        </div>
-
-        {matchingFeeds.length > 0 && category.expanded &&
-          <div className="sidebar-nav-list nested">
-            {matchingFeeds.map((feed) => {
-              return this.renderFeed(feed);
-            })}
-          </div>
-        }
-      </CategoryDropTarget>
+      </Category>
     );
+    // return (
+    //   <CategoryDropTarget key={key} className={listItemCls} category={category} active={active}>
+    //     <div className="sidebar-nav-list__meta">
+    //       <a
+    //         href="#"
+    //         className="sidebar-nav-list__expand-toggle"
+    //         onClick={this.onCategoryExpandClick.bind(this, category)}>
+    //         {category.expanded && <ArrowDownBoldSVGIcon color={currentColor}/>}
+    //         {!category.expanded && <ArrowRightBoldSVGIcon color={currentColor}/>}
+    //      </a>
+    //      <Link to={path} className={cls} title={category.title}>{category.title}</Link>
+    //      {totalUnreadCount > 0 &&
+    //        <Badge count={totalUnreadCount} className="sidebar-nav-list__badge"/>
+    //      }
+    //     </div>
+    //
+    //     {matchingFeeds.length > 0 && category.expanded &&
+    //       <div className="sidebar-nav-list nested">
+    //         {matchingFeeds.map((feed) => {
+    //           return this.renderFeed(feed);
+    //         })}
+    //       </div>
+    //     }
+    //   </CategoryDropTarget>
+    // );
   }
 
   renderAddCategoryLink() {
@@ -167,6 +189,10 @@ class Sidebar extends Component {
   componentWillUnmount() {
     unbindHotKey("nextFeed");
     unbindHotKey("previousFeed");
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
   }
 
   onNextClick() {
@@ -259,4 +285,5 @@ class Sidebar extends Component {
   }
 }
 
-export default DragDropContext(HTML5Backend)(Sidebar);
+// export default DragDropContext(HTML5Backend)(Sidebar);
+export default Sidebar;
