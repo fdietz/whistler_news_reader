@@ -12,21 +12,21 @@ export function requestCreateFeed(feedAttributes) {
     dispatch(feedFormUpdate());
 
     return axios.post("/api/feeds", { feed: feedAttributes }).
-    then((response) => {
-      dispatch(feedFormReset());
-      return response.data.feed;
-    }).
-    catch((response) => {
-      let formData;
-      if (response.status === 404) {
-        formData = { errors: [ { feed_url: "Not found" }] };
-      } else {
-        formData = { errors: response.data.errors };
-      }
-      dispatch(feedFormUpdate(formData));
+      then(response => {
+        dispatch(feedFormReset());
+        return response.data.feed;
+      }).
+      catch(error => {
+        let formData;
+        if (error.response.status === 404) {
+          formData = { errors: [ { feed_url: "Not found" }] };
+        } else {
+          formData = error.payload;
+        }
+        dispatch(feedFormUpdate(formData));
 
-      return formData;
-    });
+        return formData;
+      });
   };
 }
 

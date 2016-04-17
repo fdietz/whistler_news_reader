@@ -12,8 +12,9 @@ import { feedFormUpdate, feedFormReset, requestCreateFeed } from "../redux/modul
 import { addFeed } from "../redux/modules/feeds";
 
 import { customModalStyles } from "../utils/ModalHelper";
-import { renderErrorsFor } from "../utils";
 import { getSortedCategories } from "../redux/selectors";
+import { reduceErrorsToString } from "../utils/ErrorHelper";
+import { renderErrorsFor } from "../utils";
 
 class NewFeedDialog extends Component {
 
@@ -76,14 +77,6 @@ class NewFeedDialog extends Component {
   render() {
     const { isOpen, feedForm, sortedCategories } = this.props;
 
-    const feedUrlError = feedForm.errors && feedForm.errors.find(error => error.feed_url);
-    const feedUrlCls = classNames({
-      field: true,
-      block: true,
-      "col-12": true,
-      "is-error": feedUrlError
-    });
-
     return (
       <Modal
         isOpen={isOpen}
@@ -101,20 +94,25 @@ class NewFeedDialog extends Component {
           <form onSubmit={this.submitForm} className="form-prominent sm-col-6">
             <h1>Add new feed</h1>
 
-            <div className="sm-col-12 mb2">
-              {renderErrorsFor(feedForm.errors, "feed_url")}
-            </div>
+            {feedForm.errors &&
+              <div className="sm-col-12 mb2">
+                <div className="errors">
+                  {reduceErrorsToString(feedForm.errors)}
+                </div>
+              </div>
+            }
 
             <div className="sm-col-12 mb2">
               <label>Website address or feed title</label>
               <input
-                className={feedUrlCls}
+                className="field block col-12"
                 type="text"
                 placeholder="Enter website address or feed title here"
                 ref="feedUrl"
                 value={feedForm.feedUrl}
                 onChange={(event) => this.handleChange(event)}
                 autoFocus={true}/>
+              {renderErrorsFor(feedForm.errors, "feed_url")}
 
               <div className="hint">
                 Website address must start with http://
