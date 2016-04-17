@@ -1,7 +1,6 @@
 defmodule WhistlerNewsReader.EntryParserTest do
   use WhistlerNewsReader.ModelCase
 
-  alias WhistlerNewsReader.FeedParser
   alias WhistlerNewsReader.EntryParser
 
   setup do
@@ -15,7 +14,7 @@ defmodule WhistlerNewsReader.EntryParserTest do
 
   test "store_entry succeeds", %{feed: feed} do
     json_body = File.read!("test/fixtures/rss2/example1.xml")
-    {:ok, parsed_feed} = FeedParser.parse(json_body)
+    {:ok, parsed_feed} = ElixirFeedParser.parse(json_body)
     entry_body = List.first(parsed_feed.entries)
 
     parsed_entry = EntryParser.parse(feed, entry_body)

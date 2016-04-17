@@ -5,6 +5,8 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Subscription
 
+  import Mock
+
   @feed_url "http://www.theverge.com/rss/frontpage"
   @other_feed_url "http://heise.de.feedsportal.com/c/35207/f/653902/index.rss"
   @not_existing_feed_url "http://www.theverge.com/404"
@@ -72,25 +74,31 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
   end
 
   test "POST /api/feeds succeeds", %{conn: conn, jwt: jwt} do
-    conn = conn |> put_req_header("authorization", jwt)
-    conn = post conn, feed_path(conn, :create), feed: %{feed_url: @other_feed_url}
+    json_body = File.read!("test/fixtures/rss2/example1.xml")
+    with_mock WhistlerNewsReader.FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
+      conn = conn |> put_req_header("authorization", jwt)
+      conn = post conn, feed_path(conn, :create), feed: %{feed_url: @other_feed_url}
 
-    assert json_response(conn, 201)
-    feed_id = json_response(conn, 201)["feed"]["id"]
-    assert Repo.get!(Feed, feed_id)
-    assert Repo.get_by!(Subscription, feed_id: feed_id)
+      assert json_response(conn, 201)
+      feed_id = json_response(conn, 201)["feed"]["id"]
+      assert Repo.get!(Feed, feed_id)
+      assert Repo.get_by!(Subscription, feed_id: feed_id)
+    end
   end
 
   test "POST /api/feeds succeeds", %{conn: conn, jwt: jwt, category: category} do
-    conn = conn |> put_req_header("authorization", jwt)
-    conn = post conn, feed_path(conn, :create), feed: %{feed_url: @other_feed_url, category_id: category.id}
+    json_body = File.read!("test/fixtures/rss2/example1.xml")
+    with_mock WhistlerNewsReader.FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
+      conn = conn |> put_req_header("authorization", jwt)
+      conn = post conn, feed_path(conn, :create), feed: %{feed_url: @other_feed_url, category_id: category.id}
 
-    assert json_response(conn, 201)
-    feed_id = json_response(conn, 201)["feed"]["id"]
-    category_id = json_response(conn, 201)["feed"]["category_id"]
-    assert category_id == category.id
-    assert Repo.get!(Feed, feed_id)
-    assert Repo.get_by!(Subscription, feed_id: feed_id)
+      assert json_response(conn, 201)
+      feed_id = json_response(conn, 201)["feed"]["id"]
+      category_id = json_response(conn, 201)["feed"]["category_id"]
+      assert category_id == category.id
+      assert Repo.get!(Feed, feed_id)
+      assert Repo.get_by!(Subscription, feed_id: feed_id)
+    end
   end
 
   test "POST /api/feeds fails if feed exists already", %{conn: conn, jwt: jwt} do

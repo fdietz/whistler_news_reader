@@ -31,7 +31,7 @@ defmodule WhistlerNewsReader.FeedImporterTest do
     end
   end
 
-  test "import_feed succeeds", %{user: user} do
+  test "import_feed succeeds for feed file", %{user: user} do
     json_body = File.read!("test/fixtures/rss2/example1.xml")
     with_mock FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
       {:ok, feed } = FeedImporter.import(user, %{"feed_url" => @feed_url})
@@ -39,4 +39,14 @@ defmodule WhistlerNewsReader.FeedImporterTest do
       assert "http://www.example.com" == feed.site_url
     end
   end
+
+  # TODO: how to mock second FeedFetcher.fetch call?
+  # test "import_feed succeeds for website containing reference to feed", %{user: user} do
+  #   json_body = File.read!("test/fixtures/html/example1.html")
+  #   with_mock FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
+  #     {:ok, feed } = FeedImporter.import(user, %{"feed_url" => @feed_url})
+  #     assert Repo.get_by!(Subscription, feed_id: feed.id)
+  #     assert "http://www.example.com" == feed.site_url
+  #   end
+  # end
 end

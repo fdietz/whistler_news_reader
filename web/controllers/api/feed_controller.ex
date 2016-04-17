@@ -26,7 +26,9 @@ defmodule WhistlerNewsReader.Api.FeedController do
         |> put_status(:created)
         |> put_resp_header("location", feed_path(conn, :show, feed))
         |> render("show.json", feed: feed, unread_entries_count: unread_entries_count)
-      {:error, changeset} ->
+      {:error, :feed_url_not_found} ->
+        conn |> send_resp(404, "Feed not found")
+      {:error, %Ecto.Changeset{} = changeset} ->
         conn
         |> put_status(:unprocessable_entity)
         |> render(WhistlerNewsReader.Api.ErrorView, "error.json", changeset: changeset)

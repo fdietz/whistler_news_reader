@@ -1,19 +1,18 @@
 defmodule WhistlerNewsReader.FeedImporter do
 
   alias WhistlerNewsReader.FeedFetcher
-  alias WhistlerNewsReader.FeedParser
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.StoreEntryHelper
+  alias WhistlerNewsReader.FeedUrlExtractor
 
   require Logger
 
   def import(user, %{"feed_url" => feed_url} = feed_attributes) do
     Logger.info "FeedImporter - import feed #{feed_url} #{feed_attributes["category_id"]}"
 
-    with {:ok, xml_body}       <- FeedFetcher.fetch(feed_url),
-         {:ok, parsed_attrs}   <- FeedParser.parse(xml_body),
+    with {:ok, parsed_attrs}   <- fetch_and_parse(feed_url),
          {:ok, feed}           <- find_or_create(parsed_attrs, feed_url),
          {:ok, _updated_feed}  <- update_last_refreshed_at(feed),
          {:ok, _subscription}  <- subscribe_user(user, feed, feed_attributes["category_id"]) do
@@ -21,6 +20,27 @@ defmodule WhistlerNewsReader.FeedImporter do
       StoreEntryHelper.store_entries(feed, parsed_attrs.entries)
       {:ok, feed}
     end
+  end
+
+  def fetch_and_parse(feed_url) do
+    case import_feed_url(feed_url) do
+      {:error, _} ->
+        import_site_url(feed_url)
+      other ->
+        other
+    end
+  end
+
+  def import_site_url(site_url) do
+    with {:ok, site_body} <- FeedFetcher.fetch(site_url),
+         {:ok, feed_url}  <- FeedUrlExtractor.extract(site_body),
+         {:ok, xml_body}  <- FeedFetcher.fetch(feed_url),
+         do: ElixirFeedParser.parse(xml_body)
+  end
+
+  def import_feed_url(feed_url) do
+    with {:ok, xml_body} <- FeedFetcher.fetch(feed_url),
+         do: ElixirFeedParser.parse(xml_body)
   end
 
   defp update_last_refreshed_at(feed) do
