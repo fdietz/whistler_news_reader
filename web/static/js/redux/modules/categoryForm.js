@@ -11,14 +11,14 @@ export function requestCreateCategory(attrs) {
   return (dispatch) => {
     dispatch(categoryFormUpdate());
 
-    return axios.post("http://localhost:4000/api/categories", { category: attrs }).
-      then((response) => {
+    return axios.post("/api/categories", { category: attrs }).
+      then(response => {
         dispatch(categoryFormReset());
         return response.data.category;
       }).
-      catch((response) => {
-        dispatch(categoryFormUpdate({ errors: response.data.errors }));
-        return response.data;
+      catch(error => {
+        dispatch(categoryFormUpdate(error.payload));
+        return error.payload;
       });
   };
 }

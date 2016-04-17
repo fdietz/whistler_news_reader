@@ -16,6 +16,7 @@ import {
 import { addCategory } from "../redux/modules/categories";
 
 import { reduceErrorsToString } from "../utils/ErrorHelper";
+import { renderErrorsFor } from "../utils";
 import { customModalStyles } from "../utils/ModalHelper";
 
 class NewCategoryDialog extends Component {
@@ -68,7 +69,6 @@ class NewCategoryDialog extends Component {
 
   render() {
     const { isOpen, categoryForm } = this.props;
-    const errors = categoryForm.errors ? reduceErrorsToString(categoryForm.errors) : "";
 
     return (
       <Modal
@@ -87,8 +87,16 @@ class NewCategoryDialog extends Component {
           <form onSubmit={this.submitForm} className="form-prominent sm-col-6">
             <h1>Add new category</h1>
 
-            <div className="sm-col-12 mb2">
-              <label>Category title</label>
+            {categoryForm.errors &&
+              <div className="sm-col-12 mb2">
+                <div className="errors">
+                  {reduceErrorsToString(categoryForm.errors)}
+                </div>
+              </div>
+            }
+
+            <label className="field-label mb3">
+              Category title
               <input className="field block col-12"
                 type="text"
                 placeholder="Enter title here"
@@ -100,13 +108,9 @@ class NewCategoryDialog extends Component {
               <div className="hint">
                 Title must be 50 characters or less and cannot contain spaces or periods
               </div>
-            </div>
 
-            <div className="sm-col-12 mb3">
-              {errors &&
-                <p className="errors">{errors}</p>
-              }
-            </div>
+              {renderErrorsFor(categoryForm.errors, "title")}
+            </label>
 
             <div className="form-actions">
               <button

@@ -102,8 +102,8 @@ class NewFeedDialog extends Component {
               </div>
             }
 
-            <div className="sm-col-12 mb2">
-              <label>Website address or feed title</label>
+            <label className="field-label">
+              Website address or feed title
               <input
                 className="field block col-12"
                 type="text"
@@ -112,16 +112,17 @@ class NewFeedDialog extends Component {
                 value={feedForm.feedUrl}
                 onChange={(event) => this.handleChange(event)}
                 autoFocus={true}/>
-              {renderErrorsFor(feedForm.errors, "feed_url")}
 
               <div className="hint">
                 Website address must start with http://
               </div>
-            </div>
 
-            <div className="sm-col-12 mb3">
-              <label>Select category</label>
-              <select className="field block col-12"
+              {renderErrorsFor(feedForm.errors, "feed_url")}
+            </label>
+
+            <label className="field-label mb3">
+              Select category
+              <select className="field block"
                 ref="categoryId"
                 onChange={(event) => this.handleChange(event)}
                 value={feedForm.category_id}>
@@ -131,7 +132,7 @@ class NewFeedDialog extends Component {
                   return <option value={category.id} key={category.id}>{category.title}</option>;
                 })}
               </select>
-            </div>
+            </label>
 
             <div className="form-actions">
               <button

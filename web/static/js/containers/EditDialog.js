@@ -11,6 +11,7 @@ import { requestUpdateFeed } from "../redux/modules/feeds";
 import { requestUpdateCategory } from "../redux/modules/categories";
 
 import { reduceErrorsToString } from "../utils/ErrorHelper";
+import { renderErrorsFor } from "../utils";
 import { customModalStyles } from "../utils/ModalHelper";
 
 class EditDialog extends Component {
@@ -70,7 +71,6 @@ class EditDialog extends Component {
 
   render() {
     const { isOpen, editForm, currentSidebarSelection } = this.props;
-    const errors = editForm.errors ? reduceErrorsToString(editForm.errors) : "";
 
     let labels;
     if (currentSidebarSelection.isFeed) {
@@ -106,8 +106,16 @@ class EditDialog extends Component {
           <form onSubmit={this.submitForm} className="form-prominent sm-col-6">
             <h1>{labels.heading}</h1>
 
-            <div className="sm-col-12 mb2">
-              <label>{labels.label}</label>
+            {editForm.errors &&
+              <div className="sm-col-12 mb2">
+                <div className="errors">
+                  {reduceErrorsToString(editForm.errors)}
+                </div>
+              </div>
+            }
+
+            <label className="field-label mb3">
+              {labels.label}
               <input className="field block col-12"
                 type="text"
                 placeholder="Enter title here"
@@ -117,20 +125,15 @@ class EditDialog extends Component {
                 autoFocus={true}/>
 
               <div className="hint">{labels.hint}</div>
-            </div>
+              {renderErrorsFor(editForm.errors, "title")}
 
-            {currentSidebarSelection.isFeed &&
-              <div className="sm-col-12 mb2">
-                <div className="hint">{currentSidebarSelection.selection.site_url}</div>
-                <div className="hint">{currentSidebarSelection.selection.feed_url}</div>
-              </div>
-            }
-
-            <div className="sm-col-12 mb3">
-              {errors &&
-                <p className="errors">{errors}</p>
+              {currentSidebarSelection.isFeed &&
+                <div className="sm-col-12 mb2 mt2">
+                  <div className="hint">{currentSidebarSelection.selection.site_url}</div>
+                  <div className="hint">{currentSidebarSelection.selection.feed_url}</div>
+                </div>
               }
-            </div>
+            </label>
 
             <div className="form-actions">
               <button
