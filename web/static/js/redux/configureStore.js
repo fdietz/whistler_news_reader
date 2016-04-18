@@ -4,8 +4,7 @@ import { browserHistory } from "react-router";
 import { routerMiddleware } from "react-router-redux";
 import rootReducer from "./rootReducer";
 
-// TODO: should depend on MIX_ENV/NODE_ENV
-const __DEBUG__ = true;
+const __DEBUG__ = process.env.NODE_ENV !== "production";
 const __PERFORMANCE_DEBUG__ = false;
 
 export default function configureStore(initialState = {}) {
