@@ -51,13 +51,6 @@ const EntryListToolbar = ({
           title="Fetch new stories">
           <CycleSVGIcon color="light-gray" size="small"/>
         </Button>
-        <Button
-          type="header"
-          onClick={onRemoveFeedOrCategoryClick}
-          disabled={isFeedOrCategorySelected}
-          title="Delete selected feed or category">
-          <TrashSVGIcon color="light-gray" size="small"/>
-        </Button>
       </ButtonGroup>
       <Dropdown className="ml1">
         <DropdownTrigger className="btn btn-header">
@@ -111,8 +104,18 @@ const EntryListToolbar = ({
             <li
               className={editFeedOrCategoryCls}
               onClick={onOpenEditFeedOrCategoryModalClick}>
-              <div className="media"/>
+              <div className="media">
+                <CogSVGIcon color="light-gray" size="small"/>
+              </div>
               <div className="content">Settings</div>
+            </li>
+            <li
+              className={editFeedOrCategoryCls}
+              onClick={onRemoveFeedOrCategoryClick}>
+              <div className="media">
+                <TrashSVGIcon color="light-gray" size="small"/>
+              </div>
+              <div className="content">Delete</div>
             </li>
           </ul>
         </DropdownContent>
