@@ -7,13 +7,11 @@ export const ADD_CATEGORY = "ADD_CATEGORY";
 export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
 export const REMOVE_CATEGORY = "REMOVE_CATEGORY";
 export const FETCH_CATEGORIES = "FETCH_CATEGORIES";
-export const TOGGLE_EXPAND_CATEGORY = "TOGGLE_EXPAND_CATEGORY";
 
 export const addCategory      = createAction(ADD_CATEGORY);
 export const updateCategory   = createAction(UPDATE_CATEGORY);
 export const removeCategory   = createAction(REMOVE_CATEGORY);
 export const fetchCategories  = createAction(FETCH_CATEGORIES);
-export const toggleExpandCategory = createAction(TOGGLE_EXPAND_CATEGORY);
 
 export function requestUpdateCategory(id, attrs) {
   return dispatch => {
@@ -52,7 +50,6 @@ function isLoading(state = initialIsLoading, action) {
   case ADD_CATEGORY:
   case UPDATE_CATEGORY:
   case REMOVE_CATEGORY:
-  case TOGGLE_EXPAND_CATEGORY:
   case FETCH_CATEGORIES:
     return !action.payload ? true : initialIsLoading;
   default:
@@ -65,7 +62,6 @@ function error(state = initialError, action) {
   case ADD_CATEGORY:
   case UPDATE_CATEGORY:
   case REMOVE_CATEGORY:
-  case TOGGLE_EXPAND_CATEGORY:
   case FETCH_CATEGORIES:
     return action.error ? action.payload : state;
   default:
@@ -82,8 +78,6 @@ function category(state, action) {
     return action.payload;
   case UPDATE_CATEGORY:
     return { ...state, ...action.payload };
-  case TOGGLE_EXPAND_CATEGORY:
-    return { ...state, expanded: !state.expanded };
   default:
     return state;
   }
@@ -112,7 +106,6 @@ function byId(state = initialById, action) {
   switch (action.type) {
   case ADD_CATEGORY:
   case UPDATE_CATEGORY:
-  case TOGGLE_EXPAND_CATEGORY:
     return { ...state, [action.payload.id]: category(state[action.payload.id], action) };
   case FETCH_CATEGORIES:
     return arrayToObjMap(action.payload);

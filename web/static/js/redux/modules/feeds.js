@@ -133,22 +133,10 @@ function byId(state = initialById, action) {
       [action.payload.id]: feed(state[action.payload.id], action)
     };
   case RESET_UNREAD_COUNT:
-    if (action.payload.id) {
-      return {
-        ...state,
-        [action.payload.id]: feed(state[action.payload.id], action)
-      };
-    } else if (action.payload.category_id) {
-      const matchedIds = listedIds.filter(id =>
-        state[id].category_id === action.payload.category_id);
-      return Object.keys(state).reduce((nextState, id) => {
-        if (matchedIds.indexOf(id) !== -1) {
-          nextState[id] = { ...feed(state[action.payload.id], action) };
-        }
-        return nextState;
-      }, {});
-    }
-    return state;
+    return {
+      ...state,
+      [action.payload.id]: feed(state[action.payload.id], action)
+    };
   case FETCH_FEEDS:
     return arrayToObjMap(action.payload);
   default:

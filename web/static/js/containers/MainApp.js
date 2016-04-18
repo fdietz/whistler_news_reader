@@ -143,9 +143,9 @@ class MainApp extends Component {
   // TODO: simplify
   requestParams(props) {
     if (props.params.id && props.location.pathname.startsWith("/feeds")) {
-      return { feed_id: props.params.id };
+      return { feed_id: +props.params.id };
     } else if (props.params.id && props.location.pathname.startsWith("/categories")) {
-      return { category_id: props.params.id };
+      return { category_id: +props.params.id };
     } else if (props.location.pathname === "/all") {
       return { feed_id: "all" };
     } else if (props.location.pathname === "/today") {
@@ -185,7 +185,7 @@ class MainApp extends Component {
   }
 
   markAsRead() {
-    const { feedsActions, categoriesActions, entriesActions } = this.props;
+    const { sortedFeeds, feedsActions, categoriesActions, entriesActions } = this.props;
     const params = this.requestParams(this.props);
 
     entriesActions.requestMarkAllEntriesAsRead(params).then(() => {
@@ -196,7 +196,11 @@ class MainApp extends Component {
       } else if (params.feed_id) {
         feedsActions.resetUnreadCount({ id: +params.feed_id });
       } else if (params.category_id) {
-        feedsActions.resetUnreadCount({ category_id: +params.category_id });
+        const matchedFeeds = sortedFeeds.filter(feed =>
+          feed.category_id === +params.category_id);
+        for (let feed of matchedFeeds) {
+          feedsActions.resetUnreadCount({ id: feed.id });
+        }
       }
     });
   }
