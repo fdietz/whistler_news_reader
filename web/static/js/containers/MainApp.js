@@ -226,7 +226,6 @@ class MainApp extends Component {
       entries,
       sortedCategories,
       sortedFeeds,
-      feeds,
       currentUser,
       currentEntry,
       currentSidebarSelection,
@@ -261,11 +260,13 @@ class MainApp extends Component {
         <MainAppViewLayout
           entries={entries}
           currentEntry={currentEntry}
+          currentUser={currentUser}
           currentSidebarSelection={currentSidebarSelection}
           entriesActions={entriesActions}
           currentEntryActions={currentEntryActions}
           feedsActions={feedsActions}
           modalsActions={modalsActions}
+          userActions={userActions}
           onNextEntryClick={this.nextEntry}
           onPreviousEntryClick={this.previousEntry}
           onOpenExternalClick={this.openExternal}

@@ -51,36 +51,7 @@ $sidebar-color: $gray;
   background-color: $darken-2;
   border-top: 1px solid $darken-1;
   border-bottom: 1px solid transparent;
-
   align-items: center;
-
-  .avatar {
-    display: flex;
-    align-items: center;
-
-    img {
-      height: 42px;
-    }
-  }
-
-  .meta {
-    display: flex;
-    padding: $space-1;
-    flex-direction: column;
-
-    .user-name,
-    .user-email {
-      font-size: .8rem;
-    }
-
-    .user-name {
-      color: $sidebar-color;
-    }
-
-    .user-email {
-      color: $gray-3;
-    }
-  }
 }
 
 .sidebar-nav-header {

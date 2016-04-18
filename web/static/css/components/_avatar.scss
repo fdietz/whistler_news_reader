@@ -1,9 +1,26 @@
 .avatar {
 
   border-radius: 4px;
-  
+
   img {
     height: 48px;
     border-radius: 4px;
   }
+}
+
+.avatar-header {
+  display: flex;
+  border: 2px solid $gray-4;
+  border-radius: 50%;
+
+  img {
+    height: 32px;
+    border-radius: 50%;
+  }
+}
+
+.user-name,
+.user-email {
+  font-size: .8rem;
+  color: $gray;
 }

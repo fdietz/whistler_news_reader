@@ -10,15 +10,10 @@ import HTML5Backend from "react-dnd-html5-backend";
 import {
   HouseSVGIcon,
   ListSVGIcon,
-  PlusSVGIcon,
-  ArrowDownSVGIcon,
-  ArrowUpSVGIcon
+  PlusSVGIcon
 } from "../components/SVGIcon";
 
 import Button from "../components/Button";
-import DropdownTrigger from "../components/DropdownTrigger";
-import DropdownContent from "../components/DropdownContent";
-import Dropdown from "../components/Dropdown";
 
 import Feed from "./sidebar/Feed";
 import Category from "./sidebar/Category";
@@ -250,7 +245,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { feeds, categories, currentUser } = this.props;
+    const { feeds, categories } = this.props;
     const feedsWithoutCategory = feeds.filter((feed) => !feed.category_id);
 
     return (
@@ -282,32 +277,6 @@ class Sidebar extends Component {
             })}
             {this.renderAddCategoryLink()}
           </div>
-        </div>
-        <div className="sidebar-footer">
-          <div className="avatar">
-            <img src={currentUser.image_url}/>
-          </div>
-          <div className="meta">
-            <div className="user-name">{currentUser.name}</div>
-            <div className="user-email">{currentUser.email}</div>
-          </div>
-
-          <Dropdown className="north west mx-l-auto">
-            <DropdownTrigger className="btn btn-outline">
-              <ArrowDownSVGIcon color="light-gray" size="medium" className="arrow-down"/>
-            <ArrowUpSVGIcon color="light-gray" size="medium" className="arrow-up"/>
-            </DropdownTrigger>
-            <DropdownContent>
-              <ul className="dropdown__list">
-                <li className="dropdown__list-item">
-                  <a href="#" onClick={this.onOPMLImportClick}>OPML Import</a>
-                </li>
-                <li className="dropdown__list-item">
-                  <a href="#" onClick={this.onSignOutClick}>Logout</a>
-                </li>
-              </ul>
-            </DropdownContent>
-          </Dropdown>
         </div>
       </div>
     );

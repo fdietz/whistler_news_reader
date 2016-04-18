@@ -12,6 +12,7 @@ import NoMoreContent from "../components/NoMoreContent";
 
 import EntryContentToolbar from "../components/EntryContentToolbar";
 import EntryListToolbar from "../components/EntryListToolbar";
+import ProfileToolbar from "../components/ProfileToolbar";
 
 class MainAppViewLayout extends Component {
 
@@ -22,11 +23,13 @@ class MainAppViewLayout extends Component {
       error: PropTypes.string
     }).isRequired,
     currentEntry: PropTypes.object,
+    currentUser: PropTypes.object.isRequired,
     currentSidebarSelection: PropTypes.object,
     feedsActions: PropTypes.object.isRequired,
     entriesActions: PropTypes.object.isRequired,
     currentEntryActions: PropTypes.object.isRequired,
     modalsActions: PropTypes.object.isRequired,
+    userActions: PropTypes.object.isRequired,
 
     onNextEntryClick: PropTypes.func.isRequired,
     onPreviousEntryClick: PropTypes.func.isRequired,
@@ -72,8 +75,8 @@ class MainAppViewLayout extends Component {
 
   render() {
     const { currentViewLayout } = this.state;
-    const { entries, currentEntry, currentSidebarSelection } = this.props;
-    const { modalsActions } = this.props;
+    const { entries, currentEntry, currentUser, currentSidebarSelection } = this.props;
+    const { modalsActions, userActions } = this.props;
     const {
       onNextEntryClick,
       onPreviousEntryClick,
@@ -148,6 +151,13 @@ class MainAppViewLayout extends Component {
         showEntryContentModalButton={true}/>
     );
 
+    const profileToolbar = (
+      <ProfileToolbar
+        currentUser={currentUser}
+        modalsActions={modalsActions}
+        userActions={userActions}/>
+    );
+
     return (
       <div className="main-app-view-layout">
         {currentViewLayout === "list" &&
@@ -157,7 +167,7 @@ class MainAppViewLayout extends Component {
               <LayoutContent>{paginatedItems}</LayoutContent>
             </LayoutPane>
             <LayoutPane size={70}>
-              <LayoutHeader>{entryContentToolbar}</LayoutHeader>
+              <LayoutHeader>{entryContentToolbar}{profileToolbar}</LayoutHeader>
               <LayoutContent>{currentEntry.entry && content}</LayoutContent>
             </LayoutPane>
           </LayoutMasterSplit>
@@ -169,7 +179,7 @@ class MainAppViewLayout extends Component {
               <LayoutContent>{paginatedItems}</LayoutContent>
             </LayoutPane>
             <LayoutPane size={70}>
-              <LayoutHeader>{entryContentToolbar}</LayoutHeader>
+              <LayoutHeader>{entryContentToolbar}{profileToolbar}</LayoutHeader>
               <LayoutContent>{currentEntry.entry && content}</LayoutContent>
             </LayoutPane>
           </LayoutMasterSplit>
@@ -177,7 +187,7 @@ class MainAppViewLayout extends Component {
         {currentViewLayout === "grid" &&
           <LayoutMasterSplit>
             <LayoutPane size={100}>
-              <LayoutHeader>{entryListToolbar}</LayoutHeader>
+              <LayoutHeader>{entryListToolbar}{profileToolbar}</LayoutHeader>
               <LayoutContent>{paginatedItems}</LayoutContent>
             </LayoutPane>
           </LayoutMasterSplit>
