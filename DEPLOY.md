@@ -2,7 +2,6 @@
 
 Install the Heroku Toolbelt from here https://toolbelt.heroku.com/
 
-http://codeloveandboards.com/blog/2016/03/04/trello-tribute-with-phoenix-and-react-pt-12/
 
 ## Buildpacks
 Since we need two build packs (one for elixir and one for static assets) we use the (multi-buildpack)[https://github.com/ddollar/heroku-buildpack-multi]:
@@ -74,3 +73,8 @@ After the successful deploy, we still have to run the migrations:
 ```
 $ heroku run mix ecto.migrate
 ```
+
+# Credits
+Thanks to others for getting started with this project:
+* http://codeloveandboards.com/blog/2016/03/04/trello-tribute-with-phoenix-and-react-pt-12/
+* http://www.phoenixframework.org/docs/heroku
