@@ -68,8 +68,15 @@ And we should be ready deploy via:
 git push heroku
 ```
 
-After the successful deploy, we still have to run the migrations:
+After the successful deploy, we still have to setup the database.
 
+Add the [Heroku Postgres Addon](https://elements.heroku.com/addons/heroku-postgresql):
+
+```
+heroku addons:create heroku-postgresql:hobby-dev
+```
+
+Now run the migrations:
 ```
 $ heroku run mix ecto.migrate
 ```
