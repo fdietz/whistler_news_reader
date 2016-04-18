@@ -24,7 +24,9 @@ if (prod) {
       'NODE_ENV': JSON.stringify('production')
     }
   }));
-  plugins.push(new webpack.optimize.UglifyJsPlugin());
+  plugins.push(new webpack.optimize.UglifyJsPlugin({
+    compress:{ warnings: true }
+  }));
 } else {
   plugins.push(new webpack.HotModuleReplacementPlugin());
   loaders.unshift("react-hot");
