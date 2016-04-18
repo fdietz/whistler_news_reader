@@ -1,5 +1,14 @@
 import React, { PropTypes, Component } from "react";
 import { DropTarget } from "react-dnd";
+import shallowCompare from "react-addons-shallow-compare";
+import classNames from "classnames";
+
+import { Link } from "react-router";
+import Badge from "../Badge";
+import {
+  ArrowDownBoldSVGIcon,
+  ArrowRightBoldSVGIcon
+} from "../SVGIcon";
 
 class CategoryDropTarget extends Component {
   static propTypes = {
@@ -9,15 +18,21 @@ class CategoryDropTarget extends Component {
     children: PropTypes.node.isRequired,
     category: PropTypes.shape({
       id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired
+      title: PropTypes.string.isRequired,
+      expanded: PropTypes.bool.isRequired
     }).isRequired,
     active: PropTypes.bool.isRequired,
-    className: PropTypes.string
+    onExpandClick: PropTypes.func.isRequired,
+    totalUnreadCount: PropTypes.number
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   render() {
+    const { category, active, totalUnreadCount, onExpandClick, children } = this.props;
     const { canDrop, isOver, connectDropTarget } = this.props;
-    const { className, children } = this.props;
     const isActive = canDrop && isOver;
 
     let backgroundColor;
@@ -25,8 +40,32 @@ class CategoryDropTarget extends Component {
       backgroundColor = "rgba(0,0,0,0.5)";
     }
 
+    const cls = classNames("sidebar-nav-list__item", {
+      active: active
+    });
+
+    const linkCls = classNames("sidebar-nav-list__name", {
+      active: active
+    });
+
+    const path = `/categories/${category.id}`;
+    const currentColor = active ? "white" : "gray";
+
     return connectDropTarget(
-      <div style={{ backgroundColor }} className={className}>
+      <div className={cls} style={{ backgroundColor }}>
+        <div className="sidebar-nav-list__meta">
+          <a
+            href="#"
+            className="sidebar-nav-list__expand-toggle"
+            onClick={onExpandClick.bind(this, category)}>
+            {category.expanded && <ArrowDownBoldSVGIcon color={currentColor}/>}
+            {!category.expanded && <ArrowRightBoldSVGIcon color={currentColor}/>}
+         </a>
+         <Link to={path} className={linkCls} title={category.title}>{category.title}</Link>
+         {totalUnreadCount > 0 &&
+           <Badge count={totalUnreadCount} className="sidebar-nav-list__badge"/>
+         }
+        </div>
         {children}
       </div>
     );

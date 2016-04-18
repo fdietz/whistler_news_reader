@@ -15,8 +15,6 @@ import {
 
 import Button from "../components/Button";
 
-import Feed from "./sidebar/Feed";
-import Category from "./sidebar/Category";
 import CategoryDropTarget from "./sidebar/CategoryDropTarget";
 import FeedDragSource from "./sidebar/FeedDragSource";
 
@@ -53,31 +51,13 @@ class Sidebar extends Component {
     const key = `feeds-${feed.id}`;
     const active = path === currentPathname;
 
-    // const cls = classNames({ "sidebar-nav-list__name": true, active: active });
-    // const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
-
     return (
-      <Feed
+      <FeedDragSource
         key={key}
         feed={feed}
-        active={active}/>
+        active={active}
+        onDrop={this.handleOnFeedDrop}/>
     );
-    // return (
-    //   <FeedDragSource
-    //     key={key}
-    //     className={listItemCls}
-    //     feed={feed}
-    //     active={active}
-    //     onDrop={this.handleOnFeedDrop}>
-    //     <div className="sidebar-nav-list__meta">
-    //       <div className="icon-placeholder"></div>
-    //       <Link to={path} className={cls} title={feed.title}>{feed.title}</Link>
-    //       {feed.unread_count > 0 &&
-    //         <Badge count={feed.unread_count} className="sidebar-nav-list__badge"/>
-    //       }
-    //     </div>
-    //   </FeedDragSource>
-    // );
   }
 
   renderLink(label, path, iconName) {
@@ -109,12 +89,8 @@ class Sidebar extends Component {
       return result + feed.unread_count;
     }, 0);
 
-    // const cls = classNames({ "sidebar-nav-list__name": true, active: active });
-    // const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
-    // const currentColor = active ? "white" : "gray";
-
     return (
-      <Category
+      <CategoryDropTarget
         key={key}
         category={category}
         active={active}
@@ -127,33 +103,8 @@ class Sidebar extends Component {
              })}
            </div>
          }
-      </Category>
+      </CategoryDropTarget>
     );
-    // return (
-    //   <CategoryDropTarget key={key} className={listItemCls} category={category} active={active}>
-    //     <div className="sidebar-nav-list__meta">
-    //       <a
-    //         href="#"
-    //         className="sidebar-nav-list__expand-toggle"
-    //         onClick={this.onCategoryExpandClick.bind(this, category)}>
-    //         {category.expanded && <ArrowDownBoldSVGIcon color={currentColor}/>}
-    //         {!category.expanded && <ArrowRightBoldSVGIcon color={currentColor}/>}
-    //      </a>
-    //      <Link to={path} className={cls} title={category.title}>{category.title}</Link>
-    //      {totalUnreadCount > 0 &&
-    //        <Badge count={totalUnreadCount} className="sidebar-nav-list__badge"/>
-    //      }
-    //     </div>
-    //
-    //     {matchingFeeds.length > 0 && category.expanded &&
-    //       <div className="sidebar-nav-list nested">
-    //         {matchingFeeds.map((feed) => {
-    //           return this.renderFeed(feed);
-    //         })}
-    //       </div>
-    //     }
-    //   </CategoryDropTarget>
-    // );
   }
 
   renderAddCategoryLink() {
@@ -215,7 +166,7 @@ class Sidebar extends Component {
   onCategoryExpandClick(category, event) {
     event.preventDefault();
     const { categoriesActions } = this.props;
-    categoriesActions.toggleExpandCategory({ id: category.id });
+    categoriesActions.updateCategory({ id: category.id, expanded: !category.expanded });
   }
 
   onNewCategoryClick(event) {
@@ -269,5 +220,4 @@ class Sidebar extends Component {
   }
 }
 
-// export default DragDropContext(HTML5Backend)(Sidebar);
-export default Sidebar;
+export default DragDropContext(HTML5Backend)(Sidebar);
