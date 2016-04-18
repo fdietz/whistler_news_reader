@@ -250,8 +250,6 @@ class MainApp extends Component {
           feeds={sortedFeeds}
           categories={sortedCategories}
           currentPathname={currentPath}
-          currentUser={currentUser}
-          userActions={userActions}
           feedsActions={feedsActions}
           categoriesActions={categoriesActions}
           modalsActions={modalsActions}

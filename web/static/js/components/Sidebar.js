@@ -28,8 +28,6 @@ class Sidebar extends Component {
     feeds: PropTypes.array.isRequired,
     categories: PropTypes.array.isRequired,
     currentPathname: PropTypes.string.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    userActions: PropTypes.object.isRequired,
     feedsActions: PropTypes.object.isRequired,
     modalsActions: PropTypes.object.isRequired,
     categoriesActions: PropTypes.object.isRequired
@@ -44,11 +42,9 @@ class Sidebar extends Component {
     this.debouncedOnPreviousClick = debounce(this.onPreviousClick, 100);
 
     this.onAddClick = this.onAddClick.bind(this);
-    this.onSignOutClick = this.onSignOutClick.bind(this);
     this.onCategoryExpandClick = this.onCategoryExpandClick.bind(this);
     this.onNewCategoryClick = this.onNewCategoryClick.bind(this);
     this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
-    this.onOPMLImportClick = this.onOPMLImportClick.bind(this);
   }
 
   renderFeed(feed) {
@@ -214,16 +210,6 @@ class Sidebar extends Component {
   onAddClick(e) {
     e.preventDefault();
     this.props.modalsActions.openNewFeedModal();
-  }
-
-  onSignOutClick(event) {
-    event.preventDefault();
-    this.props.userActions.requestSignOut();
-  }
-
-  onOPMLImportClick(event) {
-    event.preventDefault();
-    this.props.modalsActions.openOpmlImportModal();
   }
 
   onCategoryExpandClick(category, event) {
