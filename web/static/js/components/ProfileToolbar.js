@@ -1,18 +1,10 @@
 import React, { PropTypes, Component } from "react";
-import classNames from "classnames";
 
 import {
-  ArrowLeftBoldSVGIcon,
-  ArrowRightBoldSVGIcon,
   ArrowDownSVGIcon,
-  ArrowUpSVGIcon,
-  EarthSVGIcon,
-  ResizeEnlargeSVGIcon,
-  ShareSVGIcon
+  ArrowUpSVGIcon
 } from "../components/SVGIcon";
 
-import Button from "../components/Button";
-import ButtonGroup from "../components/ButtonGroup";
 import DropdownTrigger from "../components/DropdownTrigger";
 import DropdownContent from "../components/DropdownContent";
 import Dropdown from "../components/Dropdown";
@@ -70,7 +62,6 @@ class EntryContentToolbar extends Component {
   </div>
     );
   }
-};
-
+}
 
 export default EntryContentToolbar;
