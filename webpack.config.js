@@ -14,10 +14,16 @@ var plugins = [
       to: "js/phoenix_html.js" }
   ])
 ];
+
 var loaders = ["babel"];
 var publicPath = "http://localhost:4001/";
 
 if (prod) {
+  plugins.push(new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify('production')
+    }
+  }));
   plugins.push(new webpack.optimize.UglifyJsPlugin());
 } else {
   plugins.push(new webpack.HotModuleReplacementPlugin());
