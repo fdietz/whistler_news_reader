@@ -148,6 +148,11 @@ $sidebar-color: $gray;
 
 .sidebar-nav-list__expand-toggle {
   display: flex;
+  transition: transform ease-out .2s;
+
+  &.expanded {
+    transform: rotate(90deg);
+  }
 }
 
 .sidebar-actions {

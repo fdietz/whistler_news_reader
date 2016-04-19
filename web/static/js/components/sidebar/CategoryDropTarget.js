@@ -48,6 +48,10 @@ class CategoryDropTarget extends Component {
       active: active
     });
 
+    const toggleCls = classNames("sidebar-nav-list__expand-toggle", {
+      expanded: category.expanded
+    })
+
     const path = `/categories/${category.id}`;
     const currentColor = active ? "white" : "gray";
 
@@ -56,10 +60,9 @@ class CategoryDropTarget extends Component {
         <div className="sidebar-nav-list__meta">
           <a
             href="#"
-            className="sidebar-nav-list__expand-toggle"
+            className={toggleCls}
             onClick={onExpandClick.bind(this, category)}>
-            {category.expanded && <ArrowDownBoldSVGIcon color={currentColor}/>}
-            {!category.expanded && <ArrowRightBoldSVGIcon color={currentColor}/>}
+            <ArrowRightBoldSVGIcon color={currentColor}/>
          </a>
          <Link to={path} className={linkCls} title={category.title}>{category.title}</Link>
          {totalUnreadCount > 0 &&
