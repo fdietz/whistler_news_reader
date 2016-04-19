@@ -80,7 +80,7 @@ function error(state = initialError, action) {
   case RESET_UNREAD_COUNT:
   case REMOVE_FEED:
   case FETCH_FEEDS:
-    return action.error ? action.payload : state;
+    return action.error ? { ...state, ...action.payload } : state;
   default:
     return state;
   }

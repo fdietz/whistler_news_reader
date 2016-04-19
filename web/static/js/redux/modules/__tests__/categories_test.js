@@ -1,59 +1,86 @@
 /*eslint no-undefined: 0*/
 import test from "ava";
-import {
+import reducer, {
   ADD_CATEGORY,
   UPDATE_CATEGORY,
   REMOVE_CATEGORY,
-  FETCH_CATEGORIES,
-  TOGGLE_EXPAND_CATEGORY
+  FETCH_CATEGORIES
 } from "../categories";
-import reducer from "../categories";
 
-test("feeds reducer returns default state", t => {
-  t.same(reducer(undefined, {}), { items: [] });
+test("categories reducer returns default state", t => {
+  t.same(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });
 });
 
-test("feeds reducer ADD_CATEGORY", t => {
-  t.same(reducer(undefined, {
+test("categories reducer ADD_CATEGORY", t => {
+  const newState = reducer(undefined, {
     type: ADD_CATEGORY,
-    payload: { category: { id: 1 } }
-  }), {
-    items: [{ id: 1 }]
-  });
-});
-
-test("feeds reducer FETCH_CATEGORIES", t => {
-  t.same(reducer(null, {
-    type: FETCH_CATEGORIES,
-    payload: { items: [{ id: 1 }] }
-  }), {
-    items: [{ id: 1 }]
-  });
-});
-
-test("feeds reducer UPDATE_CATEGORY", t => {
-  t.same(reducer({ items: [{ id: 1, title: "old" }]}, {
-    type: UPDATE_CATEGORY,
-    payload: { item: { id: 1, title: "new" } }
-  }), {
-    items: [{ id: 1, title: "new" }]
-  });
-});
-
-test("feeds reducer TOGGLE_EXPAND_CATEGORY", t => {
-  t.same(reducer({ items: [{ id: 1, expanded: false }]}, {
-    type: TOGGLE_EXPAND_CATEGORY,
     payload: { id: 1 }
-  }), {
-    items: [{ id: 1, expanded: true }]
+  });
+  t.same(newState, {
+    byId: {
+      1: { id: 1 }
+    },
+    listedIds: [1],
+    isLoading: false,
+    error: null
   });
 });
 
-test("feeds reducer REMOVE_CATEGORY", t => {
-  t.same(reducer({ items: [{ id: 1 }]}, {
+test("categories reducer FETCH_CATEGORIES", t => {
+  const newState = reducer(undefined, {
+    type: FETCH_CATEGORIES,
+    payload: [{ id: 1 }]
+  });
+  t.same(newState, {
+    byId: {
+      1: { id: 1 }
+    },
+    listedIds: [1],
+    isLoading: false,
+    error: null
+  });
+});
+
+test("categories reducer UPDATE_CATEGORY", t => {
+  const oldState = {
+    byId: {
+      1: { id: 1, title: "old" }
+    },
+    listedIds: [1],
+    isLoading: false,
+    error: null
+  };
+  const newState = reducer(oldState, {
+    type: UPDATE_CATEGORY,
+    payload: { id: 1, title: "new" }
+  });
+  t.same(newState, {
+    byId: {
+      1: { id: 1, title: "new" }
+    },
+    listedIds: [1],
+    isLoading: false,
+    error: null
+  });
+});
+
+test("categories reducer REMOVE_CATEGORY", t => {
+  const oldState = {
+    byId: {
+      1: { id: 1 }
+    },
+    listedIds: [1],
+    isLoading: false,
+    error: null
+  };
+  const newState = reducer(oldState, {
     type: REMOVE_CATEGORY,
     payload: { id: 1 }
-  }), {
-    items: []
+  });
+  t.same(newState, {
+    byId: {},
+    listedIds: [],
+    isLoading: false,
+    error: null
   });
 });
