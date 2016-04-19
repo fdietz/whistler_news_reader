@@ -1,0 +1,9 @@
+.image,
+.background-image {
+  opacity: 0;
+  transition: opacity ease-in 1s;
+
+  &.image-loaded {
+    opacity: 1;
+  }
+}

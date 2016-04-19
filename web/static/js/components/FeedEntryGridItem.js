@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import classNames from "classnames";
 import DateTimeHelper from "../utils/DateTimeHelper";
+import BackgroundImage from "./BackgroundImage";
 
 class FeedEntryGridItem extends Component {
 
@@ -43,7 +44,9 @@ class FeedEntryGridItem extends Component {
 
     return (
       <div className={cls} onClick={onClick}>
-        <div className="entry-grid__image" style={imageStyle}/>
+        {imageUrl &&
+          <BackgroundImage imageUrl={imageUrl} className="entry-grid__image"/>
+        }
         <div className="entry-grid__caption">
           <div className="entry-title">{title}</div>
           <div className="meta">
