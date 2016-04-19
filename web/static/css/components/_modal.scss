@@ -55,12 +55,12 @@
 
 .ReactModal__Overlay--after-open {
   opacity: 1;
-  transition: opacity 250ms cubic-bezier(.2,.8,.5,1);
+  transition: opacity 250ms ease-in;
 }
 
 .ReactModal__Content {
   opacity: 0;
-  transition: opacity 150ms cubic-bezier(.2,.8,.5,1) .1s;
+  transition: opacity 50ms ease-in;
 }
 
 .ReactModal__Content--after-open {
