@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import shallowCompare from "react-addons-shallow-compare";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { routerActions } from "react-router-redux";
 import { Link } from "react-router";
 import classNames from "classnames";
@@ -97,11 +98,16 @@ class Sidebar extends Component {
         totalUnreadCount={totalUnreadCount}
         onExpandClick={this.onCategoryExpandClick}>
          {matchingFeeds.length > 0 && category.expanded &&
-           <div className="sidebar-nav-list nested">
-             {matchingFeeds.map((feed) => {
-               return this.renderFeed(feed);
-             })}
-           </div>
+           <ReactCSSTransitionGroup
+            transitionName="category-transition"
+            transitionAppear={true}
+            transitionAppearTimeout={500}>
+             <div className="sidebar-nav-list nested">
+               {matchingFeeds.map((feed) => {
+                 return this.renderFeed(feed);
+               })}
+             </div>
+           </ReactCSSTransitionGroup>
          }
       </CategoryDropTarget>
     );

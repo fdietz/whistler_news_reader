@@ -75,6 +75,18 @@ $sidebar-color: $gray;
   }
 }
 
+.category-transition-appear {
+  opacity: .1;
+  transform: scale(1, .1);
+}
+
+.category-transition-appear.category-transition-appear-active {
+  opacity: 1;
+  transform: scale(1, 1);
+  transition: transform ease-in 50ms , opacity ease-in 10ms;
+  transform-origin: top;
+}
+
 .sidebar-nav-list__item {
   display: flex;
   flex-direction: column;
