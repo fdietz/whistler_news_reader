@@ -5,18 +5,22 @@ import sinon from "sinon";
 
 import FeedEntryListItem from "../FeedEntryListItem";
 
-const props = {
+const entry = {
   id: 1,
   title: "title",
   published: "2016-01-01",
   unread: true,
   summary: "summary",
-  isSelected: false,
-  onClick: () => {},
   feed: {
     id: 1,
     title: "feed title"
   }
+};
+
+const props = {
+  entry: entry,
+  isSelected: false,
+  onClick: () => {}
 };
 
 test("FeedEntryListItem render correctly", t => {

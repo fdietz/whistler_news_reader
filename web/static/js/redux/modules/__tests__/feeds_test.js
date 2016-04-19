@@ -48,7 +48,7 @@ test("feeds reducer FETCH_FEEDS with error", t => {
     byId: {},
     listedIds: [],
     isLoading: false,
-    error: "too short"
+    error: { message: "too short" }
   });
 });
 

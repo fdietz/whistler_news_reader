@@ -128,15 +128,19 @@ function byId(state = initialById, action) {
   case ADD_FEED:
   case UPDATE_FEED:
   case DECREMENT_UNREAD_COUNT:
-    return {
-      ...state,
-      [action.payload.id]: feed(state[action.payload.id], action)
-    };
   case RESET_UNREAD_COUNT:
     return {
       ...state,
       [action.payload.id]: feed(state[action.payload.id], action)
     };
+  case REMOVE_FEED:
+    return Object.keys(state).reduce((nextState, id) => {
+      /*eslint eqeqeq: 0*/
+      if (id != action.payload.id) {
+        nextState[id] = { ...state[id] };
+      }
+      return nextState;
+    }, {});
   case FETCH_FEEDS:
     return arrayToObjMap(action.payload);
   default:

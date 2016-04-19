@@ -109,7 +109,8 @@ function byId(state = initialById, action) {
     return { ...state, [action.payload.id]: category(state[action.payload.id], action) };
   case REMOVE_CATEGORY:
     return Object.keys(state).reduce((nextState, id) => {
-      if (id !== action.payload.id) {
+      /*eslint eqeqeq: 0*/
+      if (id != action.payload.id) {
         nextState[id] = { ...state[id] };
       }
       return nextState;

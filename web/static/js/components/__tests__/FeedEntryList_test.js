@@ -4,14 +4,12 @@ import { shallow } from "enzyme";
 import FeedEntryList from "../FeedEntryList";
 import FeedEntryListItem from "../FeedEntryListItem";
 
-const props = {
+const entry = {
   id: 1,
   title: "title",
   published: "2016-01-01",
   unread: true,
   summary: "summary",
-  isSelected: false,
-  onClick: () => {},
   feed: {
     id: 1,
     title: "feed title"
@@ -19,7 +17,7 @@ const props = {
 };
 
 test("FeedEntryList renders correctly", t => {
-  const wrapper = shallow(<FeedEntryList entries={[props]} currentEntry={props} onEntryClick={() => {}}/>);
+  const wrapper = shallow(<FeedEntryList entries={[entry]} currentEntry={entry} onEntryClick={() => {}}/>);
   const feedEntry = wrapper.find(FeedEntryListItem);
-  t.same(feedEntry.prop("title"), "title");
+  t.same(feedEntry.prop("entry").title, "title");
 });
