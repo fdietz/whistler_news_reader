@@ -18,63 +18,51 @@ export const markAllEntriesAsRead = createAction(MARK_ALL_ENTRIES_AS_READ);
 
 export function requestMarkEntryAsRead(entry) {
   return dispatch => {
+    dispatch(updateEntry());
     return axios.put(`/api/entries/${entry.id}/mark_as_read`)
-    .then(() => {
-      dispatch(updateEntry({ id: entry.id, unread: false}));
-    })
-    .catch((response) => {
-      dispatch(updateEntry(new Error(response.data.error)));
-    });
+      .then(() => dispatch(updateEntry({ id: entry.id, unread: false })))
+      .catch(e => dispatch(updateEntry(e)));
   };
 }
 
 export function requestMarkAllEntriesAsRead(params) {
   return dispatch => {
+    dispatch(markAllEntriesAsRead());
     return axios.put("/api/entries/mark_all_as_read", params)
-    .then(() => {
-      dispatch(markAllEntriesAsRead(params));
-    })
-    .catch((response) => {
-      dispatch(markAllEntriesAsRead(new Error(response.data.error)));
-    });
+      .then(() => dispatch(markAllEntriesAsRead(params)))
+      .catch(e => dispatch(markAllEntriesAsRead(e)));
   };
 }
 
 export function requestFetchEntries(options = {}) {
   return dispatch => {
-    const params = Object.assign({}, options, { limit: 20 });
+    const params = { ...options, limit: 20 };
     dispatch(fetchEntries());
 
     return axios.get("/api/entries", { params: params })
-    .then(response => {
-      dispatch(fetchEntries({
-        ...normalize(response.data.entries),
-        hasMoreEntries: response.data.entries.length === params.limit
-      }));
-    })
-    .catch((response) => {
-      dispatch(fetchEntries(new Error(response.data.error)));
-    });
+      .then(response => {
+        dispatch(fetchEntries({
+          ...normalize(response.data.entries),
+          hasMoreEntries: response.data.entries.length === params.limit
+        }));
+      })
+      .catch(e => dispatch(fetchEntries(e)));
   };
 }
 
 export function requestFetchMoreEntries(options = {}) {
   return dispatch => {
-    const params = Object.assign({}, options, { limit: 20 });
+    const params = { ...options, limit: 20 };
     dispatch(fetchMoreEntries());
 
     return axios.get("/api/entries", { params: params })
-    .then(response => {
-      dispatch(fetchMoreEntries({
-        ...normalize(response.data.entries),
-        hasMoreEntries: response.data.entries.length === params.limit
-      }));
-      return Promise.resolve();
-    })
-    .catch((response) => {
-      dispatch(fetchMoreEntries(new Error(response.data.error)));
-      return Promise.reject();
-    });
+      .then(response =>
+          dispatch(fetchMoreEntries({
+            ...normalize(response.data.entries),
+            hasMoreEntries: response.data.entries.length === params.limit
+          }))
+      )
+      .catch(e => dispatch(fetchMoreEntries(e)));
   };
 }
 
@@ -102,7 +90,6 @@ export function requestRefreshEntries(options = {}) {
     return axios.put("/api/entries/refresh", params)
     .then(() => {
       dispatch(refreshEntries({}));
-      dispatch(requestFetchEntries(options));
     })
     .catch((response) => {
       dispatch(refreshEntries(new Error(response.data.error)));
