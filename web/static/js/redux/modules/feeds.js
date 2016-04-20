@@ -1,7 +1,7 @@
 import { createAction } from "redux-actions";
 import { combineReducers } from "redux";
 import axios from "../../utils/APIHelper";
-import { arrayToIds, arrayToObjMap } from "../../utils/normalize";
+import normalize from "../../utils/normalize";
 
 export const ADD_FEED    = "ADD_FEED";
 export const UPDATE_FEED = "UPDATE_FEED";
@@ -21,7 +21,7 @@ export function requestFetchFeeds() {
   return dispatch => {
     dispatch(fetchFeeds());
     return axios.get("/api/feeds")
-      .then(resp => dispatch(fetchFeeds(resp.data.feeds)))
+      .then(resp => dispatch(fetchFeeds(normalize(resp.data.feeds))))
       .catch(e => dispatch(fetchFeeds(e)));
   };
 }
@@ -112,7 +112,7 @@ function listedIds(state = initialListedIds, action) {
   case ADD_FEED:
     return [...state, action.payload.id];
   case FETCH_FEEDS:
-    return arrayToIds(action.payload);
+    return action.payload.ids;
   case REMOVE_FEED:
     return state.filter(id => id !== action.payload.id);
   default:
@@ -142,7 +142,7 @@ function byId(state = initialById, action) {
       return nextState;
     }, {});
   case FETCH_FEEDS:
-    return arrayToObjMap(action.payload);
+    return action.payload.entities;
   default:
     return state;
   }

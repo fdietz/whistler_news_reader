@@ -29,7 +29,12 @@ test("categories reducer ADD_CATEGORY", t => {
 test("categories reducer FETCH_CATEGORIES", t => {
   const newState = reducer(undefined, {
     type: FETCH_CATEGORIES,
-    payload: [{ id: 1 }]
+    payload: {
+      ids: [1],
+      entities: {
+        1: { id: 1 }
+      }
+    }
   });
   t.same(newState, {
     byId: {

@@ -1,6 +1,6 @@
 import axios from "../../utils/APIHelper";
 import { combineReducers } from "redux";
-import { arrayToIds, arrayToObjMap } from "../../utils/normalize";
+import normalize from "../../utils/normalize";
 import { createAction } from "redux-actions";
 
 export const ADD_CATEGORY = "ADD_CATEGORY";
@@ -35,7 +35,7 @@ export function requestFetchCategories() {
   return dispatch => {
     dispatch(fetchCategories());
     return axios.get("/api/categories")
-      .then(resp => dispatch(fetchCategories(resp.data.categories)))
+      .then(resp => dispatch(fetchCategories(normalize(resp.data.categories))))
       .catch((e) => dispatch(fetchCategories(e)));
   };
 }
@@ -91,7 +91,7 @@ function listedIds(state = initialListedIds, action) {
   case ADD_CATEGORY:
     return [...state, action.payload.id];
   case FETCH_CATEGORIES:
-    return arrayToIds(action.payload);
+    return action.payload.ids;
   case REMOVE_CATEGORY:
     return state.filter(id => id !== action.payload.id);
   default:
@@ -116,7 +116,7 @@ function byId(state = initialById, action) {
       return nextState;
     }, {});
   case FETCH_CATEGORIES:
-    return arrayToObjMap(action.payload);
+    return action.payload.entities;
   default:
     return state;
   }

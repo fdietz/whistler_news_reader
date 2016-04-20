@@ -26,7 +26,12 @@ test("feeds reducer FETCH_FEEDS without payload", t => {
 test("feeds reducer FETCH_FEEDS with payload", t => {
   const newState = reducer(undefined, {
     type: FETCH_FEEDS,
-    payload: [{ id: 1 }]
+    payload: {
+      ids: [1],
+      entities: {
+        1: { id: 1 }
+      }
+    }
   });
   t.same(newState, {
     byId: {
