@@ -31,3 +31,7 @@ export const getSortedCategories = createSelector(
     return sortedItems;
   }
 );
+
+export const getSortedEntries = (state) => {
+  return state.entries.listedIds.map(id => state.entries.byId[id]);
+};

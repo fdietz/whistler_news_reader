@@ -17,9 +17,12 @@ import ProfileToolbar from "../components/ProfileToolbar";
 class MainAppViewLayout extends Component {
 
   static propTypes = {
+    sortedEntries: PropTypes.array.isRequired,
     entries: PropTypes.shape({
-      items: PropTypes.array.isRequired,
+      listedIds: PropTypes.array.isRequired,
+      byId: PropTypes.object.isRequired,
       isLoading: PropTypes.bool.isRequired,
+      hasMoreEntries: PropTypes.bool.isRequired,
       error: PropTypes.string
     }).isRequired,
     currentEntry: PropTypes.object,
@@ -75,7 +78,7 @@ class MainAppViewLayout extends Component {
 
   render() {
     const { currentViewLayout } = this.state;
-    const { entries, currentEntry, currentUser, currentSidebarSelection } = this.props;
+    const { entries, sortedEntries, currentEntry, currentUser, currentSidebarSelection } = this.props;
     const { modalsActions, userActions } = this.props;
     const {
       onNextEntryClick,
@@ -97,7 +100,7 @@ class MainAppViewLayout extends Component {
     if (currentViewLayout === "list" || currentViewLayout === "compact_list") {
       items = (
         <FeedEntryList
-          entries={entries.items}
+          entries={sortedEntries}
           currentEntry={currentEntry.entry}
           onEntryClick={entry => this.handleSelectCurrentEntry(entry)}
           className={currentViewLayout === "compact_list" ? "compact" : "" }/>
@@ -105,7 +108,7 @@ class MainAppViewLayout extends Component {
     } else if (currentViewLayout === "grid") {
       items = (
         <FeedEntryGrid
-          entries={entries.items}
+          entries={sortedEntries}
           currentEntry={currentEntry.entry}
           onEntryClick={entry => this.handleSelectCurrentEntry(entry)}/>
       );
@@ -119,7 +122,7 @@ class MainAppViewLayout extends Component {
         loadMore={onLoadMore}
         hasMore={entries.hasMoreEntries}>
 
-        {entries.items.length > 0 && items}
+        {entries.listedIds.length > 0 && items}
         {!entries.hasMoreEntries && <NoMoreContent/>}
       </InfiniteScroll>
     );

@@ -51,7 +51,7 @@ function isLoading(state = initialIsLoading, action) {
   case UPDATE_CATEGORY:
   case REMOVE_CATEGORY:
   case FETCH_CATEGORIES:
-    return !action.payload ? true : state;
+    return !action.payload ? true : false;
   default:
     return state;
   }

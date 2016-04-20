@@ -22,15 +22,18 @@ import * as CurrentEntryActions from "../redux/modules/currentEntry";
 import * as CurrentSidebarSelectionActions from "../redux/modules/currentSidebarSelection";
 import * as ModalsActions from "../redux/modules/modals";
 
-import { getSortedFeeds, getSortedCategories } from "../redux/selectors";
+import { getSortedFeeds, getSortedCategories, getSortedEntries } from "../redux/selectors";
 
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
 class MainApp extends Component {
 
   static propTypes = {
+    sortedEntries: PropTypes.array.isRequired,
     entries: PropTypes.shape({
-      items: PropTypes.array.isRequired,
+      listedIds: PropTypes.array.isRequired,
+      byId: PropTypes.object.isRequired,
+      hasMoreEntries: PropTypes.bool.isRequired,
       isLoading: PropTypes.bool.isRequired,
       error: PropTypes.string
     }).isRequired,
@@ -228,6 +231,7 @@ class MainApp extends Component {
   render() {
     const {
       entries,
+      sortedEntries,
       sortedCategories,
       sortedFeeds,
       currentUser,
@@ -261,6 +265,7 @@ class MainApp extends Component {
 
         <MainAppViewLayout
           entries={entries}
+          sortedEntries={sortedEntries}
           currentEntry={currentEntry}
           currentUser={currentUser}
           currentSidebarSelection={currentSidebarSelection}
@@ -325,6 +330,7 @@ function mapStateToProps(state, ownProps) {
     feeds: state.feeds,
     sortedFeeds: getSortedFeeds(state),
     entries: state.entries,
+    sortedEntries: getSortedEntries(state),
     sortedCategories: getSortedCategories(state),
     categories: state.categories,
     currentEntry: state.currentEntry,

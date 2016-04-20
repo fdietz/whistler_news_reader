@@ -1,5 +1,8 @@
 import axios from "../../utils/APIHelper";
+import { combineReducers } from "redux";
 import { createAction } from "redux-actions";
+
+import normalize from "../../utils/normalize";
 
 export const FETCH_ENTRIES      = "FETCH_ENTRIES";
 export const FETCH_MORE_ENTRIES = "FETCH_MORE_ENTRIES";
@@ -16,8 +19,8 @@ export const markAllEntriesAsRead = createAction(MARK_ALL_ENTRIES_AS_READ);
 export function requestMarkEntryAsRead(entry) {
   return dispatch => {
     return axios.put(`/api/entries/${entry.id}/mark_as_read`)
-    .then((response) => {
-      dispatch(updateEntry({ item: { id: entry.id, unread: false} }));
+    .then(() => {
+      dispatch(updateEntry({ id: entry.id, unread: false}));
     })
     .catch((response) => {
       dispatch(updateEntry(new Error(response.data.error)));
@@ -28,7 +31,7 @@ export function requestMarkEntryAsRead(entry) {
 export function requestMarkAllEntriesAsRead(params) {
   return dispatch => {
     return axios.put("/api/entries/mark_all_as_read", params)
-    .then((response) => {
+    .then(() => {
       dispatch(markAllEntriesAsRead(params));
     })
     .catch((response) => {
@@ -40,12 +43,12 @@ export function requestMarkAllEntriesAsRead(params) {
 export function requestFetchEntries(options = {}) {
   return dispatch => {
     const params = Object.assign({}, options, { limit: 20 });
-    dispatch(fetchEntries(params));
+    dispatch(fetchEntries());
 
     return axios.get("/api/entries", { params: params })
-    .then((response) => {
+    .then(response => {
       dispatch(fetchEntries({
-        items: response.data.entries,
+        ...normalize(response.data.entries),
         hasMoreEntries: response.data.entries.length === params.limit
       }));
     })
@@ -58,12 +61,12 @@ export function requestFetchEntries(options = {}) {
 export function requestFetchMoreEntries(options = {}) {
   return dispatch => {
     const params = Object.assign({}, options, { limit: 20 });
-    dispatch(fetchMoreEntries(params));
+    dispatch(fetchMoreEntries());
 
     return axios.get("/api/entries", { params: params })
-    .then((response) => {
+    .then(response => {
       dispatch(fetchMoreEntries({
-        items: response.data.entries,
+        ...normalize(response.data.entries),
         hasMoreEntries: response.data.entries.length === params.limit
       }));
       return Promise.resolve();
@@ -80,7 +83,8 @@ export function requestLoadMore(requestParams) {
     const entries = getState().entries;
 
     if (entries.hasMoreEntries && !entries.isLoading) {
-      let oldestPublishedEntry = entries.items[entries.items.length-1].published;
+      const entryId = entries.listedIds[entries.listedIds.length-1];
+      let oldestPublishedEntry = entries.byId[entryId].published;
       let params = { ...requestParams, last_published: oldestPublishedEntry };
 
       return dispatch(requestFetchMoreEntries(params));
@@ -106,107 +110,139 @@ export function requestRefreshEntries(options = {}) {
   };
 }
 
-const initial = {
-  items: [],
-  isLoading: false,
-  hasMoreEntries: false,
-  error: null
-};
+const initialById = {};
+const initialListedIds  = [];
+const initialIsLoading = false;
+const initialError = null;
+const initialHasMoreEntries = false;
 
-export default function reducer(state = initial, action) {
+function hasMoreEntries(state = initialHasMoreEntries, action) {
+  if (!action.payload) return state;
+
   switch (action.type) {
   case FETCH_ENTRIES:
-    if (action.error) {
-      return { ...state, error: action.payload.message };
-    } else if (action.payload && action.payload.items) {
-      return { ...state, ...action.payload, isLoading: false };
-    }
-
-    return { ...state, isLoading: true };
   case FETCH_MORE_ENTRIES:
-    if (action.error) {
-      return { ...state, error: action.payload.message };
-    } else if (action.payload && action.payload.items) {
-      return {
-        ...state,
-        items: [...state.items, ...action.payload.items],
-        hasMoreEntries: action.payload.hasMoreEntries,
-        isLoading: false
-      };
-    }
+    return action.payload.hasMoreEntries ? true : false;
+  default:
+    return state;
+  }
+}
 
-    return { ...state, isLoading: true };
+function isLoading(state = initialIsLoading, action) {
+  switch (action.type) {
+  case FETCH_ENTRIES:
+  case FETCH_MORE_ENTRIES:
   case REFRESH_ENTRIES:
-    if (action.payload) {
-      return { ...state, isLoading: false };
-    }
+    return !action.payload ? true : false;
+  default:
+    return state;
+  }
+}
 
-    return { ...state, isLoading: true };
+function error(state = initialError, action) {
+  switch (action.type) {
   case UPDATE_ENTRY:
-    if (action.error) {
-      return { ...state, error: action.payload.message };
-    } else if (action.payload && action.payload.item) {
-      return { ...state, items: state.items.map(item => {
-        if (item.id === action.payload.item.id) {
-          return { ...item, ...action.payload.item };
-        }
-        return item;
-      })};
-    }
+  case FETCH_ENTRIES:
+  case FETCH_MORE_ENTRIES:
+    return action.error ? action.payload : state;
+  default:
+    return state;
+  }
+}
 
-    return { ...state, isLoading: true };
+function entryReducer(state, action) {
+  if (!action.payload) return state;
+  if (action.error) return state;
+
+  switch (action.type) {
+  case UPDATE_ENTRY:
+    return { ...state, ...action.payload };
+  default:
+    return state;
+  }
+}
+
+function listedIds(state = initialListedIds, action) {
+  if (!action.payload) return state;
+  if (action.error) return state;
+
+  switch (action.type) {
+  case FETCH_ENTRIES:
+    return action.payload.ids;
+  case FETCH_MORE_ENTRIES:
+    return [...state, ...action.payload.ids];
+  case REFRESH_ENTRIES:
+    return state;
+  default:
+    return state;
+  }
+}
+
+function byId(state = initialById, action) {
+  if (!action.payload) return state;
+  if (action.error) return state;
+
+  switch (action.type) {
+  case UPDATE_ENTRY:
+    return {
+      ...state,
+      [action.payload.id]: entryReducer(state[action.payload.id], action)
+    };
+  case REFRESH_ENTRIES:
+    return state;
+  case FETCH_ENTRIES:
+    return action.payload.entities;
+  case FETCH_MORE_ENTRIES:
+    return {...state, ...action.payload.entities};
   case MARK_ALL_ENTRIES_AS_READ:
-    if (action.payload && action.payload.feed_id === "all") {
-      return {
-        items: state.items.map(item => {
-          return {...item, unread: false };
-        }),
-        isLoading: false
-      };
-    } else if (action.payload && action.payload.feed_id === "today") {
+    if (action.payload.feed_id === "all") {
+      return Object.keys(state).reduce((nextState, id) => {
+        nextState[id] = { ...state[id], unread: false };
+        return nextState;
+      }, {});
+    } else if (action.payload.feed_id === "today") {
       const startOfToday = new Date();
       startOfToday.setHours(0, 0, 0, 0);
       const endOfToday = new Date();
       endOfToday.setDate(endOfToday.getDate()+1);
       endOfToday.setHours(0, 0, 0, 0);
 
-      return {
-        items: state.items.map(item => {
-          const publishedDate = item.published instanceof Date
-            ? item.published
-            : new Date(item.published);
-          publishedDate.setHours(0, 0, 0, 0);
+      return Object.keys(state).reduce((nextState, id) => {
+        const publishedDate = state[id].published instanceof Date
+          ? state[id].published
+          : new Date(state[id].published);
+        publishedDate.setHours(0, 0, 0, 0);
 
-          if (publishedDate >= startOfToday && publishedDate < endOfToday) {
-            return {...item, unread: false };
-          }
-          return item;
-        }),
-        isLoading: false
-      };
-    } else if (action.payload && action.payload.feed_id) {
-      return {
-        items: state.items.map(item => {
-          if (item.feed.id === +action.payload.feed_id) {
-            return {...item, unread: false };
-          }
-          return item;
-        }),
-        isLoading: false
-      };
-    } else if (action.payload && action.payload.category_id) {
-      return {
-        items: state.items.map(item => {
-          if (item.feed.category_id === +action.payload.category_id) {
-            return {...item, unread: false };
-          }
-          return item;
-        }),
-        isLoading: false
-      };
+        if (publishedDate >= startOfToday && publishedDate < endOfToday) {
+          nextState[id] = { ...state[id], unread: false };
+        } else {
+          nextState[id] = state[id];
+        }
+        return nextState;
+      }, {});
+    } else if (action.payload.feed_id) {
+      return Object.keys(state).reduce((nextState, id) => {
+        if (state[id].feed.id === action.payload.feed_id) {
+          nextState[id] = { ...state[id], unread: false };
+        } else {
+          nextState[id] = state[id];
+        }
+        return nextState;
+      }, {});
+    } else if (action.payload.category_id) {
+      return Object.keys(state).reduce((nextState, id) => {
+        if (state[id].feed.category_id === action.payload.category_id) {
+          nextState[id] = { ...state[id], unread: false };
+        } else {
+          nextState[id] = state[id];
+        }
+        return nextState;
+      }, {});
     }
-    return { ...state, isLoading: true };
+    return state;
   default:
     return state;
   }
 }
+
+export default combineReducers({ byId, listedIds, isLoading, error, hasMoreEntries });

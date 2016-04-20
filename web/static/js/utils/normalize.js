@@ -8,3 +8,10 @@ export function arrayToObjMap(array) {
 export function arrayToIds(array) {
   return array.map(e => e.id);
 }
+
+export default function normalize(array) {
+  return {
+    ids: arrayToIds(array),
+    entities: arrayToObjMap(array)
+  };
+}

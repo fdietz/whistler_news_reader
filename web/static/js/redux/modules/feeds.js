@@ -66,7 +66,7 @@ function isLoading(state = initialIsLoading, action) {
   case RESET_UNREAD_COUNT:
   case REMOVE_FEED:
   case FETCH_FEEDS:
-    return !action.payload ? true : state;
+    return !action.payload ? true : false;
   default:
     return state;
   }
