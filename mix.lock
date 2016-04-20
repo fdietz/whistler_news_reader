@@ -16,6 +16,7 @@
   "gettext": {:hex, :gettext, "0.10.0"},
   "guardian": {:hex, :guardian, "0.9.1"},
   "hackney": {:hex, :hackney, "1.5.7"},
+  "html_sanitize_ex": {:hex, :html_sanitize_ex, "0.1.2"},
   "httpoison": {:hex, :httpoison, "0.8.2"},
   "idna": {:hex, :idna, "1.2.0"},
   "jose": {:hex, :jose, "1.6.1"},

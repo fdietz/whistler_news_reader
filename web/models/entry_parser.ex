@@ -12,7 +12,7 @@ defmodule WhistlerNewsReader.EntryParser do
       author: parsed_entry[:author],
       url: parsed_entry[:url],
       summary: parsed_entry[:summary] || String.slice(text_content, 0..255),
-      content: parsed_entry[:content] || parsed_entry[:description],
+      content: sanitize_html(parsed_entry[:content] || parsed_entry[:description]),
       published: published
     }
   end
@@ -25,8 +25,12 @@ defmodule WhistlerNewsReader.EntryParser do
     }
   end
 
+  defp sanitize_html(html) do
+    HtmlSanitizeEx.basic_html(html)
+  end
+
   defp parse_text_content(_feed, parsed_entry) do
-    Floki.text(parsed_entry[:content] || parsed_entry[:description] || "")
+    Floki.text(sanitize_html(parsed_entry[:content] || parsed_entry[:description] || ""))
   end
 
   defp parse_published(_feed, parsed_entry) do
