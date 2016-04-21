@@ -9,7 +9,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
   alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.FeedWorker
 
-  plug :scrub_params, "feed" when action in [:create]
+  plug :scrub_params, "feed" when action in [:create, :update]
 
   def index(conn, %{} = _params) do
     feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
