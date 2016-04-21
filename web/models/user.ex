@@ -7,6 +7,7 @@ defmodule WhistlerNewsReader.User do
     field :encrypted_password, :string
     field :password, :string, virtual: true
 
+    embeds_one :settings, WhistlerNewsReader.Settings, on_replace: :delete
     has_many :subscriptions, WhistlerNewsReader.Subscription
 
     timestamps
@@ -31,6 +32,7 @@ defmodule WhistlerNewsReader.User do
     |> validate_confirmation(:password, message: "Password does not match")
     |> unique_constraint(:email, message: "Email already taken")
     |> generate_encrypted_password
+    |> cast_embed(:settings)
   end
 
   defp generate_encrypted_password(current_changeset) do

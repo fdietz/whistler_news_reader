@@ -4,6 +4,8 @@ defmodule WhistlerNewsReader.Category do
   schema "categories" do
     field :title, :string
 
+    embeds_one :settings, WhistlerNewsReader.Settings, on_replace: :delete
+
     # field :user_id, :integer
     belongs_to :user, WhistlerNewsReader.User
 
@@ -23,6 +25,7 @@ defmodule WhistlerNewsReader.Category do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> unique_constraint(:user_id, name: :categories_user_id_title_index)
+    |> cast_embed(:settings)
   end
 
   def for_user_id(query, user_id) do

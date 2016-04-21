@@ -2,6 +2,8 @@ defmodule WhistlerNewsReader.Subscription do
   use WhistlerNewsReader.Web, :model
 
   schema "subscriptions" do
+
+    embeds_one :settings, WhistlerNewsReader.Settings, on_replace: :delete
     # field :user_id, :integer
     belongs_to :user, WhistlerNewsReader.User
     # field :feed_id, :integer
@@ -25,6 +27,7 @@ defmodule WhistlerNewsReader.Subscription do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> unique_constraint(:feed_id, name: :subscriptions_feed_id_user_id_index)
+    |> cast_embed(:settings)
   end
 
   def for_feed(query, feed_id) do

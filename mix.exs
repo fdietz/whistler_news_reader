@@ -45,6 +45,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:mock, "~> 0.1.1", only: :test},
      {:elixir_gravatar_url, "~> 1.0.0"},
      {:poolboy, "~> 1.5.1"},
-     {:html_sanitize_ex, "~> 0.1.0"}]
+     {:html_sanitize_ex, "~> 0.1.0"},
+     {:poison, "~> 1.5.0"}]
   end
 end
