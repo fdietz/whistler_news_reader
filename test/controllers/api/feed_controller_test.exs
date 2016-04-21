@@ -114,7 +114,7 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
     conn = put conn, feed_path(conn, :update, feed.id), feed: %{title: "new name"}
 
     assert conn.status == 204
-    assert Repo.get!(Feed, feed.id).title, "new name"
+    assert Repo.get!(Feed, feed.id).title == "new name"
   end
 
   test "DELETE /api/feeds/:id succeeds", %{conn: conn, jwt: jwt, feed: feed} do
