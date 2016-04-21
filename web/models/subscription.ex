@@ -35,7 +35,7 @@ defmodule WhistlerNewsReader.Subscription do
     where: p.feed_id == ^feed_id
   end
 
-  def for_user(query, user_id) do
+  def for_user_id(query, user_id) do
     from p in query,
     where: p.user_id == ^user_id
   end

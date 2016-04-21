@@ -35,6 +35,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
     end
   end
 
+  # TODO: used to update title only, should be instead a title on the category
   def update(conn, %{"id" => id, "feed" => feed_params} = _params) do
     feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
     case feed
