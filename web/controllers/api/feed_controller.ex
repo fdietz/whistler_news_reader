@@ -5,27 +5,27 @@ defmodule WhistlerNewsReader.Api.FeedController do
   plug Guardian.Plug.EnsureAuthenticated, handler: WhistlerNewsReader.Api.SessionController
 
   alias WhistlerNewsReader.Feed
-  alias WhistlerNewsReader.Subscription
-  alias WhistlerNewsReader.UnreadEntry
   alias WhistlerNewsReader.FeedWorker
 
   plug :scrub_params, "feed" when action in [:create, :update]
 
+  def index(conn, %{"q" => queryString} = _params) do
+    feeds = Feed |> Feed.search_by(queryString) |> Repo.all
+    render(conn, "index.json", feeds: feeds)
+  end
+
   def index(conn, %{} = _params) do
-    feeds = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.all
-    unread_entries_count = UnreadEntry |> UnreadEntry.count_for_feeds(Enum.map(feeds, fn(f) -> f.id end)) |> Repo.all
-    render(conn, "index.json", feeds: feeds, unread_entries_count: unread_entries_count)
+    feeds = Feed |> Repo.all
+    render(conn, "index.json", feeds: feeds)
   end
 
   def create(conn, %{"feed" => feed_attributes} = _params) do
     case FeedWorker.import(current_user(conn), feed_attributes) do
       {:ok, feed} ->
-        feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(feed.id)
-        unread_entries_count = UnreadEntry |> UnreadEntry.count_for_feeds([feed.id]) |> Repo.all
         conn
         |> put_status(:created)
         |> put_resp_header("location", feed_path(conn, :show, feed))
-        |> render("show.json", feed: feed, unread_entries_count: unread_entries_count)
+        |> render("show.json", feed: feed)
       {:error, :feed_url_not_found} ->
         conn |> send_resp(404, "Feed not found")
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -35,15 +35,12 @@ defmodule WhistlerNewsReader.Api.FeedController do
     end
   end
 
-  # TODO: used to update title only, should be instead a title on the category
   def update(conn, %{"id" => id, "feed" => feed_params} = _params) do
-    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
-    case feed
-         |> Feed.changeset(feed_params)
-         |> Repo.update do
+    feed = Repo.get!(Feed, id)
+    changeset = Feed.changeset(feed, feed_params)
+    case Repo.update(changeset) do
       {:ok, _feed} ->
-        conn
-        |> send_resp(204, "")
+        conn |> send_resp(204, "")
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -52,30 +49,14 @@ defmodule WhistlerNewsReader.Api.FeedController do
   end
 
   def show(conn, %{"id" => id}) do
-    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
-    unread_entries_count = UnreadEntry |> UnreadEntry.count_for_feeds([feed.id]) |> Repo.all
-    conn
-    |> render("show.json", feed: feed, unread_entries_count: unread_entries_count)
+    feed = Repo.get!(Feed, id)
+    conn |> render("show.json", feed: feed)
   end
 
   def delete(conn, %{"id" => id}) do
-    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
-    Repo.delete!(List.first(feed.subscriptions))
-
-    conn
-    |> send_resp(204, "")
-  end
-
-  def update_category(conn, %{"id" => id, "category_id" => category_id}) do
-    feed = Feed |> Feed.subscribed_by_user(current_user(conn).id) |> Repo.get!(id)
-    update_feed_category!(feed, category_id)
+    feed = Repo.get!(Feed, id)
+    Repo.delete!(feed)
     conn |> send_resp(204, "")
-  end
-
-  defp update_feed_category!(feed, category_id) do
-    subscription = List.first(feed.subscriptions)
-    changeset = Subscription.changeset(subscription, %{category_id: category_id})
-    Repo.update!(changeset)
   end
 
   defp current_user(conn) do

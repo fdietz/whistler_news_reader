@@ -16,17 +16,17 @@ import {
 import Button from "../components/Button";
 
 import CategoryDropTarget from "./sidebar/CategoryDropTarget";
-import FeedDragSource from "./sidebar/FeedDragSource";
+import SubscriptionDragSource from "./sidebar/SubscriptionDragSource";
 
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
 class Sidebar extends Component {
 
   static propTypes = {
-    feeds: PropTypes.array.isRequired,
+    subscriptions: PropTypes.array.isRequired,
     categories: PropTypes.array.isRequired,
     currentPathname: PropTypes.string.isRequired,
-    feedsActions: PropTypes.object.isRequired,
+    subscriptionsActions: PropTypes.object.isRequired,
     modalsActions: PropTypes.object.isRequired,
     categoriesActions: PropTypes.object.isRequired
   };
@@ -45,16 +45,16 @@ class Sidebar extends Component {
     this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
   }
 
-  renderFeed(feed) {
+  renderSubscription(subscription) {
     const { currentPathname } = this.props;
-    const path = `/feeds/${feed.id}`;
-    const key = `feeds-${feed.id}`;
+    const path = `/subscriptions/${subscription.id}`;
+    const key = `subscriptions-${subscription.id}`;
     const active = path === currentPathname;
 
     return (
-      <FeedDragSource
+      <SubscriptionDragSource
         key={key}
-        feed={feed}
+        subscription={subscription}
         active={active}
         onDrop={this.handleOnFeedDrop}/>
     );
@@ -79,14 +79,14 @@ class Sidebar extends Component {
     );
   }
 
-  renderCategory(category, feeds) {
+  renderCategory(category, subscriptions) {
     const { currentPathname } = this.props;
     const path = `/categories/${category.id}`;
     const key = `category-${category.id}`;
     const active = path === currentPathname;
-    const matchingFeeds = feeds.filter((feed) => feed.category_id === category.id);
-    const totalUnreadCount = matchingFeeds.reduce((result, feed) => {
-      return result + feed.unread_count;
+    const matchingSubscriptions = subscriptions.filter((subscription) => subscription.category_id === category.id);
+    const totalUnreadCount = matchingSubscriptions.reduce((result, subscription) => {
+      return result + subscription.unread_count;
     }, 0);
 
     return (
@@ -96,11 +96,11 @@ class Sidebar extends Component {
         active={active}
         totalUnreadCount={totalUnreadCount}
         onExpandClick={this.onCategoryExpandClick}>
-         {matchingFeeds.length > 0 && category.expanded &&
+         {matchingSubscriptions.length > 0 && category.expanded &&
            <div className="sidebar-nav-list nested">
-             {matchingFeeds.map((feed) => {
-               return this.renderFeed(feed);
-             })}
+             {matchingSubscriptions.map(subscription =>
+               this.renderSubscription(subscription)
+             )}
            </div>
          }
       </CategoryDropTarget>
@@ -123,10 +123,10 @@ class Sidebar extends Component {
   }
 
   componentDidUpdate() {
-    const { currentPathname, feeds } = this.props;
+    const { currentPathname, subscriptions } = this.props;
 
     this.paths = ["/today", "/all"];
-    this.paths = [...this.paths, ...feeds.map((feed) => `/feeds/${feed.id}`)];
+    this.paths = [...this.paths, ...subscriptions.map((subscription) => `/subscriptions/${subscription.id}`)];
     this.currentPathIndex = this.paths.indexOf(currentPathname);
   }
 
@@ -174,16 +174,16 @@ class Sidebar extends Component {
     this.props.modalsActions.openNewCategoryModal();
   }
 
-  handleOnFeedDrop(feedId, categoryId) {
-    const { feedsActions } = this.props;
-    feedsActions.requestUpdateFeedCategory(feedId, categoryId).then(() => {
-      routerActions.push(`/feeds/${feedId}`);
+  handleOnFeedDrop(subscriptionId, categoryId) {
+    const { subscriptionsActions } = this.props;
+    subscriptionsActions.requestUpdateSubscription(subscriptionId, { category_id: categoryId }).then(() => {
+      routerActions.push(`/subscriptions/${subscriptionId}`);
     });
   }
 
   render() {
-    const { feeds, categories } = this.props;
-    const feedsWithoutCategory = feeds.filter((feed) => !feed.category_id);
+    const { subscriptions, categories } = this.props;
+    const subscriptionsWithoutCategory = subscriptions.filter(subscription => !subscription.category_id);
 
     return (
       <div className="sidebar">
@@ -207,10 +207,10 @@ class Sidebar extends Component {
 
           <div className="sidebar-nav-list">
             {categories.map((category) => {
-              return this.renderCategory(category, feeds);
+              return this.renderCategory(category, subscriptions);
             })}
-            {feedsWithoutCategory.map((feed) => {
-              return this.renderFeed(feed);
+            {subscriptionsWithoutCategory.map((subscription) => {
+              return this.renderSubscription(subscription);
             })}
             {this.renderAddCategoryLink()}
           </div>

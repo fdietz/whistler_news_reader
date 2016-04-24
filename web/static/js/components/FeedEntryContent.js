@@ -79,7 +79,7 @@ class FeedEntryContent extends Component {
           </h2>
         </div>
         <div className="feed-entry-content__subheader">
-          {entry.feed.title} by {entry.author} / {entry.published}
+          {entry.subscription_title} by {entry.author} / {entry.published}
         </div>
         <div className="feed-entry-content__content" dangerouslySetInnerHTML={this.rawContent()}/>
       </div>

@@ -16,13 +16,13 @@ import OpmlImportDialog from "../containers/OpmlImportDialog";
 
 import * as UserActions from "../redux/modules/user";
 import * as EntriesActions from "../redux/modules/entries";
-import * as FeedsActions from "../redux/modules/feeds";
+import * as SubscriptionsActions from "../redux/modules/subscriptions";
 import * as CategoriesActions from "../redux/modules/categories";
 import * as CurrentEntryActions from "../redux/modules/currentEntry";
 import * as CurrentSidebarSelectionActions from "../redux/modules/currentSidebarSelection";
 import * as ModalsActions from "../redux/modules/modals";
 
-import { getSortedFeeds, getSortedCategories, getSortedEntries } from "../redux/selectors";
+import { getSortedSubscriptions, getSortedCategories, getSortedEntries } from "../redux/selectors";
 
 import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 
@@ -37,8 +37,8 @@ class MainApp extends Component {
       isLoading: PropTypes.bool.isRequired,
       error: PropTypes.string
     }).isRequired,
-    feeds: PropTypes.object.isRequired,
-    sortedFeeds: PropTypes.array.isRequired,
+    sortedSubscriptions: PropTypes.array.isRequired,
+    subscriptions: PropTypes.object.isRequired,
     categories: PropTypes.object.isRequired,
     sortedCategories: PropTypes.array.isRequired,
     currentEntry: PropTypes.object,
@@ -54,7 +54,7 @@ class MainApp extends Component {
 
     // actions
     userActions: PropTypes.object.isRequired,
-    feedsActions: PropTypes.object.isRequired,
+    subscriptionsActions: PropTypes.object.isRequired,
     categoriesActions: PropTypes.object.isRequired,
     entriesActions: PropTypes.object.isRequired,
     currentEntryActions: PropTypes.object.isRequired,
@@ -81,11 +81,11 @@ class MainApp extends Component {
   }
 
   componentDidMount() {
-    const { feedsActions, categoriesActions, currentSidebarSelectionActions,
+    const { subscriptionsActions, categoriesActions, currentSidebarSelectionActions,
       entriesActions } = this.props;
 
     Promise.all([
-      feedsActions.requestFetchFeeds(),
+      subscriptionsActions.requestFetchSubscriptions(),
       categoriesActions.requestFetchCategories()
     ]).then(() => {
       currentSidebarSelectionActions.changeSidebarSelection(
@@ -123,15 +123,15 @@ class MainApp extends Component {
 
   // TODO: simplify
   sidebarSelectionParams(props) {
-    const { feeds, categories } = props;
+    const { subscriptions, categories } = props;
 
     const params = this.requestParams(props);
-    if (params.feed_id === "today" || params.feed_id === "all") {
+    if (params.subscription_id === "today" || params.subscription_id === "all") {
       return {};
-    } else if (params.feed_id) {
+    } else if (params.subscription_id) {
       return {
-        selection: feeds.byId[+params.feed_id],
-        isFeed: true
+        selection: subscriptions.byId[+params.subscription_id],
+        isSubscription: true
       };
     } else if (params.category_id) {
       return {
@@ -145,24 +145,25 @@ class MainApp extends Component {
 
   // TODO: simplify
   requestParams(props) {
-    if (props.params.id && props.location.pathname.startsWith("/feeds")) {
-      return { feed_id: +props.params.id };
+    if (props.params.id && props.location.pathname.startsWith("/subscriptions")) {
+      return { subscription_id: +props.params.id };
     } else if (props.params.id && props.location.pathname.startsWith("/categories")) {
       return { category_id: +props.params.id };
     } else if (props.location.pathname === "/all") {
-      return { feed_id: "all" };
+      return { subscription_id: "all" };
     } else if (props.location.pathname === "/today") {
-      return { feed_id: "today" };
+      return { subscription_id: "today" };
     }
 
     return {};
   }
 
   refreshEntries() {
-    const { entriesActions, feedsActions } = this.props;
+    const { entriesActions, subscriptionsActions } = this.props;
     entriesActions.requestRefreshEntries(this.requestParams(this.props))
       .then(() => {
-        feedsActions.requestFetchFeeds();
+        entriesActions.requestFetchEntries(this.requestParams(this.props));
+        subscriptionsActions.requestFetchSubscriptions();
       });
   }
 
@@ -188,21 +189,21 @@ class MainApp extends Component {
   }
 
   markAsRead() {
-    const { sortedFeeds, feedsActions, categoriesActions, entriesActions } = this.props;
+    const { sortedSubscriptions, subscriptionsActions, categoriesActions, entriesActions } = this.props;
     const params = this.requestParams(this.props);
 
     entriesActions.requestMarkAllEntriesAsRead(params).then(() => {
-      if (params.feed_id === "all" || params.feed_id === "today") {
-        feedsActions.requestFetchFeeds().then(() => {
+      if (params.subscription_id === "all" || params.subscription_id === "today") {
+        subscriptionsActions.requestFetchSubscriptions().then(() => {
           categoriesActions.requestFetchCategories();
         });
-      } else if (params.feed_id) {
-        feedsActions.resetUnreadCount({ id: +params.feed_id });
+      } else if (params.subscription_id) {
+        subscriptionsActions.resetUnreadCount({ id: +params.subscription_id });
       } else if (params.category_id) {
-        const matchedFeeds = sortedFeeds.filter(feed =>
-          feed.category_id === +params.category_id);
-        for (let feed of matchedFeeds) {
-          feedsActions.resetUnreadCount({ id: feed.id });
+        const matchedSubscriptions = sortedSubscriptions.filter(subscription =>
+          subscription.category_id === +params.category_id);
+        for (let subscription of matchedSubscriptions) {
+          subscriptionsActions.resetUnreadCount({ id: subscription.id });
         }
       }
     });
@@ -218,11 +219,11 @@ class MainApp extends Component {
   }
 
   handleOnRemoveFeedOrCategory() {
-    const { feedsActions, categoriesActions } = this.props;
+    const { subscriptionsActions, categoriesActions } = this.props;
     const params = this.requestParams(this.props);
 
-    if (params.feed_id) {
-      feedsActions.requestRemoveFeed(+params.feed_id);
+    if (params.subscription_id) {
+      subscriptionsActions.requestRemoveSubscription(+params.subscription_id);
     } else if (params.category_id) {
       categoriesActions.requestRemoveCategory(+params.category_id);
     }
@@ -233,7 +234,7 @@ class MainApp extends Component {
       entries,
       sortedEntries,
       sortedCategories,
-      sortedFeeds,
+      sortedSubscriptions,
       currentUser,
       currentEntry,
       currentSidebarSelection,
@@ -245,7 +246,7 @@ class MainApp extends Component {
     const {
       userActions,
       categoriesActions,
-      feedsActions,
+      subscriptionsActions,
       entriesActions,
       currentEntryActions,
       modalsActions
@@ -255,10 +256,10 @@ class MainApp extends Component {
       <div className="main-app-container">
 
         <Sidebar
-          feeds={sortedFeeds}
+          subscriptions={sortedSubscriptions}
           categories={sortedCategories}
           currentPathname={currentPath}
-          feedsActions={feedsActions}
+          subscriptionsActions={subscriptionsActions}
           categoriesActions={categoriesActions}
           modalsActions={modalsActions}
           routerActions={routerActions}/>
@@ -271,7 +272,7 @@ class MainApp extends Component {
           currentSidebarSelection={currentSidebarSelection}
           entriesActions={entriesActions}
           currentEntryActions={currentEntryActions}
-          feedsActions={feedsActions}
+          subscriptionsActions={subscriptionsActions}
           modalsActions={modalsActions}
           userActions={userActions}
           onNextEntryClick={this.nextEntry}
@@ -327,8 +328,8 @@ class MainApp extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     currentUser: state.user.current,
-    feeds: state.feeds,
-    sortedFeeds: getSortedFeeds(state),
+    subscriptions: state.subscriptions,
+    sortedSubscriptions: getSortedSubscriptions(state),
     entries: state.entries,
     sortedEntries: getSortedEntries(state),
     sortedCategories: getSortedCategories(state),
@@ -346,7 +347,7 @@ function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(UserActions, dispatch),
     entriesActions: bindActionCreators(EntriesActions, dispatch),
-    feedsActions: bindActionCreators(FeedsActions, dispatch),
+    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
     categoriesActions: bindActionCreators(CategoriesActions, dispatch),
     currentEntryActions: bindActionCreators(CurrentEntryActions, dispatch),
     currentSidebarSelectionActions: bindActionCreators(CurrentSidebarSelectionActions, dispatch),

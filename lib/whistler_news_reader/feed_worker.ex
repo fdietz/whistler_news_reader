@@ -14,20 +14,20 @@ defmodule WhistlerNewsReader.FeedWorker do
     GenServer.start_link(__MODULE__, nil, [])
   end
 
-  def import_all(user, feed_attrs_enum) do
+  def import_all(user, feed_attrs_enum, opts \\ []) do
     feed_attrs_enum
-    |> Enum.map(&import_async(user, &1))
+    |> Enum.map(&import_async(user, &1, opts))
     |> Enum.map(&Task.await(&1, @task_await_timeout_ms))
   end
 
-  def import(user, feed_attrs) do
-    import_async(user, feed_attrs) |> Task.await(@task_await_timeout_ms)
+  def import(user, feed_attrs, opts \\ []) do
+    import_async(user, feed_attrs, opts) |> Task.await(@task_await_timeout_ms)
   end
 
-  def import_async(user, feed_attrs) do
+  def import_async(user, feed_attrs, opts) do
     Task.async fn ->
       :poolboy.transaction(:feed_worker_pool, fn(server) ->
-        GenServer.call(server, {:import, user, feed_attrs}, @genserver_call_timeout_ms)
+        GenServer.call(server, {:import, user, feed_attrs, opts}, @genserver_call_timeout_ms)
       end, @task_async_timeout_ms)
     end
   end
@@ -50,8 +50,8 @@ defmodule WhistlerNewsReader.FeedWorker do
     end
   end
 
-  def handle_call({:import, user, feed_attrs}, _from, state) do
-    {:reply, FeedImporter.import(user, feed_attrs), state}
+  def handle_call({:import, user, feed_attrs, opts}, _from, state) do
+    {:reply, FeedImporter.import(user, feed_attrs, opts), state}
   end
 
   def handle_call({:refresh, feed}, _from, state) do

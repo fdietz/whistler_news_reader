@@ -6,7 +6,7 @@ defmodule WhistlerNewsReader.StoreEntryHelper do
   alias WhistlerNewsReader.EntryParser
 
   require Logger
-  
+
   def store_entries(feed, entries) do
     Enum.each(entries, fn(entry) ->
       case store_entry(feed, entry) do

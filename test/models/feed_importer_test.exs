@@ -1,10 +1,10 @@
 defmodule WhistlerNewsReader.FeedImporterTest do
   use WhistlerNewsReader.ModelCase
 
-  alias WhistlerNewsReader.Repo
-  alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.FeedImporter
   alias WhistlerNewsReader.FeedFetcher
+  alias WhistlerNewsReader.Subscription
+  alias WhistlerNewsReader.SubscribedEntry
 
   import Mock
 
@@ -35,8 +35,18 @@ defmodule WhistlerNewsReader.FeedImporterTest do
     json_body = File.read!("test/fixtures/rss2/example1.xml")
     with_mock FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
       {:ok, feed } = FeedImporter.import(user, %{"feed_url" => @feed_url})
-      assert Repo.get_by!(Subscription, feed_id: feed.id)
       assert "http://www.example.com" == feed.site_url
+    end
+  end
+
+  test "import_feed succeeds and subscribes user", %{user: user} do
+    json_body = File.read!("test/fixtures/rss2/example1.xml")
+    with_mock FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
+      {:ok, feed } = FeedImporter.import(user, %{"feed_url" => @feed_url}, subscribe_user: true)
+      subscription = Repo.get_by(Subscription, user_id: user.id)
+      assert feed.id == subscription.feed_id
+      subscribed_entry = Repo.get_by(SubscribedEntry, subscription_id: subscription.id) |> Repo.preload(:entry)
+      assert subscribed_entry.entry.title == "Example item title"
     end
   end
 

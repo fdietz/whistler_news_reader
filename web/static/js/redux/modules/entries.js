@@ -19,7 +19,7 @@ export const markAllEntriesAsRead = createAction(MARK_ALL_ENTRIES_AS_READ);
 export function requestMarkEntryAsRead(entry) {
   return dispatch => {
     dispatch(updateEntry());
-    return axios.put(`/api/entries/${entry.id}/mark_as_read`)
+    return axios.put(`/api/subscribed_entries/${entry.id}/mark_as_read`)
       .then(() => dispatch(updateEntry({ id: entry.id, unread: false })))
       .catch(e => dispatch(updateEntry(e)));
   };
@@ -28,7 +28,7 @@ export function requestMarkEntryAsRead(entry) {
 export function requestMarkAllEntriesAsRead(params) {
   return dispatch => {
     dispatch(markAllEntriesAsRead());
-    return axios.put("/api/entries/mark_all_as_read", params)
+    return axios.put("/api/subscribed_entries/mark_all_as_read", params)
       .then(() => dispatch(markAllEntriesAsRead(params)))
       .catch(e => dispatch(markAllEntriesAsRead(e)));
   };
@@ -39,7 +39,7 @@ export function requestFetchEntries(options = {}) {
     const params = { ...options, limit: 20 };
     dispatch(fetchEntries());
 
-    return axios.get("/api/entries", { params: params })
+    return axios.get("/api/subscribed_entries", { params: params })
       .then(response => {
         dispatch(fetchEntries({
           ...normalize(response.data.entries),
@@ -55,7 +55,7 @@ export function requestFetchMoreEntries(options = {}) {
     const params = { ...options, limit: 20 };
     dispatch(fetchMoreEntries());
 
-    return axios.get("/api/entries", { params: params })
+    return axios.get("/api/subscribed_entries", { params: params })
       .then(response =>
           dispatch(fetchMoreEntries({
             ...normalize(response.data.entries),
@@ -87,13 +87,9 @@ export function requestRefreshEntries(options = {}) {
     const params = Object.assign(options, {});
     dispatch(refreshEntries());
 
-    return axios.put("/api/entries/refresh", params)
-    .then(() => {
-      dispatch(refreshEntries({}));
-    })
-    .catch((response) => {
-      dispatch(refreshEntries(new Error(response.data.error)));
-    });
+    return axios.put("/api/subscribed_entries/refresh", params)
+    .then(() => dispatch(refreshEntries({})))
+    .catch(e => dispatch(refreshEntries(e)));
   };
 }
 
@@ -182,12 +178,12 @@ function byId(state = initialById, action) {
   case FETCH_MORE_ENTRIES:
     return {...state, ...action.payload.entities};
   case MARK_ALL_ENTRIES_AS_READ:
-    if (action.payload.feed_id === "all") {
+    if (action.payload.subscription_id === "all") {
       return Object.keys(state).reduce((nextState, id) => {
         nextState[id] = { ...state[id], unread: false };
         return nextState;
       }, {});
-    } else if (action.payload.feed_id === "today") {
+    } else if (action.payload.subscription_id === "today") {
       const startOfToday = new Date();
       startOfToday.setHours(0, 0, 0, 0);
       const endOfToday = new Date();
@@ -207,9 +203,9 @@ function byId(state = initialById, action) {
         }
         return nextState;
       }, {});
-    } else if (action.payload.feed_id) {
+    } else if (action.payload.subscription_id) {
       return Object.keys(state).reduce((nextState, id) => {
-        if (state[id].feed.id === action.payload.feed_id) {
+        if (state[id].subscription_id === action.payload.subscription_id) {
           nextState[id] = { ...state[id], unread: false };
         } else {
           nextState[id] = state[id];
@@ -218,7 +214,7 @@ function byId(state = initialById, action) {
       }, {});
     } else if (action.payload.category_id) {
       return Object.keys(state).reduce((nextState, id) => {
-        if (state[id].feed.category_id === action.payload.category_id) {
+        if (state[id].category_id === action.payload.category_id) {
           nextState[id] = { ...state[id], unread: false };
         } else {
           nextState[id] = state[id];

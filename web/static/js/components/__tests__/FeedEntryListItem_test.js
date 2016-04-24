@@ -11,10 +11,8 @@ const entry = {
   published: "2016-01-01",
   unread: true,
   summary: "summary",
-  feed: {
-    id: 1,
-    title: "feed title"
-  }
+  subscription_id: 1,
+  subscription_title: "feed title"
 };
 
 const props = {

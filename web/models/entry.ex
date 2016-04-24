@@ -3,7 +3,6 @@ defmodule WhistlerNewsReader.Entry do
 
   @derive {Poison.Encoder, only: [:title, :url, :author, :summary, :content, :guid, :published, :feed]}
   schema "entries" do
-    #field :feed_id, :integer
     field :title, :string
     field :url, :string
     field :author, :string
@@ -11,8 +10,10 @@ defmodule WhistlerNewsReader.Entry do
     field :content, :string
     field :guid, :string
     field :published, Ecto.DateTime
+
+    #field :feed_id, :integer
     belongs_to :feed, WhistlerNewsReader.Feed
-    has_many :unread_entries, WhistlerNewsReader.UnreadEntry
+    has_many :unread_entries, WhistlerNewsReader.SubscribedEntry
 
     timestamps
   end
@@ -70,21 +71,31 @@ defmodule WhistlerNewsReader.Entry do
     where: p.guid == ^guid
   end
 
-  def unread(query, user_id) do
-    from p in query,
-    # join condition is handled by ecto for us
-    join: c in assoc(p, :unread_entries),
-    where: c.user_id == ^user_id,
-    where: c.read == ^false,
-    preload: [unread_entries: c]
-  end
+  # def unread_for_user_id(query, user_id) do
+  #   from p in query,
+  #   # join condition is handled by ecto for us
+  #   join: c in assoc(p, :unread_entries),
+  #   where: c.user_id == ^user_id,
+  #   where: c.read == ^false,
+  #   preload: [unread_entries: c]
+  # end
 
-  def read(query, user_id) do
-    from p in query,
-    # join condition is handled by ecto for us
-    join: c in assoc(p, :read_entries),
-    where: c.user_id == ^user_id,
-    where: c.read == ^true,
-    preload: [read_entries: c]
-  end
+  # def unread_for_subscription_ids(query, subscription_ids) do
+  #   from p in query,
+  #   # join condition is handled by ecto for us
+  #   join: c in assoc(p, :unread_entries),
+  #   where: c.subscription_id in ^subscription_ids,
+  #   where: c.read == ^false,
+  #   preload: [unread_entries: c]
+  # end
+
+  # TODO
+  # def read(query, user_id) do
+  #   from p in query,
+  #   # join condition is handled by ecto for us
+  #   join: c in assoc(p, :read_entries),
+  #   where: c.user_id == ^user_id,
+  #   where: c.read == ^true,
+  #   preload: [read_entries: c]
+  # end
 end

@@ -7,7 +7,12 @@ defmodule WhistlerNewsReader.FeedUrlExtractor do
     rss_match = Floki.find(html, "link[type='application/rss+xml']")
     atom_match = Floki.find(html, "link[type='application/atom+xml']")
 
-    {:ok, href(rss_match) || href(atom_match) }
+    case href(rss_match) || href(atom_match) do
+      nil ->
+        {:error, :feed_url_not_found}
+      match ->
+        {:ok, match}
+    end
   end
 
   defp href(element) do

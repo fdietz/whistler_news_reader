@@ -7,6 +7,7 @@ import editForm from "./modules/editForm";
 import currentEntry from "./modules/currentEntry";
 import entries from "./modules/entries";
 import feeds from "./modules/feeds";
+import subscriptions from "./modules/subscriptions";
 import notification from "./modules/notification";
 import user from "./modules/user";
 import categories from "./modules/categories";
@@ -23,6 +24,7 @@ export default combineReducers({
   entries,
   categories,
   feeds,
+  subscriptions,
   notification,
   user,
   currentSidebarSelection,

@@ -19,11 +19,11 @@ defmodule WhistlerNewsReader.Api.EntryView do
       content: entry.content,
       url: entry.url,
       unread: true,
-      feed: %{
-        id: entry.feed.id,
-        title: entry.feed.title
-      }
+      subscription_id: unread_entry(entry).subscription_id
     }
   end
 
+  defp unread_entry(entry) do
+    Enum.at(entry.unread_entries, 0)
+  end
 end

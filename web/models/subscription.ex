@@ -3,6 +3,7 @@ defmodule WhistlerNewsReader.Subscription do
 
   schema "subscriptions" do
 
+    field :title, :string
     embeds_one :settings, WhistlerNewsReader.Settings, on_replace: :delete
     # field :user_id, :integer
     belongs_to :user, WhistlerNewsReader.User
@@ -15,7 +16,7 @@ defmodule WhistlerNewsReader.Subscription do
   end
 
   @required_fields ~w(feed_id user_id)
-  @optional_fields ~w(category_id)
+  @optional_fields ~w(category_id title)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -30,7 +31,7 @@ defmodule WhistlerNewsReader.Subscription do
     |> cast_embed(:settings)
   end
 
-  def for_feed(query, feed_id) do
+  def for_feed_id(query, feed_id) do
     from p in query,
     where: p.feed_id == ^feed_id
   end
@@ -38,5 +39,10 @@ defmodule WhistlerNewsReader.Subscription do
   def for_user_id(query, user_id) do
     from p in query,
     where: p.user_id == ^user_id
+  end
+
+  def for_category_id(query, category_id) do
+    from p in query,
+    where: p.category_id == ^category_id
   end
 end

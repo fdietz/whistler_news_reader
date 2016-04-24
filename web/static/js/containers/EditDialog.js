@@ -7,7 +7,7 @@ import { CrossSVGIcon } from "../components/SVGIcon";
 import Icon from "../components/Icon";
 
 import { editFormUpdate, editFormReset } from "../redux/modules/editForm";
-import { requestUpdateFeed } from "../redux/modules/feeds";
+import { requestUpdateSubscription } from "../redux/modules/subscriptions";
 import { requestUpdateCategory } from "../redux/modules/categories";
 
 import { reduceErrorsToString } from "../utils/ErrorHelper";
@@ -58,7 +58,7 @@ class EditDialog extends Component {
     const { dispatch, editForm, onClose, currentSidebarSelection } = this.props;
     event.preventDefault();
 
-    const action = currentSidebarSelection.isFeed ? requestUpdateFeed : requestUpdateCategory;
+    const action = currentSidebarSelection.isSubscription ? requestUpdateSubscription : requestUpdateCategory;
 
     dispatch(editFormUpdate());
     dispatch(action(currentSidebarSelection.selection.id, { title: editForm.title })).then((result) => {
@@ -73,7 +73,7 @@ class EditDialog extends Component {
     const { isOpen, editForm, currentSidebarSelection } = this.props;
 
     let labels;
-    if (currentSidebarSelection.isFeed) {
+    if (currentSidebarSelection.isSubscription) {
       labels = {
         heading: "Edit feed",
         label: "Feed title",
@@ -113,7 +113,6 @@ class EditDialog extends Component {
                 </div>
               </div>
             }
-
             <label className="field-label mb3">
               {labels.label}
               <input className="field block col-12"
@@ -127,7 +126,7 @@ class EditDialog extends Component {
               <div className="hint">{labels.hint}</div>
               {renderErrorsFor(editForm.errors, "title")}
 
-              {currentSidebarSelection.isFeed &&
+              {currentSidebarSelection.isSubscription &&
                 <div className="sm-col-12 mb2 mt2">
                   <div className="hint">{currentSidebarSelection.selection.site_url}</div>
                   <div className="hint">{currentSidebarSelection.selection.feed_url}</div>

@@ -6,7 +6,6 @@ import classNames from "classnames";
 import { Link } from "react-router";
 import Badge from "../Badge";
 import {
-  ArrowDownBoldSVGIcon,
   ArrowRightBoldSVGIcon
 } from "../SVGIcon";
 
@@ -76,7 +75,7 @@ class CategoryDropTarget extends Component {
 }
 
 const ItemTypes = {
-  FEED: "feed"
+  SUBSCRIPTION: "subscription"
 };
 
 const categoryTarget = {
@@ -96,4 +95,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default DropTarget(ItemTypes.FEED, categoryTarget, collect)(CategoryDropTarget);
+export default DropTarget(ItemTypes.SUBSCRIPTION, categoryTarget, collect)(CategoryDropTarget);

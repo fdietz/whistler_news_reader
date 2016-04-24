@@ -5,22 +5,26 @@ defmodule WhistlerNewsReader.Api.SubscriptionController do
 
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.Subscription
+  alias WhistlerNewsReader.SubscribedEntry
 
   plug :scrub_params, "subscription" when action in [:create, :update]
 
   def index(conn, %{} = _params) do
-    subscriptions = Subscription |> Subscription.for_user_id(current_user(conn).id) |> Repo.all
-    render(conn, "index.json", subscriptions: subscriptions)
+    subscriptions = Subscription |> Subscription.for_user_id(current_user(conn).id) |> Repo.all |> Repo.preload(:feed)
+    unread_entries_count = SubscribedEntry |> SubscribedEntry.count_for_subscription_ids(Enum.map(subscriptions, fn(s) -> s.id end)) |> Repo.all
+    render(conn, "index.json", subscriptions: subscriptions, unread_entries_count: unread_entries_count)
   end
 
   def create(conn, %{"subscription" => subscription_params}) do
     changeset = Subscription.changeset(%Subscription{}, Map.put(subscription_params, "user_id", current_user(conn).id))
     case Repo.insert(changeset) do
       {:ok, subscription} ->
+        subscription = Repo.get!(Subscription, subscription.id) |> Repo.preload(:feed)
+        unread_entries_count = SubscribedEntry |> SubscribedEntry.count_for_subscription_ids([subscription.id]) |> Repo.all
         conn
         |> put_status(:created)
         |> put_resp_header("location", subscription_path(conn, :show, subscription))
-        |> render(WhistlerNewsReader.Api.SubscriptionView, "show.json", subscription: subscription)
+        |> render(WhistlerNewsReader.Api.SubscriptionView, "show.json", subscription: subscription, unread_entries_count: unread_entries_count)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)

@@ -10,30 +10,22 @@ export const feedFormReset  = createAction(FEED_FORM_RESET);
 export function requestCreateFeed(feedAttributes) {
   return (dispatch) => {
     dispatch(feedFormUpdate());
-
-    return axios.post("/api/feeds", { feed: feedAttributes }).
-      then(response => {
+    return axios.post("/api/feeds", { feed: feedAttributes })
+      .then((response) => {
         dispatch(feedFormReset());
         return response.data.feed;
-      }).
-      catch(error => {
-        let formData;
-        if (error.response.status === 404) {
-          formData = { errors: [ { feed_url: "Not found" }] };
-        } else {
-          formData = error.payload;
-        }
-        dispatch(feedFormUpdate(formData));
-
-        return formData;
-      });
+      })
+      .catch(error => dispatch(feedFormUpdate(error)));
   };
 }
 
 const initial = {
-  feedUrl: null,
+  searchTerm: "",
+  feedExists: false,
+  isFeedUrl: false,
   categoryId: null,
   isLoading: false,
+  selectedFeed: null,
   errors: null
 };
 

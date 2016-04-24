@@ -3,7 +3,7 @@ defmodule WhistlerNewsReader.Api.RandomImageController do
 
   alias WhistlerNewsReader.RandomImageFetcher
 
-  def index(conn, params) do
+  def index(conn, _params) do
     random_images = RandomImageFetcher.fetch
 
     conn

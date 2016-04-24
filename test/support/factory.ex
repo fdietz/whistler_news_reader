@@ -5,7 +5,7 @@ defmodule WhistlerNewsReader.Factory do
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.Entry
-  alias WhistlerNewsReader.UnreadEntry
+  alias WhistlerNewsReader.SubscribedEntry
   alias WhistlerNewsReader.Category
 
   def factory(:user) do
@@ -41,10 +41,11 @@ defmodule WhistlerNewsReader.Factory do
   end
 
   def factory(:unread_entry) do
-    %UnreadEntry{
+    %SubscribedEntry{
       user: build(:user),
       entry: build(:entry),
       feed: build(:feed),
+      subscription: build(:subscription),
       read: false
     }
   end

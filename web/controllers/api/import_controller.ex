@@ -7,7 +7,7 @@ defmodule WhistlerNewsReader.Api.ImportController do
 
   alias WhistlerNewsReader.OpmlImport
 
-  def create(conn, %{"file" => %Plug.Upload{filename: filename, path: path}} = _params) do
+  def create(conn, %{"file" => %Plug.Upload{filename: _filename, path: path}} = _params) do
     case OpmlImport.import(current_user(conn), File.read!(path)) do
       :ok ->
         conn

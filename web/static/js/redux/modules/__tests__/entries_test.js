@@ -150,7 +150,7 @@ test("entries reducer UPDATE_ENTRY with payload", t => {
   });
 });
 
-test("entries reducer MARK_ALL_ENTRIES_AS_READ with payload via feed_id", t => {
+test("entries reducer MARK_ALL_ENTRIES_AS_READ with payload via subscription_id", t => {
   const today = new Date();
   const newState = reducer({
     byId: {
@@ -162,7 +162,7 @@ test("entries reducer MARK_ALL_ENTRIES_AS_READ with payload via feed_id", t => {
     error: null
   }, {
     type: MARK_ALL_ENTRIES_AS_READ,
-    payload: { feed_id: 1 }
+    payload: { subscription_id: 1 }
   });
   t.same(newState, {
     byId: {
@@ -214,7 +214,7 @@ test("entries reducer MARK_ALL_ENTRIES_AS_READ with payload via all", t => {
     error: null
   }, {
     type: MARK_ALL_ENTRIES_AS_READ,
-    payload: { feed_id: "all" }
+    payload: { subscription_id: "all" }
   });
   t.same(newState, {
     byId: {
@@ -241,7 +241,7 @@ test("entries reducer MARK_ALL_ENTRIES_AS_READ with payload via today", t => {
     error: null
   }, {
     type: MARK_ALL_ENTRIES_AS_READ,
-    payload: { feed_id: "today" }
+    payload: { subscription_id: "today" }
   });
   t.same(newState, {
     byId: {

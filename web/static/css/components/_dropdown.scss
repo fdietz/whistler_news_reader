@@ -84,7 +84,6 @@
 
 .dropdown__list-item {
   display: flex;
-  width: 100%;
   padding: .4em $space-2;
   font-size: .8rem;
   line-height: 1rem;
@@ -93,13 +92,19 @@
   cursor: pointer;
   align-items: center;
 
-  &:hover {
-    background-color: $darken-1;
+  &:hover,
+  &.active {
+    background-color: rgba(0, 0, 0, .05);
   }
 
   &.disabled {
     cursor: not-allowed;
     opacity: .4;
+  }
+
+  &.prominent {
+    font-size: 1.2rem;
+    line-height: 1.2rem;
   }
 
   .media {

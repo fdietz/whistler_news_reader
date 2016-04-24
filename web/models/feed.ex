@@ -8,7 +8,7 @@ defmodule WhistlerNewsReader.Feed do
     field :site_url, :string
     field :last_refreshed_at, Ecto.DateTime
     has_many :entries, WhistlerNewsReader.Entry
-    has_many :unread_entries, WhistlerNewsReader.UnreadEntry
+    has_many :unread_entries, WhistlerNewsReader.SubscribedEntry
     has_many :subscriptions, WhistlerNewsReader.Subscription
 
     timestamps
@@ -49,6 +49,12 @@ defmodule WhistlerNewsReader.Feed do
   def for_feed_url(query, feed_url) do
     from p in query,
     where: p.feed_url == ^feed_url
+  end
+
+  # TODO: use postgres search instead
+  def search_by(query, queryString) do
+    from p in query,
+    where: like(p.title, ^("%#{queryString}%")) or like(p.feed_url, ^("%#{queryString}%")) or like(p.site_url, ^("%#{queryString}%"))
   end
 
   def count_for_user_id_and_category_id(query, user_id, category_id) do

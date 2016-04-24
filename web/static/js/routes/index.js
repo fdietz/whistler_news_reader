@@ -21,7 +21,7 @@ export default (store) => (
 
      <Route path="/all" component={MainApp}/>
      <Route path="/today" component={MainApp}/>
-     <Route path="/feeds/:id" component={MainApp}/>
+     <Route path="/subscriptions/:id" component={MainApp}/>
      <Route path="/categories/:id" component={MainApp}/>
     </Route>
 

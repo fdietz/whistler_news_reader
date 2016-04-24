@@ -5,7 +5,7 @@ export const changeSidebarSelection = createAction(CHANGE_SELECTION);
 
 const init = {
   selection: null,
-  isFeed: false,
+  isSubscription: false,
   isCategory: false
 };
 

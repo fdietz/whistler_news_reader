@@ -28,7 +28,7 @@ class MainAppViewLayout extends Component {
     currentEntry: PropTypes.object,
     currentUser: PropTypes.object.isRequired,
     currentSidebarSelection: PropTypes.object,
-    feedsActions: PropTypes.object.isRequired,
+    subscriptionsActions: PropTypes.object.isRequired,
     entriesActions: PropTypes.object.isRequired,
     currentEntryActions: PropTypes.object.isRequired,
     modalsActions: PropTypes.object.isRequired,
@@ -56,9 +56,9 @@ class MainAppViewLayout extends Component {
   }
 
   handleEntryShown(entry) {
-    const { entriesActions, feedsActions } = this.props;
+    const { entriesActions, subscriptionsActions } = this.props;
     entriesActions.requestMarkEntryAsRead(entry).then(() => {
-      feedsActions.decrementUnreadCount({ id: entry.feed.id });
+      subscriptionsActions.decrementUnreadCount({ id: entry.subscription_id });
     });
   }
 

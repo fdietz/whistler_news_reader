@@ -19,7 +19,7 @@ defmodule WhistlerNewsReader.OpmlImport do
         %{"feed_url" => feed_attrs[:xmlurl], "category_id" => category.id}
       end)
 
-      FeedWorker.import_all(user, feed_attrs_enum)
+      FeedWorker.import_all(user, feed_attrs_enum, subscribe_user: true)
     end)
   end
 

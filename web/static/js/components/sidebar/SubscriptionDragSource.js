@@ -6,11 +6,11 @@ import classNames from "classnames";
 import { Link } from "react-router";
 import Badge from "../Badge";
 
-class FeedDragSource extends Component {
+class SubscriptionDragSource extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
-    feed: PropTypes.shape({
+    subscription: PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
       unread_count: PropTypes.number.isRequired
@@ -26,7 +26,7 @@ class FeedDragSource extends Component {
 
   render() {
     const { isDragging, connectDragSource } = this.props;
-    const { feed, active } = this.props;
+    const { subscription, active } = this.props;
     const opacity = isDragging ? 0.4 : 1;
 
     const cls = classNames("sidebar-nav-list__item", {
@@ -37,15 +37,15 @@ class FeedDragSource extends Component {
       active: active
     });
 
-    const path = `/feeds/${feed.id}`;
+    const path = `/subscriptions/${subscription.id}`;
 
     return connectDragSource(
       <div className={cls} style={{ opacity }}>
         <div className="sidebar-nav-list__meta">
           <div className="icon-placeholder"></div>
-          <Link to={path} className={linkCls} title={feed.title}>{feed.title}</Link>
-          {feed.unread_count > 0 &&
-            <Badge count={feed.unread_count} className="sidebar-nav-list__badge"/>
+        <Link to={path} className={linkCls} title={subscription.title}>{subscription.title}</Link>
+      {subscription.unread_count > 0 &&
+            <Badge count={subscription.unread_count} className="sidebar-nav-list__badge"/>
           }
         </div>
       </div>
@@ -54,14 +54,14 @@ class FeedDragSource extends Component {
 }
 
 const ItemTypes = {
-  FEED: "feed"
+  SUBSCRIPTION: "subscription"
 };
 
-const feedSource = {
+const subscriptionSource = {
   beginDrag(props) {
     return {
-      title: props.feed.title,
-      id: props.feed.id
+      title: props.subscription.title,
+      id: props.subscription.id
     };
   },
 
@@ -69,7 +69,7 @@ const feedSource = {
     const dropResult = monitor.getDropResult();
 
     if (dropResult) {
-      props.onDrop(props.feed.id, dropResult.id);
+      props.onDrop(props.subscription.id, dropResult.id);
     }
   }
 };
@@ -81,4 +81,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default DragSource(ItemTypes.FEED, feedSource, collect)(FeedDragSource);
+export default DragSource(ItemTypes.SUBSCRIPTION, subscriptionSource, collect)(SubscriptionDragSource);

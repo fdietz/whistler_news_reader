@@ -1,28 +1,43 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { routerActions as RouterActions } from "react-router-redux";
 import Modal from "react-modal";
 import ReactDOM from "react-dom";
-import { push } from "react-router-redux";
+import debounce from "lodash.debounce";
 import classNames from "classnames";
 
 import { CrossSVGIcon } from "../components/SVGIcon";
 import Icon from "../components/Icon";
-
-import { feedFormUpdate, feedFormReset, requestCreateFeed } from "../redux/modules/feedForm";
-import { addFeed } from "../redux/modules/feeds";
+import Autocomplete from "../components/Autocomplete";
 
 import { customModalStyles } from "../utils/ModalHelper";
-import { getSortedCategories } from "../redux/selectors";
+import { getSortedCategories, getSortedFeeds } from "../redux/selectors";
 import { reduceErrorsToString } from "../utils/ErrorHelper";
 import { renderErrorsFor } from "../utils";
+
+import * as EntriesActions from "../redux/modules/entries";
+import * as SubscriptionsActions from "../redux/modules/subscriptions";
+import * as CategoriesActions from "../redux/modules/categories";
+import * as FeedFormActions from "../redux/modules/feedForm";
+import * as FeedsActions from "../redux/modules/feeds";
 
 class NewFeedDialog extends Component {
 
   static propTypes = {
-    feedForm: PropTypes.object,
+    feedForm: PropTypes.object.isRequired,
+    feeds: PropTypes.object.isRequired,
+    sortedFeeds: PropTypes.array.isRequired,
     sortedCategories: PropTypes.array.isRequired,
     isOpen: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    // actions
+    subscriptionsActions: PropTypes.object.isRequired,
+    categoriesActions: PropTypes.object.isRequired,
+    entriesActions: PropTypes.object.isRequired,
+    feedFormActions: PropTypes.object.isRequired,
+    feedsActions: PropTypes.object.isRequired,
+    routerActions: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -31,6 +46,8 @@ class NewFeedDialog extends Component {
     this.close = this.close.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
+    this.handleAutocompleteOnChange = debounce(this.handleAutocompleteOnChange.bind(this), 100);
+    this.handleAutocompleteOnSelect = this.handleAutocompleteOnSelect.bind(this);
   }
 
   componentDidMount() {
@@ -39,43 +56,96 @@ class NewFeedDialog extends Component {
     }, 0);
   }
 
-  handleChange(event) {
-    const { dispatch } = this.props;
+  handleChange() {
+    const { feedFormActions } = this.props;
 
-    dispatch(feedFormUpdate({
-      feedUrl: ReactDOM.findDOMNode(this.refs.feedUrl).value,
+    feedFormActions.feedFormUpdate({
       categoryId: ReactDOM.findDOMNode(this.refs.categoryId).value
-    }));
-  }
-
-  close(event) {
-    const { dispatch } = this.props;
-
-    if (event) event.preventDefault();
-    dispatch(feedFormReset());
-    this.props.onClose();
-  }
-
-  submitForm(event) {
-    const { dispatch, feedForm } = this.props;
-    event.preventDefault();
-
-    dispatch(requestCreateFeed({
-      feed_url: feedForm.feedUrl,
-      category_id: feedForm.categoryId
-    })).then((result) => {
-      if (!result.errors) {
-        this.props.onClose();
-        // update sidebar feed list
-        dispatch(addFeed(result));
-        // navigate to new feed
-        dispatch(push(`/feeds/${result.id}`));
-      }
     });
   }
 
+  close(event) {
+    const { feedFormActions } = this.props;
+
+    if (event) event.preventDefault();
+    feedFormActions.feedFormReset();
+    this.props.onClose();
+  }
+
+  handleAutocompleteOnChange(value) {
+    const { feedsActions, feedFormActions } = this.props;
+
+    if (value.length > 2 && !value.startsWith("http")) {
+      feedsActions.requestSearchFeeds(value);
+    }
+
+    feedFormActions.feedFormUpdate({
+      searchTerm: value,
+      isFeedUrl: value.startsWith("http"),
+      feedExists: false
+    });
+  }
+
+  handleAutocompleteOnSelect(value) {
+    const { feedFormActions, feedsActions } = this.props;
+
+    feedFormActions.feedFormUpdate({
+      searchTerm: value.title,
+      feedExists: true,
+      selectedFeed: value
+    });
+
+    feedsActions.resetSearchFeeds({});
+  }
+
+  submitForm(event) {
+    const { feedForm } = this.props;
+    event.preventDefault();
+
+    if (!feedForm.feedExists) {
+      this.createFeed(feedForm.searchTerm);
+    } else {
+      this.createSubscription(feedForm.selectedFeed.id, feedForm.categoryId);
+    }
+  }
+
+  createFeed(searchTerm, categoryId) {
+    const { feedFormActions } = this.props;
+
+    feedFormActions.requestCreateFeed({ feed_url: searchTerm })
+      .then((response) => {
+        if (response.error) {
+          feedFormActions.feedFormUpdate(response.payload);
+        } else {
+          this.createSubscription(response.id, categoryId);
+        }
+      });
+  }
+
+  createSubscription(feedId, categoryId) {
+    const { subscriptionsActions, routerActions, feedFormActions, entriesActions } = this.props;
+
+    subscriptionsActions.requestCreateSubscription({ feed_id: feedId, category_id: categoryId })
+      .then((response) => {
+        if (response.error) {
+          feedFormActions.feedFormUpdate(response.payload.payload);
+        } else {
+          const subscription = response.payload;
+          this.props.onClose();
+          entriesActions.requestRefreshEntries({ subscription_id: subscription.id }).then(() =>
+            routerActions.push(`/subscriptions/${subscription.id}`)
+          );
+        }
+      });
+  }
+
   render() {
-    const { isOpen, feedForm, sortedCategories } = this.props;
+    const { isOpen, feedForm, sortedCategories, feeds, sortedFeeds } = this.props;
+
+    const inputCls = classNames("field block col-12", {
+      "input-icon-spinner": feeds.isLoading,
+      "is-success": feedForm.feedExists || feedForm.isFeedUrl
+    });
 
     return (
       <Modal
@@ -92,7 +162,7 @@ class NewFeedDialog extends Component {
 
         <div className="modal-content">
           <form onSubmit={this.submitForm} className="form-prominent sm-col-6">
-            <h1>Add new feed</h1>
+            <h1>Add new subscription</h1>
 
             {feedForm.errors &&
               <div className="sm-col-12 mb2">
@@ -104,14 +174,25 @@ class NewFeedDialog extends Component {
 
             <label className="field-label">
               Website address or feed title
-              <input
-                className="field block col-12"
-                type="text"
-                placeholder="Enter website address or feed title here"
-                ref="feedUrl"
-                value={feedForm.feedUrl}
-                onChange={(event) => this.handleChange(event)}
-                autoFocus={true}/>
+
+                <Autocomplete
+                  placeholder="Enter Website address or feed title here"
+                  ref="value"
+                  items={sortedFeeds}
+                  inputClassName={inputCls}
+                  autoFocus={true}
+                  getItemValue={(item) => item.title}
+                  onSelect={this.handleAutocompleteOnSelect}
+                  onChange={this.handleAutocompleteOnChange}
+                  renderItem={(item, isSelected) => (
+                    <div
+                      style={isSelected ? "active" : ""}
+                      key={item.id}
+                      id={item.id}>
+                      {item.title}
+                    </div>
+                  )}>
+                </Autocomplete>
 
               <div className="hint">
                 Website address must start with http://
@@ -119,6 +200,7 @@ class NewFeedDialog extends Component {
 
               {renderErrorsFor(feedForm.errors, "feed_url")}
             </label>
+
 
             <label className="field-label mb3">
               Select category
@@ -138,10 +220,10 @@ class NewFeedDialog extends Component {
               <button
                 type="submit"
                 className="btn btn-primary bg-blue white btn-large with-icon"
-                disabled={!feedForm.feedUrl}
+                disabled={!feedForm.feedExists && !feedForm.isFeedUrl}
                 onClick={this.submitForm}>
                   {feedForm.isLoading && <Icon name="spinner_white" size="small"/>}
-                  Add Feed
+                  Add Subscription
               </button>
             </div>
           </form>
@@ -154,8 +236,21 @@ class NewFeedDialog extends Component {
 function mapStateToProps(state) {
   return {
     feedForm: state.feedForm,
-    sortedCategories: getSortedCategories(state)
+    sortedCategories: getSortedCategories(state),
+    sortedFeeds: getSortedFeeds(state),
+    feeds: state.feeds
   };
 }
 
-export default connect(mapStateToProps)(NewFeedDialog);
+function mapDispatchToProps(dispatch) {
+  return {
+    entriesActions: bindActionCreators(EntriesActions, dispatch),
+    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
+    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
+    feedsActions: bindActionCreators(FeedsActions, dispatch),
+    feedFormActions: bindActionCreators(FeedFormActions, dispatch),
+    routerActions: bindActionCreators(RouterActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewFeedDialog);

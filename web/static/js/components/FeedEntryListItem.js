@@ -38,7 +38,7 @@ class FeedEntryListItem extends Component {
         <div className="entry-title">{entry.title}</div>
         <div className="entry-summary">{entry.summary}</div>
         <div className="meta">
-          <div className="feed-title">{entry.feed.title}</div>
+          <div className="feed-title">{entry.subscription_title}</div>
           <span className="circle"></span>
           <span className="published">{relativeDateTime}</span>
         </div>

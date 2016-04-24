@@ -3,7 +3,6 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
 
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.Feed
-  alias WhistlerNewsReader.Subscription
 
   import Mock
 
@@ -41,8 +40,8 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
     entry = create(:entry, feed: feed, published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
     entry2 = create(:entry, feed: feed, published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
 
-    create(:unread_entry, user: user, feed: feed, entry: entry)
-    create(:unread_entry, user: user, feed: feed, entry: entry2)
+    create(:unread_entry, user: user, feed: feed, entry: entry, subscription: subscription)
+    create(:unread_entry, user: user, feed: feed, entry: entry2, subscription: subscription)
 
     category = create(:category, user: user)
 
@@ -82,7 +81,6 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
       assert json_response(conn, 201)
       feed_id = json_response(conn, 201)["feed"]["id"]
       assert Repo.get!(Feed, feed_id)
-      assert Repo.get_by!(Subscription, feed_id: feed_id)
     end
   end
 
@@ -97,16 +95,18 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
       category_id = json_response(conn, 201)["feed"]["category_id"]
       assert category_id == category.id
       assert Repo.get!(Feed, feed_id)
-      assert Repo.get_by!(Subscription, feed_id: feed_id)
     end
   end
 
   test "POST /api/feeds fails if feed exists already", %{conn: conn, jwt: jwt} do
-    conn = conn |> put_req_header("authorization", jwt)
-    conn = post conn, feed_path(conn, :create), feed: %{feed_url: @feed_url}
+    json_body = File.read!("test/fixtures/rss2/example1.xml")
+    with_mock WhistlerNewsReader.FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
+      conn = conn |> put_req_header("authorization", jwt)
+      conn = post conn, feed_path(conn, :create), feed: %{feed_url: @feed_url}
 
-    assert json_response(conn, 422)
-    assert json_response(conn, 422)["errors"]
+      assert json_response(conn, 201)
+      assert json_response(conn, 201)["feed"]["id"]
+    end
   end
 
   test "PUT /api/feeds succeeds", %{conn: conn, jwt: jwt, feed: feed} do
@@ -121,15 +121,7 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
     conn = conn |> put_req_header("authorization", jwt)
     conn = delete conn, feed_path(conn, :delete, feed.id)
     assert conn.status == 204
-    refute Repo.get_by(Subscription, feed_id: feed.id)
-  end
-
-  test "PUT /api/feeds/:id/update_category succeeds", %{conn: conn, jwt: jwt, feed: feed, subscription: subscription, category: category} do
-    conn = conn |> put_req_header("authorization", jwt)
-    conn = put conn, feed_path(conn, :update_category, feed.id), category_id: category.id
-
-    assert conn.status == 204
-    assert Repo.get!(Subscription, subscription.id).category_id == category.id
+    refute Repo.get(Feed, feed.id)
   end
 
 end

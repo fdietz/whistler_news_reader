@@ -1,7 +1,7 @@
-defmodule WhistlerNewsReader.UnreadEntry do
+defmodule WhistlerNewsReader.SubscribedEntry do
   use WhistlerNewsReader.Web, :model
 
-  schema "unread_entries" do
+  schema "subscribed_entries" do
 
     # field :entry_id, :integer
     belongs_to :entry, WhistlerNewsReader.Entry
@@ -9,13 +9,15 @@ defmodule WhistlerNewsReader.UnreadEntry do
     belongs_to :feed, WhistlerNewsReader.Feed
     # field :user_id, :integer
     belongs_to :user, WhistlerNewsReader.User
+    # field :subscription_id, :integer
+    belongs_to :subscription, WhistlerNewsReader.Subscription
 
     field :read, :boolean
 
     timestamps
   end
 
-  @required_fields ~w(entry_id user_id feed_id)
+  @required_fields ~w(entry_id user_id feed_id subscription_id)
   @optional_fields ~w(read)
 
   @doc """
@@ -27,7 +29,7 @@ defmodule WhistlerNewsReader.UnreadEntry do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
-    |> unique_constraint(:entry_id, name: :unread_entries_entry_id_user_id_index)
+    |> unique_constraint(:entry_id, name: :subscribed_entries_entry_id_user_id_index)
   end
 
   def for_feed(query, feed_id) do
@@ -35,20 +37,30 @@ defmodule WhistlerNewsReader.UnreadEntry do
     where: p.feed_id == ^feed_id
   end
 
-  def count_for_feeds(query, feed_ids) do
+  def for_subscription_id(query, subscription_id) do
     from p in query,
-    where: p.feed_id in ^feed_ids,
-    where: p.read == ^false,
-    group_by: p.feed_id,
-    select: [p.feed_id, count(p.id)]
+    where: p.subscription_id == ^subscription_id
   end
 
-  def for_user(query, user_id) do
+  def for_subscription_ids(query, subscription_ids) do
+    from p in query,
+    where: p.subscription_id in ^subscription_ids
+  end
+
+  def count_for_subscription_ids(query, subscription_ids) do
+    from p in query,
+    where: p.subscription_id in ^subscription_ids,
+    where: p.read == ^false,
+    group_by: p.subscription_id,
+    select: [p.subscription_id, count(p.id)]
+  end
+
+  def for_user_id(query, user_id) do
     from p in query,
     where: p.user_id == ^user_id
   end
 
-  def for_entry(query, entry_id) do
+  def for_entry_id(query, entry_id) do
     from p in query,
     where: p.entry_id == ^entry_id
   end
@@ -63,8 +75,24 @@ defmodule WhistlerNewsReader.UnreadEntry do
     ecto_date_time = {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl
 
     from p in query,
-    # join condition is handled by ecto for us
     join: c in assoc(p, :entry),
     where: c.published >= ^Ecto.DateTime.to_string(ecto_date_time)
+  end
+
+  def sorted(query) do
+    from p in query,
+    join: c in assoc(p, :entry),
+    order_by: [desc: c.published]
+  end
+
+  def gt_last_published(query, last_published) do
+    from p in query,
+    join: c in assoc(p, :entry),
+    where: c.published < ^last_published
+  end
+
+  def limit(query, limit) do
+    from p in query,
+    limit: ^limit
   end
 end
