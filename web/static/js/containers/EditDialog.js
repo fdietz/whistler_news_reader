@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import Modal from "react-modal";
+// import Modal from "react-modal";
 import ReactDOM from "react-dom";
 
-import { CrossSVGIcon } from "../components/SVGIcon";
+// import { CrossSVGIcon } from "../components/SVGIcon";
 import Icon from "../components/Icon";
 
 import { editFormUpdate, editFormReset } from "../redux/modules/editForm";
@@ -12,15 +12,15 @@ import { requestUpdateCategory } from "../redux/modules/categories";
 
 import { reduceErrorsToString } from "../utils/ErrorHelper";
 import { renderErrorsFor } from "../utils";
-import { customModalStyles } from "../utils/ModalHelper";
 
 class EditDialog extends Component {
 
   static propTypes = {
-    editForm: PropTypes.object,
-    isOpen: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    currentSidebarSelection: PropTypes.object.isRequired
+    editForm: PropTypes.object.isRequired,
+    selection: PropTypes.object.isRequired,
+    isSubscriptionSelected: PropTypes.bool.isRequired,
+    isCategorySelected: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -32,9 +32,9 @@ class EditDialog extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, currentSidebarSelection } = this.props;
+    const { dispatch, selection } = this.props;
 
-    dispatch(editFormUpdate({ title: currentSidebarSelection.selection.title }));
+    dispatch(editFormUpdate({ title: selection.title }));
 
     setTimeout(() => {
       ReactDOM.findDOMNode(this.refs.title).focus();
@@ -55,13 +55,13 @@ class EditDialog extends Component {
   }
 
   submitForm(event) {
-    const { dispatch, editForm, onClose, currentSidebarSelection } = this.props;
+    const { dispatch, editForm, isSubscriptionSelected, selection, onClose } = this.props;
     event.preventDefault();
 
-    const action = currentSidebarSelection.isSubscription ? requestUpdateSubscription : requestUpdateCategory;
+    const action = isSubscriptionSelected ? requestUpdateSubscription : requestUpdateCategory;
 
     dispatch(editFormUpdate());
-    dispatch(action(currentSidebarSelection.selection.id, { title: editForm.title })).then((result) => {
+    dispatch(action(selection.id, { title: editForm.title })).then((result) => {
       if (!result.errors) {
         dispatch(editFormReset());
         onClose();
@@ -70,16 +70,16 @@ class EditDialog extends Component {
   }
 
   render() {
-    const { isOpen, editForm, currentSidebarSelection } = this.props;
+    const { editForm, selection, isSubscriptionSelected, isCategorySelected } = this.props;
 
     let labels;
-    if (currentSidebarSelection.isSubscription) {
+    if (isSubscriptionSelected) {
       labels = {
         heading: "Edit feed",
         label: "Feed title",
         hint: "Title must be 50 characters or less and cannot contain spaces or periods"
       };
-    } else if (currentSidebarSelection.isCategory) {
+    } else if (isCategorySelected) {
       labels = {
         heading: "Edit category",
         label: "Category title",
@@ -90,71 +90,76 @@ class EditDialog extends Component {
     }
 
     return (
-      <Modal
-        isOpen={isOpen}
-        onRequestClose={this.close}
-        style={customModalStyles}>
+      <div className="modal-content">
+        <form onSubmit={this.submitForm} className="form-prominent sm-col-6">
+          <h1>{labels.heading}</h1>
 
-        <div className="modal-header">
-          <div className="logo">whistle'r</div>
-          <a className="modal-close-link" onClick={this.close}>
-            <CrossSVGIcon color="white" size="medium"/>
-          </a>
-        </div>
+          {editForm.errors &&
+            <div className="sm-col-12 mb2">
+              <div className="errors">
+                {reduceErrorsToString(editForm.errors)}
+              </div>
+            </div>
+          }
+          <label className="field-label mb3">
+            {labels.label}
+            <input className="field block col-12"
+              type="text"
+              placeholder="Enter title here"
+              ref="title"
+              value={editForm.title}
+              onChange={(event) => this.handleChange(event)}
+              autoFocus={true}/>
 
-        <div className="modal-content">
-          <form onSubmit={this.submitForm} className="form-prominent sm-col-6">
-            <h1>{labels.heading}</h1>
+            <div className="hint">{labels.hint}</div>
+            {renderErrorsFor(editForm.errors, "title")}
 
-            {editForm.errors &&
-              <div className="sm-col-12 mb2">
-                <div className="errors">
-                  {reduceErrorsToString(editForm.errors)}
-                </div>
+            {isSubscriptionSelected &&
+              <div className="sm-col-12 mb2 mt2">
+                <div className="hint">{selection.site_url}</div>
+                <div className="hint">{selection.feed_url}</div>
               </div>
             }
-            <label className="field-label mb3">
-              {labels.label}
-              <input className="field block col-12"
-                type="text"
-                placeholder="Enter title here"
-                ref="title"
-                value={editForm.title}
-                onChange={(event) => this.handleChange(event)}
-                autoFocus={true}/>
+          </label>
 
-              <div className="hint">{labels.hint}</div>
-              {renderErrorsFor(editForm.errors, "title")}
-
-              {currentSidebarSelection.isSubscription &&
-                <div className="sm-col-12 mb2 mt2">
-                  <div className="hint">{currentSidebarSelection.selection.site_url}</div>
-                  <div className="hint">{currentSidebarSelection.selection.feed_url}</div>
-                </div>
-              }
-            </label>
-
-            <div className="form-actions">
-              <button
-                type="submit"
-                className="btn btn-primary bg-blue white btn-large with-icon"
-                disabled={!editForm.title}
-                onClick={this.submitForm}>
-                  {editForm.isLoading && <Icon name="spinner_white" size="small"/>}
-                  Save Changes
-                </button>
-            </div>
-          </form>
-        </div>
-      </Modal>
+          <div className="form-actions">
+            <button
+              type="submit"
+              className="btn btn-primary bg-blue white btn-large with-icon"
+              disabled={!editForm.title}
+              onClick={this.submitForm}>
+                {editForm.isLoading && <Icon name="spinner_white" size="small"/>}
+                Save Changes
+              </button>
+          </div>
+        </form>
+      </div>
     );
   }
 }
 
-function mapStateToProps(state) {
+function isSubscriptionSelected(ownProps) {
+  return ownProps.location.pathname.startsWith("/subscriptions");
+}
+
+function isCategorySelected(ownProps) {
+  return ownProps.location.pathname.startsWith("/categories");
+}
+
+function selection(state, ownProps) {
+  return isSubscriptionSelected(ownProps)
+    ? state.subscriptions.byId[ownProps.params.subscription_id]
+    : state.categories.byId[ownProps.params.category_id];
+}
+
+function mapStateToProps(state, ownProps) {
   return {
     editForm: state.editForm,
-    currentSidebarSelection: state.currentSidebarSelection
+    category: state.categories.byId[ownProps.params.category_id],
+    subscription: state.subscriptions.byId[ownProps.params.subscription_id],
+    selection: selection(state, ownProps),
+    isSubscriptionSelected: isSubscriptionSelected(ownProps),
+    isCategorySelected: isCategorySelected(ownProps)
   };
 }
 

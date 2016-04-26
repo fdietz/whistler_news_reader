@@ -62,3 +62,30 @@ $space-4: 4rem;
 $border-width: 1px;
 $border-radius: 3px;
 $border-color: $darken-2;
+
+// media queries as used by zurb foundation
+
+$browser-context: 16; // Default
+@function em-calc($pixels, $context: $browser-context) {
+  @return #{$pixels/$context}em;
+}
+
+$small-breakpoint:  em-calc(640)  !default;
+$medium-breakpoint: em-calc(1024) !default;
+$large-breakpoint:  em-calc(1440) !default;
+$xlarge-breakpoint: em-calc(1920) !default;
+
+$landscape: "(orientation: landscape)" !default;
+$portrait: "(orientation: portrait)" !default;
+
+@mixin respond-to($media) {
+  @if $media == small-screen {
+    @media only screen and (max-width: $small-breakpoint) { @content; }
+  } @else if $media == medium-screen {
+    @media only screen and (min-width: $small-breakpoint) and (max-width: $medium-breakpoint) { @content; }
+  } @else if $media == large-screen {
+    @media only screen and (min-width: $medium-breakpoint) and (max-width: $large-breakpoint) { @content; }
+  } @else if $media == xlarge-screen {
+    @media only screen and (min-width: $large-breakpoint) { @content; }
+  }
+}

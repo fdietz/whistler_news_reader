@@ -238,3 +238,21 @@ export const MailSVGIcon = ({ color = "white", ...props }) => {
   );
 };
 MailSVGIcon.propTypes = { color: PropTypes.string };
+
+export const GoBackSVGIcon = ({ color = "white", ...props }) => {
+  return (
+    <SVGComponent {...props}>
+      <path fill={mapColor(color)} d="M4.983 15l0.001-3.228 14.816 0.001v-3.553h-14.817l0.001-3.22-4.784 5z"></path>
+    </SVGComponent>
+  );
+};
+GoBackSVGIcon.propTypes = { color: PropTypes.string };
+
+export const MenuSVGIcon = ({ color = "white", ...props }) => {
+  return (
+    <SVGComponent {...props}>
+      <path fill={mapColor(color)} d="M16 9h-12c-0.552 0-1 0.448-1 1s0.448 1 1 1h12c0.553 0 1-0.448 1-1s-0.447-1-1-1zM4 7h12c0.553 0 1-0.448 1-1s-0.447-1-1-1h-12c-0.552 0-1 0.448-1 1s0.448 1 1 1zM16 13h-12c-0.552 0-1 0.447-1 1s0.448 1 1 1h12c0.553 0 1-0.447 1-1s-0.447-1-1-1z"></path>
+    </SVGComponent>
+  );
+};
+MenuSVGIcon.propTypes = { color: PropTypes.string };

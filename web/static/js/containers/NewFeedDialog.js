@@ -2,16 +2,13 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { routerActions as RouterActions } from "react-router-redux";
-import Modal from "react-modal";
 import ReactDOM from "react-dom";
 import debounce from "lodash.debounce";
 import classNames from "classnames";
 
-import { CrossSVGIcon } from "../components/SVGIcon";
 import Icon from "../components/Icon";
 import Autocomplete from "../components/Autocomplete";
 
-import { customModalStyles } from "../utils/ModalHelper";
 import { getSortedCategories, getSortedFeeds } from "../redux/selectors";
 import { reduceErrorsToString } from "../utils/ErrorHelper";
 import { renderErrorsFor } from "../utils";
@@ -29,7 +26,6 @@ class NewFeedDialog extends Component {
     feeds: PropTypes.object.isRequired,
     sortedFeeds: PropTypes.array.isRequired,
     sortedCategories: PropTypes.array.isRequired,
-    isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     // actions
     subscriptionsActions: PropTypes.object.isRequired,
@@ -140,7 +136,7 @@ class NewFeedDialog extends Component {
   }
 
   render() {
-    const { isOpen, feedForm, sortedCategories, feeds, sortedFeeds } = this.props;
+    const { feedForm, sortedCategories, feeds, sortedFeeds } = this.props;
 
     const inputCls = classNames("field block col-12", {
       "input-icon-spinner": feeds.isLoading,
@@ -148,87 +144,74 @@ class NewFeedDialog extends Component {
     });
 
     return (
-      <Modal
-        isOpen={isOpen}
-        onRequestClose={this.close}
-        style={customModalStyles}>
+      <div className="modal-content">
+        <form onSubmit={this.submitForm} className="form-prominent sm-col-6">
+          <h1>Add new subscription</h1>
 
-        <div className="modal-header">
-          <div className="logo">whistle'r</div>
-          <a className="modal-close-link" onClick={this.close}>
-            <CrossSVGIcon color="white" size="medium"/>
-          </a>
-        </div>
-
-        <div className="modal-content">
-          <form onSubmit={this.submitForm} className="form-prominent sm-col-6">
-            <h1>Add new subscription</h1>
-
-            {feedForm.errors &&
-              <div className="sm-col-12 mb2">
-                <div className="errors">
-                  {reduceErrorsToString(feedForm.errors)}
-                </div>
+          {feedForm.errors &&
+            <div className="sm-col-12 mb2">
+              <div className="errors">
+                {reduceErrorsToString(feedForm.errors)}
               </div>
-            }
-
-            <label className="field-label">
-              Website address or feed title
-
-                <Autocomplete
-                  placeholder="Enter Website address or feed title here"
-                  ref="value"
-                  items={sortedFeeds}
-                  inputClassName={inputCls}
-                  autoFocus={true}
-                  getItemValue={(item) => item.title}
-                  onSelect={this.handleAutocompleteOnSelect}
-                  onChange={this.handleAutocompleteOnChange}
-                  renderItem={(item, isSelected) => (
-                    <div
-                      style={isSelected ? "active" : ""}
-                      key={item.id}
-                      id={item.id}>
-                      {item.title}
-                    </div>
-                  )}>
-                </Autocomplete>
-
-              <div className="hint">
-                Website address must start with http://
-              </div>
-
-              {renderErrorsFor(feedForm.errors, "feed_url")}
-            </label>
-
-
-            <label className="field-label mb3">
-              Select category
-              <select className="field block"
-                ref="categoryId"
-                onChange={(event) => this.handleChange(event)}
-                value={feedForm.category_id}>
-
-                <option value="">Select ...</option>
-                {sortedCategories.map((category) => {
-                  return <option value={category.id} key={category.id}>{category.title}</option>;
-                })}
-              </select>
-            </label>
-
-            <div className="form-actions">
-              <button
-                type="submit"
-                className="btn btn-primary bg-blue white btn-large with-icon"
-                disabled={!feedForm.feedExists && !feedForm.isFeedUrl}
-                onClick={this.submitForm}>
-                  {feedForm.isLoading && <Icon name="spinner_white" size="small"/>}
-                  Add Subscription
-              </button>
             </div>
-          </form>
-        </div>
-      </Modal>
+          }
+
+          <label className="field-label">
+            Website address or feed title
+
+              <Autocomplete
+                placeholder="Enter Website address or feed title here"
+                ref="value"
+                items={sortedFeeds}
+                inputClassName={inputCls}
+                autoFocus={true}
+                getItemValue={(item) => item.title}
+                onSelect={this.handleAutocompleteOnSelect}
+                onChange={this.handleAutocompleteOnChange}
+                renderItem={(item, isSelected) => (
+                  <div
+                    style={isSelected ? "active" : ""}
+                    key={item.id}
+                    id={item.id}>
+                    {item.title}
+                  </div>
+                )}>
+              </Autocomplete>
+
+            <div className="hint">
+              Website address must start with http://
+            </div>
+
+            {renderErrorsFor(feedForm.errors, "feed_url")}
+          </label>
+
+
+          <label className="field-label mb3">
+            Select category
+            <select className="field block"
+              ref="categoryId"
+              onChange={(event) => this.handleChange(event)}
+              value={feedForm.category_id}>
+
+              <option value="">Select ...</option>
+              {sortedCategories.map((category) => {
+                return <option value={category.id} key={category.id}>{category.title}</option>;
+              })}
+            </select>
+          </label>
+
+          <div className="form-actions">
+            <button
+              type="submit"
+              className="btn btn-primary bg-blue white btn-large with-icon"
+              disabled={!feedForm.feedExists && !feedForm.isFeedUrl}
+              onClick={this.submitForm}>
+                {feedForm.isLoading && <Icon name="spinner_white" size="small"/>}
+                Add Subscription
+            </button>
+          </div>
+        </form>
+      </div>
     );
   }
 }

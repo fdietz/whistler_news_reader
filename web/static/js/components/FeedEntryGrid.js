@@ -25,7 +25,7 @@ class FeedEntryGrid extends Component {
         {entries.map((entry) => {
           return (
             <FeedEntryGridItem
-              {...entry}
+              entry={entry}
               isSelected={entry && currentEntry && entry.id === currentEntry.id}
               key={entry.id}
               ref={entry.id}

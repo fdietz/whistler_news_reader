@@ -17,7 +17,8 @@ class SubscriptionDragSource extends Component {
     }).isRequired,
     active: PropTypes.bool.isRequired,
     className: PropTypes.string,
-    onDrop: PropTypes.func.isRequired
+    onDrop: PropTypes.func.isRequired,
+    onLinkClick: PropTypes.func.isRequired
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -26,7 +27,7 @@ class SubscriptionDragSource extends Component {
 
   render() {
     const { isDragging, connectDragSource } = this.props;
-    const { subscription, active } = this.props;
+    const { subscription, active, onLinkClick } = this.props;
     const opacity = isDragging ? 0.4 : 1;
 
     const cls = classNames("sidebar-nav-list__item", {
@@ -43,8 +44,12 @@ class SubscriptionDragSource extends Component {
       <div className={cls} style={{ opacity }}>
         <div className="sidebar-nav-list__meta">
           <div className="icon-placeholder"></div>
-        <Link to={path} className={linkCls} title={subscription.title}>{subscription.title}</Link>
-      {subscription.unread_count > 0 &&
+          <Link
+            onClick={onLinkClick}
+            to={path}
+            className={linkCls}
+            title={subscription.title}>{subscription.title}</Link>
+          {subscription.unread_count > 0 &&
             <Badge count={subscription.unread_count} className="sidebar-nav-list__badge"/>
           }
         </div>

@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
-export default class Welcome extends Component {
+class Welcome extends Component {
   static propTypes = {
     children: PropTypes.node
   }
@@ -14,3 +16,15 @@ export default class Welcome extends Component {
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  return {
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Welcome);

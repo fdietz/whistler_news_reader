@@ -14,7 +14,7 @@ class EntryContentToolbar extends Component {
   static propTypes = {
     currentUser: PropTypes.object.isRequired,
     userActions: PropTypes.object.isRequired,
-    modalsActions: PropTypes.object.isRequired
+    routerActions: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -31,7 +31,7 @@ class EntryContentToolbar extends Component {
 
   onOPMLImportClick(event) {
     event.preventDefault();
-    this.props.modalsActions.openOpmlImportModal();
+    this.props.routerActions.push({ pathname: "/opml_import", state: { modal: true } });
   }
 
   render() {

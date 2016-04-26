@@ -7,6 +7,7 @@ import {
   ArrowDownSVGIcon,
   ArrowUpSVGIcon,
   EarthSVGIcon,
+  GoBackSVGIcon,
   ResizeEnlargeSVGIcon,
   ShareSVGIcon
 } from "../components/SVGIcon";
@@ -26,49 +27,48 @@ import {
 } from "../components/ShareButton";
 
 const EntryContentToolbar = ({
-  currentEntry,
+  entry,
+  hasPreviousEntry,
+  hasNextEntry,
   onPreviousEntryClick,
   onNextEntryClick,
   onOpenExternalClick,
-  onOpenEntryContentModalClick,
-  showEntryContentModalButton = false
+  onGoBackClick
 }) => {
   const shareDropdownCls = classNames("btn btn-header", {
-    disabled: !currentEntry.entry
+    disabled: !entry
   });
 
   return (
     <div className="toolbar">
+      <Button
+        type="header"
+        onClick={onGoBackClick}
+        title="Go back"
+        className="hide-medium-screen mr1">
+        <GoBackSVGIcon color="light-gray" size="small"/>
+      </Button>
       <ButtonGroup className="btn-group-rounded">
         <Button
           type="header"
           onClick={onPreviousEntryClick}
-          disabled={!currentEntry.hasPreviousEntry}
+          disabled={!hasPreviousEntry}
           title="Select previous story">
           <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
         </Button>
         <Button
           type="header"
           onClick={onNextEntryClick}
-          disabled={!currentEntry.hasNextEntry}
+          disabled={!hasNextEntry}
           title="Select next story">
           <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
         </Button>
       </ButtonGroup>
       <ButtonGroup className="btn-group-rounded ml1">
-        {showEntryContentModalButton &&
-          <Button
-            type="header"
-            onClick={onOpenEntryContentModalClick}
-            disabled={!currentEntry.entry}
-            title="Open story in large preview">
-            <ResizeEnlargeSVGIcon color="light-gray" size="small"/>
-          </Button>
-        }
         <Button
           type="header"
           onClick={onOpenExternalClick}
-          disabled={!currentEntry.entry}
+          disabled={!entry}
           title="Open story in new browser tab or window">
           <EarthSVGIcon color="light-gray" size="small"/>
         </Button>
@@ -80,22 +80,22 @@ const EntryContentToolbar = ({
             <ArrowUpSVGIcon color="light-gray" size="small" className="arrow-up"/>
           </DropdownTrigger>
           <DropdownContent>
-          {currentEntry.entry &&
+          {entry &&
             <ul className="dropdown__list">
               <li className="dropdown__list-item">
-                <MailLink {...currentEntry.entry}/>
+                <MailLink {...entry}/>
               </li>
               <li className="dropdown__list-item">
-                <TwitterLink {...currentEntry.entry}/>
+                <TwitterLink {...entry}/>
               </li>
               <li className="dropdown__list-item">
-                <FacebookLink {...currentEntry.entry}/>
+                <FacebookLink {...entry}/>
               </li>
               <li className="dropdown__list-item">
-                <GooglePlusLink {...currentEntry.entry}/>
+                <GooglePlusLink {...entry}/>
               </li>
               <li className="dropdown__list-item">
-                <PinterestLink {...currentEntry.entry}/>
+                <PinterestLink {...entry}/>
               </li>
             </ul>
           }
@@ -106,12 +106,13 @@ const EntryContentToolbar = ({
 };
 
 EntryContentToolbar.propTypes = {
-  currentEntry: PropTypes.object.isRequired,
+  entry: PropTypes.object,
+  hasPreviousEntry: PropTypes.bool.isRequired,
+  hasNextEntry: PropTypes.bool.isRequired,
   onPreviousEntryClick: PropTypes.func.isRequired,
   onNextEntryClick: PropTypes.func.isRequired,
   onOpenExternalClick: PropTypes.func.isRequired,
-  showEntryContentModalButton: PropTypes.bool.isRequired,
-  onOpenEntryContentModalClick: PropTypes.func
+  onGoBackClick: PropTypes.func.isRequired
 };
 
 export default EntryContentToolbar;

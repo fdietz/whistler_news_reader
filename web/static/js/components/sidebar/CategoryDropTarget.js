@@ -22,7 +22,8 @@ class CategoryDropTarget extends Component {
     }).isRequired,
     active: PropTypes.bool.isRequired,
     onExpandClick: PropTypes.func.isRequired,
-    totalUnreadCount: PropTypes.number
+    totalUnreadCount: PropTypes.number,
+    onLinkClick: PropTypes.func.isRequired
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -30,7 +31,7 @@ class CategoryDropTarget extends Component {
   }
 
   render() {
-    const { category, active, totalUnreadCount, onExpandClick, children } = this.props;
+    const { category, active, totalUnreadCount, onExpandClick, children, onLinkClick } = this.props;
     const { canDrop, isOver, connectDropTarget } = this.props;
     const isActive = canDrop && isOver;
 
@@ -63,7 +64,11 @@ class CategoryDropTarget extends Component {
             onClick={onExpandClick.bind(this, category)}>
             <ArrowRightBoldSVGIcon color={currentColor}/>
          </a>
-         <Link to={path} className={linkCls} title={category.title}>{category.title}</Link>
+         <Link
+          onClick={onLinkClick}
+          to={path}
+          className={linkCls}
+          title={category.title}>{category.title}</Link>
          {totalUnreadCount > 0 &&
            <Badge count={totalUnreadCount} className="sidebar-nav-list__badge"/>
          }

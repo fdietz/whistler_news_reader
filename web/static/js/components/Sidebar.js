@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from "react";
 import shallowCompare from "react-addons-shallow-compare";
-import { routerActions } from "react-router-redux";
 import { Link } from "react-router";
 import classNames from "classnames";
 import debounce from "lodash.debounce";
@@ -10,7 +9,8 @@ import HTML5Backend from "react-dnd-html5-backend";
 import {
   HouseSVGIcon,
   ListSVGIcon,
-  PlusSVGIcon
+  PlusSVGIcon,
+  GoBackSVGIcon
 } from "../components/SVGIcon";
 
 import Button from "../components/Button";
@@ -23,12 +23,14 @@ import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
 class Sidebar extends Component {
 
   static propTypes = {
+    sidebar: PropTypes.object.isRequired,
     subscriptions: PropTypes.array.isRequired,
     categories: PropTypes.array.isRequired,
     currentPathname: PropTypes.string.isRequired,
     subscriptionsActions: PropTypes.object.isRequired,
-    modalsActions: PropTypes.object.isRequired,
-    categoriesActions: PropTypes.object.isRequired
+    categoriesActions: PropTypes.object.isRequired,
+    sidebarActions: PropTypes.object.isRequired,
+    routerActions: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -46,24 +48,25 @@ class Sidebar extends Component {
   }
 
   renderSubscription(subscription) {
-    const { currentPathname } = this.props;
-    const path = `/subscriptions/${subscription.id}`;
+    const { currentPathname, sidebarActions } = this.props;
+    const path = `/subscriptions/${subscription.id}/entries`;
     const key = `subscriptions-${subscription.id}`;
-    const active = path === currentPathname;
+    const active = currentPathname.startsWith(path);
 
     return (
       <SubscriptionDragSource
         key={key}
         subscription={subscription}
         active={active}
-        onDrop={this.handleOnFeedDrop}/>
+        onDrop={this.handleOnFeedDrop}
+        onLinkClick={sidebarActions.hideSidebar}/>
     );
   }
 
   renderLink(label, path, iconName) {
     const { currentPathname } = this.props;
     const key = path;
-    const active = path === currentPathname;
+    const active = currentPathname.startsWith(path);
 
     const cls = classNames({ "sidebar-nav-list__name": true, active: active });
     const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
@@ -73,17 +76,20 @@ class Sidebar extends Component {
       <li className={listItemCls} key={key}>
         <div className="sidebar-nav-list__meta">
           {React.createElement(iconName, { color: currentColor })}
-          <Link to={path} className={cls}>{label}</Link>
+          <Link
+            onClick={this.props.sidebarActions.hideSidebar}
+            to={path}
+            className={cls}>{label}</Link>
         </div>
       </li>
     );
   }
 
   renderCategory(category, subscriptions) {
-    const { currentPathname } = this.props;
-    const path = `/categories/${category.id}`;
+    const { currentPathname, sidebarActions } = this.props;
+    const path = `/categories/${category.id}/entries`;
     const key = `category-${category.id}`;
-    const active = path === currentPathname;
+    const active = currentPathname.startsWith(path);
     const matchingSubscriptions = subscriptions.filter((subscription) => subscription.category_id === category.id);
     const totalUnreadCount = matchingSubscriptions.reduce((result, subscription) => {
       return result + subscription.unread_count;
@@ -95,7 +101,8 @@ class Sidebar extends Component {
         category={category}
         active={active}
         totalUnreadCount={totalUnreadCount}
-        onExpandClick={this.onCategoryExpandClick}>
+        onExpandClick={this.onCategoryExpandClick}
+        onLinkClick={sidebarActions.hideSidebar}>
          {matchingSubscriptions.length > 0 && category.expanded &&
            <div className="sidebar-nav-list nested">
              {matchingSubscriptions.map(subscription =>
@@ -160,7 +167,8 @@ class Sidebar extends Component {
 
   onAddClick(e) {
     e.preventDefault();
-    this.props.modalsActions.openNewFeedModal();
+    this.props.sidebarActions.hideSidebar();
+    this.props.routerActions.push({ pathname: "/feeds/new", state: { modal: true } });
   }
 
   onCategoryExpandClick(category, event) {
@@ -171,22 +179,28 @@ class Sidebar extends Component {
 
   onNewCategoryClick(event) {
     event.preventDefault();
-    this.props.modalsActions.openNewCategoryModal();
+    this.props.sidebarActions.hideSidebar();
+    this.props.routerActions.push({ pathname: "/categories/new", state: { modal: true } });
   }
 
   handleOnFeedDrop(subscriptionId, categoryId) {
     const { subscriptionsActions } = this.props;
     subscriptionsActions.requestUpdateSubscription(subscriptionId, { category_id: categoryId }).then(() => {
-      routerActions.push(`/subscriptions/${subscriptionId}`);
+      routerActions.push(`/subscriptions/${subscriptionId}/entries`);
     });
   }
 
   render() {
-    const { subscriptions, categories } = this.props;
+    const { subscriptions, categories, sidebar, sidebarActions } = this.props;
     const subscriptionsWithoutCategory = subscriptions.filter(subscription => !subscription.category_id);
 
+    const sidebarCls = classNames("sidebar", {
+      hidden: !sidebar.isVisible,
+      visible: sidebar.isVisible
+    });
+
     return (
-      <div className="sidebar">
+      <div className={sidebarCls} ref="sidebar">
         <div className="sidebar-header">
           <div className="logo">whistle'r</div>
           <div className="subtitle">news reader</div>
@@ -201,8 +215,8 @@ class Sidebar extends Component {
           </div>
 
           <div className="sidebar-nav-list">
-            {this.renderLink("Today", "/today", HouseSVGIcon)}
-            {this.renderLink("All", "/all", ListSVGIcon)}
+            {this.renderLink("Today", "/today/entries", HouseSVGIcon)}
+            {this.renderLink("All", "/all/entries", ListSVGIcon)}
           </div>
 
           <div className="sidebar-nav-list">
@@ -214,6 +228,11 @@ class Sidebar extends Component {
             })}
             {this.renderAddCategoryLink()}
           </div>
+        </div>
+        <div className="sidebar-footer hide-large-screen">
+          <a href="#" onClick={sidebarActions.toggle} className="btn gray">
+            <GoBackSVGIcon color="gray" size="small" className="mr1"/> Close
+          </a>
         </div>
       </div>
     );

@@ -4,7 +4,7 @@ import classNames from "classnames";
 import Icon from "../components/Icon";
 import { CheckmarkSVGIcon, TrashSVGIcon, CycleSVGIcon, ArrowLeftBoldSVGIcon,
   ArrowRightBoldSVGIcon, EarthSVGIcon, ResizeEnlargeSVGIcon, CogSVGIcon,
-  ArrowDownSVGIcon, ArrowUpSVGIcon } from "../components/SVGIcon";
+  ArrowDownSVGIcon, ArrowUpSVGIcon, MenuSVGIcon } from "../components/SVGIcon";
 
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
@@ -14,8 +14,11 @@ import Dropdown from "../components/Dropdown";
 
 const EntryListToolbar = ({
   currentViewLayout,
-  entries,
-  currentSidebarSelection,
+  showSpinner,
+  isSubscriptionSelected,
+  isCategorySelected,
+  hasPreviousEntry,
+  hasNextEntry,
   onMarkAsReadClick,
   onRefreshEntriesClick,
   onRemoveFeedOrCategoryClick,
@@ -24,21 +27,28 @@ const EntryListToolbar = ({
   onNextEntryClick,
   onOpenExternalClick,
   onOpenEntryContentModalClick,
-  onOpenEditFeedOrCategoryModalClick
+  onOpenEditFeedOrCategoryModalClick,
+  onToggleSidebarClick
 }) => {
   const spinnerCls = classNames({
     spinner: true,
-    hide: !entries.isLoading
+    hide: !showSpinner
   });
 
-  const isFeedOrCategorySelected = !currentSidebarSelection.selection;
   const editFeedOrCategoryCls = classNames("dropdown__list-item", {
-    disabled: isFeedOrCategorySelected
+    disabled: !isSubscriptionSelected && !isCategorySelected
   });
 
   return (
-  <div className="toolbar">
-    <ButtonGroup className="btn-group-rounded">
+    <div className="toolbar">
+      <Button
+        type="header"
+        onClick={onToggleSidebarClick}
+        title="Mark all stories as read"
+        className="hide-large-screen mr1">
+        <MenuSVGIcon color="light-gray" size="small"/>
+      </Button>
+        <ButtonGroup className="btn-group-rounded">
         <Button
           type="header"
           onClick={onMarkAsReadClick}
@@ -68,6 +78,7 @@ const EntryListToolbar = ({
                   id="list"
                   name="currrent_view_layout"
                   checked={currentViewLayout === "list"}
+                  readOnly={true}
                   className="dropdown-field media"/>
                 <label
                   htmlFor="list"
@@ -81,6 +92,7 @@ const EntryListToolbar = ({
                   id="compact_list"
                   name="currrent_view_layout"
                   checked={currentViewLayout === "compact_list"}
+                  readOnly={true}
                   className="dropdown-field media"/>
                 <label
                   htmlFor="compact_list"
@@ -95,6 +107,7 @@ const EntryListToolbar = ({
                   id="grid"
                   name="currrent_view_layout"
                   checked={currentViewLayout === "grid"}
+                  readOnly={true}
                   className="dropdown-field media"/>
                 <label
                   htmlFor="grid"
@@ -122,10 +135,10 @@ const EntryListToolbar = ({
       </Dropdown>
       {currentViewLayout === "grid" &&
         <ButtonGroup className="btn-group-rounded ml2">
-          <Button type="header" onClick={onPreviousEntryClick}>
+          <Button type="header" onClick={onPreviousEntryClick} disabled={!hasPreviousEntry}>
             <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
           </Button>
-          <Button type="header" onClick={onNextEntryClick}>
+          <Button type="header" onClick={onNextEntryClick} disabled={!hasNextEntry}>
             <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
           </Button>
         </ButtonGroup>
@@ -149,8 +162,11 @@ const EntryListToolbar = ({
 
 EntryListToolbar.propTypes = {
   currentViewLayout: PropTypes.string.isRequired,
-  entries: PropTypes.object.isRequired,
-  currentSidebarSelection: PropTypes.object.isRequired,
+  showSpinner: PropTypes.bool.isRequired,
+  isSubscriptionSelected: PropTypes.bool.isRequired,
+  isCategorySelected: PropTypes.bool.isRequired,
+  hasPreviousEntry: PropTypes.bool.isRequired,
+  hasNextEntry: PropTypes.bool.isRequired,
   onMarkAsReadClick: PropTypes.func.isRequired,
   onRefreshEntriesClick: PropTypes.func.isRequired,
   onRemoveFeedOrCategoryClick: PropTypes.func.isRequired,

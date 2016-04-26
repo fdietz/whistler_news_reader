@@ -6,12 +6,13 @@ import BackgroundImage from "./BackgroundImage";
 class FeedEntryGridItem extends Component {
 
   static propTypes = {
-    published: PropTypes.string.isRequired,
-    feed: PropTypes.object.isRequired,
-    title: PropTypes.string.isRequired,
-    unread: PropTypes.bool.isRequired,
-    summary: PropTypes.string,
-    content: PropTypes.string.isRequired,
+    entry: PropTypes.shape({
+      published: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      unread: PropTypes.bool.isRequired,
+      summary: PropTypes.string,
+      content: PropTypes.string.isRequired
+    }).isRequired,
     onClick: PropTypes.func.isRequired,
     isSelected: PropTypes.bool,
     className: PropTypes.string
@@ -30,17 +31,16 @@ class FeedEntryGridItem extends Component {
   }
 
   render() {
-    const { title, published, content, unread, summary, isSelected = false, onClick, feed, className } = this.props;
+    const { entry, isSelected = false, onClick, className } = this.props;
 
     let cls = classNames("item", className, {
       selected: isSelected,
-      unread: unread
+      unread: entry.unread
     });
 
-    const date = new Date(published);
+    const date = new Date(entry.published);
     const relativeDateTime = DateTimeHelper.timeDifference(date);
-    const imageUrl = this.extractUrl(content);
-    const imageStyle = { backgroundImage: `url(${imageUrl})` };
+    const imageUrl = this.extractUrl(entry.content);
 
     return (
       <div className={cls} onClick={onClick}>
@@ -48,9 +48,9 @@ class FeedEntryGridItem extends Component {
           <BackgroundImage imageUrl={imageUrl} className="entry-grid__image"/>
         }
         <div className="entry-grid__caption">
-          <div className="entry-title">{title}</div>
+          <div className="entry-title">{entry.title}</div>
           <div className="meta">
-            <div className="feed-title">{feed.title}</div>
+            <div className="feed-title">{entry.subscription_title}</div>
             <span className="circle"></span>
             <span className="published">{relativeDateTime}</span>
           </div>
