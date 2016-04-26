@@ -28,7 +28,7 @@ body {
   overflow-y: auto;
   background-color: #fff;
   flex: 1 1;
-  -webkit-overflow-scrolling: touch;  
+  -webkit-overflow-scrolling: touch;
 }
 
 .toolbar {
@@ -49,6 +49,7 @@ body {
   .master-list {
     display: flex;
     width: 35%;
+    height: 100%;
 
     @include respond-to(small-screen) {
       width: 100%;
