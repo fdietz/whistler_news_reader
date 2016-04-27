@@ -88,7 +88,7 @@ class Autocomplete extends Component {
 
         <DropdownContent active={this.state.isOpen} style={{ width: "100%"}}>
           <ol className="dropdown__list">
-            {items.map((item, index) => {
+            {items.slice(0, 5).map((item, index) => {
               const listItemCls = classNames("dropdown__list-item prominent", {
                 active: index === selectedIndex
               });
