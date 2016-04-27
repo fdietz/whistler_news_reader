@@ -1,9 +1,10 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
+import classNames from "classnames";
 
 import { findScrollableAncestor } from "../utils/dom";
 
-class FeedEntryContent extends Component {
+class FeedEntryEmbedArticleContent extends Component {
 
   static propTypes = {
     entry: PropTypes.object,
@@ -92,4 +93,4 @@ class FeedEntryContent extends Component {
   }
 }
 
-export default FeedEntryContent;
+export default FeedEntryEmbedArticleContent;

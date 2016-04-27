@@ -12,6 +12,7 @@ import {
   ShareSVGIcon
 } from "../components/SVGIcon";
 
+import Icon from "../components/Icon";
 import Button from "../components/Button";
 import ButtonGroup from "../components/ButtonGroup";
 import DropdownTrigger from "../components/DropdownTrigger";
@@ -28,6 +29,7 @@ import {
 
 const EntryContentToolbar = ({
   entry,
+  showSpinner,
   currentViewMode,
   hasPreviousEntry,
   hasNextEntry,
@@ -39,6 +41,11 @@ const EntryContentToolbar = ({
 }) => {
   const shareDropdownCls = classNames("btn btn-header", {
     disabled: !entry
+  });
+
+  const spinnerCls = classNames({
+    spinner: true,
+    hide: !showSpinner
   });
 
   return (
@@ -128,6 +135,10 @@ const EntryContentToolbar = ({
         }
         </DropdownContent>
       </Dropdown>
+
+      <span className={spinnerCls}>
+        <Icon name="spinner" size="small"/>
+      </span>
     </div>
   );
 };

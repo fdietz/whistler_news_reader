@@ -8,6 +8,8 @@ import LayoutContent from "../components/LayoutContent";
 import FeedEntryContent from "../components/FeedEntryContent";
 import EntryContentToolbar from "../components/EntryContentToolbar";
 import ProfileToolbar from "../components/ProfileToolbar";
+import FeedEntryEmbedWebsiteContent from "../components/FeedEntryEmbedWebsiteContent";
+import FeedEntryEmbedArticleContent from "../components/FeedEntryEmbedArticleContent";
 
 import * as UserActions from "../redux/modules/user";
 import * as EntriesActions from "../redux/modules/entries";
@@ -53,7 +55,10 @@ class EntryDetailContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { currentViewMode: "normal" };
+    this.state = {
+      currentViewMode: "normal",
+      showSpinner: false
+    };
 
     this.nextEntry = this.nextEntry.bind(this);
     this.previousEntry = this.previousEntry.bind(this);
@@ -61,6 +66,7 @@ class EntryDetailContainer extends Component {
     this.onOpenExternalClick = this.onOpenExternalClick.bind(this);
     this.onGoBackClick = this.onGoBackClick.bind(this);
     this.onChangeViewModeClick = this.onChangeViewModeClick.bind(this);
+    this.onLoadingComplete = this.onLoadingComplete.bind(this);
   }
 
   handleEntryShown(entry) {
@@ -113,6 +119,10 @@ class EntryDetailContainer extends Component {
     this.setState({ currentViewMode: mode });
   }
 
+  onLoadingComplete() {
+    this.setState({ showSpinner: false });
+  }
+
   render() {
     const {
       entry,
@@ -126,6 +136,7 @@ class EntryDetailContainer extends Component {
       <EntryContentToolbar
         entry={entry}
         currentViewMode={this.state.currentViewMode}
+        showSpinner={this.state.showSpinner}
         hasPreviousEntry={hasPreviousEntry}
         hasNextEntry={hasNextEntry}
         onPreviousEntryClick={this.previousEntry}
@@ -149,10 +160,22 @@ class EntryDetailContainer extends Component {
           <div className="layout-master-container">
             <LayoutHeader>{entryContentToolbar}{profileToolbar}</LayoutHeader>
             <LayoutContent>
-              {entry &&
+              {entry && this.state.currentViewMode === "normal" &&
                 <FeedEntryContent
                   entry={entry}
-                  currentViewMode={this.state.currentViewMode}
+                  onLoadingComplete={this.onLoadingComplete}
+                  onEntryShown={this.handleEntryShown}/>
+              }
+              {entry && this.state.currentViewMode === "article" &&
+                <FeedEntryEmbedArticleContent
+                  entry={entry}
+                  onLoadingComplete={this.onLoadingComplete}
+                  onEntryShown={this.handleEntryShown}/>
+              }
+              {entry && this.state.currentViewMode === "website" &&
+                <FeedEntryEmbedWebsiteContent
+                  entry={entry}
+                  onLoadingComplete={this.onLoadingComplete}
                   onEntryShown={this.handleEntryShown}/>
               }
             </LayoutContent>
