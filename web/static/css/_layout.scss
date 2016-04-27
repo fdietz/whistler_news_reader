@@ -52,6 +52,10 @@ body {
     width: 35%;
     height: 100%;
 
+    &.grid {
+      width: 50%;
+    }
+    
     @include respond-to(small-screen) {
       width: 100%;
     }
