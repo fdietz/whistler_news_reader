@@ -8,6 +8,7 @@ class FeedEntryContent extends Component {
   static propTypes = {
     entry: PropTypes.object,
     onEntryShown: PropTypes.func.isRequired,
+    onLoadingStart: PropTypes.func,
     onLoadingComplete: PropTypes.func
   };
 

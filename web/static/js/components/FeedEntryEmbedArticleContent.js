@@ -1,19 +1,22 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
-import classNames from "classnames";
 
 import { findScrollableAncestor } from "../utils/dom";
+import axios from "../utils/APIHelper";
 
 class FeedEntryEmbedArticleContent extends Component {
 
   static propTypes = {
     entry: PropTypes.object,
     onEntryShown: PropTypes.func.isRequired,
+    onLoadingStart: PropTypes.func,
     onLoadingComplete: PropTypes.func
   };
 
   constructor(props) {
     super(props);
+
+    this.state = { entryArticle: "" };
 
     this.shouldScrollToTop = false;
   }
@@ -41,6 +44,19 @@ class FeedEntryEmbedArticleContent extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.entry.id !== this.props.entry.id) {
       this.shouldScrollToTop = true;
+      if (this.props.onLoadingStart) this.props.onLoadingStart();
+
+      axios.get(`/api/entry_articles/${nextProps.entry.id}`)
+        .then((response) => {
+          console.log("success", response.data)
+          this.setState({ entryArticle: response.data.entry_article });
+          if (this.props.onLoadingComplete) this.props.onLoadingComplete();
+        })
+        .catch((response) => {
+          console.log("error", response.data)
+          if (this.props.onLoadingComplete) this.props.onLoadingComplete();
+        });
+
       this.initTimer(nextProps.entry);
     }
   }
@@ -67,7 +83,7 @@ class FeedEntryEmbedArticleContent extends Component {
   }
 
   rawContent() {
-    return { __html: this.props.entry.content };
+    return { __html: this.state.entryArticle.content };
   }
 
   render() {

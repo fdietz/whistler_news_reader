@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
-import classNames from "classnames";
 
 import { findScrollableAncestor } from "../utils/dom";
 
@@ -9,6 +8,7 @@ class FeedEntryEmbedWebsiteContent extends Component {
   static propTypes = {
     entry: PropTypes.object,
     onEntryShown: PropTypes.func.isRequired,
+    onLoadingStart: PropTypes.func,
     onLoadingComplete: PropTypes.func
   };
 
@@ -44,6 +44,7 @@ class FeedEntryEmbedWebsiteContent extends Component {
     if (nextProps.entry.id !== this.props.entry.id) {
       this.shouldScrollToTop = true;
       this.initTimer(nextProps.entry);
+      if (this.props.onLoadingStart) this.props.onLoadingStart();
     }
   }
 
@@ -73,7 +74,6 @@ class FeedEntryEmbedWebsiteContent extends Component {
   }
 
   onLoad() {
-    console.log("on load")
     this.onLoadingComplete();
   }
 

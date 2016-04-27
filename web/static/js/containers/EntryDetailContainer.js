@@ -66,6 +66,7 @@ class EntryDetailContainer extends Component {
     this.onOpenExternalClick = this.onOpenExternalClick.bind(this);
     this.onGoBackClick = this.onGoBackClick.bind(this);
     this.onChangeViewModeClick = this.onChangeViewModeClick.bind(this);
+    this.onLoadingStart = this.onLoadingStart.bind(this);
     this.onLoadingComplete = this.onLoadingComplete.bind(this);
   }
 
@@ -119,6 +120,10 @@ class EntryDetailContainer extends Component {
     this.setState({ currentViewMode: mode });
   }
 
+  onLoadingStart() {
+    this.setState({ showSpinner: true });
+  }
+
   onLoadingComplete() {
     this.setState({ showSpinner: false });
   }
@@ -164,17 +169,20 @@ class EntryDetailContainer extends Component {
                 <FeedEntryContent
                   entry={entry}
                   onLoadingComplete={this.onLoadingComplete}
+                  onLoadingStart={this.onLoadingStart}
                   onEntryShown={this.handleEntryShown}/>
               }
               {entry && this.state.currentViewMode === "article" &&
                 <FeedEntryEmbedArticleContent
                   entry={entry}
+                  onLoadingStart={this.onLoadingStart}
                   onLoadingComplete={this.onLoadingComplete}
                   onEntryShown={this.handleEntryShown}/>
               }
               {entry && this.state.currentViewMode === "website" &&
                 <FeedEntryEmbedWebsiteContent
                   entry={entry}
+                  onLoadingStart={this.onLoadingStart}
                   onLoadingComplete={this.onLoadingComplete}
                   onEntryShown={this.handleEntryShown}/>
               }
