@@ -12,6 +12,7 @@ import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryGrid from "../components/FeedEntryGrid";
 import NoMoreContent from "../components/NoMoreContent";
 import EntryListToolbar from "../components/EntryListToolbar";
+import ProfileToolbar from "../components/ProfileToolbar";
 
 import * as UserActions from "../redux/modules/user";
 import * as EntriesActions from "../redux/modules/entries";
@@ -294,6 +295,15 @@ class EntryListContainer extends Component {
       grid: currentViewLayout === "grid"
     });
 
+    const hasChildren = React.Children.count(this.props.children) > 0;
+
+    const profileToolbar = (
+      <ProfileToolbar
+        currentUser={currentUser}
+        userActions={userActions}
+        routerActions={routerActions}/>
+    );
+
     return (
       <div className="main-master-container">
         <div className={masterListCls}>
@@ -316,7 +326,21 @@ class EntryListContainer extends Component {
             </div>
           }
         </div>
-        {this.props.children}
+
+        {!hasChildren &&
+          <div className="main-detail-container">
+            <div className="detail">
+              <div className="layout-master-container">
+                <LayoutHeader>{profileToolbar}</LayoutHeader>
+                <LayoutContent/>
+              </div>
+            </div>
+          </div>
+        }
+
+        {hasChildren &&
+          this.props.children
+        }
       </div>
     );
   }

@@ -51,11 +51,12 @@ body {
     display: flex;
     width: 35%;
     height: 100%;
+    border-right: 1px solid $darken-1;
 
     &.grid {
       width: 50%;
     }
-    
+
     @include respond-to(small-screen) {
       width: 100%;
     }
