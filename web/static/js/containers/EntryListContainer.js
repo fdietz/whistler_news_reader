@@ -86,6 +86,7 @@ class EntryListContainer extends Component {
     this.previousEntry = this.previousEntry.bind(this);
     this.openEditModal = this.openEditModal.bind(this);
     this.handleOnOpenEntryContentModalClick = this.handleOnOpenEntryContentModalClick.bind(this);
+    this.handleOnRemoveFeedOrCategory = this.handleOnRemoveFeedOrCategory.bind(this);
 
     this.debouncedNextEntry = debounce(this.nextEntry, 100);
     this.debouncedPreviousEntry = debounce(this.previousEntry, 100);

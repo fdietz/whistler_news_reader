@@ -121,7 +121,6 @@ class NewFeedDialog extends Component {
 
     subscriptionsActions.requestCreateSubscription({ feed_id: feedId, category_id: categoryId })
       .then((response) => {
-        console.log("subscriptione response", response)
         if (response.error) {
           feedFormActions.feedFormUpdate(response.payload);
         } else {
