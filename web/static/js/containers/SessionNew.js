@@ -11,7 +11,7 @@ import { requestFetchRandomImages } from "../redux/modules/randomImages";
 class SessionNew extends Component {
 
   static propTypes = {
-    errors: PropTypes.object,
+    errors: PropTypes.array,
     randomImages: PropTypes.object
   }
 
@@ -66,6 +66,8 @@ class SessionNew extends Component {
             </div>
           </header>
           <form onSubmit={this.handleSubmit}>
+            {renderErrorsFor(errors, "base")}
+
             <label className="field-label">
               Email
               <input
@@ -77,6 +79,7 @@ class SessionNew extends Component {
                 placeholder="yourmail@mail.com"/>
               {renderErrorsFor(errors, "email")}
             </label>
+
             <label className="field-label">
               Password
               <input
@@ -94,12 +97,14 @@ class SessionNew extends Component {
               </div>
           </form>
         </div>
+
         {image &&
           <div className="credits">
             <div>{image.alt}</div>
           <a href="https://unsplash.com/" className="gray-2">unsplash.com</a>
           </div>
         }
+
       </div>
     );
   }

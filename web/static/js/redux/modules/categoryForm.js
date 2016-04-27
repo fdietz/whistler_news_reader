@@ -11,22 +11,19 @@ export function requestCreateCategory(attrs) {
   return (dispatch) => {
     dispatch(categoryFormUpdate());
 
-    return axios.post("/api/categories", { category: attrs }).
-      then(response => {
+    return axios.post("/api/categories", { category: attrs })
+      .then(response => {
         dispatch(categoryFormReset());
         return response.data.category;
-      }).
-      catch(error => {
-        dispatch(categoryFormUpdate(error.payload));
-        return error.payload;
-      });
+      })
+      .catch(e => dispatch(categoryFormUpdate(e)));
   };
 }
 
 const initial = {
-  title: null,
+  title: "",
   isLoading: false,
-  error: null
+  errors: null
 };
 
 export default function reducer(state = initial, action) {

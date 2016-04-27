@@ -10,7 +10,7 @@ import { requestFetchRandomImages } from "../redux/modules/randomImages";
 class SignUp extends Component {
 
   static propTypes = {
-    errors: PropTypes.object,
+    errors: PropTypes.array,
     randomImages: PropTypes.object
   }
 

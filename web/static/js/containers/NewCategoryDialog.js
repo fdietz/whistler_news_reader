@@ -55,7 +55,7 @@ class NewCategoryDialog extends Component {
     event.preventDefault();
 
     dispatch(requestCreateCategory({ title: categoryForm.title})).then((result) => {
-      if (!result.errors) {
+      if (!result.error) {
         onClose();
         dispatch(push(`/categories/${result.id}`));
         dispatch(addCategory(result));
@@ -73,9 +73,7 @@ class NewCategoryDialog extends Component {
 
           {categoryForm.errors &&
             <div className="sm-col-12 mb2">
-              <div className="errors">
-                {reduceErrorsToString(categoryForm.errors)}
-              </div>
+              {renderErrorsFor(categoryForm.errors, "base")}
             </div>
           }
 

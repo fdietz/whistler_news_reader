@@ -15,7 +15,7 @@ export function requestCreateFeed(feedAttributes) {
         dispatch(feedFormReset());
         return response.data.feed;
       })
-      .catch(error => dispatch(feedFormUpdate(error)));
+      .catch(e => dispatch(feedFormUpdate(e)));
   };
 }
 

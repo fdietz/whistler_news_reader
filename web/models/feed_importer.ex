@@ -29,24 +29,29 @@ defmodule WhistlerNewsReader.FeedImporter do
   end
 
   def fetch_and_parse(feed_url) do
-    case import_feed_url(feed_url) do
-      {:error, _} ->
-        import_site_url(feed_url)
+    case FeedFetcher.fetch(feed_url) do
+      {:ok, xml_body} ->
+        case import_feed_url(xml_body) do
+          {:error, _} ->
+            import_site_url(xml_body)
+          other ->
+            other
+        end
+      {:error, 404} ->
+        {:error, :feed_url_not_found}
       other ->
         other
     end
   end
 
-  def import_site_url(site_url) do
-    with {:ok, site_body} <- FeedFetcher.fetch(site_url),
-         {:ok, feed_url}  <- FeedUrlExtractor.extract(site_body),
+  def import_site_url(xml_body) do
+    with {:ok, feed_url}  <- FeedUrlExtractor.extract(xml_body),
          {:ok, xml_body}  <- FeedFetcher.fetch(feed_url),
-         do: ElixirFeedParser.parse(xml_body)
+         do: import_feed_url(xml_body)
   end
 
-  def import_feed_url(feed_url) do
-    with {:ok, xml_body} <- FeedFetcher.fetch(feed_url),
-         do: ElixirFeedParser.parse(xml_body)
+  def import_feed_url(xml_body) do
+    ElixirFeedParser.parse(xml_body)
   end
 
   defp update_last_refreshed_at(feed) do

@@ -28,10 +28,15 @@ defmodule WhistlerNewsReader.Api.FeedController do
         |> render("show.json", feed: feed)
       {:error, :feed_url_not_found} ->
         conn |> send_resp(404, "Feed not found")
+      {:error, :feed_format_unknown} ->
+        conn |> send_resp(422, "Feed format unknown")
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
         |> put_status(:unprocessable_entity)
         |> render(WhistlerNewsReader.Api.ErrorView, "error.json", changeset: changeset)
+      {:error, reason} ->
+        Logger.error(inspect(reason))
+        conn |> send_resp(500, "Internal Server Error")
     end
   end
 

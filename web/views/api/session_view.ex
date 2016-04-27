@@ -10,7 +10,7 @@ defmodule WhistlerNewsReader.Api.SessionView do
   end
 
   def render("error.json", _) do
-    %{error: "invalid email or password"}
+    %{errors: [%{base: "invalid email or password"}]}
   end
 
   def render("delete.json", _) do

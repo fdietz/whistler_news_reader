@@ -2,6 +2,8 @@ import axios from "axios";
 import { createAction } from "redux-actions";
 import { push } from "react-router-redux";
 
+import { transformErrorResponse } from "../../utils/APIHelper";
+
 const CREATE_SIGN_UP = "CREATE_SIGN_UP";
 const CREATE_SIGN_IN = "CREATE_SIGN_IN";
 const SIGN_OUT = "SIGN_OUT";
@@ -20,15 +22,11 @@ export function requestSignUp(data) {
       .then((response) => {
         localStorage.setItem("phoenixAuthToken", response.data.jwt);
 
-        dispatch(createSignUp({ user: response.data.user }));
+        dispatch(createSignUp(response.data));
 
         dispatch(push("/today"));
       })
-      .catch((response) => {
-        const error = new Error(`Status code ${response.status}: ${response.statusText}`);
-        error.payload = response.data.errors;
-        dispatch(createSignUp(error));
-      });
+      .catch(e => dispatch(createSignUp(transformErrorResponse(e))));
   };
 }
 
@@ -44,16 +42,11 @@ export function requestSignIn(email, password) {
       .then(response => {
         localStorage.setItem("phoenixAuthToken", response.data.jwt);
 
-        dispatch(createSignIn({ user: response.data.user }));
+        dispatch(createSignIn({ current: response.data.user }));
 
         dispatch(push("/today"));
       })
-      .catch(response => {
-        console.log("=======", response.stack)
-        const error = new Error(`Status code ${response.status}: ${response.statusText}`);
-        error.payload = [{ password: response.data.error }];
-        dispatch(createSignIn(error));
-      });
+      .catch(e => dispatch(createSignIn(transformErrorResponse(e))));
   };
 }
 
@@ -69,9 +62,7 @@ export function requestSignOut() {
 
         dispatch(push("/sign_in"));
       })
-      .catch(response => {
-        console.log("response ERROR", response.data);
-      });
+      .catch(e => dispatch(signOut(transformErrorResponse(e))));
   };
 }
 
@@ -86,10 +77,10 @@ export function requestSetCurrentUser() {
         if (!response.data.user) {
           dispatch(push("/sign_in"));
         } else {
-          dispatch(setCurrentUser({ user: response.data.user }));
+          dispatch(setCurrentUser({ current: response.data.user }));
         }
       })
-      .catch(error => {
+      .catch(() => {
         dispatch(push("/sign_in"));
       });
   };
@@ -102,37 +93,15 @@ const initialState = {
 };
 
 export default function reducer(state = initialState, action) {
-  if (action.type === CREATE_SIGN_UP || action.type === CREATE_SIGN_IN) {
-    if (action.error) {
-      return Object.assign({}, state, {
-        errors: action.payload.payload
-      });
-    } else if (action.payload && action.payload.user) {
-      return Object.assign({}, state, {
-        current: action.payload.user
-      });
-    }
-
-    return Object.assign({}, state, {
-      isLoading: true
-    });
-  } else if (action.type === SET_CURRENT_USER) {
-    if (action.error) {
-      return Object.assign({}, state, {
-        errors: action.payload.errors
-      });
-    } else if (action.payload && action.payload.user) {
-      return Object.assign({}, state, {
-        current: action.payload.user
-      });
-    }
-
-    return Object.assign({}, state, {
-      isLoading: true
-    });
-  } else if (action.type === SIGN_OUT) {
-    return Object.assign({}, initialState);
+  switch (action.type) {
+  case CREATE_SIGN_UP:
+  case CREATE_SIGN_IN:
+  case SET_CURRENT_USER:
+    if (!action.payload) return {...state, isLoading: true };
+    return { ...state, ...action.payload, isLoading: false };
+  case SIGN_OUT:
+    return { ...initialState };
+  default:
+    return state;
   }
-
-  return state;
 }

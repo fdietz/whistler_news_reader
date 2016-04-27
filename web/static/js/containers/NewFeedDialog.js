@@ -110,9 +110,7 @@ class NewFeedDialog extends Component {
 
     feedFormActions.requestCreateFeed({ feed_url: searchTerm })
       .then((response) => {
-        if (response.error) {
-          feedFormActions.feedFormUpdate(response.payload);
-        } else {
+        if (!response.error) {
           this.createSubscription(response.id, categoryId);
         }
       });
@@ -123,8 +121,9 @@ class NewFeedDialog extends Component {
 
     subscriptionsActions.requestCreateSubscription({ feed_id: feedId, category_id: categoryId })
       .then((response) => {
+        console.log("subscriptione response", response)
         if (response.error) {
-          feedFormActions.feedFormUpdate(response.payload.payload);
+          feedFormActions.feedFormUpdate(response.payload);
         } else {
           const subscription = response.payload;
           this.props.onClose();
@@ -150,9 +149,8 @@ class NewFeedDialog extends Component {
 
           {feedForm.errors &&
             <div className="sm-col-12 mb2">
-              <div className="errors">
-                {reduceErrorsToString(feedForm.errors)}
-              </div>
+              {renderErrorsFor(feedForm.errors, "base")}
+              {renderErrorsFor(feedForm.errors, "feed_id")}
             </div>
           }
 
