@@ -2,8 +2,7 @@ import React, { PropTypes } from "react";
 import classNames from "classnames";
 
 import Icon from "../components/Icon";
-import { CheckmarkSVGIcon, TrashSVGIcon, CycleSVGIcon, ArrowLeftBoldSVGIcon,
-  ArrowRightBoldSVGIcon, EarthSVGIcon, ResizeEnlargeSVGIcon, CogSVGIcon,
+import { CheckmarkSVGIcon, TrashSVGIcon, CycleSVGIcon, CogSVGIcon,
   ArrowDownSVGIcon, ArrowUpSVGIcon, MenuSVGIcon } from "../components/SVGIcon";
 
 import Button from "../components/Button";
@@ -17,16 +16,10 @@ const EntryListToolbar = ({
   showSpinner,
   isSubscriptionSelected,
   isCategorySelected,
-  hasPreviousEntry,
-  hasNextEntry,
   onMarkAsReadClick,
   onRefreshEntriesClick,
   onRemoveFeedOrCategoryClick,
   onViewLayoutChangeClick,
-  onPreviousEntryClick,
-  onNextEntryClick,
-  onOpenExternalClick,
-  onOpenEntryContentModalClick,
   onOpenEditFeedOrCategoryModalClick,
   onToggleSidebarClick
 }) => {
@@ -133,26 +126,6 @@ const EntryListToolbar = ({
           </ul>
         </DropdownContent>
       </Dropdown>
-      {currentViewLayout === "grid" &&
-        <ButtonGroup className="btn-group-rounded ml2">
-          <Button type="header" onClick={onPreviousEntryClick} disabled={!hasPreviousEntry}>
-            <ArrowLeftBoldSVGIcon color="light-gray" size="small"/>
-          </Button>
-          <Button type="header" onClick={onNextEntryClick} disabled={!hasNextEntry}>
-            <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
-          </Button>
-        </ButtonGroup>
-      }
-      {currentViewLayout === "grid" &&
-        <ButtonGroup className="btn-group-rounded ml2">
-          <Button type="header" onClick={onOpenEntryContentModalClick}>
-            <ResizeEnlargeSVGIcon color="light-gray" size="small"/>
-          </Button>
-          <Button type="header" onClick={onOpenExternalClick}>
-            <EarthSVGIcon color="light-gray" size="small"/>
-          </Button>
-        </ButtonGroup>
-      }
       <span className={spinnerCls}>
         <Icon name="spinner" size="small"/>
       </span>
@@ -174,8 +147,7 @@ EntryListToolbar.propTypes = {
   onOpenEditFeedOrCategoryModalClick: PropTypes.func.isRequired,
   onPreviousEntryClick: PropTypes.func.isRequired,
   onNextEntryClick: PropTypes.func.isRequired,
-  onOpenExternalClick: PropTypes.func.isRequired,
-  onOpenEntryContentModalClick: PropTypes.func.isRequired
+  onOpenExternalClick: PropTypes.func.isRequired
 };
 
 export default EntryListToolbar;

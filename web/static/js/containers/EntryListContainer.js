@@ -3,6 +3,7 @@ import { bindActionCreators } from "redux";
 import debounce from "lodash.debounce";
 import { connect } from "react-redux";
 import { routerActions as RouterActions } from "react-router-redux";
+import classNames from "classnames";
 
 import LayoutHeader from "../components/LayoutHeader";
 import LayoutContent from "../components/LayoutContent";
@@ -10,7 +11,6 @@ import InfiniteScroll from "../components/InfiniteScroll";
 import FeedEntryList from "../components/FeedEntryList";
 import FeedEntryGrid from "../components/FeedEntryGrid";
 import NoMoreContent from "../components/NoMoreContent";
-import ProfileToolbar from "../components/ProfileToolbar";
 import EntryListToolbar from "../components/EntryListToolbar";
 
 import * as UserActions from "../redux/modules/user";
@@ -85,7 +85,6 @@ class EntryListContainer extends Component {
     this.nextEntry = this.nextEntry.bind(this);
     this.previousEntry = this.previousEntry.bind(this);
     this.openEditModal = this.openEditModal.bind(this);
-    this.handleOnOpenEntryContentModalClick = this.handleOnOpenEntryContentModalClick.bind(this);
     this.handleOnRemoveFeedOrCategory = this.handleOnRemoveFeedOrCategory.bind(this);
 
     this.debouncedNextEntry = debounce(this.nextEntry, 100);
@@ -213,21 +212,10 @@ class EntryListContainer extends Component {
 
   handleSelectCurrentEntry(entry) {
     this.navigateTo(entry.id);
-
-    // FIXME
-    // currentEntryActions.requestSelectEntry(entry);
-    // if (currentViewLayout === "grid") {
-    //   modalsActions.openEntryContentModal();
-    // }
   }
 
   handleViewLayoutChange(value) {
     this.setState({ currentViewLayout: value });
-  }
-
-  // FIXME
-  handleOnOpenEntryContentModalClick(entry) {
-    console.log("open modal for entry", entry)
   }
 
   openEditModal() {
@@ -299,20 +287,16 @@ class EntryListContainer extends Component {
         onPreviousEntryClick={this.previousEntry}
         onNextEntryClick={this.nextEntry}
         onOpenExternalClick={this.openExternal}
-        onToggleSidebarClick={sidebarActions.toggle}
-        onOpenEntryContentModalClick={this.handleOnOpenEntryContentModalClick}/>
+        onToggleSidebarClick={sidebarActions.toggle}/>
     );
 
-    const profileToolbar = (
-      <ProfileToolbar
-        currentUser={currentUser}
-        userActions={userActions}
-        routerActions={routerActions}/>
-    );
+    const masterListCls = classNames("master-list", {
+      grid: currentViewLayout === "grid"
+    });
 
     return (
       <div className="main-master-container">
-        <div className="master-list">
+        <div className={masterListCls}>
           {currentViewLayout === "list" &&
             <div className="layout-master-container">
               <LayoutHeader>{entryListToolbar}</LayoutHeader>
@@ -327,7 +311,7 @@ class EntryListContainer extends Component {
           }
           {currentViewLayout === "grid" &&
             <div className="layout-master-container">
-              <LayoutHeader>{entryListToolbar}{profileToolbar}</LayoutHeader>
+              <LayoutHeader>{entryListToolbar}</LayoutHeader>
               <LayoutContent>{paginatedItems}</LayoutContent>
             </div>
           }
