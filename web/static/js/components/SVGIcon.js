@@ -256,3 +256,30 @@ export const MenuSVGIcon = ({ color = "white", ...props }) => {
   );
 };
 MenuSVGIcon.propTypes = { color: PropTypes.string };
+
+export const EllipsisSVGIcon = ({ color = "white", ...props }) => {
+  return (
+    <SVGComponent {...props}>
+    <path fill={mapColor(color)} d="M3 7.8c-1.215 0-2.2 0.985-2.2 2.2s0.985 2.2 2.2 2.2 2.2-0.985 2.2-2.2c0-1.215-0.985-2.2-2.2-2.2zM10 7.8c-1.215 0-2.2 0.985-2.2 2.2s0.985 2.2 2.2 2.2 2.199-0.985 2.199-2.2c0-1.215-0.984-2.2-2.199-2.2zM17 7.8c-1.215 0-2.2 0.985-2.2 2.2s0.985 2.2 2.2 2.2 2.2-0.985 2.2-2.2c0-1.215-0.985-2.2-2.2-2.2z"></path>
+    </SVGComponent>
+  );
+};
+EllipsisSVGIcon.propTypes = { color: PropTypes.string };
+
+export const ExportSVGIcon = ({ color = "white", ...props }) => {
+  return (
+    <SVGComponent {...props}>
+    <path fill={mapColor(color)} d="M15 15.8h-13v-9h2.595c0 0 0.689-0.896 2.17-2h-5.765c-0.552 0-1 0.448-1 1v11c0 0.553 0.448 1 1 1h15c0.553 0 1-0.447 1-1v-3.746l-2 1.645v1.101zM13.362 8.85v3.55l6.638-5.201-6.638-4.999v3.13c-8.062 0.001-8.062 7.97-8.062 7.97 2.282-3.748 3.686-4.45 8.062-4.45z"></path>
+    </SVGComponent>
+  );
+};
+ExportSVGIcon.propTypes = { color: PropTypes.string };
+
+export const TextSVGIcon = ({ color = "white", ...props }) => {
+  return (
+    <SVGComponent {...props}>
+      <path fill={mapColor(color)} d="M7.223 10.87h5.6v-1.8h-5.6v1.8zM15 1h-10c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h10c1.1 0 2-0.9 2-2v-14c0-1.1-0.9-2-2-2zM15 17h-10v-14h10v14zM12.8 5.169h-5.6v1.75h5.6v-1.75zM12.8 13.020h-5.6v1.75h5.6v-1.75z"></path>
+    </SVGComponent>
+  );
+};
+TextSVGIcon.propTypes = { color: PropTypes.string };

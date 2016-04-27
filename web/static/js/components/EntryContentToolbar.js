@@ -8,7 +8,7 @@ import {
   ArrowUpSVGIcon,
   EarthSVGIcon,
   GoBackSVGIcon,
-  ResizeEnlargeSVGIcon,
+  TextSVGIcon,
   ShareSVGIcon
 } from "../components/SVGIcon";
 
@@ -28,12 +28,14 @@ import {
 
 const EntryContentToolbar = ({
   entry,
+  currentViewMode,
   hasPreviousEntry,
   hasNextEntry,
   onPreviousEntryClick,
   onNextEntryClick,
   onOpenExternalClick,
-  onGoBackClick
+  onGoBackClick,
+  onChangeViewModeClick
 }) => {
   const shareDropdownCls = classNames("btn btn-header", {
     disabled: !entry
@@ -48,6 +50,7 @@ const EntryContentToolbar = ({
         className="hide-medium-screen mr1">
         <GoBackSVGIcon color="light-gray" size="small"/>
       </Button>
+
       <ButtonGroup className="btn-group-rounded">
         <Button
           type="header"
@@ -64,55 +67,81 @@ const EntryContentToolbar = ({
           <ArrowRightBoldSVGIcon color="light-gray" size="small"/>
         </Button>
       </ButtonGroup>
+
       <ButtonGroup className="btn-group-rounded ml1">
         <Button
           type="header"
-          onClick={onOpenExternalClick}
-          disabled={!entry}
-          title="Open story in new browser tab or window">
-          <EarthSVGIcon color="light-gray" size="small"/>
+          onClick={onChangeViewModeClick.bind(this, "normal")}
+          disabled={!entry || currentViewMode === "normal"}
+          title="Show story as delivered by feed provider">
+          <TextSVGIcon color="light-gray" size="small"/>
+        </Button>
+        <Button
+          type="header"
+          onClick={onChangeViewModeClick.bind(this, "article")}
+          disabled={!entry || currentViewMode === "article"}
+          title="Show story as text only">
+          <TextSVGIcon color="light-gray" size="small"/>
+        </Button>
+        <Button
+          type="header"
+          onClick={onChangeViewModeClick.bind(this, "website")}
+          disabled={!entry || currentViewMode === "website"}
+          title="Show original website if possible">
+          <TextSVGIcon color="light-gray" size="small"/>
         </Button>
       </ButtonGroup>
-        <Dropdown className="ml1">
-          <DropdownTrigger className={shareDropdownCls}>
-            <ShareSVGIcon color="light-gray" size="small"/>
-            <ArrowDownSVGIcon color="light-gray" size="small" className="arrow-down"/>
-            <ArrowUpSVGIcon color="light-gray" size="small" className="arrow-up"/>
-          </DropdownTrigger>
-          <DropdownContent>
-          {entry &&
-            <ul className="dropdown__list">
-              <li className="dropdown__list-item">
-                <MailLink {...entry}/>
-              </li>
-              <li className="dropdown__list-item">
-                <TwitterLink {...entry}/>
-              </li>
-              <li className="dropdown__list-item">
-                <FacebookLink {...entry}/>
-              </li>
-              <li className="dropdown__list-item">
-                <GooglePlusLink {...entry}/>
-              </li>
-              <li className="dropdown__list-item">
-                <PinterestLink {...entry}/>
-              </li>
-            </ul>
-          }
-          </DropdownContent>
-        </Dropdown>
+
+      <Button
+        type="header"
+        onClick={onOpenExternalClick}
+        disabled={!entry}
+        title="Open story in new browser tab or window"
+        className="ml1">
+        <EarthSVGIcon color="light-gray" size="small"/>
+      </Button>
+      <Dropdown className="ml1">
+        <DropdownTrigger className={shareDropdownCls}>
+          <ShareSVGIcon color="light-gray" size="small"/>
+          <ArrowDownSVGIcon color="light-gray" size="small" className="arrow-down"/>
+          <ArrowUpSVGIcon color="light-gray" size="small" className="arrow-up"/>
+        </DropdownTrigger>
+        <DropdownContent>
+        {entry &&
+          <ul className="dropdown__list">
+            <li className="dropdown__list-item">
+              <MailLink {...entry}/>
+            </li>
+            <li className="dropdown__list-item">
+              <TwitterLink {...entry}/>
+            </li>
+            <li className="dropdown__list-item">
+              <FacebookLink {...entry}/>
+            </li>
+            <li className="dropdown__list-item">
+              <GooglePlusLink {...entry}/>
+            </li>
+            <li className="dropdown__list-item">
+              <PinterestLink {...entry}/>
+            </li>
+          </ul>
+        }
+        </DropdownContent>
+      </Dropdown>
     </div>
   );
 };
 
 EntryContentToolbar.propTypes = {
   entry: PropTypes.object,
+  currentViewMode: PropTypes.string.isRequired,
   hasPreviousEntry: PropTypes.bool.isRequired,
   hasNextEntry: PropTypes.bool.isRequired,
   onPreviousEntryClick: PropTypes.func.isRequired,
   onNextEntryClick: PropTypes.func.isRequired,
   onOpenExternalClick: PropTypes.func.isRequired,
-  onGoBackClick: PropTypes.func.isRequired
+  onGoBackClick: PropTypes.func.isRequired,
+  onChangeViewModeClick: PropTypes.func.isRequired
 };
 
 export default EntryContentToolbar;

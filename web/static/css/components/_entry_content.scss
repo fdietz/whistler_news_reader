@@ -8,6 +8,17 @@
   &.hidden {
     display: none;
   }
+
+  &.article {
+
+  }
+
+  &.website {
+    max-width: 100%;
+    height: calc(100vh - 71px);
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .feed-entry-content__header {

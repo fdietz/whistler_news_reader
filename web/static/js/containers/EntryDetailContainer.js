@@ -53,12 +53,14 @@ class EntryDetailContainer extends Component {
   constructor(props) {
     super(props);
 
+    this.state = { currentViewMode: "normal" };
 
     this.nextEntry = this.nextEntry.bind(this);
     this.previousEntry = this.previousEntry.bind(this);
     this.handleEntryShown = this.handleEntryShown.bind(this);
     this.onOpenExternalClick = this.onOpenExternalClick.bind(this);
     this.onGoBackClick = this.onGoBackClick.bind(this);
+    this.onChangeViewModeClick = this.onChangeViewModeClick.bind(this);
   }
 
   handleEntryShown(entry) {
@@ -106,6 +108,11 @@ class EntryDetailContainer extends Component {
     routerActions.push(goBackPathname(params, pathname));
   }
 
+  onChangeViewModeClick(mode) {
+    console.log('mode', mode)
+    this.setState({ currentViewMode: mode });
+  }
+
   render() {
     const {
       entry,
@@ -118,13 +125,15 @@ class EntryDetailContainer extends Component {
     const entryContentToolbar = (
       <EntryContentToolbar
         entry={entry}
+        currentViewMode={this.state.currentViewMode}
         hasPreviousEntry={hasPreviousEntry}
         hasNextEntry={hasNextEntry}
         onPreviousEntryClick={this.previousEntry}
         onNextEntryClick={this.nextEntry}
         onOpenExternalClick={this.onOpenExternalClick}
         showEntryContentModalButton={true}
-        onGoBackClick={this.onGoBackClick}/>
+        onGoBackClick={this.onGoBackClick}
+        onChangeViewModeClick={this.onChangeViewModeClick}/>
     );
 
     const profileToolbar = (
@@ -143,6 +152,7 @@ class EntryDetailContainer extends Component {
               {entry &&
                 <FeedEntryContent
                   entry={entry}
+                  currentViewMode={this.state.currentViewMode}
                   onEntryShown={this.handleEntryShown}/>
               }
             </LayoutContent>

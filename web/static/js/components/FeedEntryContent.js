@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import ReactDOM from "react-dom";
+import classNames from "classnames";
 
 import { findScrollableAncestor } from "../utils/dom";
 
@@ -7,13 +8,16 @@ class FeedEntryContent extends Component {
 
   static propTypes = {
     entry: PropTypes.object,
-    onEntryShown: PropTypes.func
+    currentViewMode: PropTypes.string.isRequired,
+    onEntryShown: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
 
     this.shouldScrollToTop = false;
+
+    this.onLoad = this.onLoad.bind(this);
   }
 
   componentDidMount() {
@@ -68,20 +72,40 @@ class FeedEntryContent extends Component {
     return { __html: this.props.entry.content };
   }
 
+  onLoad() {
+    console.log("on load")
+  }
+
   render() {
-    const { entry } = this.props;
+    const { entry, currentViewMode } = this.props;
+
+    const cls = classNames("feed-entry-content", {
+      [currentViewMode]: currentViewMode
+    });
 
     return (
-      <div className="feed-entry-content">
-        <div className="feed-entry-content__header">
-          <h2 className="title">
-            <a href={entry.url} target="_blank">{entry.title}</a>
-          </h2>
-        </div>
-        <div className="feed-entry-content__subheader">
-          {entry.subscription_title} by {entry.author} / {entry.published}
-        </div>
-        <div className="feed-entry-content__content" dangerouslySetInnerHTML={this.rawContent()}/>
+      <div className={cls}>
+        {currentViewMode === "normal" &&
+          <div>
+            <div className="feed-entry-content__header">
+              <h2 className="title">
+                <a href={entry.url} target="_blank">{entry.title}</a>
+              </h2>
+            </div>
+            <div className="feed-entry-content__subheader">
+              {entry.subscription_title} by {entry.author} / {entry.published}
+            </div>
+            <div
+              className="feed-entry-content__content"
+              dangerouslySetInnerHTML={this.rawContent()}/>
+          </div>
+        }
+        {currentViewMode === "website" &&
+          <iframe
+            src={entry.url}
+            onLoad={this.onLoad}
+            className="entry-embed-site"/>
+        }
       </div>
     );
   }
