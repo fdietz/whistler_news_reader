@@ -26,6 +26,6 @@ defmodule WhistlerNewsReader.Api.SessionControllerTest do
     conn = post conn, session_path(conn, :create), session: %{ email: user.email, password: "wrong password" }
 
     assert conn.status == 422
-    assert json_response(conn, 422)["error"] == "invalid email or password"
+    assert json_response(conn, 422)["errors"] == [%{"base" => "invalid email or password"}]
   end
 end
