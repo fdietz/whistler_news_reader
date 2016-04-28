@@ -4,31 +4,26 @@
 
 @import "base/base";
 @import "base/typography";
-@import "base/btn";
 @import "base/forms";
 @import "base/forms_colors";
-@import "base/layouts";
 @import "base/grid";
-@import "base/align";
 @import "base/white_space";
 @import "base/border";
 @import "base/colors";
-@import "base/img";
-@import "base/btn_group";
 
 @import "svg_icons";
 
 @import "layout";
 @import "components/avatar";
+@import "components/btn";
+@import "components/btn_group";
 @import "components/entry_list";
 @import "components/entry_grid";
 @import "components/entry_content";
-@import "components/paginator";
 @import "components/sidebar";
 @import "components/modal";
 @import "components/patterns";
 @import "components/notification";
-@import "components/header";
 @import "components/badge";
 @import "components/panel";
 @import "components/entry_content_overlay";
