@@ -19,6 +19,10 @@
     margin: 0;
     padding: 0;
   }
+
+  @include respond-to(small-screen) {
+    padding: $space-2;
+  }
 }
 
 .feed-entry-content__header {
@@ -65,7 +69,7 @@
   }
 
   figure {
-    margin: 0 0 $space-2;  
+    margin: 0 0 $space-2;
   }
 
   img {

@@ -328,7 +328,7 @@ class EntryListContainer extends Component {
         </div>
 
         {!hasChildren &&
-          <div className="main-detail-container">
+          <div className="main-detail-container hide-small-screen">
             <div className="detail">
               <div className="layout-master-container">
                 <LayoutHeader>{profileToolbar}</LayoutHeader>

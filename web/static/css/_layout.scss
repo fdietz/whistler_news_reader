@@ -106,3 +106,21 @@ body {
     display: none !important;
   }
 }
+
+.hide-small-screen {
+  @include respond-to(small-screen) {
+    display: none !important;
+  }
+
+  @include respond-to(medium-screen) {
+    display: none !important;
+  }
+
+  @include respond-to(large-screen) {
+    display: none !important;
+  }
+
+  @include respond-to(xlarge-screen) {
+    display: none !important;
+  }
+}
