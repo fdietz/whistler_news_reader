@@ -14,20 +14,8 @@ var publicPath = "http://localhost:4001/";
 
 var uglifyJSOptions = {
   compress: {
-    warnings: false,
-    drop_console: true
-  },
-  mangle: {
-    // Mangle matching properties
-    props: /matching_props/,
-    // Don't mangle these
-    except: [
-      "Array", "BigInteger", "Boolean", "Buffer"
-    ]
-  },
-  minimize: true,
-  sourceMaps: false,
-  comments: false
+    warnings: false
+  }
 };
 
 var definePluginOptions = {
