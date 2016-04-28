@@ -13,26 +13,28 @@ defmodule WhistlerNewsReader.Article do
 
   def scrape_article(body) do
     body
-    |> Floki.find("article, p, body")
-    |> Enum.map(fn x -> Floki.text(x, deep: false) end)
-    |> Enum.map(&normalize_whitespace/1)
-    |> Enum.filter(&is_relevant?/1)
-    |> Enum.join("\n\n")
-  end
-
-  def normalize_whitespace(text) do
-    text
-    |> String.replace(~r/\s+/, " ")
-    |> String.replace(~r/\s+/, " ")
-    |> String.strip
+    |> Floki.find("article, .article, .content, .entry, .main, .post, .text")
+    |> Floki.find("figure, p, q, blockquote, h1, h2")
+    |> Enum.map(fn x ->
+      case List.first(Tuple.to_list(x)) do
+        "figure" ->
+          Floki.raw_html(x)
+        "p" ->
+          if is_relevant?(Floki.text(x, deep: false)) do
+            Floki.raw_html(x)
+          else
+            ""
+          end
+        other ->
+          ""
+      end
+    end)
+    |> Enum.join
   end
 
   def is_relevant?(text) do
     (String.length(text) > 30) &&
-    (String.contains?(text, [". ","? ", "! ", "\" ", "\", ", ": "]))
+    (String.contains?(text, [". ","? ", "! ", ", ", "; ", ": "]))
   end
 
-  defp attr(element, name) do
-    Enum.at(Floki.attribute(element, name), 0)
-  end
 end
