@@ -283,3 +283,21 @@ export const TextSVGIcon = ({ color = "white", ...props }) => {
   );
 };
 TextSVGIcon.propTypes = { color: PropTypes.string };
+
+export const NewspaperSVGIcon = ({ color = "white", ...props }) => {
+  return (
+    <SVGComponent {...props}>
+      <path fill={mapColor(color)} d="M16 1h-12c-1.1 0-2 0.9-2 2v14c0 1.1 0.9 2 2 2h12c1.101 0 2-0.9 2-2v-14c0-1.1-0.899-2-2-2zM16 17h-12v-14h12v14zM11 12h-5v1h5v-1zM14 8h-4v1h4v-1zM10 7h4v-2h-4v2zM9 5h-3v4h3v-4zM8 10h-2v1h2v-1zM9 11h5v-1h-5v1zM14 14h-8v1h8v-1zM12 13h2v-1h-2v1z"></path>
+    </SVGComponent>
+  );
+};
+NewspaperSVGIcon.propTypes = { color: PropTypes.string };
+
+export const PopupSVGIcon = ({ color = "white", ...props }) => {
+  return (
+    <SVGComponent {...props}>
+      <path fill={mapColor(color)} d="M16 2h-8.020c-1.1 0-1.98 0.88-1.98 1.98v8.020c0 1.1 0.9 2 2 2h8c1.1 0 2-0.9 2-2v-8c0-1.1-0.9-2-2-2zM16 12h-8v-8h8v8zM4 10h-2v6c0 1.1 0.9 2 2 2h6v-2h-6v-6z"></path>
+    </SVGComponent>
+  );
+};
+PopupSVGIcon.propTypes = { color: PropTypes.string };

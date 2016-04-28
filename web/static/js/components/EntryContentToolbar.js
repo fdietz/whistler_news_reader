@@ -9,7 +9,9 @@ import {
   EarthSVGIcon,
   GoBackSVGIcon,
   TextSVGIcon,
-  ShareSVGIcon
+  ShareSVGIcon,
+  NewspaperSVGIcon,
+  PopupSVGIcon
 } from "../components/SVGIcon";
 
 import Icon from "../components/Icon";
@@ -81,7 +83,7 @@ const EntryContentToolbar = ({
           onClick={onChangeViewModeClick.bind(this, "normal")}
           disabled={!entry || currentViewMode === "normal"}
           title="Show story as delivered by feed provider">
-          <TextSVGIcon color="light-gray" size="small"/>
+          <NewspaperSVGIcon color="light-gray" size="small"/>
         </Button>
         <Button
           type="header"
@@ -95,7 +97,7 @@ const EntryContentToolbar = ({
           onClick={onChangeViewModeClick.bind(this, "website")}
           disabled={!entry || currentViewMode === "website"}
           title="Show original website if possible">
-          <TextSVGIcon color="light-gray" size="small"/>
+          <EarthSVGIcon color="light-gray" size="small"/>
         </Button>
       </ButtonGroup>
 
@@ -105,7 +107,7 @@ const EntryContentToolbar = ({
         disabled={!entry}
         title="Open story in new browser tab or window"
         className="ml1">
-        <EarthSVGIcon color="light-gray" size="small"/>
+        <PopupSVGIcon color="light-gray" size="small"/>
       </Button>
       <Dropdown className="ml1">
         <DropdownTrigger className={shareDropdownCls}>
