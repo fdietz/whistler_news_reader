@@ -77,29 +77,59 @@ const EntryContentToolbar = ({
         </Button>
       </ButtonGroup>
 
-      <ButtonGroup className="btn-group-rounded ml1">
-        <Button
-          type="header"
-          onClick={onChangeViewModeClick.bind(this, "normal")}
-          disabled={!entry || currentViewMode === "normal"}
-          title="Show story as delivered by feed provider">
+      <Dropdown className="ml1">
+        <DropdownTrigger className="btn btn-header">
           <NewspaperSVGIcon color="light-gray" size="small"/>
-        </Button>
-        <Button
-          type="header"
-          onClick={onChangeViewModeClick.bind(this, "article")}
-          disabled={!entry || currentViewMode === "article"}
-          title="Show story as text only">
-          <TextSVGIcon color="light-gray" size="small"/>
-        </Button>
-        <Button
-          type="header"
-          onClick={onChangeViewModeClick.bind(this, "website")}
-          disabled={!entry || currentViewMode === "website"}
-          title="Show original website if possible">
-          <EarthSVGIcon color="light-gray" size="small"/>
-        </Button>
-      </ButtonGroup>
+          <ArrowDownSVGIcon color="light-gray" size="small" className="arrow-down"/>
+          <ArrowUpSVGIcon color="light-gray" size="small" className="arrow-up"/>
+        </DropdownTrigger>
+        <DropdownContent>
+          <ul className="dropdown__list">
+            <li
+              className="dropdown__list-item"
+              onClick={onChangeViewModeClick.bind(this, "normal")}>
+                <input
+                  type="radio"
+                  id="list"
+                  name="currrent_view_mode"
+                  checked={currentViewMode === "normal"}
+                  readOnly={true}
+                  className="dropdown-field media"/>
+                <label
+                  htmlFor="list"
+                  className="dropdown-label content">Feed Article</label>
+            </li>
+            <li
+              className="dropdown__list-item"
+              onClick={onChangeViewModeClick.bind(this, "article")}>
+                <input
+                  type="radio"
+                  id="article"
+                  name="currrent_view_mode"
+                  checked={currentViewMode === "article"}
+                  readOnly={true}
+                  className="dropdown-field media"/>
+                <label
+                  htmlFor="article"
+                  className="dropdown-label content">Readability optimized article</label>
+            </li>
+            <li
+              className="dropdown__list-item"
+              onClick={onChangeViewModeClick.bind(this, "website")}>
+                <input
+                  type="radio"
+                  id="website"
+                  name="currrent_view_mode"
+                  checked={currentViewMode === "website"}
+                  readOnly={true}
+                  className="dropdown-field media"/>
+                <label
+                  htmlFor="website"
+                  className="dropdown-label content">Embed Website</label>
+            </li>
+          </ul>
+        </DropdownContent>
+      </Dropdown>
 
       <Button
         type="header"
@@ -107,7 +137,7 @@ const EntryContentToolbar = ({
         disabled={!entry}
         title="Open story in new browser tab or window"
         className="ml1">
-        <PopupSVGIcon color="light-gray" size="small"/>
+        <EarthSVGIcon color="light-gray" size="small"/>
       </Button>
       <Dropdown className="ml1">
         <DropdownTrigger className={shareDropdownCls}>
