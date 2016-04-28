@@ -16,7 +16,8 @@ defmodule WhistlerNewsReader.Article do
     |> Floki.find("article, .article, .content, .entry, .main, .post, .text")
     |> Floki.find("figure, p, q, blockquote, h1, h2")
     |> Enum.map(fn x ->
-      case List.first(Tuple.to_list(x)) do
+      node_name = elem(x, 0)
+      case node_name do
         "figure" ->
           Floki.raw_html(x)
         "p" ->
