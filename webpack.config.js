@@ -1,11 +1,10 @@
 var path = require("path");
 var webpack = require("webpack");
-var CopyWebpackPlugin = require("copy-webpack-plugin");
+const validate = require("webpack-validator");
 
 var env = process.env.MIX_ENV || "dev";
 var prod = env === "prod";
 
-var entry = "./web/static/js/bundle.js";
 var plugins = [
   new webpack.NoErrorsPlugin()
 ];
@@ -13,28 +12,43 @@ var plugins = [
 var loaders = ["babel"];
 var publicPath = "http://localhost:4001/";
 
+var uglifyJSOptions = {
+  compress: {
+    warnings: false,
+    drop_console: true
+  },
+  mangle: {
+    // Mangle matching properties
+    props: /matching_props/,
+    // Don't mangle these
+    except: [
+      "Array", "BigInteger", "Boolean", "Buffer"
+    ]
+  }
+};
+
+var definePluginOptions = {
+  NODE_ENV: JSON.stringify("production")
+};
+
 if (prod) {
-  plugins.push(new webpack.DefinePlugin({
-    'process.env': {
-      'NODE_ENV': JSON.stringify('production')
-    }
-  }));
-  plugins.push(new webpack.optimize.UglifyJsPlugin({
-    compress:{ warnings: true }
-  }));
+  plugins.push(new webpack.DefinePlugin(definePluginOptions));
+  plugins.push(new webpack.optimize.UglifyJsPlugin(uglifyJSOptions));
 } else {
   plugins.push(new webpack.HotModuleReplacementPlugin());
   loaders.unshift("react-hot");
 }
 
-module.exports = {
-  // devtool: prod ? null : "eval-sourcemaps",
-  devtool: prod ? null : "source-map",
-  entry: prod ? entry : [
-    "webpack-dev-server/client?" + publicPath,
-    "webpack/hot/only-dev-server",
-    entry
-  ],
+var entry = "./web/static/js/bundle.js";
+var devEntry = [
+  "webpack-dev-server/client?" + publicPath,
+  "webpack/hot/only-dev-server",
+  entry
+];
+
+var config = {
+  devtool: prod ? null : "eval-source-map",
+  entry: prod ? entry : devEntry,
   output: {
     path: path.join(__dirname, "./priv/static/js"),
     filename: "bundle.js",
@@ -50,7 +64,12 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ["style", "css?sourceMap", "sass?sourceMap", "autoprefixer?browsers=last 2 version"]
+        loaders: [
+          "style",
+          "css?sourceMap",
+          "sass?sourceMap",
+          "autoprefixer?browsers=last 2 version"
+        ]
       },
       {
         test: /\.(svg|jpg|png)$/,
@@ -59,3 +78,5 @@ module.exports = {
     ]
   }
 };
+
+module.exports = validate(config);
