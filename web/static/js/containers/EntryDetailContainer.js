@@ -156,7 +156,8 @@ class EntryDetailContainer extends Component {
       <ProfileToolbar
         currentUser={currentUser}
         userActions={userActions}
-        routerActions={routerActions}/>
+        routerActions={routerActions}
+        className="hide-small-screen"/>
     );
 
     return (

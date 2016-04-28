@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+import classNames from "classnames";
 
 import {
   ArrowDownSVGIcon,
@@ -14,7 +15,8 @@ class EntryContentToolbar extends Component {
   static propTypes = {
     currentUser: PropTypes.object.isRequired,
     userActions: PropTypes.object.isRequired,
-    routerActions: PropTypes.object.isRequired
+    routerActions: PropTypes.object.isRequired,
+    className: PropTypes.string
   };
 
   constructor(props) {
@@ -35,10 +37,12 @@ class EntryContentToolbar extends Component {
   }
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, className } = this.props;
+
+    const cls = classNames("toolbar mx-l-auto", className);
 
     return (
-      <div className="toolbar mx-l-auto">
+      <div className={cls}>
         <Dropdown>
           <DropdownTrigger className="mr1">
             <div className="user-email">{currentUser.email}</div>
