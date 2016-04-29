@@ -47,10 +47,15 @@
 .feed-entry-content__content {
   font-family: $font-family-serif;
   font-size: .85rem;
+  font-weight: 300;
   line-height: 1.45rem;
   letter-spacing: .01rem;
   text-rendering: optimizeLegibility;
   white-space: normal;
+
+  @include respond-to(small-screen) {
+    font-weight: 400;
+  }
 
   p {
     margin-top: 0;

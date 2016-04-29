@@ -4,11 +4,20 @@
   box-sizing: inherit;
 }
 
+html {
+  font-size: 16px;
+
+  @include respond-to(small-screen) {
+    font-size: 18px;
+  }
+}
+
 body {
   font-family: $font-family;
   line-height: $line-height;
   color: $body-color;
   background-color: $body-background-color;
+
 }
 
 a {
