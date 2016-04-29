@@ -17,11 +17,11 @@
       }
     }
 
-    .btn:first-child {
+    >.btn:first-child {
       padding-left: $space-2;
     }
 
-    .btn:last-child {
+    >.btn:last-child {
       padding-right: $space-2;
     }
   }

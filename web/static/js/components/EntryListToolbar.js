@@ -38,7 +38,7 @@ const EntryListToolbar = ({
         type="header"
         onClick={onToggleSidebarClick}
         title="Mark all stories as read"
-        className="hide-large-screen mr1">
+        className="hide-large-screen mr1-important">
         <MenuSVGIcon color="light-gray" size="small"/>
       </Button>
         <ButtonGroup className="btn-group-rounded">

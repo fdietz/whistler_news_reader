@@ -77,7 +77,7 @@ const EntryContentToolbar = ({
         </Button>
       </ButtonGroup>
 
-      <Dropdown className="ml1">
+      <Dropdown className="ml1 mr1">
         <DropdownTrigger className="btn btn-header">
           <NewspaperSVGIcon color="light-gray" size="small"/>
           <ArrowDownSVGIcon color="light-gray" size="small" className="arrow-down"/>
@@ -135,8 +135,7 @@ const EntryContentToolbar = ({
         type="header"
         onClick={onOpenExternalClick}
         disabled={!entry}
-        title="Open story in new browser tab or window"
-        className="ml1">
+        title="Open story in new browser tab or window">
         <EarthSVGIcon color="light-gray" size="small"/>
       </Button>
       <Dropdown className="ml1">

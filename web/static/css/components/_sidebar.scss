@@ -10,6 +10,9 @@ $sidebar-color: $gray;
   box-shadow: 5px 0 5px -2px $darken-3;
   width: 400px;
 
+  transform: none;
+  transition: transform .33s cubic-bezier(.694, .0482, .335, 1);
+
   &.hidden {
     transform: translateX(-450px);
   }
@@ -24,9 +27,6 @@ $sidebar-color: $gray;
   display: flex;
   width: 250px;
   background-color: $sidebar-bg;
-
-  transform: none;
-  transition: transform .33s cubic-bezier(.694, .0482, .335, 1);
 
   flex-direction: column;
 
