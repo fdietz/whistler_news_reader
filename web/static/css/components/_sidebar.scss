@@ -1,16 +1,21 @@
 $sidebar-bg: $blue-2;
 $sidebar-color: $gray;
 
-@mixin fixed-sidebar() {
+@mixin responsive-sidebar() {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   z-index: 2;
   box-shadow: 5px 0 5px -2px $darken-3;
+  width: 400px;
 
   &.hidden {
-    transform: translateX(-300px);
+    transform: translateX(-450px);
+  }
+
+  .sidebar-nav-list__name {
+    font-size: 1.1rem;
   }
 }
 
@@ -26,17 +31,18 @@ $sidebar-color: $gray;
   flex-direction: column;
 
   @include respond-to(small-screen) {
-    @include fixed-sidebar();
+    @include responsive-sidebar();
   }
 
   @include respond-to(medium-screen) {
-    @include fixed-sidebar();
+    @include responsive-sidebar();
   }
 }
 
 .sidebar-content {
   padding: $space-2;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   flex: 1 1;
 }
 
