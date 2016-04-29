@@ -2,21 +2,33 @@
 
 Install the Heroku Toolbelt from here https://toolbelt.heroku.com/
 
-
-## Buildpacks
-Since we need two build packs (one for elixir and one for static assets) we use the (multi-buildpack)[https://github.com/ddollar/heroku-buildpack-multi]:
+First create our new project:
 
 ```
-$ heroku create whistler_news_reader --buildpack https://github.com/ddollar/heroku-buildpack-multi
+$ heroku create whistler_news_reader
 ```
 
 The command will create our application on Heroku and add a git remote "heroku" repository that we can later use for the deployment.
 
+## Buildpacks
 We need two different buildpacks for the Phoenix application:
 * https://github.com/HashNuke/heroku-buildpack-elixir
 * https://github.com/gjaldon/heroku-buildpack-phoenix-static
 
-Both can be found in the `.buildpacks` file. For each buildpack there's a configuration file.
+Install both using `heroku buildpacks:add` command:
+
+```
+> heroku buildpacks:add https://github.com/HashNuke/heroku-buildpack-elixir
+Buildpack added. Next release on whistler-news-reader will use https://github.com/HashNuke/heroku-buildpack-elixir.
+```
+
+```
+> heroku buildpacks:add https://github.com/gjaldon/heroku-buildpack-phoenix-static
+Buildpack added. Next release on whistler-news-reader will use:
+  1. https://github.com/HashNuke/heroku-buildpack-elixir
+  2. https://github.com/gjaldon/heroku-buildpack-phoenix-static
+Run git push heroku master to create a new release using these buildpacks.
+```
 
 `elixir_buildpack.config` specifies the required elixir version. The `phoenix_static_buildpack.config` the `node` and `rpm` versions respectively.
 
