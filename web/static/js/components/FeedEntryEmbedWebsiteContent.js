@@ -74,11 +74,11 @@ class FeedEntryEmbedWebsiteContent extends Component {
   }
 
   onLoad() {
-    this.onLoadingComplete();
+    if (this.props.onLoadingComplete) this.props.onLoadingComplete();
   }
 
   render() {
-    const { entry, currentViewMode } = this.props;
+    const { entry } = this.props;
 
     return (
       <div className="feed-entry-content website">
