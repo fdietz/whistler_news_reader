@@ -13,6 +13,7 @@ $entry-grid-secondary-color: $gray-3;
 
 .entry-grid__item {
   display: flex;
+  width: 10rem;
   height: 10rem;
   padding: $space-1;
   margin: 0 $space-2 $space-2 0;
@@ -21,7 +22,6 @@ $entry-grid-secondary-color: $gray-3;
   background-color: $entry-grid-bg-color;
   border-radius: $border-radius;
   flex-direction: column;
-  flex: 0 0 8rem;
 
   &.selected {
     background-color: $gray-2;
