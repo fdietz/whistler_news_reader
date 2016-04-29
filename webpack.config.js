@@ -19,7 +19,7 @@ var uglifyJSOptions = {
 };
 
 var definePluginOptions = {
-  "NODE_ENV": JSON.stringify("production")
+  "process.env.NODE_ENV": JSON.stringify("production")
 };
 
 if (prod) {
