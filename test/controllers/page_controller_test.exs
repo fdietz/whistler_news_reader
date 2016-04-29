@@ -3,6 +3,6 @@ defmodule WhistlerNewsReader.PageControllerTest do
 
   test "GET /" do
     conn = get conn(), "/"
-    assert html_response(conn, 200) =~ "Whistler News Reader"
+    assert html_response(conn, 200) =~ "whistler news reader"
   end
 end
