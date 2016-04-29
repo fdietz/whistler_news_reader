@@ -56,7 +56,7 @@ const EntryContentToolbar = ({
         type="header"
         onClick={onGoBackClick}
         title="Go back"
-        className="hide-medium-screen mr1">
+        className="show-small-screen-only mr1">
         <GoBackSVGIcon color="light-gray" size="small"/>
       </Button>
 

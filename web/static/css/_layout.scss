@@ -31,11 +31,6 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-.toolbar {
-  display: flex;
-  align-items: center;
-}
-
 .main-app-container {
   display: flex;
   width: 100%;
@@ -93,7 +88,7 @@ body {
   }
 }
 
-.hide-medium-screen {
+.show-small-screen-only {
   @include respond-to(medium-screen) {
     display: none !important;
   }
@@ -109,18 +104,6 @@ body {
 
 .hide-small-screen {
   @include respond-to(small-screen) {
-    display: none !important;
-  }
-
-  @include respond-to(medium-screen) {
-    display: none !important;
-  }
-
-  @include respond-to(large-screen) {
-    display: none !important;
-  }
-
-  @include respond-to(xlarge-screen) {
     display: none !important;
   }
 }

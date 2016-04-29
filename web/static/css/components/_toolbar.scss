@@ -1,0 +1,29 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+
+  @include respond-to(small-screen) {
+    margin-right: -$space-2;
+    margin-left: -$space-2;
+
+    .btn {
+      padding: $btn-padding-header-small-screen;
+      background-color: transparent;
+      border: 0;
+
+      svg {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    .btn:first-child {
+      padding-left: $space-2;
+    }
+
+    .btn:last-child {
+      padding-right: $space-2;
+    }
+  }
+
+}
