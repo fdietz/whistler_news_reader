@@ -7,13 +7,22 @@ $entry-list-secondary-color: $gray-3;
   position: relative;
 
   &.compact {
-    .item {
+
+    .entry-list__item {
       padding: $space-1 $space-2;
+
+      .entry-title {
+        overflow: hidden;
+        font-size: .8rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .entry-summary {
+        display: none;
+      }
     }
 
-    .entry-summary {
-      display: none;
-    }
   }
 }
 
