@@ -1,2 +1,2 @@
-webpack
+webpack -p
 mix phoenix.digest
