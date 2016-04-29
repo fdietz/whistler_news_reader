@@ -46,7 +46,7 @@ var prodEntry = {
 }
 
 var config = {
-  devtool: prod ? "cheap-source-map" : "eval-source-map",
+  devtool: prod ? null : "eval-source-map",
   entry: prod ? prodEntry : devEntry,
   output: {
     path: path.join(__dirname, "./priv/static/js"),
