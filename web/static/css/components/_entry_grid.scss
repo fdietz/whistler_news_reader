@@ -13,6 +13,7 @@ $entry-grid-secondary-color: $gray-3;
 
 .entry-grid__item {
   display: flex;
+  height: 10rem;
   padding: $space-1;
   margin: 0 $space-2 $space-2 0;
   color: $entry-grid-color;
@@ -20,6 +21,7 @@ $entry-grid-secondary-color: $gray-3;
   background-color: $entry-grid-bg-color;
   border-radius: $border-radius;
   flex-direction: column;
+  flex: 0 0 8rem;
 
   &.selected {
     background-color: $gray-2;
@@ -87,36 +89,5 @@ $entry-grid-secondary-color: $gray-3;
       font-size: .7rem;
       text-align: right;
     }
-  }
-}
-
-@media only screen and (max-width : 480px) {
-  .entry-grid__item {
-    height: 6rem;
-    flex: 0 0 8rem;
-  }
-}
-@media only screen and (max-width : 650px) and (min-width : 481px) {
-  .entry-grid__item {
-    height: 9rem;
-    flex: 0 0 11rem;
-  }
-}
-@media only screen and (max-width : 1050px) and (min-width : 651px) {
-  .entry-grid__item {
-    height: 9rem;
-    flex: 0 0 11rem;
-  }
-}
-@media only screen and (max-width : 1290px) and (min-width : 1051px) {
-  .entry-grid__item {
-    height: 10rem;
-    flex: 0 0 12rem;
-  }
-}
-@media only screen and (min-width : 1290px) {
-  .entry-grid__item {
-    height: 12rem;
-    flex: 0 0 14rem;
   }
 }

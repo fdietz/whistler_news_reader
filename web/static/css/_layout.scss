@@ -22,6 +22,10 @@ body {
   box-sizing: border-box;
 
   align-items: center;
+
+  @include respond-to(small-screen) {
+    height: 56px;
+  }
 }
 
 .layout-master-content {
@@ -54,6 +58,10 @@ body {
 
     @include respond-to(small-screen) {
       width: 100%;
+
+      &.grid {
+        width: 100%;
+      }
     }
   }
 }
