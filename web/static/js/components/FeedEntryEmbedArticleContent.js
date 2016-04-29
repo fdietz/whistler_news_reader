@@ -25,9 +25,13 @@ class FeedEntryEmbedArticleContent extends Component {
     const { entry } = this.props;
 
     this.scrollableAncestor = findScrollableAncestor(ReactDOM.findDOMNode(this));
-    this.initTimer(entry);
 
-    if (entry) this.updateLinksWithTargetBlank();
+    if (entry) {
+      this.loadContent(entry).then(() => {
+        this.updateLinksWithTargetBlank();
+        this.initTimer(entry);
+      });
+    }
   }
 
   componentDidUpdate() {
@@ -37,32 +41,33 @@ class FeedEntryEmbedArticleContent extends Component {
       this.scrollableAncestor.scrollTop = 0;
       this.shouldScrollToTop = false;
     }
-
-    if (entry) this.updateLinksWithTargetBlank();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.entry.id !== this.props.entry.id) {
       this.shouldScrollToTop = true;
-      if (this.props.onLoadingStart) this.props.onLoadingStart();
+      if (nextProps.onLoadingStart) nextProps.onLoadingStart();
 
-      axios.get(`/api/entry_articles/${nextProps.entry.id}`)
-        .then((response) => {
-          console.log("success", response.data)
-          this.setState({ entryArticle: response.data.entry_article });
-          if (this.props.onLoadingComplete) this.props.onLoadingComplete();
-        })
-        .catch((response) => {
-          console.log("error", response.data)
-          if (this.props.onLoadingComplete) this.props.onLoadingComplete();
-        });
-
-      this.initTimer(nextProps.entry);
+      this.loadContent(nextProps.entry).then(() => {
+        this.updateLinksWithTargetBlank();
+        this.initTimer(nextProps.entry);
+      });
     }
   }
 
   componentWillUnmount() {
     if (this.timeout) clearTimeout(this.timeout);
+  }
+
+  loadContent(entry) {
+    return axios.get(`/api/entry_articles/${entry.id}`)
+      .then((response) => {
+        this.setState({ entryArticle: response.data.entry_article });
+        if (this.props.onLoadingComplete) this.props.onLoadingComplete();
+      })
+      .catch(() => {
+        if (this.props.onLoadingComplete) this.props.onLoadingComplete();
+      });
   }
 
   updateLinksWithTargetBlank() {
