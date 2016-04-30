@@ -1,3 +1,4 @@
+/*eslint-env node*/
 var path = require("path");
 var webpack = require("webpack");
 const validate = require("webpack-validator");
@@ -78,5 +79,4 @@ var config = {
   }
 };
 
-// module.exports = validate(config);
-module.exports = config;
+module.exports = validate(config);
