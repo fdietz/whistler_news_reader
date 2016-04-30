@@ -1,7 +1,8 @@
 {
   "scripts": {
     "test": "ava 'web/static/js/**/__tests__/*.js' --require 'babel-core/register' --require './test/js/test_helper.js' --verbose",
-    "build": "webpack"
+    "build": "webpack",
+    "lint": "eslint ."
   },
   "ava": {
     "babel": "inherit"

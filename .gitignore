@@ -19,3 +19,5 @@ erl_crash.dump
 
 coverage/
 .nyc_output/
+
+.eslintcache
