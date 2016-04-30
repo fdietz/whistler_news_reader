@@ -1,7 +1,6 @@
 .panel-container {
   position: relative;
   display: flex;
-  width: 24rem;
   height: 100vh;
 
   align-items: center;
@@ -48,7 +47,7 @@
 
 .panel {
   z-index: 2;
-  width: 320px;
+  width: 24rem;
   padding: $space-3;
   margin: $space-2;
   background-color: $white;
