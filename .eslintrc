@@ -13,5 +13,7 @@
   "plugins": ["react"],
   "rules": {
     "strict": 0, // required by `babel-eslint`
+    "comma-dangle": 0,
+    "react/jsx-closing-bracket-location": 0,
   }
 }
