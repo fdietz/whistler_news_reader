@@ -1,23 +1,23 @@
-import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { routerActions as RouterActions } from "react-router-redux";
-import ReactDOM from "react-dom";
-import debounce from "lodash.debounce";
-import classNames from "classnames";
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { routerActions as RouterActions } from 'react-router-redux';
+import ReactDOM from 'react-dom';
+import debounce from 'lodash.debounce';
+import classNames from 'classnames';
 
-import Icon from "../components/Icon";
-import Autocomplete from "../components/Autocomplete";
+import Icon from '../components/Icon';
+import Autocomplete from '../components/Autocomplete';
 
-import { getSortedCategories, getSortedFeeds } from "../redux/selectors";
-import { reduceErrorsToString } from "../utils/ErrorHelper";
-import { renderErrorsFor } from "../utils";
+import { getSortedCategories, getSortedFeeds } from '../redux/selectors';
+import { reduceErrorsToString } from '../utils/ErrorHelper';
+import { renderErrorsFor } from '../utils';
 
-import * as EntriesActions from "../redux/modules/entries";
-import * as SubscriptionsActions from "../redux/modules/subscriptions";
-import * as CategoriesActions from "../redux/modules/categories";
-import * as FeedFormActions from "../redux/modules/feedForm";
-import * as FeedsActions from "../redux/modules/feeds";
+import * as EntriesActions from '../redux/modules/entries';
+import * as SubscriptionsActions from '../redux/modules/subscriptions';
+import * as CategoriesActions from '../redux/modules/categories';
+import * as FeedFormActions from '../redux/modules/feedForm';
+import * as FeedsActions from '../redux/modules/feeds';
 
 class NewFeedDialog extends Component {
 
@@ -71,13 +71,13 @@ class NewFeedDialog extends Component {
   handleAutocompleteOnChange(value) {
     const { feedsActions, feedFormActions } = this.props;
 
-    if (value.length > 2 && !value.startsWith("http")) {
+    if (value.length > 2 && !value.startsWith('http')) {
       feedsActions.requestSearchFeeds(value);
     }
 
     feedFormActions.feedFormUpdate({
       searchTerm: value,
-      isFeedUrl: value.startsWith("http"),
+      isFeedUrl: value.startsWith('http'),
       feedExists: false
     });
   }
@@ -136,9 +136,9 @@ class NewFeedDialog extends Component {
   render() {
     const { feedForm, sortedCategories, feeds, sortedFeeds } = this.props;
 
-    const inputCls = classNames("field block col-12", {
-      "input-icon-spinner": feeds.isLoading,
-      "is-success": feedForm.feedExists || feedForm.isFeedUrl
+    const inputCls = classNames('field block col-12', {
+      'input-icon-spinner': feeds.isLoading,
+      'is-success': feedForm.feedExists || feedForm.isFeedUrl
     });
 
     return (
@@ -148,44 +148,37 @@ class NewFeedDialog extends Component {
 
           {feedForm.errors &&
             <div className="sm-col-12 mb2">
-              {renderErrorsFor(feedForm.errors, "base")}
-              {renderErrorsFor(feedForm.errors, "feed_id")}
+              {renderErrorsFor(feedForm.errors, 'base')}
+              {renderErrorsFor(feedForm.errors, 'feed_id')}
             </div>
           }
 
           <label className="field-label">
             Website address or feed title
 
-              <Autocomplete
-                placeholder="Enter Website address or feed title here"
-                ref="value"
-                items={sortedFeeds}
-                inputClassName={inputCls}
-                autoFocus={true}
-                getItemValue={(item) => item.title}
-                onSelect={this.handleAutocompleteOnSelect}
-                onChange={this.handleAutocompleteOnChange}
-                renderItem={(item, isSelected) => (
-                  <div
-                    style={isSelected ? "active" : ""}
-                    key={item.id}
-                    id={item.id}>
-                    {item.title}
-                  </div>
-                )}>
-              </Autocomplete>
+            <Autocomplete
+              placeholder="Enter Website address or feed title here"
+              ref="value"
+              items={sortedFeeds}
+              inputClassName={inputCls}
+              autoFocus
+              getItemValue={(item) => item.title}
+              onSelect={this.handleAutocompleteOnSelect}
+              onChange={this.handleAutocompleteOnChange}
+            />
 
             <div className="hint">
               Website address must start with http://
             </div>
 
-            {renderErrorsFor(feedForm.errors, "feed_url")}
+            {renderErrorsFor(feedForm.errors, 'feed_url')}
           </label>
 
 
           <label className="field-label mb3">
             Select category
-            <select className="field block"
+            <select
+              className="field block"
               ref="categoryId"
               onChange={(event) => this.handleChange(event)}
               value={feedForm.category_id}>
