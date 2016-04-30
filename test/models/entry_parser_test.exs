@@ -23,6 +23,7 @@ defmodule WhistlerNewsReader.EntryParserTest do
     assert parsed_entry[:title] == "Example item title"
     assert parsed_entry[:url] == "http://www.example.com/items/1.html"
     assert parsed_entry[:summary] == "Example content with linkmy test paragraph is here."
+    assert parsed_entry[:content] == "Example content with <a href=\"bla\">link</a><p>my test <em>paragraph</em> is here.</p>"
   end
 
 end

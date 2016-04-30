@@ -3,7 +3,6 @@ defmodule WhistlerNewsReader.EntryParser do
   def parse(feed, parsed_entry) do
     published    = parse_published(feed, parsed_entry)
     guid         = generate_guid(feed, parsed_entry)
-    text_content = parse_text_content(feed, parsed_entry)
 
     %{
       feed_id: feed.id,
@@ -11,7 +10,7 @@ defmodule WhistlerNewsReader.EntryParser do
       title: parsed_entry[:title],
       author: parsed_entry[:author],
       url: parsed_entry[:url],
-      summary: parsed_entry[:summary] || String.slice(text_content, 0..255),
+      summary: String.slice(parse_summary(feed, parsed_entry), 0..255),
       content: sanitize_html(parsed_entry[:content] || parsed_entry[:description]),
       published: published
     }
@@ -25,12 +24,8 @@ defmodule WhistlerNewsReader.EntryParser do
     }
   end
 
-  defp sanitize_html(html) do
-    HtmlSanitizeEx.basic_html(html)
-  end
-
-  defp parse_text_content(_feed, parsed_entry) do
-    Floki.text(sanitize_html(parsed_entry[:content] || parsed_entry[:description] || ""))
+  defp parse_summary(feed, parsed_entry) do
+    html_to_text(parsed_entry[:summary] || parsed_entry[:content] || parsed_entry[:description])
   end
 
   defp parse_published(_feed, parsed_entry) do
@@ -45,6 +40,20 @@ defmodule WhistlerNewsReader.EntryParser do
   defp generate_guid(feed_url, entry_guid, entry_published, entry_title) do
     unique_id_str = "#{feed_url}#{entry_guid}#{entry_published}#{entry_title}"
     :crypto.hash(:sha256, unique_id_str) |> Base.encode16
+  end
+
+  defp sanitize_html(html) do
+    html |> without_script_tags |> HtmlSanitizeEx.basic_html
+  end
+
+  defp html_to_text(nil), do: nil
+  defp html_to_text(html) do
+    html |> without_script_tags |> Floki.text(deep: true, js: false)
+  end
+
+  def without_script_tags(html) do
+    regexp = ~r/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/i
+    String.replace(html, regexp, "")
   end
 
 end

@@ -26,7 +26,7 @@
       <description>Example item description</description>
       <pubDate>Tue, 20 Oct 2015 12:30:00 +0000</pubDate>
       <guid>urn:uuid:763ba33d-bbbe-4025-9d6f-9a39d16b164e</guid>
-      <content:encoded><![CDATA[Example content with <a href="bla">link</a><p>my test <em>paragraph</em> is here.</p>]]></content:encoded>
+      <content:encoded><![CDATA[Example content with <a href="bla">link</a><p>my test <em>paragraph</em> is here.<script>alert("danger")</script></p>]]></content:encoded>
     </item>
   </channel>
 </rss>
