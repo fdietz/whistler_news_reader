@@ -1,0 +1,16 @@
+.teaser {
+  display: flex;
+  height: 80%;
+  margin: 2rem;
+  color: $gray;
+  text-align: center;
+  opacity: .5;
+
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  p {
+    font-size: 1.2rem;
+  }
+}

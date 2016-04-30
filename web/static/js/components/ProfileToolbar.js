@@ -63,7 +63,7 @@ class EntryContentToolbar extends Component {
         <div className="avatar-header">
           <img src={currentUser.image_url} />
         </div>
-  </div>
+    </div>
     );
   }
 }

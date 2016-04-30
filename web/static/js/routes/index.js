@@ -17,9 +17,9 @@ import NewCategoryDialog from '../containers/NewCategoryDialog';
 import OpmlImportDialog from '../containers/OpmlImportDialog';
 
 const entriesRoute = (
-<Route path="entries" component={EntryListContainer}>
-  <Route path=":id" component={EntryDetailContainer} />
-</Route>
+  <Route path="entries" component={EntryListContainer}>
+    <Route path=":id" component={EntryDetailContainer} />
+  </Route>
 );
 
 export default (store) => (

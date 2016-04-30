@@ -4,6 +4,7 @@ import debounce from 'lodash.debounce';
 import { connect } from 'react-redux';
 import { routerActions as RouterActions } from 'react-router-redux';
 import classNames from 'classnames';
+import { Link } from 'react-router';
 
 import LayoutHeader from '../components/LayoutHeader';
 import LayoutContent from '../components/LayoutContent';
@@ -13,6 +14,8 @@ import FeedEntryGrid from '../components/FeedEntryGrid';
 import NoMoreContent from '../components/NoMoreContent';
 import EntryListToolbar from '../components/EntryListToolbar';
 import ProfileToolbar from '../components/ProfileToolbar';
+import Teaser from '../components/Teaser';
+import { CheckmarkSVGIcon, EarthSVGIcon } from '../components/SVGIcon';
 
 import * as UserActions from '../redux/modules/user';
 import * as EntriesActions from '../redux/modules/entries';
@@ -90,6 +93,8 @@ class EntryListContainer extends Component {
 
     this.debouncedNextEntry = debounce(this.nextEntry, 100);
     this.debouncedPreviousEntry = debounce(this.previousEntry, 100);
+
+    this.handleRefresh = this.handleRefresh.bind(this);
   }
 
   componentDidMount() {
@@ -219,6 +224,11 @@ class EntryListContainer extends Component {
     this.setState({ currentViewLayout: value });
   }
 
+  handleRefresh(event) {
+    event.preventDefault();
+    this.refreshEntries();
+  }
+
   openEditModal() {
     const { routerActions, params, pathname } = this.props;
 
@@ -230,6 +240,7 @@ class EntryListContainer extends Component {
     const {
       entries,
       sortedEntries,
+      sortedSubscriptions,
       entry,
       currentUser,
       location,
@@ -311,33 +322,62 @@ class EntryListContainer extends Component {
 
     return (
       <div className="main-master-container">
-        <div className={masterListCls}>
-          {currentViewLayout === 'list' &&
-            <div className="layout-master-container">
-              <LayoutHeader>{entryListToolbar}</LayoutHeader>
-              <LayoutContent>{paginatedItems}</LayoutContent>
-            </div>
-          }
-          {currentViewLayout === 'compact_list' &&
-            <div className="layout-master-container">
-              <LayoutHeader>{entryListToolbar}</LayoutHeader>
-              <LayoutContent>{paginatedItems}</LayoutContent>
-            </div>
-          }
-          {currentViewLayout === 'grid' &&
-            <div className="layout-master-container">
-              <LayoutHeader>{entryListToolbar}</LayoutHeader>
-              <LayoutContent>{paginatedItems}</LayoutContent>
-            </div>
-          }
-        </div>
+        {entries.listedIds.length > 0 &&
+          <div className={masterListCls}>
+            {currentViewLayout === 'list' &&
+              <div className="layout-master-container">
+                <LayoutHeader>{entryListToolbar}</LayoutHeader>
+                <LayoutContent>{paginatedItems}</LayoutContent>
+              </div>
+            }
+            {currentViewLayout === 'compact_list' &&
+              <div className="layout-master-container">
+                <LayoutHeader>{entryListToolbar}</LayoutHeader>
+                <LayoutContent>{paginatedItems}</LayoutContent>
+              </div>
+            }
+            {currentViewLayout === 'grid' &&
+              <div className="layout-master-container">
+                <LayoutHeader>{entryListToolbar}</LayoutHeader>
+                <LayoutContent>{paginatedItems}</LayoutContent>
+              </div>
+            }
+          </div>
+        }
 
         {!hasChildren &&
-          <div className="main-detail-container hide-small-screen">
+          <div className="main-detail-container">
             <div className="detail">
               <div className="layout-master-container">
                 <LayoutHeader>{profileToolbar}</LayoutHeader>
-                <LayoutContent />
+                <LayoutContent>
+                  {sortedSubscriptions.length === 0 &&
+                    <Teaser>
+                      <EarthSVGIcon size="xxlarge" color="gray" />
+                      <h1>Welcome to whistle'r news reader</h1>
+                      <h2>This is exciting!</h2>
+                      <p>
+                        Let's get started and <Link to={{ pathname: '/opml_import', state: { modal: true } }}>import</Link> or <Link to={{ pathname: '/feeds/new', state: { modal: true } }}>subscribe</Link> to new feeds.
+                      </p>
+                    </Teaser>
+                  }
+                  {sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
+                    <Teaser>
+                      <CheckmarkSVGIcon size="xxlarge" color="gray" />
+                      <h2>Nothing left to read here</h2>
+                      <p>
+                        You can try to  <a href="#" onClick={this.handleRefresh}>refresh</a> or <Link to={{ pathname: '/feeds/new', state: { modal: true } }}>subscribe</Link> to new feeds.
+                      </p>
+                    </Teaser>
+                  }
+                  {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
+                    <Teaser>
+                      <EarthSVGIcon size="xxlarge" color="gray" />
+                      <h2>Moin moin from Hamburg</h2>
+                      <p>Have a nice day!</p>
+                    </Teaser>
+                  }
+                </LayoutContent>
               </div>
             </div>
           </div>

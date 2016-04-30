@@ -5,6 +5,7 @@ const SIZES = {
   medium: { width: 24, height: 24 },
   large: { width: 32, height: 32 },
   xlarge: { width: 48, height: 48 },
+  xxlarge: { width: 64, height: 64 },
 };
 
 const SVGComponent = ({ size = 'small', viewBox = '0 0 20 20 ', children, ...rest }) => {

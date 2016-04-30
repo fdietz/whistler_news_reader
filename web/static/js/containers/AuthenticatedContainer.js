@@ -13,10 +13,6 @@ class AuthenticatedContainer extends Component {
     dispatch: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { dispatch, currentUser } = this.props;
 

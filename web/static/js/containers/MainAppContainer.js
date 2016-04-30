@@ -20,7 +20,6 @@ class MainAppContainer extends Component {
 
   static propTypes = {
     sortedSubscriptions: PropTypes.array.isRequired,
-    subscriptions: PropTypes.object.isRequired,
     sortedCategories: PropTypes.array.isRequired,
     pathname: PropTypes.string.isRequired,
     notification: PropTypes.shape({
@@ -34,12 +33,9 @@ class MainAppContainer extends Component {
     // actions
     subscriptionsActions: PropTypes.object.isRequired,
     categoriesActions: PropTypes.object.isRequired,
+    sidebarActions: PropTypes.object.isRequired,
     routerActions: PropTypes.object.isRequired,
   };
-
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     const { subscriptionsActions, categoriesActions } = this.props;
@@ -97,8 +93,7 @@ class MainAppContainer extends Component {
           subscriptionsActions={subscriptionsActions}
           categoriesActions={categoriesActions}
           sidebarActions={sidebarActions}
-          routerActions={routerActions}
-    />
+          routerActions={routerActions} />
 
         {isModal
           ? this.previousChildren
@@ -125,7 +120,6 @@ class MainAppContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    subscriptions: state.subscriptions,
     sortedSubscriptions: getSortedSubscriptions(state),
     sortedCategories: getSortedCategories(state),
     location: ownProps.location,
