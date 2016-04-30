@@ -60,6 +60,12 @@
   p {
     margin-top: 0;
     margin-bottom: $space-2;
+
+    img {
+      display: block;
+      margin: $space-3 auto;
+      border-radius: $border-radius;
+    }
   }
 
   strong {
@@ -67,9 +73,8 @@
   }
 
   hr {
-    margin-top: 0;
-    margin-bottom: $space-2;
-    border: 1px solid $darken-2;
+    margin: $space-3;
+    border: 1px solid $darken-1;
   }
 
   figure {
@@ -94,13 +99,35 @@
     display: block;
     padding: $space-2;
     margin: $space-2;
-    background-color: rgba(0, 0, 0, .03);
-    border-right: 2px solid transparent;
-    border-left: 2px solid $darken-1;
-    quotes: "“" "”" "‘" "’";
+
+    font-style: italic;
+    quotes: "\201C""\201D""\2018""\2019";
+
+    p {
+      display: inline;
+    }
 
     p:last-child {
       margin-bottom: 0;
+    }
+
+    &:before,
+    &:after {
+      font-size: 3em;
+      line-height: .1em;
+      color: $darken-2;
+
+      vertical-align: -.4em;
+    }
+
+    &:before {
+      margin-right: .1em;
+      content: open-quote;
+    }
+
+    &:after {
+      margin-left: .1em;
+      content: close-quote;
     }
   }
 
