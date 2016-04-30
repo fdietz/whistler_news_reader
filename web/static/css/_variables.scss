@@ -53,10 +53,12 @@ $h5: 1rem;
 $h6: .75rem;
 
 // white space
-$space-1: .5rem;
+$space-1: .8rem;
 $space-2: 1rem;
 $space-3: 2rem;
 $space-4: 4rem;
+$default-padding: $space-1 $space-2;
+$default-height: 56px;
 
 // borders
 $border-width: 1px;

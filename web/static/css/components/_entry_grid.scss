@@ -6,7 +6,6 @@ $entry-grid-secondary-color: $gray-3;
 .entry-grid {
   display: flex;
   padding: $space-2;
-  box-sizing: border-box;
   flex-flow: wrap;
   justify-content: flex-start;
 }
@@ -56,10 +55,10 @@ $entry-grid-secondary-color: $gray-3;
   justify-content: flex-end;
 
   .entry-title {
-    max-height: 1.2rem;
+    max-height: 1rem;
     overflow: hidden;
-    font-size: .9rem;
-    line-height: 1.2em;
+    font-size: .8rem;
+    line-height: 1em;
   }
 
   .meta {

@@ -28,13 +28,14 @@ $entry-list-secondary-color: $gray-3;
 
 .entry-list__item {
   display: flex;
-  padding: $space-2;
+  padding: $default-padding;
   font-size: .9rem;
   color: $entry-list-color;
   cursor: pointer;
   background-color: $entry-list-bg-color;
   border-bottom: 1px solid $darken-1;
   opacity: .7;
+  transition: opacity 500ms ease-out;
   flex-direction: column;
 
   &.selected {
@@ -66,7 +67,6 @@ $entry-list-secondary-color: $gray-3;
   .entry-summary {
     max-height: 2rem;
     margin-top: .2rem;
-    margin-bottom: .2rem;
     overflow: hidden;
     font-size: .8rem;
     line-height: 1rem;

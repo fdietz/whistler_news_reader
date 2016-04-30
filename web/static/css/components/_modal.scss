@@ -1,7 +1,7 @@
 .modal-header,
 .modal-footer {
   display: flex;
-  height: 65px;
+  height: $default-height;
   padding: 0 $space-2;
   align-items: center;
   justify-content: flex-start;
@@ -10,7 +10,6 @@
 .modal-header {
   background-color: $red;
   border-bottom: 1px solid $darken-1;
-  box-sizing: border-box;
 
   .logo {
     font-size: 2rem;

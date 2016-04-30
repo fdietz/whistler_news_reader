@@ -8,18 +8,18 @@ $sidebar-color: $gray;
   left: 0;
   z-index: 2;
   box-shadow: 5px 0 5px -2px $darken-3;
-  width: 400px;
+  width: 350px;
 
   transform: none;
   transition: transform .33s cubic-bezier(.694, .0482, .335, 1);
 
   &.hidden {
-    transform: translateX(-450px);
+    transform: translateX(-400px);
   }
 
   .sidebar-nav-list__name {
-    font-size: 1.1rem;
     padding: 5px 0;
+    font-size: 1.1rem;
   }
 }
 
@@ -41,7 +41,7 @@ $sidebar-color: $gray;
 }
 
 .sidebar-content {
-  padding: $space-2;
+  padding: $default-padding;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   flex: 1 1;
@@ -50,10 +50,8 @@ $sidebar-color: $gray;
 .sidebar-header,
 .sidebar-footer {
   display: flex;
-  height: 65px;
+  height: $default-height;
   padding: 0 $space-2;
-
-  box-sizing: border-box;
 
   align-items: center;
   flex-direction: row;
@@ -172,6 +170,7 @@ $sidebar-color: $gray;
   padding: 0 $space-2;
   margin-right: -$space-2;
   margin-left: -$space-2;
+  box-sizing: content-box;
 
   align-items: center;
 
