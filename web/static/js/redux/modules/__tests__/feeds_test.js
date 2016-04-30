@@ -1,53 +1,53 @@
-/*eslint no-undefined: 0*/
-import test from "ava";
+/* eslint no-undefined: 0*/
+import test from 'ava';
 import reducer, {
-  SEARCH_FEEDS
-} from "../feeds";
+  SEARCH_FEEDS,
+} from '../feeds';
 
-test("feeds reducer returns default state", t => {
+test('feeds reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });
 });
 
-test("feeds reducer SEARCH_FEEDS without payload", t => {
+test('feeds reducer SEARCH_FEEDS without payload', t => {
   const newState = reducer(undefined, {
     type: SEARCH_FEEDS,
-    payload: null
+    payload: null,
   });
   t.deepEqual(newState, {
-    byId: {}, listedIds: [], isLoading: true, error: null
+    byId: {}, listedIds: [], isLoading: true, error: null,
   });
 });
 
-test("feeds reducer SEARCH_FEEDS with payload", t => {
+test('feeds reducer SEARCH_FEEDS with payload', t => {
   const newState = reducer(undefined, {
     type: SEARCH_FEEDS,
     payload: {
       ids: [1],
       entities: {
-        1: { id: 1 }
-      }
-    }
+        1: { id: 1 },
+      },
+    },
   });
   t.deepEqual(newState, {
     byId: {
-      1: { id: 1 }
+      1: { id: 1 },
     },
     listedIds: [1],
     isLoading: false,
-    error: null
+    error: null,
   });
 });
 
-test("feeds reducer SEARCH_FEEDS with error", t => {
+test('feeds reducer SEARCH_FEEDS with error', t => {
   const newState = reducer(undefined, {
     type: SEARCH_FEEDS,
     error: true,
-    payload: { message: "too short" }
+    payload: { message: 'too short' },
   });
   t.deepEqual(newState, {
     byId: {},
     listedIds: [],
     isLoading: false,
-    error: { message: "too short" }
+    error: { message: 'too short' },
   });
 });

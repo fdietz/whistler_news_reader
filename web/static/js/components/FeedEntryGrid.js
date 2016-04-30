@@ -1,24 +1,24 @@
-import React, { Component, PropTypes } from "react";
-import classNames from "classnames";
+import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames';
 
-import FeedEntryGridItem from "./FeedEntryGridItem";
+import FeedEntryGridItem from './FeedEntryGridItem';
 
 class FeedEntryGrid extends Component {
 
   static propTypes = {
     entries: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired
+      id: PropTypes.number.isRequired,
     })).isRequired,
     currentEntry: PropTypes.shape({
-      id: PropTypes.number.isRequired
+      id: PropTypes.number.isRequired,
     }),
     onEntryClick: PropTypes.func.isRequired,
-    className: PropTypes.string
+    className: PropTypes.string,
   };
 
   render() {
     const { entries, currentEntry, onEntryClick, className } = this.props;
-    const cls = classNames("entry-grid", className);
+    const cls = classNames('entry-grid', className);
 
     return (
       <div className={cls}>
@@ -30,7 +30,8 @@ class FeedEntryGrid extends Component {
               key={entry.id}
               ref={entry.id}
               onClick={() => onEntryClick(entry)}
-              className="entry-grid__item"/>);
+              className="entry-grid__item"
+          />);
         })}
       </div>
     );

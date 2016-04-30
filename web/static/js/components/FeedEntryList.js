@@ -1,20 +1,20 @@
-import React, { Component, PropTypes } from "react";
-import classNames from "classnames";
-import shallowCompare from "react-addons-shallow-compare";
+import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames';
+import shallowCompare from 'react-addons-shallow-compare';
 
-import FeedEntryListItem from "./FeedEntryListItem";
+import FeedEntryListItem from './FeedEntryListItem';
 
 class FeedEntryList extends Component {
 
   static propTypes = {
     entries: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired
+      id: PropTypes.number.isRequired,
     })).isRequired,
     currentEntry: PropTypes.shape({
-      id: PropTypes.number.isRequired
+      id: PropTypes.number.isRequired,
     }),
     onEntryClick: PropTypes.func.isRequired,
-    className: PropTypes.string
+    className: PropTypes.string,
   };
 
   constructor(props) {
@@ -33,7 +33,7 @@ class FeedEntryList extends Component {
 
   render() {
     const { entries, currentEntry, className } = this.props;
-    const cls = classNames("entry-list", className);
+    const cls = classNames('entry-list', className);
 
     return (
       <div className={cls}>
@@ -44,7 +44,8 @@ class FeedEntryList extends Component {
               isSelected={entry && currentEntry && entry.id === currentEntry.id}
               key={entry.id}
               ref={entry.id}
-              onClick={this.handleOnEntryClick}/>
+              onClick={this.handleOnEntryClick}
+          />
           );
         })}
       </div>

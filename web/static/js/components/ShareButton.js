@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
 import {
   MailSVGIcon,
   TwitterSVGIcon,
   FacebookSVGIcon,
   GooglePlusSVGIcon,
-  PinterestSVGIcon
-} from "./SVGIcon";
+  PinterestSVGIcon,
+} from './SVGIcon';
 
-const popupOptions = "menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600";
+const popupOptions = 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600';
 
 const openWindow = (href) => {
-  window.open(href, "", popupOptions);
+  window.open(href, '', popupOptions);
   return false;
 };
 
@@ -31,8 +31,8 @@ export const FacebookLink = ({ title, url, ...rest }) => {
       href={href}
       target="_blank"
       onClick={openWindow.bind(this, href)}
-      {...rest}>
-      <FacebookSVGIcon color="gray"/>
+  >
+      <FacebookSVGIcon color="gray" />
       Facebook
     </a>
   );
@@ -45,8 +45,8 @@ export const GooglePlusLink = ({ title, url, ...rest }) => {
       href={href}
       target="_blank"
       onClick={openWindow.bind(this, href)}
-      {...rest}>
-      <GooglePlusSVGIcon color="gray"/>
+  >
+      <GooglePlusSVGIcon color="gray" />
       Google
     </a>
   );
@@ -56,7 +56,7 @@ export const PinterestLink = ({ title, url, ...rest }) => {
   const href = `http://pinterest.com/pin/create/button/?url=${url}&description=${title}`;
   return (
     <a href={href} target="_blank" {...rest}>
-      <PinterestSVGIcon color="gray"/>
+      <PinterestSVGIcon color="gray" />
       Pinterest
     </a>
   );
@@ -66,7 +66,7 @@ export const MailLink = ({ title, url, ...rest }) => {
   const href = `mailto:?&subject=${title}&body=${url}`;
   return (
     <a href={href} target="_blank" {...rest}>
-      <MailSVGIcon color="gray"/>
+      <MailSVGIcon color="gray" />
       Mail
     </a>
   );

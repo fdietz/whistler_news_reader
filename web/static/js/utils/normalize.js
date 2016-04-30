@@ -12,6 +12,6 @@ export function arrayToIds(array) {
 export default function normalize(array) {
   return {
     ids: arrayToIds(array),
-    entities: arrayToObjMap(array)
+    entities: arrayToObjMap(array),
   };
 }

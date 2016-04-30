@@ -1,13 +1,13 @@
-import React, { PropTypes, Component } from "react";
-import ReactDOM from "react-dom";
-import classNames from "classnames";
+import React, { PropTypes, Component } from 'react';
+import ReactDOM from 'react-dom';
+import classNames from 'classnames';
 
 class BackgroundImage extends Component {
 
   static propTypes = {
     imageUrl: PropTypes.string.isRequired,
     className: PropTypes.string,
-    style: PropTypes.object
+    style: PropTypes.object,
   }
 
   constructor(props) {
@@ -36,12 +36,12 @@ class BackgroundImage extends Component {
   render() {
     const { className, style, ...rest } = this.props;
 
-    const cls = classNames("background-image", className, {
-      "image-loaded": this.state.loaded
+    const cls = classNames('background-image', className, {
+      'image-loaded': this.state.loaded,
     });
 
     return (
-      <div ref="img" className={cls} style={style} {...rest}/>
+      <div ref="img" className={cls} style={style} {...rest} />
     );
   }
 }

@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes } from 'react';
 
 export default class ClickOutside extends Component {
 
   static propTypes = {
     children: PropTypes.node,
-    onClickOutside: PropTypes.func.isRequired
+    onClickOutside: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -19,11 +19,11 @@ export default class ClickOutside extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener("click", this.handleClick);
+    document.addEventListener('click', this.handleClick);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("click", this.handleClick);
+    document.removeEventListener('click', this.handleClick);
   }
 
   handleClick(e) {

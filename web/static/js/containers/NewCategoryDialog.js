@@ -1,26 +1,26 @@
-import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
-import ReactDOM from "react-dom";
-import { push } from "react-router-redux";
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import ReactDOM from 'react-dom';
+import { push } from 'react-router-redux';
 
-import Icon from "../components/Icon";
+import Icon from '../components/Icon';
 
 import {
   categoryFormUpdate,
   categoryFormReset,
-  requestCreateCategory
-} from "../redux/modules/categoryForm";
+  requestCreateCategory,
+} from '../redux/modules/categoryForm';
 
-import { addCategory } from "../redux/modules/categories";
+import { addCategory } from '../redux/modules/categories';
 
-import { reduceErrorsToString } from "../utils/ErrorHelper";
-import { renderErrorsFor } from "../utils";
+import { reduceErrorsToString } from '../utils/ErrorHelper';
+import { renderErrorsFor } from '../utils';
 
 class NewCategoryDialog extends Component {
 
   static propTypes = {
     categoryForm: PropTypes.object,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -54,7 +54,7 @@ class NewCategoryDialog extends Component {
     const { dispatch, categoryForm, onClose } = this.props;
     event.preventDefault();
 
-    dispatch(requestCreateCategory({ title: categoryForm.title})).then((result) => {
+    dispatch(requestCreateCategory({ title: categoryForm.title })).then((result) => {
       if (!result.error) {
         onClose();
         dispatch(push(`/categories/${result.id}`));
@@ -73,7 +73,7 @@ class NewCategoryDialog extends Component {
 
           {categoryForm.errors &&
             <div className="sm-col-12 mb2">
-              {renderErrorsFor(categoryForm.errors, "base")}
+              {renderErrorsFor(categoryForm.errors, 'base')}
             </div>
           }
 
@@ -85,13 +85,14 @@ class NewCategoryDialog extends Component {
               ref="title"
               value={categoryForm.title}
               onChange={(event) => this.handleChange(event)}
-              autoFocus={true}/>
+              autoFocus={true}
+    />
 
             <div className="hint">
               Title must be 50 characters or less and cannot contain spaces or periods
             </div>
 
-            {renderErrorsFor(categoryForm.errors, "title")}
+            {renderErrorsFor(categoryForm.errors, 'title')}
           </label>
 
           <div className="form-actions">
@@ -99,8 +100,9 @@ class NewCategoryDialog extends Component {
               type="submit"
               className="btn btn-primary bg-blue white btn-large with-icon"
               disabled={!categoryForm.title}
-              onClick={this.submitForm}>
-                {categoryForm.isLoading && <Icon name="spinner_white" size="small"/>}
+              onClick={this.submitForm}
+    >
+                {categoryForm.isLoading && <Icon name="spinner_white" size="small" />}
                 Add Category
               </button>
           </div>
@@ -112,7 +114,7 @@ class NewCategoryDialog extends Component {
 
 function mapStateToProps(state) {
   return {
-    categoryForm: state.categoryForm
+    categoryForm: state.categoryForm,
   };
 }
 

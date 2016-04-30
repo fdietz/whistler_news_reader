@@ -1,4 +1,4 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect';
 
 const getFeeds = (state) => {
   return state.feeds.listedIds.map(id => state.feeds.byId[id]);
@@ -72,11 +72,11 @@ function currentIndex(entryIds, entryId) {
 }
 
 function isNextEntry(entryIds, entryId) {
-  return currentIndex(entryIds, entryId)+1 < entryIds.length;
+  return currentIndex(entryIds, entryId) + 1 < entryIds.length;
 }
 
 function isPreviousEntry(entryIds, entryId) {
-  return currentIndex(entryIds, entryId)-1 >= 0;
+  return currentIndex(entryIds, entryId) - 1 >= 0;
 }
 
 export const getHasPreviousEntry = (state, ownProps) => {
@@ -89,12 +89,12 @@ export const getHasNextEntry = (state, ownProps) => {
 
 export const getPreviousEntryId = (state, ownProps) => {
   const index = currentIndex(state.entries.listedIds, +ownProps.params.id);
-  const entryId = state.entries.listedIds[index-1];
+  const entryId = state.entries.listedIds[index - 1];
   return entryId;
 };
 
 export const getNextEntryId = (state, ownProps) => {
   const index = currentIndex(state.entries.listedIds, +ownProps.params.id);
-  const entryId = state.entries.listedIds[index+1];
+  const entryId = state.entries.listedIds[index + 1];
   return entryId;
 };

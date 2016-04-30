@@ -1,15 +1,15 @@
-import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import ReactDOM from "react-dom";
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import ReactDOM from 'react-dom';
 
-import Icon from "../components/Icon";
+import Icon from '../components/Icon';
 
-import * as OpmlImportFormActions from "../redux/modules/opmlImportForm";
+import * as OpmlImportFormActions from '../redux/modules/opmlImportForm';
 
-import { reduceErrorsToString } from "../utils/ErrorHelper";
+import { reduceErrorsToString } from '../utils/ErrorHelper';
 
-import * as FeedsActions from "../redux/modules/feeds";
+import * as FeedsActions from '../redux/modules/feeds';
 
 class EditDialog extends Component {
 
@@ -18,7 +18,7 @@ class EditDialog extends Component {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     feedsActions: PropTypes.object.isRequired,
-    opmlImportFormActions: PropTypes.object.isRequired
+    opmlImportFormActions: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -32,7 +32,7 @@ class EditDialog extends Component {
   handleChange() {
     const { opmlImportFormActions } = this.props;
     opmlImportFormActions.opmlImportFormUpdate({
-      file: ReactDOM.findDOMNode(this.refs.file).value
+      file: ReactDOM.findDOMNode(this.refs.file).value,
     });
   }
 
@@ -52,7 +52,7 @@ class EditDialog extends Component {
 
     let file = ReactDOM.findDOMNode(this.refs.file);
     let data = new FormData();
-    data.append("file", file.files[0]);
+    data.append('file', file.files[0]);
 
     opmlImportFormActions.requestOpmlImport(data).then((result) => {
       if (!result.error) {
@@ -80,7 +80,8 @@ class EditDialog extends Component {
               placeholder="Enter title here"
               ref="file"
               onChange={(event) => this.handleChange(event)}
-              autoFocus={true}/>
+              autoFocus={true}
+    />
             <div className="hint">
               Moving from another RSS Reader. You can upload your
               subscriptions in standard OPML format.</div>
@@ -97,8 +98,9 @@ class EditDialog extends Component {
               type="submit"
               className="btn btn-primary bg-blue white btn-large with-icon"
               disabled={!opmlImportForm.file}
-              onClick={this.submitForm}>
-                {opmlImportForm.isLoading && <Icon name="spinner_white" size="small"/>}
+              onClick={this.submitForm}
+    >
+                {opmlImportForm.isLoading && <Icon name="spinner_white" size="small" />}
                 Import
               </button>
           </div>
@@ -111,14 +113,14 @@ class EditDialog extends Component {
 function mapStateToProps(state) {
   return {
     opmlImportForm: state.opmlImportForm,
-    feedsActions: state.feedsActions
+    feedsActions: state.feedsActions,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     feedsActions: bindActionCreators(FeedsActions, dispatch),
-    opmlImportFormActions: bindActionCreators(OpmlImportFormActions, dispatch)
+    opmlImportFormActions: bindActionCreators(OpmlImportFormActions, dispatch),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(EditDialog);

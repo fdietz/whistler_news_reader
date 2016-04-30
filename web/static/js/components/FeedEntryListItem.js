@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from "react";
-import classNames from "classnames";
-import shallowCompare from "react-addons-shallow-compare";
+import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames';
+import shallowCompare from 'react-addons-shallow-compare';
 
-import DateTimeHelper from "../utils/DateTimeHelper";
+import DateTimeHelper from '../utils/DateTimeHelper';
 
 class FeedEntryListItem extends Component {
 
@@ -10,7 +10,7 @@ class FeedEntryListItem extends Component {
     entry: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     isSelected: PropTypes.bool,
-    className: PropTypes.string
+    className: PropTypes.string,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -22,12 +22,12 @@ class FeedEntryListItem extends Component {
       entry,
       isSelected = false,
       onClick,
-      className
+      className,
     } = this.props;
 
-    let cls = classNames("entry-list__item", className, {
+    let cls = classNames('entry-list__item', className, {
       selected: isSelected,
-      unread: entry.unread
+      unread: entry.unread,
     });
 
     const date = new Date(entry.published);

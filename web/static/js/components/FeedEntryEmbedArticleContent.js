@@ -1,8 +1,8 @@
-import React, {Component, PropTypes} from "react";
-import ReactDOM from "react-dom";
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-import { findScrollableAncestor } from "../utils/dom";
-import axios from "../utils/APIHelper";
+import { findScrollableAncestor } from '../utils/dom';
+import axios from '../utils/APIHelper';
 
 class FeedEntryEmbedArticleContent extends Component {
 
@@ -10,13 +10,13 @@ class FeedEntryEmbedArticleContent extends Component {
     entry: PropTypes.object,
     onEntryShown: PropTypes.func.isRequired,
     onLoadingStart: PropTypes.func,
-    onLoadingComplete: PropTypes.func
+    onLoadingComplete: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
 
-    this.state = { entryArticle: "" };
+    this.state = { entryArticle: '' };
 
     this.shouldScrollToTop = false;
   }
@@ -71,9 +71,9 @@ class FeedEntryEmbedArticleContent extends Component {
   }
 
   updateLinksWithTargetBlank() {
-    const anchors = ReactDOM.findDOMNode(this).getElementsByTagName("a");
-    for (let i=0; i<anchors.length; i++) {
-      anchors[i].setAttribute("target", "_blank");
+    const anchors = ReactDOM.findDOMNode(this).getElementsByTagName('a');
+    for (let i = 0; i < anchors.length; i++) {
+      anchors[i].setAttribute('target', '_blank');
     }
   }
 
@@ -107,7 +107,8 @@ class FeedEntryEmbedArticleContent extends Component {
             </div>
             <div
               className="feed-entry-content__content"
-              dangerouslySetInnerHTML={this.rawContent()}/>
+              dangerouslySetInnerHTML={this.rawContent()}
+    />
           </div>
       </div>
     );

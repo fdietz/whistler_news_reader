@@ -1,14 +1,14 @@
-import test from "ava";
-import React from "react";
-import { shallow } from "enzyme";
-import Button from "../Button";
+import test from 'ava';
+import React from 'react';
+import { shallow } from 'enzyme';
+import Button from '../Button';
 
-test("Button render children", t => {
+test('Button render children', t => {
   const wrapper = shallow(<Button>Click me</Button>);
-  t.true(wrapper.contains("Click me"));
+  t.true(wrapper.contains('Click me'));
 });
 
-test("Button set className from props", t => {
-  const wrapper = shallow(<Button type="header"/>);
-  t.true(wrapper.is(".btn-header"));
+test('Button set className from props', t => {
+  const wrapper = shallow(<Button type="header" />);
+  t.true(wrapper.is('.btn-header'));
 });

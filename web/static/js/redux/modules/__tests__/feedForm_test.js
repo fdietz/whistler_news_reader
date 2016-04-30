@@ -1,14 +1,14 @@
-/*eslint no-undefined: 0*/
-import test from "ava";
-import configureMockStore from "redux-mock-store";
-import thunk from "redux-thunk";
-import nock from "nock";
+/* eslint no-undefined: 0*/
+import test from 'ava';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import nock from 'nock';
 
 import reducer, {
   requestCreateFeed,
   FEED_FORM_UPDATE,
-  FEED_FORM_RESET
-} from "../feedForm";
+  FEED_FORM_RESET,
+} from '../feedForm';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -60,41 +60,41 @@ test.afterEach(() => {
 //   });
 // });
 
-test("feedForm reducer returns default state", t => {
+test('feedForm reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), {
-    searchTerm: "",
+    searchTerm: '',
     feedExists: false,
     isFeedUrl: false,
     categoryId: null,
     isLoading: false,
     selectedFeed: null,
-    errors: null
+    errors: null,
   });
 });
 
-test("feedForm reducer handles FEED_FORM_UPDATE with empty payload", t => {
+test('feedForm reducer handles FEED_FORM_UPDATE with empty payload', t => {
   t.deepEqual(reducer(undefined, { type: FEED_FORM_UPDATE, payload: null }), {
-    searchTerm: "",
+    searchTerm: '',
     feedExists: false,
     isFeedUrl: false,
     categoryId: null,
     isLoading: true,
     selectedFeed: null,
-    errors: null
+    errors: null,
   });
 });
 
-test("feedForm reducer handles FEED_FORM_UPDATE with payload", t => {
+test('feedForm reducer handles FEED_FORM_UPDATE with payload', t => {
   t.deepEqual(reducer(undefined, {
     type: FEED_FORM_UPDATE,
-    payload: { searchTerm: "http://test.de/rss2.xml" }
+    payload: { searchTerm: 'http://test.de/rss2.xml' },
   }), {
-    searchTerm: "http://test.de/rss2.xml",
+    searchTerm: 'http://test.de/rss2.xml',
     feedExists: false,
     isFeedUrl: false,
     categoryId: null,
     isLoading: false,
     selectedFeed: null,
-    errors: null
+    errors: null,
   });
 });

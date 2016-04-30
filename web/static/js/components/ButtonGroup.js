@@ -1,8 +1,8 @@
-import React, { PropTypes } from "react";
-import classNames from "classnames";
+import React, { PropTypes } from 'react';
+import classNames from 'classnames';
 
 const ButtonGroup = ({ className, children }) => {
-  const cls =  classNames("btn-group", className);
+  const cls = classNames('btn-group', className);
   return (
     <div className={cls}>
       {children}
@@ -12,7 +12,7 @@ const ButtonGroup = ({ className, children }) => {
 
 ButtonGroup.propTypes = {
   children: PropTypes.node.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default ButtonGroup;

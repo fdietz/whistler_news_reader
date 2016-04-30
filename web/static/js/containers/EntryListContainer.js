@@ -1,24 +1,24 @@
-import React, {Component, PropTypes} from "react";
-import { bindActionCreators } from "redux";
-import debounce from "lodash.debounce";
-import { connect } from "react-redux";
-import { routerActions as RouterActions } from "react-router-redux";
-import classNames from "classnames";
+import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import debounce from 'lodash.debounce';
+import { connect } from 'react-redux';
+import { routerActions as RouterActions } from 'react-router-redux';
+import classNames from 'classnames';
 
-import LayoutHeader from "../components/LayoutHeader";
-import LayoutContent from "../components/LayoutContent";
-import InfiniteScroll from "../components/InfiniteScroll";
-import FeedEntryList from "../components/FeedEntryList";
-import FeedEntryGrid from "../components/FeedEntryGrid";
-import NoMoreContent from "../components/NoMoreContent";
-import EntryListToolbar from "../components/EntryListToolbar";
-import ProfileToolbar from "../components/ProfileToolbar";
+import LayoutHeader from '../components/LayoutHeader';
+import LayoutContent from '../components/LayoutContent';
+import InfiniteScroll from '../components/InfiniteScroll';
+import FeedEntryList from '../components/FeedEntryList';
+import FeedEntryGrid from '../components/FeedEntryGrid';
+import NoMoreContent from '../components/NoMoreContent';
+import EntryListToolbar from '../components/EntryListToolbar';
+import ProfileToolbar from '../components/ProfileToolbar';
 
-import * as UserActions from "../redux/modules/user";
-import * as EntriesActions from "../redux/modules/entries";
-import * as SubscriptionsActions from "../redux/modules/subscriptions";
-import * as CategoriesActions from "../redux/modules/categories";
-import * as SidebarActions from "../redux/modules/sidebar";
+import * as UserActions from '../redux/modules/user';
+import * as EntriesActions from '../redux/modules/entries';
+import * as SubscriptionsActions from '../redux/modules/subscriptions';
+import * as CategoriesActions from '../redux/modules/categories';
+import * as SidebarActions from '../redux/modules/sidebar';
 
 import {
   getSortedSubscriptions,
@@ -26,11 +26,11 @@ import {
   getHasPreviousEntry,
   getHasNextEntry,
   getPreviousEntryId,
-  getNextEntryId
-} from "../redux/selectors";
+  getNextEntryId,
+} from '../redux/selectors';
 
-import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
-import { entryPath, mapRequestParams, configPathname } from "../utils/navigator";
+import { bindHotKey, unbindHotKey } from '../utils/HotKeys';
+import { entryPath, mapRequestParams, configPathname } from '../utils/navigator';
 
 class EntryListContainer extends Component {
   static propTypes = {
@@ -40,7 +40,7 @@ class EntryListContainer extends Component {
       byId: PropTypes.object.isRequired,
       hasMoreEntries: PropTypes.bool.isRequired,
       isLoading: PropTypes.bool.isRequired,
-      error: PropTypes.string
+      error: PropTypes.string,
     }).isRequired,
     entry: PropTypes.object,
     sidebar: PropTypes.object.isRequired,
@@ -53,7 +53,7 @@ class EntryListContainer extends Component {
     currentUser: PropTypes.object,
     notification: PropTypes.shape({
       message: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired
+      type: PropTypes.string.isRequired,
     }),
     params: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
@@ -66,14 +66,14 @@ class EntryListContainer extends Component {
     categoriesActions: PropTypes.object.isRequired,
     entriesActions: PropTypes.object.isRequired,
     sidebarActions: PropTypes.object.isRequired,
-    routerActions: PropTypes.object.isRequired
+    routerActions: PropTypes.object.isRequired,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      currentViewLayout: "list"
+      currentViewLayout: 'list',
     };
 
     this.handleSelectCurrentEntry = this.handleSelectCurrentEntry.bind(this);
@@ -100,15 +100,15 @@ class EntryListContainer extends Component {
       this.firstEntry();
     });
 
-    bindHotKey("nextEntry", () => this.debouncedNextEntry());
-    bindHotKey("previousEntry", () => this.debouncedPreviousEntry());
-    bindHotKey("openEntry", () => this.debouncedOpenEntryContentModal());
+    bindHotKey('nextEntry', () => this.debouncedNextEntry());
+    bindHotKey('previousEntry', () => this.debouncedPreviousEntry());
+    bindHotKey('openEntry', () => this.debouncedOpenEntryContentModal());
   }
 
   componentWillUnmount() {
-    unbindHotKey("nextEntry");
-    unbindHotKey("previousEntry");
-    unbindHotKey("openEntry");
+    unbindHotKey('nextEntry');
+    unbindHotKey('previousEntry');
+    unbindHotKey('openEntry');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -117,7 +117,7 @@ class EntryListContainer extends Component {
     // if we changed routes...
     if (nextProps.location.key !== this.props.location.key) {
       const np = this.requestParams(nextProps);
-      const p  = this.requestParams(this.props);
+      const p = this.requestParams(this.props);
 
       // TODO: clean this up
       if (p.subscription_id && np.subscription_id && p.subscription_id === np.subscription_id) {
@@ -174,7 +174,7 @@ class EntryListContainer extends Component {
     const params = this.requestParams(this.props);
 
     entriesActions.requestMarkAllEntriesAsRead(params).then(() => {
-      if (params.subscription_id === "all" || params.subscription_id === "today") {
+      if (params.subscription_id === 'all' || params.subscription_id === 'today') {
         subscriptionsActions.requestFetchSubscriptions().then(() => {
           categoriesActions.requestFetchCategories();
         });
@@ -191,7 +191,7 @@ class EntryListContainer extends Component {
   }
 
   openExternal() {
-    window.open(this.props.entry.url, "_blank");
+    window.open(this.props.entry.url, '_blank');
   }
 
 
@@ -234,25 +234,27 @@ class EntryListContainer extends Component {
       currentUser,
       location,
       hasPreviousEntry,
-      hasNextEntry
+      hasNextEntry,
     } = this.props;
     const { userActions, entriesActions, routerActions, sidebarActions } = this.props;
 
     let items;
-    if (currentViewLayout === "list" || currentViewLayout === "compact_list") {
+    if (currentViewLayout === 'list' || currentViewLayout === 'compact_list') {
       items = (
         <FeedEntryList
           entries={sortedEntries}
           currentEntry={entry}
           onEntryClick={e => this.handleSelectCurrentEntry(e)}
-          className={currentViewLayout === "compact_list" ? "compact" : "" }/>
+          className={currentViewLayout === 'compact_list' ? 'compact' : ''}
+      />
       );
-    } else if (currentViewLayout === "grid") {
+    } else if (currentViewLayout === 'grid') {
       items = (
         <FeedEntryGrid
           entries={sortedEntries}
           currentEntry={entry}
-          onEntryClick={e => this.handleSelectCurrentEntry(e)}/>
+          onEntryClick={e => this.handleSelectCurrentEntry(e)}
+      />
       );
     } else {
       throw Error(`Unknown currentViewLayout ${currentViewLayout}`);
@@ -262,17 +264,18 @@ class EntryListContainer extends Component {
       <InfiniteScroll
         threshold={300}
         loadMore={() => entriesActions.requestLoadMore(this.requestParams(this.props))}
-        hasMore={entries.hasMoreEntries}>
+        hasMore={entries.hasMoreEntries}
+    >
 
         {entries.listedIds.length > 0 && items}
-        {!entries.hasMoreEntries && <NoMoreContent/>}
+        {!entries.hasMoreEntries && <NoMoreContent />}
       </InfiniteScroll>
     );
 
-    const isSubscriptionSelected = location.pathname.startsWith("/subscriptions");
-    const isCategorySelected = location.pathname.startsWith("/categories");
+    const isSubscriptionSelected = location.pathname.startsWith('/subscriptions');
+    const isCategorySelected = location.pathname.startsWith('/categories');
 
-    const entryListToolbar= (
+    const entryListToolbar = (
       <EntryListToolbar
         currentViewLayout={currentViewLayout}
         showSpinner={entries.isLoading}
@@ -288,11 +291,12 @@ class EntryListContainer extends Component {
         onPreviousEntryClick={this.previousEntry}
         onNextEntryClick={this.nextEntry}
         onOpenExternalClick={this.openExternal}
-        onToggleSidebarClick={sidebarActions.toggle}/>
+        onToggleSidebarClick={sidebarActions.toggle}
+    />
     );
 
-    const masterListCls = classNames("master-list", {
-      grid: currentViewLayout === "grid"
+    const masterListCls = classNames('master-list', {
+      grid: currentViewLayout === 'grid',
     });
 
     const hasChildren = React.Children.count(this.props.children) > 0;
@@ -301,25 +305,26 @@ class EntryListContainer extends Component {
       <ProfileToolbar
         currentUser={currentUser}
         userActions={userActions}
-        routerActions={routerActions}/>
+        routerActions={routerActions}
+    />
     );
 
     return (
       <div className="main-master-container">
         <div className={masterListCls}>
-          {currentViewLayout === "list" &&
+          {currentViewLayout === 'list' &&
             <div className="layout-master-container">
               <LayoutHeader>{entryListToolbar}</LayoutHeader>
               <LayoutContent>{paginatedItems}</LayoutContent>
             </div>
           }
-          {currentViewLayout === "compact_list" &&
+          {currentViewLayout === 'compact_list' &&
             <div className="layout-master-container">
               <LayoutHeader>{entryListToolbar}</LayoutHeader>
               <LayoutContent>{paginatedItems}</LayoutContent>
             </div>
           }
-          {currentViewLayout === "grid" &&
+          {currentViewLayout === 'grid' &&
             <div className="layout-master-container">
               <LayoutHeader>{entryListToolbar}</LayoutHeader>
               <LayoutContent>{paginatedItems}</LayoutContent>
@@ -332,7 +337,7 @@ class EntryListContainer extends Component {
             <div className="detail">
               <div className="layout-master-container">
                 <LayoutHeader>{profileToolbar}</LayoutHeader>
-                <LayoutContent/>
+                <LayoutContent />
               </div>
             </div>
           </div>
@@ -362,7 +367,7 @@ function mapStateToProps(state, ownProps) {
     pathname: ownProps.location.pathname,
     location: ownProps.location,
     notification: state.notification,
-    modals: state.modals
+    modals: state.modals,
   };
 }
 
@@ -373,7 +378,7 @@ function mapDispatchToProps(dispatch) {
     subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
     categoriesActions: bindActionCreators(CategoriesActions, dispatch),
     sidebarActions: bindActionCreators(SidebarActions, dispatch),
-    routerActions: bindActionCreators(RouterActions, dispatch)
+    routerActions: bindActionCreators(RouterActions, dispatch),
   };
 }
 

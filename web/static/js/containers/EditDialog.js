@@ -1,17 +1,17 @@
-import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 // import Modal from "react-modal";
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
 
 // import { CrossSVGIcon } from "../components/SVGIcon";
-import Icon from "../components/Icon";
+import Icon from '../components/Icon';
 
-import { editFormUpdate, editFormReset } from "../redux/modules/editForm";
-import { requestUpdateSubscription } from "../redux/modules/subscriptions";
-import { requestUpdateCategory } from "../redux/modules/categories";
+import { editFormUpdate, editFormReset } from '../redux/modules/editForm';
+import { requestUpdateSubscription } from '../redux/modules/subscriptions';
+import { requestUpdateCategory } from '../redux/modules/categories';
 
-import { reduceErrorsToString } from "../utils/ErrorHelper";
-import { renderErrorsFor } from "../utils";
+import { reduceErrorsToString } from '../utils/ErrorHelper';
+import { renderErrorsFor } from '../utils';
 
 class EditDialog extends Component {
 
@@ -20,7 +20,7 @@ class EditDialog extends Component {
     selection: PropTypes.object.isRequired,
     isSubscriptionSelected: PropTypes.bool.isRequired,
     isCategorySelected: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -75,18 +75,18 @@ class EditDialog extends Component {
     let labels;
     if (isSubscriptionSelected) {
       labels = {
-        heading: "Edit feed",
-        label: "Feed title",
-        hint: "Title must be 50 characters or less and cannot contain spaces or periods"
+        heading: 'Edit feed',
+        label: 'Feed title',
+        hint: 'Title must be 50 characters or less and cannot contain spaces or periods',
       };
     } else if (isCategorySelected) {
       labels = {
-        heading: "Edit category",
-        label: "Category title",
-        hint: "Title must be 50 characters or less and cannot contain spaces or periods"
+        heading: 'Edit category',
+        label: 'Category title',
+        hint: 'Title must be 50 characters or less and cannot contain spaces or periods',
       };
     } else {
-      throw new Error("Unknown selection");
+      throw new Error('Unknown selection');
     }
 
     return (
@@ -109,10 +109,11 @@ class EditDialog extends Component {
               ref="title"
               value={editForm.title}
               onChange={(event) => this.handleChange(event)}
-              autoFocus={true}/>
+              autoFocus={true}
+    />
 
             <div className="hint">{labels.hint}</div>
-            {renderErrorsFor(editForm.errors, "title")}
+            {renderErrorsFor(editForm.errors, 'title')}
 
             {isSubscriptionSelected &&
               <div className="sm-col-12 mb2 mt2">
@@ -127,8 +128,9 @@ class EditDialog extends Component {
               type="submit"
               className="btn btn-primary bg-blue white btn-large with-icon"
               disabled={!editForm.title}
-              onClick={this.submitForm}>
-                {editForm.isLoading && <Icon name="spinner_white" size="small"/>}
+              onClick={this.submitForm}
+    >
+                {editForm.isLoading && <Icon name="spinner_white" size="small" />}
                 Save Changes
               </button>
           </div>
@@ -139,11 +141,11 @@ class EditDialog extends Component {
 }
 
 function isSubscriptionSelected(ownProps) {
-  return ownProps.location.pathname.startsWith("/subscriptions");
+  return ownProps.location.pathname.startsWith('/subscriptions');
 }
 
 function isCategorySelected(ownProps) {
-  return ownProps.location.pathname.startsWith("/categories");
+  return ownProps.location.pathname.startsWith('/categories');
 }
 
 function selection(state, ownProps) {
@@ -159,7 +161,7 @@ function mapStateToProps(state, ownProps) {
     subscription: state.subscriptions.byId[ownProps.params.subscription_id],
     selection: selection(state, ownProps),
     isSubscriptionSelected: isSubscriptionSelected(ownProps),
-    isCategorySelected: isCategorySelected(ownProps)
+    isCategorySelected: isCategorySelected(ownProps),
   };
 }
 

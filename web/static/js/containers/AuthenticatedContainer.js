@@ -1,16 +1,16 @@
-import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
-import { push } from "react-router-redux";
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 
-import { requestSetCurrentUser } from "../redux/modules/user";
-import AuthToken from "../utils/AuthToken";
+import { requestSetCurrentUser } from '../redux/modules/user';
+import AuthToken from '../utils/AuthToken';
 
 class AuthenticatedContainer extends Component {
 
   static propTypes = {
     children: PropTypes.node,
     currentUser: PropTypes.object,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -23,7 +23,7 @@ class AuthenticatedContainer extends Component {
     if (AuthToken.getToken()) {
       if (!currentUser) dispatch(requestSetCurrentUser());
     } else {
-      dispatch(push("/sign_up"));
+      dispatch(push('/sign_up'));
     }
   }
 
@@ -39,7 +39,7 @@ class AuthenticatedContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  currentUser: state.user.current
+  currentUser: state.user.current,
 });
 
 export default connect(mapStateToProps)(AuthenticatedContainer);

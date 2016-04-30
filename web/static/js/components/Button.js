@@ -1,10 +1,10 @@
-import React, { PropTypes } from "react";
-import classNames from "classnames";
+import React, { PropTypes } from 'react';
+import classNames from 'classnames';
 
 const Button = ({ type, expand, onClick, className, children, ...rest }) => {
-  const cls = classNames("btn", className, {
-    "btn-expand": expand,
-    [`btn-${type}`]: type
+  const cls = classNames('btn', className, {
+    'btn-expand': expand,
+    [`btn-${type}`]: type,
   });
 
   return (
@@ -19,7 +19,7 @@ Button.propTypes = {
   type: PropTypes.string,
   expand: PropTypes.bool,
   onClick: PropTypes.func,
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default Button;

@@ -1,17 +1,17 @@
-import React, {Component, PropTypes} from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router";
-import classNames from "classnames";
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import classNames from 'classnames';
 
-import { renderErrorsFor } from "../utils";
-import { requestSignUp } from "../redux/modules/user";
-import { requestFetchRandomImages } from "../redux/modules/randomImages";
+import { renderErrorsFor } from '../utils';
+import { requestSignUp } from '../redux/modules/user';
+import { requestFetchRandomImages } from '../redux/modules/randomImages';
 
 class SignUp extends Component {
 
   static propTypes = {
     errors: PropTypes.array,
-    randomImages: PropTypes.object
+    randomImages: PropTypes.object,
   }
 
   constructor(props) {
@@ -34,7 +34,7 @@ class SignUp extends Component {
       name: this.refs.name.value,
       email: this.refs.email.value,
       password: this.refs.password.value,
-      password_confirmation: this.refs.passwordConfirmation.value
+      password_confirmation: this.refs.passwordConfirmation.value,
     };
 
     dispatch(requestSignUp(data));
@@ -57,12 +57,12 @@ class SignUp extends Component {
       style = { backgroundImage: `url(${image.url})` };
     }
 
-    const cls = classNames("image", {
-      "fade-in": image
+    const cls = classNames('image', {
+      'fade-in': image,
     });
     return (
       <div className="panel-container">
-        <div className={cls} style={style}/>
+        <div className={cls} style={style} />
         <div className="panel">
           <header>
             <div className="logo">
@@ -73,26 +73,26 @@ class SignUp extends Component {
 
             <label className="field-label">
               Name
-              <input ref="name" className="field" type="text" placeholder="Name" focus={true}/>
-              {renderErrorsFor(errors, "name")}
+              <input ref="name" className="field" type="text" placeholder="Name" focus />
+              {renderErrorsFor(errors, 'name')}
             </label>
 
             <label className="field-label">
               Email
-              <input ref="email" className="field" type="email" placeholder="Email"/>
-              {renderErrorsFor(errors, "email")}
+              <input ref="email" className="field" type="email" placeholder="Email" />
+              {renderErrorsFor(errors, 'email')}
             </label>
 
             <label className="field-label">
               Password
-              <input ref="password" className="field" type="password" placeholder="Password"/>
-              {renderErrorsFor(errors, "password")}
+              <input ref="password" className="field" type="password" placeholder="Password" />
+              {renderErrorsFor(errors, 'password')}
             </label>
 
             <label className="field-label">
               Password confirmation
-              <input ref="passwordConfirmation" className="field" type="password" placeholder="Confirm password"/>
-              {renderErrorsFor(errors, "password_confirmation")}
+              <input ref="passwordConfirmation" className="field" type="password" placeholder="Confirm password" />
+              {renderErrorsFor(errors, 'password_confirmation')}
             </label>
 
             <div className="button-bar mt2">
@@ -108,7 +108,7 @@ class SignUp extends Component {
 
 const mapStateToProps = (state) => ({
   errors: state.user.errors,
-  randomImages: state.randomImages
+  randomImages: state.randomImages,
 });
 
 export default connect(mapStateToProps)(SignUp);

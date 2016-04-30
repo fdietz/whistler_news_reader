@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-import AuthToken from "./AuthToken";
+import AuthToken from './AuthToken';
 
 export function transformErrorResponse(response) {
   const error = new Error(`${response.statusText} - Status Code: ${response.status}`);
@@ -19,8 +19,8 @@ export function transformErrorResponse(response) {
 
 function handleError(response) {
   if (response instanceof Error) {
-    /*eslint no-console:0 */
-    console.error("Error", response.message, response.stack);
+    /* eslint no-console:0 */
+    console.error('Error', response.message, response.stack);
     return Promise.reject(response);
   }
 
@@ -29,7 +29,7 @@ function handleError(response) {
 
 const instance = axios.create();
 
-instance.interceptors.request.use(function(config) {
+instance.interceptors.request.use(function (config) {
   const token = AuthToken.getToken();
 
   if (token) {

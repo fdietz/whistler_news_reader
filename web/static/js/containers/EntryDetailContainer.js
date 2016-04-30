@@ -1,29 +1,29 @@
-import React, {Component, PropTypes} from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { routerActions as RouterActions } from "react-router-redux";
+import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { routerActions as RouterActions } from 'react-router-redux';
 
-import LayoutHeader from "../components/LayoutHeader";
-import LayoutContent from "../components/LayoutContent";
-import FeedEntryContent from "../components/FeedEntryContent";
-import EntryContentToolbar from "../components/EntryContentToolbar";
-import ProfileToolbar from "../components/ProfileToolbar";
-import FeedEntryEmbedWebsiteContent from "../components/FeedEntryEmbedWebsiteContent";
-import FeedEntryEmbedArticleContent from "../components/FeedEntryEmbedArticleContent";
+import LayoutHeader from '../components/LayoutHeader';
+import LayoutContent from '../components/LayoutContent';
+import FeedEntryContent from '../components/FeedEntryContent';
+import EntryContentToolbar from '../components/EntryContentToolbar';
+import ProfileToolbar from '../components/ProfileToolbar';
+import FeedEntryEmbedWebsiteContent from '../components/FeedEntryEmbedWebsiteContent';
+import FeedEntryEmbedArticleContent from '../components/FeedEntryEmbedArticleContent';
 
-import * as UserActions from "../redux/modules/user";
-import * as EntriesActions from "../redux/modules/entries";
-import * as SubscriptionsActions from "../redux/modules/subscriptions";
-import * as CategoriesActions from "../redux/modules/categories";
+import * as UserActions from '../redux/modules/user';
+import * as EntriesActions from '../redux/modules/entries';
+import * as SubscriptionsActions from '../redux/modules/subscriptions';
+import * as CategoriesActions from '../redux/modules/categories';
 
 import {
   getHasPreviousEntry,
   getHasNextEntry,
   getPreviousEntryId,
-  getNextEntryId
-} from "../redux/selectors";
+  getNextEntryId,
+} from '../redux/selectors';
 
-import { entryPath, mapRequestParams, goBackPathname } from "../utils/navigator";
+import { entryPath, mapRequestParams, goBackPathname } from '../utils/navigator';
 
 class EntryDetailContainer extends Component {
 
@@ -33,7 +33,7 @@ class EntryDetailContainer extends Component {
       byId: PropTypes.object.isRequired,
       hasMoreEntries: PropTypes.bool.isRequired,
       isLoading: PropTypes.bool.isRequired,
-      error: PropTypes.string
+      error: PropTypes.string,
     }).isRequired,
     entry: PropTypes.object,
     hasPreviousEntry: PropTypes.bool.isRequired,
@@ -49,15 +49,15 @@ class EntryDetailContainer extends Component {
     subscriptionsActions: PropTypes.object.isRequired,
     categoriesActions: PropTypes.object.isRequired,
     entriesActions: PropTypes.object.isRequired,
-    routerActions: PropTypes.object.isRequired
+    routerActions: PropTypes.object.isRequired,
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      currentViewMode: "normal",
-      showSpinner: false
+      currentViewMode: 'normal',
+      showSpinner: false,
     };
 
     this.nextEntry = this.nextEntry.bind(this);
@@ -96,7 +96,7 @@ class EntryDetailContainer extends Component {
   }
 
   onOpenExternalClick() {
-    window.open(this.props.entry.url, "_blank");
+    window.open(this.props.entry.url, '_blank');
   }
 
   requestParams(props) {
@@ -116,7 +116,7 @@ class EntryDetailContainer extends Component {
   }
 
   onChangeViewModeClick(mode) {
-    console.log('mode', mode)
+    console.log('mode', mode);
     this.setState({ currentViewMode: mode });
   }
 
@@ -133,7 +133,7 @@ class EntryDetailContainer extends Component {
       entry,
       currentUser,
       hasPreviousEntry,
-      hasNextEntry
+      hasNextEntry,
     } = this.props;
     const { userActions, routerActions } = this.props;
 
@@ -147,9 +147,10 @@ class EntryDetailContainer extends Component {
         onPreviousEntryClick={this.previousEntry}
         onNextEntryClick={this.nextEntry}
         onOpenExternalClick={this.onOpenExternalClick}
-        showEntryContentModalButton={true}
+        showEntryContentModalButton
         onGoBackClick={this.onGoBackClick}
-        onChangeViewModeClick={this.onChangeViewModeClick}/>
+        onChangeViewModeClick={this.onChangeViewModeClick}
+    />
     );
 
     const profileToolbar = (
@@ -157,7 +158,8 @@ class EntryDetailContainer extends Component {
         currentUser={currentUser}
         userActions={userActions}
         routerActions={routerActions}
-        className="hide-small-screen"/>
+        className="hide-small-screen"
+    />
     );
 
     return (
@@ -166,26 +168,29 @@ class EntryDetailContainer extends Component {
           <div className="layout-master-container">
             <LayoutHeader>{entryContentToolbar}{profileToolbar}</LayoutHeader>
             <LayoutContent>
-              {entry && this.state.currentViewMode === "normal" &&
+              {entry && this.state.currentViewMode === 'normal' &&
                 <FeedEntryContent
                   entry={entry}
                   onLoadingComplete={this.onLoadingComplete}
                   onLoadingStart={this.onLoadingStart}
-                  onEntryShown={this.handleEntryShown}/>
+                  onEntryShown={this.handleEntryShown}
+    />
               }
-              {entry && this.state.currentViewMode === "article" &&
+              {entry && this.state.currentViewMode === 'article' &&
                 <FeedEntryEmbedArticleContent
                   entry={entry}
                   onLoadingStart={this.onLoadingStart}
                   onLoadingComplete={this.onLoadingComplete}
-                  onEntryShown={this.handleEntryShown}/>
+                  onEntryShown={this.handleEntryShown}
+    />
               }
-              {entry && this.state.currentViewMode === "website" &&
+              {entry && this.state.currentViewMode === 'website' &&
                 <FeedEntryEmbedWebsiteContent
                   entry={entry}
                   onLoadingStart={this.onLoadingStart}
                   onLoadingComplete={this.onLoadingComplete}
-                  onEntryShown={this.handleEntryShown}/>
+                  onEntryShown={this.handleEntryShown}
+    />
               }
             </LayoutContent>
           </div>
@@ -205,7 +210,7 @@ function mapStateToProps(state, ownProps) {
     hasNextEntry: getHasNextEntry(state, ownProps),
     previousEntryId: getPreviousEntryId(state, ownProps),
     nextEntryId: getNextEntryId(state, ownProps),
-    pathname: ownProps.location.pathname
+    pathname: ownProps.location.pathname,
   };
 }
 
@@ -215,7 +220,7 @@ function mapDispatchToProps(dispatch) {
     entriesActions: bindActionCreators(EntriesActions, dispatch),
     subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
     categoriesActions: bindActionCreators(CategoriesActions, dispatch),
-    routerActions: bindActionCreators(RouterActions, dispatch)
+    routerActions: bindActionCreators(RouterActions, dispatch),
   };
 }
 

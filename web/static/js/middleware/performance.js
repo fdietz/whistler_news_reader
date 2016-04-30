@@ -1,7 +1,7 @@
-/*eslint no-console: 0*/
-import Perf from "react-addons-perf";
+/* eslint no-console: 0*/
+import Perf from 'react-addons-perf';
 
-const styling = "background: #CEE; color: #222";
+const styling = 'background: #CEE; color: #222';
 
 export const performance = store => next => action => {
   const start = window.performance.now();

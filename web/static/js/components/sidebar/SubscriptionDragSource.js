@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from "react";
-import { DragSource } from "react-dnd";
-import shallowCompare from "react-addons-shallow-compare";
-import classNames from "classnames";
+import React, { Component, PropTypes } from 'react';
+import { DragSource } from 'react-dnd';
+import shallowCompare from 'react-addons-shallow-compare';
+import classNames from 'classnames';
 
-import { Link } from "react-router";
-import Badge from "../Badge";
+import { Link } from 'react-router';
+import Badge from '../Badge';
 
 class SubscriptionDragSource extends Component {
   static propTypes = {
@@ -13,12 +13,12 @@ class SubscriptionDragSource extends Component {
     subscription: PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      unread_count: PropTypes.number.isRequired
+      unread_count: PropTypes.number.isRequired,
     }).isRequired,
     active: PropTypes.bool.isRequired,
     className: PropTypes.string,
     onDrop: PropTypes.func.isRequired,
-    onLinkClick: PropTypes.func.isRequired
+    onLinkClick: PropTypes.func.isRequired,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -30,12 +30,12 @@ class SubscriptionDragSource extends Component {
     const { subscription, active, onLinkClick } = this.props;
     const opacity = isDragging ? 0.4 : 1;
 
-    const cls = classNames("sidebar-nav-list__item", {
-      active: active
+    const cls = classNames('sidebar-nav-list__item', {
+      active: active,
     });
 
-    const linkCls = classNames("sidebar-nav-list__name", {
-      active: active
+    const linkCls = classNames('sidebar-nav-list__name', {
+      active: active,
     });
 
     const path = `/subscriptions/${subscription.id}`;
@@ -48,9 +48,10 @@ class SubscriptionDragSource extends Component {
             onClick={onLinkClick}
             to={path}
             className={linkCls}
-            title={subscription.title}>{subscription.title}</Link>
+            title={subscription.title}
+    >{subscription.title}</Link>
           {subscription.unread_count > 0 &&
-            <Badge count={subscription.unread_count} className="sidebar-nav-list__badge"/>
+            <Badge count={subscription.unread_count} className="sidebar-nav-list__badge" />
           }
         </div>
       </div>
@@ -59,14 +60,14 @@ class SubscriptionDragSource extends Component {
 }
 
 const ItemTypes = {
-  SUBSCRIPTION: "subscription"
+  SUBSCRIPTION: 'subscription',
 };
 
 const subscriptionSource = {
   beginDrag(props) {
     return {
       title: props.subscription.title,
-      id: props.subscription.id
+      id: props.subscription.id,
     };
   },
 
@@ -76,13 +77,13 @@ const subscriptionSource = {
     if (dropResult) {
       props.onDrop(props.subscription.id, dropResult.id);
     }
-  }
+  },
 };
 
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
   };
 }
 

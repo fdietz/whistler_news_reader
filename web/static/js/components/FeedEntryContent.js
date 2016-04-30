@@ -1,7 +1,7 @@
-import React, {Component, PropTypes} from "react";
-import ReactDOM from "react-dom";
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-import { findScrollableAncestor } from "../utils/dom";
+import { findScrollableAncestor } from '../utils/dom';
 
 class FeedEntryContent extends Component {
 
@@ -9,7 +9,7 @@ class FeedEntryContent extends Component {
     entry: PropTypes.object,
     onEntryShown: PropTypes.func.isRequired,
     onLoadingStart: PropTypes.func,
-    onLoadingComplete: PropTypes.func
+    onLoadingComplete: PropTypes.func,
   };
 
   constructor(props) {
@@ -50,9 +50,9 @@ class FeedEntryContent extends Component {
   }
 
   updateLinksWithTargetBlank() {
-    const anchors = ReactDOM.findDOMNode(this).getElementsByTagName("a");
-    for (let i=0; i<anchors.length; i++) {
-      anchors[i].setAttribute("target", "_blank");
+    const anchors = ReactDOM.findDOMNode(this).getElementsByTagName('a');
+    for (let i = 0; i < anchors.length; i++) {
+      anchors[i].setAttribute('target', '_blank');
     }
   }
 
@@ -86,7 +86,8 @@ class FeedEntryContent extends Component {
             </div>
             <div
               className="feed-entry-content__content"
-              dangerouslySetInnerHTML={this.rawContent()}/>
+              dangerouslySetInnerHTML={this.rawContent()}
+    />
           </div>
       </div>
     );

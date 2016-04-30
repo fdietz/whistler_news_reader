@@ -1,20 +1,20 @@
-import React, {Component, PropTypes} from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { routerActions as RouterActions } from "react-router-redux";
+import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { routerActions as RouterActions } from 'react-router-redux';
 
-import Sidebar from "../components/Sidebar";
-import Notification from "../components/Notification";
-import ModalWrapper from "../components/ModalWrapper";
+import Sidebar from '../components/Sidebar';
+import Notification from '../components/Notification';
+import ModalWrapper from '../components/ModalWrapper';
 
-import * as SubscriptionsActions from "../redux/modules/subscriptions";
-import * as CategoriesActions from "../redux/modules/categories";
-import * as SidebarActions from "../redux/modules/sidebar";
+import * as SubscriptionsActions from '../redux/modules/subscriptions';
+import * as CategoriesActions from '../redux/modules/categories';
+import * as SidebarActions from '../redux/modules/sidebar';
 
-import { getSortedSubscriptions, getSortedCategories } from "../redux/selectors";
+import { getSortedSubscriptions, getSortedCategories } from '../redux/selectors';
 
-import shallowCompare from "react-addons-shallow-compare";
-import { mapRequestParams } from "../utils/navigator";
+import shallowCompare from 'react-addons-shallow-compare';
+import { mapRequestParams } from '../utils/navigator';
 
 class MainAppContainer extends Component {
 
@@ -25,7 +25,7 @@ class MainAppContainer extends Component {
     pathname: PropTypes.string.isRequired,
     notification: PropTypes.shape({
       message: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired
+      type: PropTypes.string.isRequired,
     }),
     sidebar: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -34,7 +34,7 @@ class MainAppContainer extends Component {
     // actions
     subscriptionsActions: PropTypes.object.isRequired,
     categoriesActions: PropTypes.object.isRequired,
-    routerActions: PropTypes.object.isRequired
+    routerActions: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -46,7 +46,7 @@ class MainAppContainer extends Component {
 
     Promise.all([
       subscriptionsActions.requestFetchSubscriptions(),
-      categoriesActions.requestFetchCategories()
+      categoriesActions.requestFetchCategories(),
     ]);
   }
 
@@ -79,7 +79,7 @@ class MainAppContainer extends Component {
       pathname,
       notification,
       location,
-      sidebar
+      sidebar,
     } = this.props;
 
     const { categoriesActions, subscriptionsActions, routerActions, sidebarActions } = this.props;
@@ -97,7 +97,8 @@ class MainAppContainer extends Component {
           subscriptionsActions={subscriptionsActions}
           categoriesActions={categoriesActions}
           sidebarActions={sidebarActions}
-          routerActions={routerActions}/>
+          routerActions={routerActions}
+    />
 
         {isModal
           ? this.previousChildren
@@ -107,13 +108,14 @@ class MainAppContainer extends Component {
         {isModal && (
           <ModalWrapper
             returnTo={this.previousPathname || location.pathname}
-            routerActions={routerActions}>
+            routerActions={routerActions}
+    >
             {this.props.children}
           </ModalWrapper>
         )}
 
         {notification &&
-          <Notification {...notification}/>
+          <Notification {...notification} />
         }
 
       </div>
@@ -129,7 +131,7 @@ function mapStateToProps(state, ownProps) {
     location: ownProps.location,
     pathname: ownProps.location.pathname,
     notification: state.notification,
-    sidebar: state.sidebar
+    sidebar: state.sidebar,
   };
 }
 
@@ -138,7 +140,7 @@ function mapDispatchToProps(dispatch) {
     subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
     categoriesActions: bindActionCreators(CategoriesActions, dispatch),
     sidebarActions: bindActionCreators(SidebarActions, dispatch),
-    routerActions: bindActionCreators(RouterActions, dispatch)
+    routerActions: bindActionCreators(RouterActions, dispatch),
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(MainAppContainer);

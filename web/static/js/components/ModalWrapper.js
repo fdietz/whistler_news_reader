@@ -1,17 +1,17 @@
-import React, { PropTypes, Component, cloneElement } from "react";
-import { Link } from "react-router";
-import Modal from "react-modal";
+import React, { PropTypes, Component, cloneElement } from 'react';
+import { Link } from 'react-router';
+import Modal from 'react-modal';
 
-import { CrossSVGIcon } from "../components/SVGIcon";
+import { CrossSVGIcon } from '../components/SVGIcon';
 
-import { customModalStyles } from "../utils/ModalHelper";
+import { customModalStyles } from '../utils/ModalHelper';
 
 class ModalWrapper extends Component {
 
   static propTypes = {
     returnTo: PropTypes.string,
     routerActions: PropTypes.object.isRequired,
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   constructor(props) {
@@ -25,7 +25,7 @@ class ModalWrapper extends Component {
     routerActions.push(this.props.returnTo);
   }
 
-  render () {
+  render() {
     const { children } = this.props;
     const clonedChildren = React.Children.map(children, child => {
       return cloneElement(child, { onClose: this.close });
@@ -33,14 +33,15 @@ class ModalWrapper extends Component {
 
     return (
       <Modal
-        isOpen={true}
+        isOpen
         onRequestClose={this.close}
-        style={customModalStyles}>
+        style={customModalStyles}
+    >
 
         <div className="modal-header">
           <div className="logo">whistle'r</div>
           <a className="modal-close-link" onClick={this.close}>
-            <CrossSVGIcon color="white" size="medium"/>
+            <CrossSVGIcon color="white" size="medium" />
           </a>
         </div>
 

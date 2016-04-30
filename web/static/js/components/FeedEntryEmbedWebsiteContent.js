@@ -1,7 +1,7 @@
-import React, {Component, PropTypes} from "react";
-import ReactDOM from "react-dom";
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-import { findScrollableAncestor } from "../utils/dom";
+import { findScrollableAncestor } from '../utils/dom';
 
 class FeedEntryEmbedWebsiteContent extends Component {
 
@@ -9,7 +9,7 @@ class FeedEntryEmbedWebsiteContent extends Component {
     entry: PropTypes.object,
     onEntryShown: PropTypes.func.isRequired,
     onLoadingStart: PropTypes.func,
-    onLoadingComplete: PropTypes.func
+    onLoadingComplete: PropTypes.func,
   };
 
   constructor(props) {
@@ -53,9 +53,9 @@ class FeedEntryEmbedWebsiteContent extends Component {
   }
 
   updateLinksWithTargetBlank() {
-    const anchors = ReactDOM.findDOMNode(this).getElementsByTagName("a");
-    for (let i=0; i<anchors.length; i++) {
-      anchors[i].setAttribute("target", "_blank");
+    const anchors = ReactDOM.findDOMNode(this).getElementsByTagName('a');
+    for (let i = 0; i < anchors.length; i++) {
+      anchors[i].setAttribute('target', '_blank');
     }
   }
 
@@ -85,7 +85,8 @@ class FeedEntryEmbedWebsiteContent extends Component {
         <iframe
           src={entry.url}
           onLoad={this.onLoad}
-          className="entry-embed-site"/>
+          className="entry-embed-site"
+    />
       </div>
     );
   }

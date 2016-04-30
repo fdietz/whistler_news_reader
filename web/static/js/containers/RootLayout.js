@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 class RootLayout extends Component {
 
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {

@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes } from 'react';
 
 export default class LayoutPane extends Component {
 
   static propTypes = {
     children: PropTypes.node.isRequired,
-    size: PropTypes.number.isRequired
+    size: PropTypes.number.isRequired,
   };
 
   render() {

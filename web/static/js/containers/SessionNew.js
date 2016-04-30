@@ -1,18 +1,18 @@
-import React, {Component, PropTypes}   from "react";
-import { connect }          from "react-redux";
-import { Link }             from "react-router";
-import classNames from "classnames";
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import classNames from 'classnames';
 
-import { renderErrorsFor } from "../utils";
+import { renderErrorsFor } from '../utils';
 
-import { requestSignIn } from "../redux/modules/user";
-import { requestFetchRandomImages } from "../redux/modules/randomImages";
+import { requestSignIn } from '../redux/modules/user';
+import { requestFetchRandomImages } from '../redux/modules/randomImages';
 
 class SessionNew extends Component {
 
   static propTypes = {
     errors: PropTypes.array,
-    randomImages: PropTypes.object
+    randomImages: PropTypes.object,
   }
 
   constructor(props) {
@@ -52,13 +52,13 @@ class SessionNew extends Component {
       style = { backgroundImage: `url(${image.url})` };
     }
 
-    const cls = classNames("image", {
-      "fade-in": image
+    const cls = classNames('image', {
+      'fade-in': image,
     });
 
     return (
       <div className="panel-container">
-        <div className={cls} style={style}/>
+        <div className={cls} style={style} />
         <div className="panel">
           <header>
             <div className="logo">
@@ -66,7 +66,7 @@ class SessionNew extends Component {
             </div>
           </header>
           <form onSubmit={this.handleSubmit}>
-            {renderErrorsFor(errors, "base")}
+            {renderErrorsFor(errors, 'base')}
 
             <label className="field-label">
               Email
@@ -75,9 +75,10 @@ class SessionNew extends Component {
                 className="field"
                 type="Email"
                 placeholder="Email"
-                focus={true}
-                placeholder="yourmail@mail.com"/>
-              {renderErrorsFor(errors, "email")}
+                focus
+                placeholder="yourmail@mail.com"
+    />
+              {renderErrorsFor(errors, 'email')}
             </label>
 
             <label className="field-label">
@@ -87,8 +88,9 @@ class SessionNew extends Component {
                 className="field"
                 type="password"
                 placeholder="Password"
-                placeholder="password"/>
-              {renderErrorsFor(errors, "password")}
+                placeholder="password"
+    />
+              {renderErrorsFor(errors, 'password')}
             </label>
 
             <div className="button-bar mt2">
@@ -112,7 +114,7 @@ class SessionNew extends Component {
 
 const mapStateToProps = (state) => ({
   errors: state.user.errors,
-  randomImages: state.randomImages
+  randomImages: state.randomImages,
 });
 
 export default connect(mapStateToProps)(SessionNew);

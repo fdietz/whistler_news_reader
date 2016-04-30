@@ -1,24 +1,24 @@
-import React, {Component, PropTypes} from "react";
-import shallowCompare from "react-addons-shallow-compare";
-import { Link } from "react-router";
-import classNames from "classnames";
-import debounce from "lodash.debounce";
-import { DragDropContext } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
+import React, { Component, PropTypes } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
+import { Link } from 'react-router';
+import classNames from 'classnames';
+import debounce from 'lodash.debounce';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 import {
   HouseSVGIcon,
   ListSVGIcon,
   PlusSVGIcon,
-  GoBackSVGIcon
-} from "../components/SVGIcon";
+  GoBackSVGIcon,
+} from '../components/SVGIcon';
 
-import Button from "../components/Button";
+import Button from '../components/Button';
 
-import CategoryDropTarget from "./sidebar/CategoryDropTarget";
-import SubscriptionDragSource from "./sidebar/SubscriptionDragSource";
+import CategoryDropTarget from './sidebar/CategoryDropTarget';
+import SubscriptionDragSource from './sidebar/SubscriptionDragSource';
 
-import { bindHotKey, unbindHotKey } from "../utils/HotKeys";
+import { bindHotKey, unbindHotKey } from '../utils/HotKeys';
 
 class Sidebar extends Component {
 
@@ -30,7 +30,7 @@ class Sidebar extends Component {
     subscriptionsActions: PropTypes.object.isRequired,
     categoriesActions: PropTypes.object.isRequired,
     sidebarActions: PropTypes.object.isRequired,
-    routerActions: PropTypes.object.isRequired
+    routerActions: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -59,7 +59,8 @@ class Sidebar extends Component {
         subscription={subscription}
         active={active}
         onDrop={this.handleOnFeedDrop}
-        onLinkClick={sidebarActions.hideSidebar}/>
+        onLinkClick={sidebarActions.hideSidebar}
+    />
     );
   }
 
@@ -68,9 +69,9 @@ class Sidebar extends Component {
     const key = path;
     const active = currentPathname.startsWith(path);
 
-    const cls = classNames({ "sidebar-nav-list__name": true, active: active });
-    const listItemCls = classNames({ active: active, "sidebar-nav-list__item": true });
-    const currentColor = active ? "white" : "gray";
+    const cls = classNames({ 'sidebar-nav-list__name': true, active: active });
+    const listItemCls = classNames({ active: active, 'sidebar-nav-list__item': true });
+    const currentColor = active ? 'white' : 'gray';
 
     return (
       <li className={listItemCls} key={key}>
@@ -79,7 +80,8 @@ class Sidebar extends Component {
           <Link
             onClick={this.props.sidebarActions.hideSidebar}
             to={path}
-            className={cls}>{label}</Link>
+            className={cls}
+    >{label}</Link>
         </div>
       </li>
     );
@@ -102,7 +104,8 @@ class Sidebar extends Component {
         active={active}
         totalUnreadCount={totalUnreadCount}
         onExpandClick={this.onCategoryExpandClick}
-        onLinkClick={sidebarActions.hideSidebar}>
+        onLinkClick={sidebarActions.hideSidebar}
+    >
          {matchingSubscriptions.length > 0 && category.expanded &&
            <div className="sidebar-nav-list nested">
              {matchingSubscriptions.map(subscription =>
@@ -118,12 +121,13 @@ class Sidebar extends Component {
     return (
       <li className="sidebar-nav-list__item" key="addCategory">
         <div className="sidebar-nav-list__meta">
-          <PlusSVGIcon color="gray"/>
+          <PlusSVGIcon color="gray" />
           <a
             href="#"
             className="sidebar-nav-list__name action"
             onClick={this.onNewCategoryClick}
-            title="Add new category">Category</a>
+            title="Add new category"
+    >Category</a>
         </div>
       </li>
     );
@@ -132,19 +136,19 @@ class Sidebar extends Component {
   componentDidUpdate() {
     const { currentPathname, subscriptions } = this.props;
 
-    this.paths = ["/today", "/all"];
+    this.paths = ['/today', '/all'];
     this.paths = [...this.paths, ...subscriptions.map((subscription) => `/subscriptions/${subscription.id}`)];
     this.currentPathIndex = this.paths.indexOf(currentPathname);
   }
 
   componentDidMount() {
-    bindHotKey("nextFeed", () => this.debouncedOnNextClick());
-    bindHotKey("previousFeed", () => this.debouncedOnPreviousClick());
+    bindHotKey('nextFeed', () => this.debouncedOnNextClick());
+    bindHotKey('previousFeed', () => this.debouncedOnPreviousClick());
   }
 
   componentWillUnmount() {
-    unbindHotKey("nextFeed");
-    unbindHotKey("previousFeed");
+    unbindHotKey('nextFeed');
+    unbindHotKey('previousFeed');
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -152,15 +156,15 @@ class Sidebar extends Component {
   }
 
   onNextClick() {
-    if (this.currentPathIndex+1 < this.paths.length) {
-      const path = this.paths[this.currentPathIndex+1];
+    if (this.currentPathIndex + 1 < this.paths.length) {
+      const path = this.paths[this.currentPathIndex + 1];
       routerActions.push(path);
     }
   }
 
   onPreviousClick() {
-    if (this.currentPathIndex-1 >= 0) {
-      const path = this.paths[this.currentPathIndex-1];
+    if (this.currentPathIndex - 1 >= 0) {
+      const path = this.paths[this.currentPathIndex - 1];
       routerActions.push(path);
     }
   }
@@ -168,7 +172,7 @@ class Sidebar extends Component {
   onAddClick(e) {
     e.preventDefault();
     this.props.sidebarActions.hideSidebar();
-    this.props.routerActions.push({ pathname: "/feeds/new", state: { modal: true } });
+    this.props.routerActions.push({ pathname: '/feeds/new', state: { modal: true } });
   }
 
   onCategoryExpandClick(category, event) {
@@ -180,7 +184,7 @@ class Sidebar extends Component {
   onNewCategoryClick(event) {
     event.preventDefault();
     this.props.sidebarActions.hideSidebar();
-    this.props.routerActions.push({ pathname: "/categories/new", state: { modal: true } });
+    this.props.routerActions.push({ pathname: '/categories/new', state: { modal: true } });
   }
 
   handleOnFeedDrop(subscriptionId, categoryId) {
@@ -194,9 +198,9 @@ class Sidebar extends Component {
     const { subscriptions, categories, sidebar, sidebarActions } = this.props;
     const subscriptionsWithoutCategory = subscriptions.filter(subscription => !subscription.category_id);
 
-    const sidebarCls = classNames("sidebar", {
+    const sidebarCls = classNames('sidebar', {
       hidden: !sidebar.isVisible,
-      visible: sidebar.isVisible
+      visible: sidebar.isVisible,
     });
 
     return (
@@ -210,13 +214,14 @@ class Sidebar extends Component {
             <Button
               onClick={this.onAddClick}
               type="primary"
-              expand={true}
-              title="Add new Subscription">+ Subscriptions</Button>
+              expand
+              title="Add new Subscription"
+    >+ Subscriptions</Button>
           </div>
 
           <div className="sidebar-nav-list">
-            {this.renderLink("Today", "/today/entries", HouseSVGIcon)}
-            {this.renderLink("All", "/all/entries", ListSVGIcon)}
+            {this.renderLink('Today', '/today/entries', HouseSVGIcon)}
+            {this.renderLink('All', '/all/entries', ListSVGIcon)}
           </div>
 
           <div className="sidebar-nav-list">
@@ -231,7 +236,7 @@ class Sidebar extends Component {
         </div>
         <div className="sidebar-footer hide-large-screen">
           <a href="#" onClick={sidebarActions.toggle} className="btn gray">
-            <GoBackSVGIcon color="gray" size="small" className="mr1"/> Close
+            <GoBackSVGIcon color="gray" size="small" className="mr1" /> Close
           </a>
         </div>
       </div>

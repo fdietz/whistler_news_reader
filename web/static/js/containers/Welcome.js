@@ -1,10 +1,10 @@
-import React, {Component, PropTypes} from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class Welcome extends Component {
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {

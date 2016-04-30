@@ -1,13 +1,13 @@
-import React, { PropTypes, Component } from "react";
-import { DropTarget } from "react-dnd";
-import shallowCompare from "react-addons-shallow-compare";
-import classNames from "classnames";
+import React, { PropTypes, Component } from 'react';
+import { DropTarget } from 'react-dnd';
+import shallowCompare from 'react-addons-shallow-compare';
+import classNames from 'classnames';
 
-import { Link } from "react-router";
-import Badge from "../Badge";
+import { Link } from 'react-router';
+import Badge from '../Badge';
 import {
-  ArrowRightBoldSVGIcon
-} from "../SVGIcon";
+  ArrowRightBoldSVGIcon,
+} from '../SVGIcon';
 
 class CategoryDropTarget extends Component {
   static propTypes = {
@@ -18,12 +18,12 @@ class CategoryDropTarget extends Component {
     category: PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      expanded: PropTypes.bool.isRequired
+      expanded: PropTypes.bool.isRequired,
     }).isRequired,
     active: PropTypes.bool.isRequired,
     onExpandClick: PropTypes.func.isRequired,
     totalUnreadCount: PropTypes.number,
-    onLinkClick: PropTypes.func.isRequired
+    onLinkClick: PropTypes.func.isRequired,
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -37,23 +37,23 @@ class CategoryDropTarget extends Component {
 
     let backgroundColor;
     if (isActive) {
-      backgroundColor = "rgba(0,0,0,0.5)";
+      backgroundColor = 'rgba(0,0,0,0.5)';
     }
 
-    const cls = classNames("sidebar-nav-list__item", {
-      active: active
+    const cls = classNames('sidebar-nav-list__item', {
+      active: active,
     });
 
-    const linkCls = classNames("sidebar-nav-list__name", {
-      active: active
+    const linkCls = classNames('sidebar-nav-list__name', {
+      active: active,
     });
 
-    const toggleCls = classNames("sidebar-nav-list__expand-toggle", {
-      expanded: category.expanded
-    })
+    const toggleCls = classNames('sidebar-nav-list__expand-toggle', {
+      expanded: category.expanded,
+    });
 
     const path = `/categories/${category.id}`;
-    const currentColor = active ? "white" : "gray";
+    const currentColor = active ? 'white' : 'gray';
 
     return connectDropTarget(
       <div className={cls} style={{ backgroundColor }}>
@@ -61,16 +61,18 @@ class CategoryDropTarget extends Component {
           <a
             href="#"
             className={toggleCls}
-            onClick={onExpandClick.bind(this, category)}>
-            <ArrowRightBoldSVGIcon color={currentColor}/>
+            onClick={onExpandClick.bind(this, category)}
+    >
+            <ArrowRightBoldSVGIcon color={currentColor} />
          </a>
          <Link
-          onClick={onLinkClick}
-          to={path}
-          className={linkCls}
-          title={category.title}>{category.title}</Link>
+           onClick={onLinkClick}
+           to={path}
+           className={linkCls}
+           title={category.title}
+    >{category.title}</Link>
          {totalUnreadCount > 0 &&
-           <Badge count={totalUnreadCount} className="sidebar-nav-list__badge"/>
+           <Badge count={totalUnreadCount} className="sidebar-nav-list__badge" />
          }
         </div>
         {children}
@@ -80,23 +82,23 @@ class CategoryDropTarget extends Component {
 }
 
 const ItemTypes = {
-  SUBSCRIPTION: "subscription"
+  SUBSCRIPTION: 'subscription',
 };
 
 const categoryTarget = {
   drop(props) {
     return {
       id: props.category.id,
-      title: props.category.title
+      title: props.category.title,
     };
-  }
+  },
 };
 
 function collect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver(),
-    canDrop: monitor.canDrop()
+    canDrop: monitor.canDrop(),
   };
 }
 

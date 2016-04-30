@@ -1,51 +1,51 @@
-/*eslint no-undefined: 0*/
-import test from "ava";
+/* eslint no-undefined: 0*/
+import test from 'ava';
 
-import { CATEGORY_FORM_UPDATE, CATEGORY_FORM_RESET } from "../categoryForm";
-import reducer from "../categoryForm";
+import { CATEGORY_FORM_UPDATE, CATEGORY_FORM_RESET } from '../categoryForm';
+import reducer from '../categoryForm';
 
-test("categoryForm reducer returns default state", t => {
+test('categoryForm reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), {
-    title: "",
+    title: '',
     isLoading: false,
-    errors: null
+    errors: null,
   });
 });
 
-test("categoryForm reducer handles CATEGORY_FORM_UPDATE with empty payload", t => {
+test('categoryForm reducer handles CATEGORY_FORM_UPDATE with empty payload', t => {
   t.deepEqual(reducer(undefined, { type: CATEGORY_FORM_UPDATE, payload: null }), {
-    title: "",
+    title: '',
     isLoading: true,
-    errors: null
+    errors: null,
   });
 });
 
-test("categoryForm reducer handles CATEGORY_FORM_UPDATE with payload", t => {
+test('categoryForm reducer handles CATEGORY_FORM_UPDATE with payload', t => {
   t.deepEqual(reducer(undefined, {
     type: CATEGORY_FORM_UPDATE,
-    payload: { title: "new" }
+    payload: { title: 'new' },
   }), {
-    title: "new",
+    title: 'new',
     isLoading: false,
-    errors: null
+    errors: null,
   });
 });
 
-test("categoryForm reducer handles CATEGORY_FORM_UPDATE with error", t => {
+test('categoryForm reducer handles CATEGORY_FORM_UPDATE with error', t => {
   t.deepEqual(reducer(undefined, {
     type: CATEGORY_FORM_UPDATE,
-    payload: { errors: "message" }
+    payload: { errors: 'message' },
   }), {
-    title: "",
+    title: '',
     isLoading: false,
-    errors: "message"
+    errors: 'message',
   });
 });
 
-test("categoryForm reducer handles CATEGORY_FORM_RESET with empty payload", t => {
+test('categoryForm reducer handles CATEGORY_FORM_RESET with empty payload', t => {
   t.deepEqual(reducer(undefined, { type: CATEGORY_FORM_RESET, payload: {} }), {
-    title: "",
+    title: '',
     isLoading: false,
-    errors: null
+    errors: null,
   });
 });

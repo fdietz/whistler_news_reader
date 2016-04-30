@@ -1,7 +1,7 @@
-import React, {Component, PropTypes} from "react";
-import ReactDOM from "react-dom";
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-import { findScrollableAncestor } from "../utils/dom";
+import { findScrollableAncestor } from '../utils/dom';
 
 export default class InfiniteScroll extends Component {
 
@@ -9,13 +9,13 @@ export default class InfiniteScroll extends Component {
     children: PropTypes.node.isRequired,
     hasMore: PropTypes.bool.isRequired,
     loadMore: PropTypes.func.isRequired,
-    threshold: PropTypes.number.isRequired
+    threshold: PropTypes.number.isRequired,
   };
 
   static defaultProps = {
     hasMore: true,
     loadMore: function () {},
-    threshold: 250
+    threshold: 250,
   }
 
   constructor(props) {
@@ -48,7 +48,7 @@ export default class InfiniteScroll extends Component {
   handleScrollEvent() {
     if (!this.props.hasMore) return;
 
-    let scrollTop    = this.scrollableAncestor.scrollTop;
+    let scrollTop = this.scrollableAncestor.scrollTop;
     let scrollHeight = this.scrollableAncestor.scrollHeight;
     let offsetHeight = this.scrollableAncestor.offsetHeight;
 
@@ -59,19 +59,19 @@ export default class InfiniteScroll extends Component {
 
   attachScrollListener() {
     if (!this.props.hasMore) return;
-    this.scrollableAncestor.addEventListener("scroll", this.handleScrollEvent);
+    this.scrollableAncestor.addEventListener('scroll', this.handleScrollEvent);
   }
 
   detachScrollListener() {
-    this.scrollableAncestor.removeEventListener("scroll", this.handleScrollEvent);
+    this.scrollableAncestor.removeEventListener('scroll', this.handleScrollEvent);
   }
 
   attachResizeListener() {
-    window.addEventListener("resize", this.handleScrollEvent);
+    window.addEventListener('resize', this.handleScrollEvent);
   }
 
   detachResizeListener() {
-    window.removeEventListener("resize", this.handleScrollEvent);
+    window.removeEventListener('resize', this.handleScrollEvent);
   }
 
   componentWillUnmount() {

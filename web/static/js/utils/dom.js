@@ -9,10 +9,10 @@ export function findScrollableAncestor(currentNode) {
     }
 
     const style = window.getComputedStyle(node);
-    const overflowY = style.getPropertyValue("overflow-y") ||
-      style.getPropertyValue("overflow");
+    const overflowY = style.getPropertyValue('overflow-y') ||
+      style.getPropertyValue('overflow');
 
-    if (overflowY === "auto" || overflowY === "scroll") {
+    if (overflowY === 'auto' || overflowY === 'scroll') {
       return node;
     }
   }
@@ -21,7 +21,7 @@ export function findScrollableAncestor(currentNode) {
   return window;
 }
 
-export function isElementInViewport (element) {
+export function isElementInViewport(element) {
   const rect = element.getBoundingClientRect();
 
   return (

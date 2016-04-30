@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from "react";
-import classNames from "classnames";
-import DateTimeHelper from "../utils/DateTimeHelper";
-import BackgroundImage from "./BackgroundImage";
+import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames';
+import DateTimeHelper from '../utils/DateTimeHelper';
+import BackgroundImage from './BackgroundImage';
 
 class FeedEntryGridItem extends Component {
 
@@ -11,11 +11,11 @@ class FeedEntryGridItem extends Component {
       title: PropTypes.string.isRequired,
       unread: PropTypes.bool.isRequired,
       summary: PropTypes.string,
-      content: PropTypes.string.isRequired
+      content: PropTypes.string.isRequired,
     }).isRequired,
     onClick: PropTypes.func.isRequired,
     isSelected: PropTypes.bool,
-    className: PropTypes.string
+    className: PropTypes.string,
   };
 
   extractUrl(str) {
@@ -33,9 +33,9 @@ class FeedEntryGridItem extends Component {
   render() {
     const { entry, isSelected = false, onClick, className } = this.props;
 
-    let cls = classNames("item", className, {
+    let cls = classNames('item', className, {
       selected: isSelected,
-      unread: entry.unread
+      unread: entry.unread,
     });
 
     const date = new Date(entry.published);
@@ -45,7 +45,7 @@ class FeedEntryGridItem extends Component {
     return (
       <div className={cls} onClick={onClick}>
         {imageUrl &&
-          <BackgroundImage imageUrl={imageUrl} className="entry-grid__image"/>
+          <BackgroundImage imageUrl={imageUrl} className="entry-grid__image" />
         }
         <div className="entry-grid__caption">
           <div className="entry-title">{entry.title}</div>
