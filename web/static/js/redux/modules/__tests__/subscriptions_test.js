@@ -10,7 +10,7 @@ import reducer, {
 } from "../subscriptions";
 
 test("subscriptions reducer returns default state", t => {
-  t.same(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });
+  t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });
 });
 
 test("subscriptions reducer FETCH_SUBSCRIPTIONS without payload", t => {
@@ -18,7 +18,7 @@ test("subscriptions reducer FETCH_SUBSCRIPTIONS without payload", t => {
     type: FETCH_SUBSCRIPTIONS,
     payload: null
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {}, listedIds: [], isLoading: true, error: null
   });
 });
@@ -33,7 +33,7 @@ test("subscriptions reducer FETCH_SUBSCRIPTIONS with payload", t => {
       }
     }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {
       1: { id: 1 }
     },
@@ -49,7 +49,7 @@ test("subscriptions reducer FETCH_SUBSCRIPTIONS with error", t => {
     error: true,
     payload: { message: "too short" }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {},
     listedIds: [],
     isLoading: false,
@@ -62,7 +62,7 @@ test("subscriptions reducer CREATE_SUBSCRIPTION with payload", t => {
     type: CREATE_SUBSCRIPTION,
     payload: { id: 1 }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {
       1: { id: 1 }
     },
@@ -85,7 +85,7 @@ test("subscriptions reducer UPDATE_SUBSCRIPTION with payload", t => {
     type: UPDATE_SUBSCRIPTION,
     payload: { id: 1, title: "new" }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {
       1: { id: 1, title: "new" }
     },
@@ -108,7 +108,7 @@ test("subscriptions reducer DECREMENT_UNREAD_COUNT", t => {
     type: DECREMENT_UNREAD_COUNT,
     payload: { id: 1 }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {
       1: { id: 1, unread_count: 1 }
     },
@@ -131,7 +131,7 @@ test("subscriptions reducer RESET_UNREAD_COUNT for feed_id", t => {
     type: RESET_UNREAD_COUNT,
     payload: { id: 1 }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {
       1: { id: 1, unread_count: 0, category_id: 1 }
     },
@@ -154,7 +154,7 @@ test("subscriptions reducer REMOVE_SUBSCRIPTION with payload", t => {
     type: REMOVE_SUBSCRIPTION,
     payload: { id: 1 }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {},
     listedIds: [],
     isLoading: false,

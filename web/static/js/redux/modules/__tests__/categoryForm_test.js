@@ -5,47 +5,47 @@ import { CATEGORY_FORM_UPDATE, CATEGORY_FORM_RESET } from "../categoryForm";
 import reducer from "../categoryForm";
 
 test("categoryForm reducer returns default state", t => {
-  t.same(reducer(undefined, {}), {
-    title: null,
+  t.deepEqual(reducer(undefined, {}), {
+    title: "",
     isLoading: false,
-    error: null
+    errors: null
   });
 });
 
 test("categoryForm reducer handles CATEGORY_FORM_UPDATE with empty payload", t => {
-  t.same(reducer(undefined, { type: CATEGORY_FORM_UPDATE, payload: null }), {
-    title: null,
+  t.deepEqual(reducer(undefined, { type: CATEGORY_FORM_UPDATE, payload: null }), {
+    title: "",
     isLoading: true,
-    error: null
+    errors: null
   });
 });
 
 test("categoryForm reducer handles CATEGORY_FORM_UPDATE with payload", t => {
-  t.same(reducer(undefined, {
+  t.deepEqual(reducer(undefined, {
     type: CATEGORY_FORM_UPDATE,
     payload: { title: "new" }
   }), {
     title: "new",
     isLoading: false,
-    error: null
+    errors: null
   });
 });
 
 test("categoryForm reducer handles CATEGORY_FORM_UPDATE with error", t => {
-  t.same(reducer(undefined, {
+  t.deepEqual(reducer(undefined, {
     type: CATEGORY_FORM_UPDATE,
-    payload: { error: "message" }
+    payload: { errors: "message" }
   }), {
-    title: null,
+    title: "",
     isLoading: false,
-    error: "message"
+    errors: "message"
   });
 });
 
 test("categoryForm reducer handles CATEGORY_FORM_RESET with empty payload", t => {
-  t.same(reducer(undefined, { type: CATEGORY_FORM_RESET, payload: {} }), {
-    title: null,
+  t.deepEqual(reducer(undefined, { type: CATEGORY_FORM_RESET, payload: {} }), {
+    title: "",
     isLoading: false,
-    error: null
+    errors: null
   });
 });

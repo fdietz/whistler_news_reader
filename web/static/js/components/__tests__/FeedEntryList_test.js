@@ -19,5 +19,5 @@ const entry = {
 test("FeedEntryList renders correctly", t => {
   const wrapper = shallow(<FeedEntryList entries={[entry]} currentEntry={entry} onEntryClick={() => {}}/>);
   const feedEntry = wrapper.find(FeedEntryListItem);
-  t.same(feedEntry.prop("entry").title, "title");
+  t.deepEqual(feedEntry.prop("entry").title, "title");
 });

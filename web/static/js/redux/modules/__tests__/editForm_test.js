@@ -5,7 +5,7 @@ import { EDIT_FORM_UPDATE, EDIT_FORM_RESET } from "../editForm";
 import reducer from "../editForm";
 
 test("editForm reducer returns default state", t => {
-  t.same(reducer(undefined, {}), {
+  t.deepEqual(reducer(undefined, {}), {
     title: null,
     isLoading: false,
     error: null
@@ -13,7 +13,7 @@ test("editForm reducer returns default state", t => {
 });
 
 test("editForm reducer handles EDIT_FORM_UPDATE with empty payload", t => {
-  t.same(reducer(undefined, { type: EDIT_FORM_UPDATE, payload: null }), {
+  t.deepEqual(reducer(undefined, { type: EDIT_FORM_UPDATE, payload: null }), {
     title: null,
     isLoading: true,
     error: null
@@ -21,7 +21,7 @@ test("editForm reducer handles EDIT_FORM_UPDATE with empty payload", t => {
 });
 
 test("editForm reducer handles EDIT_FORM_UPDATE with payload", t => {
-  t.same(reducer(undefined, {
+  t.deepEqual(reducer(undefined, {
     type: EDIT_FORM_UPDATE,
     payload: { title: "new" }
   }), {
@@ -32,7 +32,7 @@ test("editForm reducer handles EDIT_FORM_UPDATE with payload", t => {
 });
 
 test("editForm reducer handles EDIT_FORM_UPDATE with error", t => {
-  t.same(reducer(undefined, {
+  t.deepEqual(reducer(undefined, {
     type: EDIT_FORM_UPDATE,
     payload: { error: "message" }
   }), {
@@ -43,7 +43,7 @@ test("editForm reducer handles EDIT_FORM_UPDATE with error", t => {
 });
 
 test("editForm reducer handles EDIT_FORM_RESET with empty payload", t => {
-  t.same(reducer(undefined, { type: EDIT_FORM_RESET, payload: {} }), {
+  t.deepEqual(reducer(undefined, { type: EDIT_FORM_RESET, payload: {} }), {
     title: null,
     isLoading: false,
     error: null

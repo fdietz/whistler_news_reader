@@ -37,7 +37,7 @@ test.afterEach(() => {
 //
 //   const store = mockStore({ item: {} }, expectedActions);
 //   return store.dispatch(requestCreateFeed(feedUrl)).then(result => {
-//     t.same(result, { errors: [ { feed_url: "Not found" } ] });
+//     t.deepEqual(result, { errors: [ { feed_url: "Not found" } ] });
 //   });
 // });
 
@@ -56,12 +56,12 @@ test.afterEach(() => {
 //
 //   const store = mockStore({ item: {} }, expectedActions);
 //   return store.dispatch(requestCreateFeed(feedUrl)).then(result => {
-//     t.same(result, { item: { id: 1, title: "title" } });
+//     t.deepEqual(result, { item: { id: 1, title: "title" } });
 //   });
 // });
 
 test("feedForm reducer returns default state", t => {
-  t.same(reducer(undefined, {}), {
+  t.deepEqual(reducer(undefined, {}), {
     searchTerm: "",
     feedExists: false,
     isFeedUrl: false,
@@ -73,7 +73,7 @@ test("feedForm reducer returns default state", t => {
 });
 
 test("feedForm reducer handles FEED_FORM_UPDATE with empty payload", t => {
-  t.same(reducer(undefined, { type: FEED_FORM_UPDATE, payload: null }), {
+  t.deepEqual(reducer(undefined, { type: FEED_FORM_UPDATE, payload: null }), {
     searchTerm: "",
     feedExists: false,
     isFeedUrl: false,
@@ -85,7 +85,7 @@ test("feedForm reducer handles FEED_FORM_UPDATE with empty payload", t => {
 });
 
 test("feedForm reducer handles FEED_FORM_UPDATE with payload", t => {
-  t.same(reducer(undefined, {
+  t.deepEqual(reducer(undefined, {
     type: FEED_FORM_UPDATE,
     payload: { searchTerm: "http://test.de/rss2.xml" }
   }), {

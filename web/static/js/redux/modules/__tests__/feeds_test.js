@@ -5,7 +5,7 @@ import reducer, {
 } from "../feeds";
 
 test("feeds reducer returns default state", t => {
-  t.same(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });
+  t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });
 });
 
 test("feeds reducer SEARCH_FEEDS without payload", t => {
@@ -13,7 +13,7 @@ test("feeds reducer SEARCH_FEEDS without payload", t => {
     type: SEARCH_FEEDS,
     payload: null
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {}, listedIds: [], isLoading: true, error: null
   });
 });
@@ -28,7 +28,7 @@ test("feeds reducer SEARCH_FEEDS with payload", t => {
       }
     }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {
       1: { id: 1 }
     },
@@ -44,7 +44,7 @@ test("feeds reducer SEARCH_FEEDS with error", t => {
     error: true,
     payload: { message: "too short" }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {},
     listedIds: [],
     isLoading: false,

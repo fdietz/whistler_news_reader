@@ -8,7 +8,7 @@ import reducer, {
 } from "../categories";
 
 test("categories reducer returns default state", t => {
-  t.same(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });
+  t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });
 });
 
 test("categories reducer ADD_CATEGORY", t => {
@@ -16,7 +16,7 @@ test("categories reducer ADD_CATEGORY", t => {
     type: ADD_CATEGORY,
     payload: { id: 1 }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {
       1: { id: 1 }
     },
@@ -36,7 +36,7 @@ test("categories reducer FETCH_CATEGORIES", t => {
       }
     }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {
       1: { id: 1 }
     },
@@ -59,7 +59,7 @@ test("categories reducer UPDATE_CATEGORY", t => {
     type: UPDATE_CATEGORY,
     payload: { id: 1, title: "new" }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {
       1: { id: 1, title: "new" }
     },
@@ -82,7 +82,7 @@ test("categories reducer REMOVE_CATEGORY", t => {
     type: REMOVE_CATEGORY,
     payload: { id: 1 }
   });
-  t.same(newState, {
+  t.deepEqual(newState, {
     byId: {},
     listedIds: [],
     isLoading: false,
