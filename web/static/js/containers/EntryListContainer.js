@@ -322,7 +322,23 @@ class EntryListContainer extends Component {
 
     return (
       <div className="main-master-container">
-        {entries.listedIds.length > 0 &&
+        {!hasChildren && sortedSubscriptions.length === 0 &&
+          <div className="layout-master-container">
+            <LayoutHeader>{entryListToolbar}</LayoutHeader>
+            <LayoutContent>
+              <Teaser>
+                <EarthSVGIcon size="xxlarge" color="gray" />
+                <h1>Welcome to whistle'r news reader</h1>
+                <h2>This is exciting!</h2>
+                <p>
+                  Let's get started and <Link to={{ pathname: '/opml_import', state: { modal: true } }}>import</Link> or <Link to={{ pathname: '/feeds/new', state: { modal: true } }}>subscribe</Link> to new feeds.
+                </p>
+              </Teaser>
+            </LayoutContent>
+          </div>
+        }
+
+        {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
           <div className={masterListCls}>
             {currentViewLayout === 'list' &&
               <div className="layout-master-container">
@@ -345,41 +361,31 @@ class EntryListContainer extends Component {
           </div>
         }
 
-        {!hasChildren &&
-          <div className="main-detail-container">
-            <div className="detail">
-              <div className="layout-master-container">
-                <LayoutHeader>{profileToolbar}</LayoutHeader>
-                <LayoutContent>
-                  {sortedSubscriptions.length === 0 &&
-                    <Teaser>
-                      <EarthSVGIcon size="xxlarge" color="gray" />
-                      <h1>Welcome to whistle'r news reader</h1>
-                      <h2>This is exciting!</h2>
-                      <p>
-                        Let's get started and <Link to={{ pathname: '/opml_import', state: { modal: true } }}>import</Link> or <Link to={{ pathname: '/feeds/new', state: { modal: true } }}>subscribe</Link> to new feeds.
-                      </p>
-                    </Teaser>
-                  }
-                  {sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
-                    <Teaser>
-                      <CheckmarkSVGIcon size="xxlarge" color="gray" />
-                      <h2>Nothing left to read here</h2>
-                      <p>
-                        You can try to  <a href="#" onClick={this.handleRefresh}>refresh</a> or <Link to={{ pathname: '/feeds/new', state: { modal: true } }}>subscribe</Link> to new feeds.
-                      </p>
-                    </Teaser>
-                  }
-                  {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
-                    <Teaser>
-                      <EarthSVGIcon size="xxlarge" color="gray" />
-                      <h2>Moin moin from Hamburg</h2>
-                      <p>Have a nice day!</p>
-                    </Teaser>
-                  }
-                </LayoutContent>
-              </div>
-            </div>
+        {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
+          <div className="layout-master-container hide-small-screen">
+            <LayoutHeader>{profileToolbar}</LayoutHeader>
+            <LayoutContent>
+              <Teaser>
+                <EarthSVGIcon size="xxlarge" color="gray" />
+                <h2>Moin moin from Hamburg</h2>
+                <p>Have a nice day!</p>
+              </Teaser>
+            </LayoutContent>
+          </div>
+        }
+
+        {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
+          <div className="layout-master-container">
+            <LayoutHeader>{entryListToolbar}</LayoutHeader>
+            <LayoutContent>
+              <Teaser>
+                <CheckmarkSVGIcon size="xxlarge" color="gray" />
+                <h2>Nothing left to read here</h2>
+                <p>
+                  You can try to  <a href="#" onClick={this.handleRefresh}>refresh</a> or <Link to={{ pathname: '/feeds/new', state: { modal: true } }}>subscribe</Link> to new feeds.
+                </p>
+              </Teaser>
+            </LayoutContent>
           </div>
         }
 
