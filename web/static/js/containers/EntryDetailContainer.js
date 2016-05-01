@@ -21,6 +21,7 @@ import {
   getHasNextEntry,
   getPreviousEntryId,
   getNextEntryId,
+  getEnhancedEntry
 } from '../redux/selectors';
 
 import { entryPath, mapRequestParams, goBackPathname } from '../utils/navigator';
@@ -116,7 +117,6 @@ class EntryDetailContainer extends Component {
   }
 
   onChangeViewModeClick(mode) {
-    console.log('mode', mode);
     this.setState({ currentViewMode: mode });
   }
 
@@ -205,7 +205,7 @@ function mapStateToProps(state, ownProps) {
   return {
     currentUser: state.user.current,
     entries: state.entries,
-    entry: state.entries.byId[ownProps.params.id],
+    entry: getEnhancedEntry(state, ownProps),
     hasPreviousEntry: getHasPreviousEntry(state, ownProps),
     hasNextEntry: getHasNextEntry(state, ownProps),
     previousEntryId: getPreviousEntryId(state, ownProps),

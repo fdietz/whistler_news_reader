@@ -67,6 +67,15 @@ export const getSortedEntries = createSelector(
   }
 );
 
+export function getEnhancedEntry(state, ownProps) {
+  const entry = state.entries.byId[+ownProps.params.id];
+  const subscription = state.subscriptions.byId[+entry.subscription_id];
+  if (subscription) {
+    return { ...entry, subscription_title: subscription.title };
+  }
+  return null;
+}
+
 function currentIndex(entryIds, entryId) {
   return entryId ? entryIds.findIndex(id => id === entryId) : 0;
 }

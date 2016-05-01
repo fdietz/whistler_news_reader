@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
 import { findScrollableAncestor } from '../utils/dom';
+import FeedEntryHeader from './FeedEntryHeader';
+import FeedEntrySubheader from './FeedEntrySubheader';
 import axios from '../utils/APIHelper';
 
 class FeedEntryEmbedArticleContent extends Component {
@@ -96,20 +98,11 @@ class FeedEntryEmbedArticleContent extends Component {
 
     return (
       <div className="feed-entry-content">
-          <div>
-            <div className="feed-entry-content__header">
-              <h2 className="title">
-                <a href={entry.url} target="_blank">{entry.title}</a>
-              </h2>
-            </div>
-            <div className="feed-entry-content__subheader">
-              {entry.subscription_title} by {entry.author} / {entry.published}
-            </div>
-            <div
-              className="feed-entry-content__content"
-              dangerouslySetInnerHTML={this.rawContent()}
-    />
-          </div>
+        <FeedEntryHeader {...entry} />
+        <FeedEntrySubheader {...entry} />
+        <div
+          className="feed-entry-content__content"
+          dangerouslySetInnerHTML={this.rawContent()} />
       </div>
     );
   }
