@@ -97,11 +97,9 @@
   blockquote,
   q {
     display: block;
-    padding: $space-2;
-    margin: $space-2;
-
-    font-style: italic;
-    quotes: "\201C""\201D""\2018""\2019";
+    padding: 0 $space-2;
+    margin: $space-2 $space-2 $space-2 0;
+    border-left: 2px solid $darken-1;
 
     p {
       display: inline;
@@ -110,29 +108,16 @@
     p:last-child {
       margin-bottom: 0;
     }
-
-    &:before,
-    &:after {
-      font-size: 3em;
-      line-height: .1em;
-      color: $darken-2;
-
-      vertical-align: -.4em;
-    }
-
-    &:before {
-      margin-right: .3em;
-      content: open-quote;
-    }
-
-    &:after {
-      margin-left: .1em;
-      content: close-quote;
-    }
   }
 
   // hide ugly feedburner feed links
   .feedflare {
     display: none;
+  }
+
+  pre {
+    padding: 0 $space-2;
+    margin: $space-2 $space-2 $space-2 0;
+    border-left: 2px solid $darken-1;
   }
 }
