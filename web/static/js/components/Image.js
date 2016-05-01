@@ -5,7 +5,7 @@ import classNames from 'classnames';
 class Image extends Component {
 
   static propTypes = {
-    src: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired,
     className: PropTypes.string,
     style: PropTypes.object,
   }
@@ -14,18 +14,21 @@ class Image extends Component {
     super(props);
 
     this.state = { loaded: false };
+    this.onImageLoad = this.onImageLoad.bind(this);
   }
 
   componentDidMount() {
-    const imgTag = ReactDOM.findDOMNode(this.refs.img);
-    const src = imgTag.getAttribute('src');
-
+    const { imageUrl } = this.props;
     const img = new window.Image();
-    img.onload = this.onImageLoad;
-    img.src = src;
+    img.onload = () => this.onImageLoad();
+    img.src = imageUrl;
   }
 
   onImageLoad() {
+    const imgTag = ReactDOM.findDOMNode(this.refs.img);
+    const { imageUrl } = this.props;
+    imgTag.src = imageUrl;
+
     this.setState({ loaded: true });
   }
 

@@ -6,14 +6,18 @@ $entry-grid-secondary-color: $gray-3;
 .entry-grid {
   display: flex;
   padding: $space-2;
-  flex-flow: wrap;
+  // flex-flow: wrap;
+  // justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: flex-start;
+  align-content: stretch;
 }
 
 .entry-grid__item {
   display: flex;
-  width: 9rem;
-  height: 9rem;
+  width: calc(100%/2 - .5rem);
+  height: calc(100%/2 - .5rem);
   padding: $space-1;
   margin: 0 $space-2 $space-2 0;
   color: $entry-grid-color;
@@ -21,6 +25,20 @@ $entry-grid-secondary-color: $gray-3;
   background-color: $entry-grid-bg-color;
   border-radius: $border-radius;
   flex-direction: column;
+  flex: 0 0 auto;
+
+  &:nth-child(2n) {
+    margin-right: 0;
+  }
+
+  @include respond-to(xlarge-screen) {
+    width: calc(100%/3 - .5rem);
+    height: calc(100%/3 - .5rem);
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
 
   &.selected {
     background-color: $gray-2;
@@ -55,7 +73,7 @@ $entry-grid-secondary-color: $gray-3;
   justify-content: flex-end;
 
   .entry-title {
-    max-height: 1rem;
+    max-height: .8rem;
     overflow: hidden;
     font-size: .8rem;
     line-height: 1em;
@@ -66,6 +84,7 @@ $entry-grid-secondary-color: $gray-3;
     font-size: .7rem;
     color: $darken-4;
     align-items: center;
+    overflow: hidden;
 
     .feed-title {
       text-overflow: ellipsis;
