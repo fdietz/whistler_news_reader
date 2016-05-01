@@ -56,8 +56,7 @@ const EntryContentToolbar = ({
         type="header"
         onClick={onGoBackClick}
         title="Go back"
-        className="show-small-screen-only mr1"
-  >
+        className="show-small-screen-only mr1">
         <GoBackSVGIcon color="light-gray" size="small" />
       </Button>
 
@@ -66,16 +65,14 @@ const EntryContentToolbar = ({
           type="header"
           onClick={onPreviousEntryClick}
           disabled={!hasPreviousEntry}
-          title="Select previous story"
-  >
+          title="Select previous story">
           <ArrowLeftBoldSVGIcon color="light-gray" size="small" />
         </Button>
         <Button
           type="header"
           onClick={onNextEntryClick}
           disabled={!hasNextEntry}
-          title="Select next story"
-  >
+          title="Select next story">
           <ArrowRightBoldSVGIcon color="light-gray" size="small" />
         </Button>
       </ButtonGroup>
@@ -90,54 +87,45 @@ const EntryContentToolbar = ({
           <ul className="dropdown__list">
             <li
               className="dropdown__list-item"
-              onClick={onChangeViewModeClick.bind(this, 'normal')}
-  >
-                <input
-                  type="radio"
-                  id="list"
-                  name="currrent_view_mode"
-                  checked={currentViewMode === 'normal'}
-                  readOnly
-                  className="dropdown-field media"
-  />
-                <label
-                  htmlFor="list"
-                  className="dropdown-label content"
-  >Feed Article</label>
+              onClick={onChangeViewModeClick.bind(this, 'normal')}>
+              <input
+                type="radio"
+                id="list"
+                name="currrent_view_mode"
+                checked={currentViewMode === 'normal'}
+                readOnly
+                className="dropdown-field media" />
+              <label
+                htmlFor="list"
+                className="dropdown-label content">Feed Article</label>
             </li>
             <li
               className="dropdown__list-item"
-              onClick={onChangeViewModeClick.bind(this, 'article')}
-  >
-                <input
-                  type="radio"
-                  id="article"
-                  name="currrent_view_mode"
-                  checked={currentViewMode === 'article'}
-                  readOnly
-                  className="dropdown-field media"
-  />
-                <label
-                  htmlFor="article"
-                  className="dropdown-label content"
-  >Readability optimized article</label>
+              onClick={onChangeViewModeClick.bind(this, 'article')}>
+              <input
+                type="radio"
+                id="article"
+                name="currrent_view_mode"
+                checked={currentViewMode === 'article'}
+                readOnly
+                className="dropdown-field media" />
+              <label
+                htmlFor="article"
+                className="dropdown-label content">Readability optimized article (experimental)</label>
             </li>
             <li
               className="dropdown__list-item"
-              onClick={onChangeViewModeClick.bind(this, 'website')}
-  >
-                <input
-                  type="radio"
-                  id="website"
-                  name="currrent_view_mode"
-                  checked={currentViewMode === 'website'}
-                  readOnly
-                  className="dropdown-field media"
-  />
-                <label
-                  htmlFor="website"
-                  className="dropdown-label content"
-  >Embed Website</label>
+              onClick={onChangeViewModeClick.bind(this, 'website')}>
+              <input
+                type="radio"
+                id="website"
+                name="currrent_view_mode"
+                checked={currentViewMode === 'website'}
+                readOnly
+                className="dropdown-field media" />
+              <label
+                htmlFor="website"
+                className="dropdown-label content">Embed Website</label>
             </li>
           </ul>
         </DropdownContent>
@@ -147,8 +135,7 @@ const EntryContentToolbar = ({
         type="header"
         onClick={onOpenExternalClick}
         disabled={!entry}
-        title="Open story in new browser tab or window"
-  >
+        title="Open story in new browser tab or window">
         <EarthSVGIcon color="light-gray" size="small" />
       </Button>
       <Dropdown className="ml1">

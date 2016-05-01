@@ -38,23 +38,20 @@ const EntryListToolbar = ({
         type="header"
         onClick={onToggleSidebarClick}
         title="Mark all stories as read"
-        className="hide-large-screen mr1-important"
-  >
+        className="hide-large-screen mr1-important">
         <MenuSVGIcon color="light-gray" size="small" />
       </Button>
-        <ButtonGroup className="btn-group-rounded">
+      <ButtonGroup className="btn-group-rounded">
         <Button
           type="header"
           onClick={onMarkAsReadClick}
-          title="Mark all stories as read"
-  >
+          title="Mark all stories as read">
           <CheckmarkSVGIcon color="light-gray" size="small" />
         </Button>
         <Button
           type="header"
           onClick={onRefreshEntriesClick}
-          title="Fetch new stories"
-  >
+          title="Fetch new stories">
           <CycleSVGIcon color="light-gray" size="small" />
         </Button>
       </ButtonGroup>
@@ -68,61 +65,51 @@ const EntryListToolbar = ({
           <ul className="dropdown__list">
             <li
               className="dropdown__list-item"
-              onClick={onViewLayoutChangeClick.bind(this, 'list')}
-  >
-                <input
-                  type="radio"
-                  id="list"
-                  name="currrent_view_layout"
-                  checked={currentViewLayout === 'list'}
-                  readOnly
-                  className="dropdown-field media"
-  />
-                <label
-                  htmlFor="list"
-                  className="dropdown-label content"
-  >List</label>
+              onClick={onViewLayoutChangeClick.bind(this, 'list')}>
+              <input
+                type="radio"
+                id="list"
+                name="currrent_view_layout"
+                checked={currentViewLayout === 'list'}
+                readOnly
+                className="dropdown-field media" />
+              <label
+                htmlFor="list"
+                className="dropdown-label content" >List</label>
             </li>
             <li
               className="dropdown__list-item"
-              onClick={onViewLayoutChangeClick.bind(this, 'compact_list')}
-  >
-                <input
-                  type="radio"
-                  id="compact_list"
-                  name="currrent_view_layout"
-                  checked={currentViewLayout === 'compact_list'}
-                  readOnly
-                  className="dropdown-field media"
-  />
-                <label
-                  htmlFor="compact_list"
-                  className="dropdown-label
-                  content"
-  >Compact List</label>
+              onClick={onViewLayoutChangeClick.bind(this, 'compact_list')}>
+              <input
+                type="radio"
+                id="compact_list"
+                name="currrent_view_layout"
+                checked={currentViewLayout === 'compact_list'}
+                readOnly
+                className="dropdown-field media" />
+              <label
+                htmlFor="compact_list"
+                className="dropdown-label
+                content">Compact List</label>
             </li>
             <li
               className="dropdown__list-item"
-              onClick={onViewLayoutChangeClick.bind(this, 'grid')}
-  >
-                <input
-                  type="radio"
-                  id="grid"
-                  name="currrent_view_layout"
-                  checked={currentViewLayout === 'grid'}
-                  readOnly
-                  className="dropdown-field media"
-  />
-                <label
-                  htmlFor="grid"
-                  className="dropdown-label content"
-  >Grid</label>
+              onClick={onViewLayoutChangeClick.bind(this, 'grid')}>
+              <input
+                type="radio"
+                id="grid"
+                name="currrent_view_layout"
+                checked={currentViewLayout === 'grid'}
+                readOnly
+                className="dropdown-field media" />
+              <label
+                htmlFor="grid"
+                className="dropdown-label content">Grid (experimental)</label>
             </li>
             <li className="dropdown__list-separator" />
             <li
               className={editFeedOrCategoryCls}
-              onClick={onOpenEditFeedOrCategoryModalClick}
-  >
+              onClick={onOpenEditFeedOrCategoryModalClick}>
               <div className="media">
                 <CogSVGIcon color="light-gray" size="small" />
               </div>
@@ -130,8 +117,7 @@ const EntryListToolbar = ({
             </li>
             <li
               className={editFeedOrCategoryCls}
-              onClick={onRemoveFeedOrCategoryClick}
-  >
+              onClick={onRemoveFeedOrCategoryClick}>
               <div className="media">
                 <TrashSVGIcon color="light-gray" size="small" />
               </div>
