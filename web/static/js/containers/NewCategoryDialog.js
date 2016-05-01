@@ -79,14 +79,14 @@ class NewCategoryDialog extends Component {
 
           <label className="field-label mb3">
             Category title
-            <input className="field block col-12"
+            <input
+              className="field block col-12"
               type="text"
               placeholder="Enter title here"
               ref="title"
               value={categoryForm.title}
               onChange={(event) => this.handleChange(event)}
-              autoFocus={true}
-    />
+              autoFocus />
 
             <div className="hint">
               Title must be 50 characters or less and cannot contain spaces or periods
@@ -99,12 +99,11 @@ class NewCategoryDialog extends Component {
             <button
               type="submit"
               className="btn btn-primary bg-blue white btn-large with-icon"
-              disabled={!categoryForm.title}
-              onClick={this.submitForm}
-    >
+              disabled={!categoryForm.title || categoryForm.isLoading}
+              onClick={this.submitForm} >
                 {categoryForm.isLoading && <Icon name="spinner_white" size="small" />}
                 Add Category
-              </button>
+            </button>
           </div>
         </form>
       </div>

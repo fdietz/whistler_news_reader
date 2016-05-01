@@ -103,14 +103,14 @@ class EditDialog extends Component {
           }
           <label className="field-label mb3">
             {labels.label}
-            <input className="field block col-12"
+            <input
+              className="field block col-12"
               type="text"
               placeholder="Enter title here"
               ref="title"
               value={editForm.title}
               onChange={(event) => this.handleChange(event)}
-              autoFocus={true}
-    />
+              autoFocus />
 
             <div className="hint">{labels.hint}</div>
             {renderErrorsFor(editForm.errors, 'title')}
@@ -127,12 +127,11 @@ class EditDialog extends Component {
             <button
               type="submit"
               className="btn btn-primary bg-blue white btn-large with-icon"
-              disabled={!editForm.title}
-              onClick={this.submitForm}
-    >
+              disabled={!editForm.title || editForm.isLoading}
+              onClick={this.submitForm} >
                 {editForm.isLoading && <Icon name="spinner_white" size="small" />}
-                Save Changes
-              </button>
+              Save Changes
+            </button>
           </div>
         </form>
       </div>

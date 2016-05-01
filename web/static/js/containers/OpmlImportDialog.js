@@ -75,16 +75,18 @@ class EditDialog extends Component {
             <label>
               Select file to upload...
             </label>
-            <input className="field block col-12"
+            <input
+              className="field block col-12"
               type="file"
               placeholder="Enter title here"
               ref="file"
               onChange={(event) => this.handleChange(event)}
-              autoFocus={true}
-    />
+              autoFocus />
+
             <div className="hint">
               Moving from another RSS Reader. You can upload your
-              subscriptions in standard OPML format.</div>
+              subscriptions in standard OPML format.
+            </div>
           </div>
 
           <div className="sm-col-12 mb3">
@@ -97,12 +99,11 @@ class EditDialog extends Component {
             <button
               type="submit"
               className="btn btn-primary bg-blue white btn-large with-icon"
-              disabled={!opmlImportForm.file}
-              onClick={this.submitForm}
-    >
+              disabled={!opmlImportForm.file || opmlImportForm.isLoading}
+              onClick={this.submitForm}>
                 {opmlImportForm.isLoading && <Icon name="spinner_white" size="small" />}
                 Import
-              </button>
+            </button>
           </div>
         </form>
       </div>

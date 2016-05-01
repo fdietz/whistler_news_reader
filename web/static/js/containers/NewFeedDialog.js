@@ -194,7 +194,7 @@ class NewFeedDialog extends Component {
             <button
               type="submit"
               className="btn btn-primary bg-blue white btn-large with-icon"
-              disabled={!feedForm.feedExists && !feedForm.isFeedUrl}
+              disabled={!feedForm.feedExists && !feedForm.isFeedUrl || feedForm.isLoading}
               onClick={this.submitForm}>
                 {feedForm.isLoading && <Icon name="spinner_white" size="small"/>}
                 Add Subscription
