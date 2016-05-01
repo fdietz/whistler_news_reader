@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import shallowCompare from 'react-addons-shallow-compare';
 
 import FeedEntryListItem from './FeedEntryListItem';
+
+import { isElementInViewport } from '../utils/dom';
 
 class FeedEntryList extends Component {
 
@@ -23,8 +26,21 @@ class FeedEntryList extends Component {
     this.handleOnEntryClick = this.handleOnEntryClick.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentEntry) {
+      this.scrollIntoViewIfNeeded(nextProps.currentEntry.id);
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
+  }
+
+  scrollIntoViewIfNeeded(entryId) {
+    const dom = ReactDOM.findDOMNode(this.refs[entryId]);
+    if (!isElementInViewport(dom)) {
+      dom.scrollIntoView();
+    }
   }
 
   handleOnEntryClick(entry) {
