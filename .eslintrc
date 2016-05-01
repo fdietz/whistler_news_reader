@@ -14,6 +14,7 @@
   "rules": {
     "strict": 0, // required by `babel-eslint`
     "comma-dangle": 0,
+    "arrow-body-style": ["error", "as-needed"],
     "react/jsx-closing-bracket-location": 0,
   }
 }
