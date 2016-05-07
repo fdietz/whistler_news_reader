@@ -1,4 +1,5 @@
 import MainAppContainer from './containers/MainAppContainer';
+import SidebarContainer from './containers/SidebarContainer';
 
 import NewFeedDialog from './routes/NewFeedDialog';
 import NewCategoryDialog from './routes/NewCategoryDialog';
@@ -7,7 +8,10 @@ import OpmlImportDialog from './routes/OpmlImportDialog';
 import EntryList from './routes/EntryList';
 
 const routes = {
-  component: MainAppContainer,
+  components: {
+    sidebar: SidebarContainer,
+    mainApp: MainAppContainer
+  },
   indexRoute: { onEnter: (nextState, replace) => replace('/today') },
   childRoutes: [
     NewFeedDialog,

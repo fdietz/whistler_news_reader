@@ -3,48 +3,25 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { routerActions as RouterActions } from 'react-router-redux';
 
-import Sidebar from '../components/Sidebar';
 import Notification from '../components/Notification';
 import ModalWrapper from '../components/ModalWrapper';
 
-import * as SubscriptionsActions from 'redux/modules/subscriptions';
-import * as CategoriesActions from 'redux/modules/categories';
-import * as SidebarActions from 'redux/modules/sidebar';
-
-import { getSortedSubscriptions, getSortedCategories } from 'redux/selectors';
-
 import shallowCompare from 'react-addons-shallow-compare';
-import { mapRequestParams } from 'utils/navigator';
 
 class MainAppContainer extends Component {
 
   static propTypes = {
-    sortedSubscriptions: PropTypes.array.isRequired,
-    sortedCategories: PropTypes.array.isRequired,
     pathname: PropTypes.string.isRequired,
     notification: PropTypes.shape({
       message: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
     }),
-    sidebar: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     children: PropTypes.node,
 
     // actions
-    subscriptionsActions: PropTypes.object.isRequired,
-    categoriesActions: PropTypes.object.isRequired,
-    sidebarActions: PropTypes.object.isRequired,
     routerActions: PropTypes.object.isRequired,
   };
-
-  componentDidMount() {
-    const { subscriptionsActions, categoriesActions } = this.props;
-
-    Promise.all([
-      subscriptionsActions.requestFetchSubscriptions(),
-      categoriesActions.requestFetchCategories(),
-    ]);
-  }
 
   componentWillReceiveProps(nextProps) {
     // if we changed routes...
@@ -63,48 +40,20 @@ class MainAppContainer extends Component {
     return shallowCompare(this, nextProps, nextState);
   }
 
-  requestParams(props) {
-    const { params, pathname } = props;
-    return mapRequestParams(params, pathname);
-  }
-
   render() {
-    const {
-      sortedCategories,
-      sortedSubscriptions,
-      pathname,
-      notification,
-      location,
-      sidebar,
-    } = this.props;
-
-    const { categoriesActions, subscriptionsActions, routerActions, sidebarActions } = this.props;
-
+    const { notification, location } = this.props;
+    const { routerActions } = this.props;
     const isModal = (location.state && location.state.modal && this.previousChildren);
 
     return (
       <div className="main-app-container">
 
-        <Sidebar
-          sidebar={sidebar}
-          subscriptions={sortedSubscriptions}
-          categories={sortedCategories}
-          currentPathname={pathname}
-          subscriptionsActions={subscriptionsActions}
-          categoriesActions={categoriesActions}
-          sidebarActions={sidebarActions}
-          routerActions={routerActions} />
-
-        {isModal
-          ? this.previousChildren
-          : this.props.children
-        }
+        {isModal ? this.previousChildren : this.props.children}
 
         {isModal && (
           <ModalWrapper
             returnTo={this.previousPathname || location.pathname}
-            routerActions={routerActions}
-    >
+            routerActions={routerActions}>
             {this.props.children}
           </ModalWrapper>
         )}
@@ -120,21 +69,16 @@ class MainAppContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    sortedSubscriptions: getSortedSubscriptions(state),
-    sortedCategories: getSortedCategories(state),
     location: ownProps.location,
     pathname: ownProps.location.pathname,
-    notification: state.notification,
-    sidebar: state.sidebar,
+    notification: state.notification
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
-    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
-    sidebarActions: bindActionCreators(SidebarActions, dispatch),
-    routerActions: bindActionCreators(RouterActions, dispatch),
+    routerActions: bindActionCreators(RouterActions, dispatch)
   };
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(MainAppContainer);

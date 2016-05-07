@@ -11,6 +11,8 @@ class AuthenticatedContainer extends Component {
     children: PropTypes.node,
     currentUser: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
+    sidebar: PropTypes.node,
+    mainApp: PropTypes.node,
   }
 
   componentDidMount() {
@@ -28,7 +30,8 @@ class AuthenticatedContainer extends Component {
 
     return (
       <div className="authenticated-container">
-        {this.props.children}
+        {this.props.sidebar}
+        {this.props.mainApp}
       </div>
     );
   }
