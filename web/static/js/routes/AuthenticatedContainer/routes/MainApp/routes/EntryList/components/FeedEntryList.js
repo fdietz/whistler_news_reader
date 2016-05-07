@@ -27,7 +27,7 @@ class FeedEntryList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currentEntry) {
+    if (nextProps.currentEntry && nextProps.currentEntry.id !== this.props.currentEntry.id) {
       this.scrollIntoViewIfNeeded(nextProps.currentEntry.id);
     }
   }
