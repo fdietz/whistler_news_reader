@@ -98,8 +98,9 @@
   q {
     display: block;
     padding: 0 $space-2;
-    margin: $space-2 $space-2 $space-2 0;
+    margin: $space-3 $space-2 $space-3 0;
     border-left: 2px solid $darken-1;
+    font-style: italic;
 
     p {
       display: inline;
