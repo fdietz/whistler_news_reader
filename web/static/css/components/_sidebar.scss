@@ -24,9 +24,9 @@ $sidebar-color: $gray;
 }
 
 .sidebar {
-  position: relative;
   display: flex;
   width: 250px;
+  height: 100vh;
   background-color: $sidebar-bg;
 
   flex-direction: column;
@@ -45,6 +45,7 @@ $sidebar-color: $gray;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   flex: 1 1;
+  position: relative;
 }
 
 .sidebar-header,
@@ -82,9 +83,7 @@ $sidebar-color: $gray;
 }
 
 .sidebar-footer {
-  position: relative;
-  display: flex;
-  background-color: $darken-2;
+  background-color: $darken-4;
   border-top: 1px solid $darken-1;
   border-bottom: 1px solid transparent;
   align-items: center;

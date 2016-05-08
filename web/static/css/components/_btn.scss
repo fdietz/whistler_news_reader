@@ -19,7 +19,6 @@ $btn-font-size-large: 1.1rem;
   height: auto;
   padding: $btn-padding-default;
   font-size: $btn-font-size-default;
-  // font-weight: $btn-font-weight;
   line-height: 1;
   color: inherit;
   text-align: center;
@@ -34,8 +33,9 @@ $btn-font-size-large: 1.1rem;
   transition: box-shadow 300ms ease-out;
   -webkit-appearance: none;
   user-select: none;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  flex-direction: row;
 
   &.with-icon {
     [class^="svg-entypo-icon-"] {

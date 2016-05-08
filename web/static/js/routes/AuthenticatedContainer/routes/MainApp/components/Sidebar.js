@@ -253,7 +253,7 @@ class Sidebar extends Component {
             <span>s</span>
           </div>
         </div>
-        <div className="sidebar-content">
+        <div className="sidebar-content scrollbar">
           <div className="sidebar-actions">
             <Button
               onClick={this.onAddClick}
@@ -279,10 +279,6 @@ class Sidebar extends Component {
             )}
             {this.renderAddCategoryLink()}
           </div>
-
-          <a href="#" onClick={sidebarActions.toggle} className="btn gray">
-            <GoBackSVGIcon color="gray" size="small" className="mr1" /> Close
-          </a>
         </div>
         <div className="sidebar-footer hide-large-screen2">
           <div className="avatar-square">
