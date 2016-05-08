@@ -19,6 +19,15 @@
   }
 }
 
+.avatar-square {
+  display: flex;
+
+  img {
+    height: 16px;
+    border-radius: 50%;
+  }
+}
+
 .user-name,
 .user-email {
   font-size: .8rem;

@@ -68,12 +68,16 @@ $sidebar-color: $gray;
   }
 
   .subtitle {
-    margin-bottom: $space-2;
+    margin-bottom: 11px;
     overflow: hidden;
-    font-size: .8rem;
+    font-size: .6rem;
     color: $white;
-    white-space: nowrap;
+    text-transform: uppercase;
     align-self: flex-end;
+
+    span {
+      padding-right: 1px;
+    }
   }
 }
 
@@ -113,9 +117,9 @@ $sidebar-color: $gray;
 
   &.active {
 
-    > .sidebar-nav-list__meta {
-      background-color: $blue;
-    }
+    // > .sidebar-nav-list__meta {
+    //   background-color: $blue;
+    // }
 
     > .sidebar-nav-list__meta > .sidebar-nav-list__badge {
       color: $white !important;

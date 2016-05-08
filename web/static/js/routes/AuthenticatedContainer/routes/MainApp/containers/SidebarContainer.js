@@ -8,6 +8,7 @@ import Sidebar from '../components/Sidebar';
 import * as SubscriptionsActions from 'redux/modules/subscriptions';
 import * as CategoriesActions from 'redux/modules/categories';
 import * as SidebarActions from 'redux/modules/sidebar';
+import * as UserActions from 'redux/modules/user';
 
 import { getSortedSubscriptions, getSortedCategories } from 'redux/selectors';
 
@@ -24,10 +25,12 @@ class SidebarContainer extends Component {
       type: PropTypes.string.isRequired,
     }),
     sidebar: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     children: PropTypes.node,
 
     // actions
+    userActions: PropTypes.object.isRequired,
     subscriptionsActions: PropTypes.object.isRequired,
     categoriesActions: PropTypes.object.isRequired,
     sidebarActions: PropTypes.object.isRequired,
@@ -48,14 +51,9 @@ class SidebarContainer extends Component {
   }
 
   render() {
-    const {
-      sortedCategories,
-      sortedSubscriptions,
-      pathname,
-      sidebar,
-    } = this.props;
+    const { sortedCategories, sortedSubscriptions, pathname, sidebar, currentUser } = this.props;
 
-    const { categoriesActions, subscriptionsActions, routerActions, sidebarActions } = this.props;
+    const { categoriesActions, subscriptionsActions, routerActions, sidebarActions, userActions } = this.props;
 
     return (
       <Sidebar
@@ -63,6 +61,8 @@ class SidebarContainer extends Component {
         subscriptions={sortedSubscriptions}
         categories={sortedCategories}
         currentPathname={pathname}
+        currentUser={currentUser}
+        userActions={userActions}
         subscriptionsActions={subscriptionsActions}
         categoriesActions={categoriesActions}
         sidebarActions={sidebarActions}
@@ -79,11 +79,13 @@ function mapStateToProps(state, ownProps) {
     pathname: ownProps.location.pathname,
     notification: state.notification,
     sidebar: state.sidebar,
+    currentUser: state.user.current
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    userActions: bindActionCreators(UserActions, dispatch),
     subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
     categoriesActions: bindActionCreators(CategoriesActions, dispatch),
     sidebarActions: bindActionCreators(SidebarActions, dispatch),

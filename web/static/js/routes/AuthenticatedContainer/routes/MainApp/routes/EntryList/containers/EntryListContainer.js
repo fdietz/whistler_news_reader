@@ -100,7 +100,6 @@ class EntryListContainer extends Component {
   componentDidMount() {
     const { entriesActions } = this.props;
 
-    console.log('===========')
     entriesActions.requestFetchEntries(this.requestParams(this.props))
     .then(() => {
       this.firstEntry();

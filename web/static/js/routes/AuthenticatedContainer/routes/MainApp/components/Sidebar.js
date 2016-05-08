@@ -7,6 +7,15 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import {
+  ArrowDownSVGIcon,
+  ArrowUpSVGIcon,
+} from 'components/SVGIcon';
+
+import DropdownTrigger from 'components/DropdownTrigger';
+import DropdownContent from 'components/DropdownContent';
+import Dropdown from 'components/Dropdown';
+
+import {
   HouseSVGIcon,
   ListSVGIcon,
   PlusSVGIcon,
@@ -27,6 +36,8 @@ class Sidebar extends Component {
     subscriptions: PropTypes.array.isRequired,
     categories: PropTypes.array.isRequired,
     currentPathname: PropTypes.string.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    userActions: PropTypes.object.isRequired,
     subscriptionsActions: PropTypes.object.isRequired,
     categoriesActions: PropTypes.object.isRequired,
     sidebarActions: PropTypes.object.isRequired,
@@ -45,6 +56,9 @@ class Sidebar extends Component {
     this.onCategoryExpandClick = this.onCategoryExpandClick.bind(this);
     this.onNewCategoryClick = this.onNewCategoryClick.bind(this);
     this.handleOnFeedDrop = this.handleOnFeedDrop.bind(this);
+
+    this.onOPMLImportClick = this.onOPMLImportClick.bind(this);
+    this.onSignOutClick = this.onSignOutClick.bind(this);
   }
 
   renderSubscription(subscription) {
@@ -135,17 +149,24 @@ class Sidebar extends Component {
     );
   }
 
+  componentDidMount() {
+    bindHotKey('nextFeed', () => this.debouncedOnNextClick());
+    bindHotKey('previousFeed', () => this.debouncedOnPreviousClick());
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   componentDidUpdate() {
     const { currentPathname, subscriptions } = this.props;
 
     this.paths = ['/today', '/all'];
-    this.paths = [...this.paths, ...subscriptions.map((subscription) => `/subscriptions/${subscription.id}`)];
+    this.paths = [
+      ...this.paths,
+      ...subscriptions.map((subscription) => `/subscriptions/${subscription.id}`)
+    ];
     this.currentPathIndex = this.paths.indexOf(currentPathname);
-  }
-
-  componentDidMount() {
-    bindHotKey('nextFeed', () => this.debouncedOnNextClick());
-    bindHotKey('previousFeed', () => this.debouncedOnPreviousClick());
   }
 
   componentWillUnmount() {
@@ -153,11 +174,9 @@ class Sidebar extends Component {
     unbindHotKey('previousFeed');
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return shallowCompare(this, nextProps, nextState);
-  }
-
   onNextClick() {
+    const { routerActions } = this.props;
+
     if (this.currentPathIndex + 1 < this.paths.length) {
       const path = this.paths[this.currentPathIndex + 1];
       routerActions.push(path);
@@ -165,6 +184,8 @@ class Sidebar extends Component {
   }
 
   onPreviousClick() {
+    const { routerActions } = this.props;
+
     if (this.currentPathIndex - 1 >= 0) {
       const path = this.paths[this.currentPathIndex - 1];
       routerActions.push(path);
@@ -190,15 +211,31 @@ class Sidebar extends Component {
   }
 
   handleOnFeedDrop(subscriptionId, categoryId) {
+    const { routerActions } = this.props;
+
     const { subscriptionsActions } = this.props;
-    subscriptionsActions.requestUpdateSubscription(subscriptionId, { category_id: categoryId }).then(() => {
-      routerActions.push(`/subscriptions/${subscriptionId}/entries`);
-    });
+    subscriptionsActions.requestUpdateSubscription(
+      subscriptionId, { category_id: categoryId }).then(() => {
+        routerActions.push(`/subscriptions/${subscriptionId}/entries`);
+      });
+  }
+
+  onSignOutClick(event) {
+    event.preventDefault();
+    this.props.userActions.requestSignOut();
+  }
+
+  onOPMLImportClick(event) {
+    event.preventDefault();
+    this.props.routerActions.push({ pathname: '/opml_import', state: { modal: true } });
   }
 
   render() {
-    const { subscriptions, categories, sidebar, sidebarActions } = this.props;
-    const subscriptionsWithoutCategory = subscriptions.filter(subscription => !subscription.category_id);
+    const { currentUser, subscriptions, categories, sidebar } = this.props;
+    const { sidebarActions, userActions, routerActions } = this.props;
+
+    const subscriptionsWithoutCategory = subscriptions.filter(subscription =>
+      !subscription.category_id);
 
     const sidebarCls = classNames('sidebar', {
       hidden: !sidebar.isVisible,
@@ -209,7 +246,12 @@ class Sidebar extends Component {
       <div className={sidebarCls} ref="sidebar">
         <div className="sidebar-header">
           <div className="logo">whistle'r</div>
-          <div className="subtitle">news reader</div>
+          <div className="subtitle">
+            <span>n</span>
+            <span>e</span>
+            <span>w</span>
+            <span>s</span>
+          </div>
         </div>
         <div className="sidebar-content">
           <div className="sidebar-actions">
@@ -217,8 +259,10 @@ class Sidebar extends Component {
               onClick={this.onAddClick}
               type="primary"
               expand
-              title="Add new Subscription"
-    >+ Subscriptions</Button>
+              title="Add new Subscription">
+              <PlusSVGIcon size="small" color="white" />
+              Subscriptions
+            </Button>
           </div>
 
           <div className="sidebar-nav-list">
@@ -227,19 +271,40 @@ class Sidebar extends Component {
           </div>
 
           <div className="sidebar-nav-list">
-            {categories.map((category) => {
-              return this.renderCategory(category, subscriptions);
-            })}
-            {subscriptionsWithoutCategory.map((subscription) => {
-              return this.renderSubscription(subscription);
-            })}
+            {categories.map((category) =>
+              this.renderCategory(category, subscriptions)
+            )}
+            {subscriptionsWithoutCategory.map((subscription) =>
+              this.renderSubscription(subscription)
+            )}
             {this.renderAddCategoryLink()}
           </div>
-        </div>
-        <div className="sidebar-footer hide-large-screen">
+
           <a href="#" onClick={sidebarActions.toggle} className="btn gray">
             <GoBackSVGIcon color="gray" size="small" className="mr1" /> Close
           </a>
+        </div>
+        <div className="sidebar-footer hide-large-screen2">
+          <div className="avatar-square">
+            <img src={currentUser.image_url} />
+          </div>
+          <Dropdown className="north ml1">
+            <DropdownTrigger className="mr1">
+              <div className="user-email">{currentUser.email}</div>
+              <ArrowDownSVGIcon color="light-gray" size="small" className="arrow-down" />
+              <ArrowUpSVGIcon color="light-gray" size="small" className="arrow-up" />
+            </DropdownTrigger>
+            <DropdownContent>
+              <ul className="dropdown__list">
+                <li className="dropdown__list-item">
+                  <a href="#" onClick={this.onOPMLImportClick}>OPML Import</a>
+                </li>
+                <li className="dropdown__list-item">
+                  <a href="#" onClick={this.onSignOutClick}>Logout</a>
+                </li>
+              </ul>
+            </DropdownContent>
+          </Dropdown>
         </div>
       </div>
     );
