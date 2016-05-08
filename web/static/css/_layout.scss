@@ -28,6 +28,7 @@ body {
 
   @include respond-to(small-screen) {
     height: 56px;
+    // padding: 0;
   }
 }
 

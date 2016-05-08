@@ -33,7 +33,7 @@ const EntryListToolbar = ({
   });
 
   return (
-    <div className="toolbar">
+    <div className="toolbar hide-small-screen">
       <Button
         type="header"
         onClick={onToggleSidebarClick}

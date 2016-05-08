@@ -51,7 +51,7 @@ const EntryContentToolbar = ({
   });
 
   return (
-    <div className="toolbar">
+    <div className="toolbar hide-small-screen">
       <Button
         type="header"
         onClick={onGoBackClick}

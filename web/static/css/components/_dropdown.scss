@@ -1,10 +1,15 @@
 .dropdown {
   position: relative;
 
+  &.east {
+    .dropdown__content {
+      left: 0;
+    }
+  }
+
   &.west {
     .dropdown__content {
       right: 0;
-      left: -100px;
     }
   }
 
@@ -55,7 +60,7 @@
 .dropdown__content {
   position: absolute;
   top: 100%;
-  left: 0;
+  // left: 0;
   z-index: 10;
   display: block;
   margin-top: -1px;

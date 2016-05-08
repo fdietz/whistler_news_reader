@@ -13,7 +13,7 @@ import FeedEntryList from '../components/FeedEntryList';
 import FeedEntryGrid from '../components/FeedEntryGrid';
 import NoMoreContent from '../components/NoMoreContent';
 import EntryListToolbar from '../components/EntryListToolbar';
-import ProfileToolbar from 'components/ProfileToolbar';
+import EntryListToolbarMobile from '../components/EntryListToolbarMobile';
 import Teaser from 'components/Teaser';
 import { CheckmarkSVGIcon, EarthSVGIcon } from 'components/SVGIcon';
 
@@ -52,6 +52,7 @@ class EntryListContainer extends Component {
     previousEntryId: PropTypes.number,
     nextEntryId: PropTypes.number,
     sortedSubscriptions: PropTypes.array.isRequired,
+    subscriptions: PropTypes.object.isRequired,
     categories: PropTypes.object.isRequired,
     currentUser: PropTypes.object,
     notification: PropTypes.shape({
@@ -110,12 +111,6 @@ class EntryListContainer extends Component {
     bindHotKey('openEntry', () => this.debouncedOpenEntryContentModal());
   }
 
-  componentWillUnmount() {
-    unbindHotKey('nextEntry');
-    unbindHotKey('previousEntry');
-    unbindHotKey('openEntry');
-  }
-
   componentWillReceiveProps(nextProps) {
     const { entriesActions } = this.props;
 
@@ -132,6 +127,12 @@ class EntryListContainer extends Component {
         // entriesActions.requestFetchEntries(np).then(() => this.firstEntry());
       }
     }
+  }
+
+  componentWillUnmount() {
+    unbindHotKey('nextEntry');
+    unbindHotKey('previousEntry');
+    unbindHotKey('openEntry');
   }
 
   requestParams(props) {
@@ -175,7 +176,12 @@ class EntryListContainer extends Component {
   }
 
   markAsRead() {
-    const { sortedSubscriptions, subscriptionsActions, categoriesActions, entriesActions } = this.props;
+    const {
+      sortedSubscriptions,
+      subscriptionsActions,
+      categoriesActions,
+      entriesActions
+    } = this.props;
     const params = this.requestParams(this.props);
 
     entriesActions.requestMarkAllEntriesAsRead(params).then(() => {
@@ -188,7 +194,7 @@ class EntryListContainer extends Component {
       } else if (params.category_id) {
         const matchedSubscriptions = sortedSubscriptions.filter(subscription =>
           subscription.category_id === +params.category_id);
-        for (let subscription of matchedSubscriptions) {
+        for (const subscription of matchedSubscriptions) {
           subscriptionsActions.resetUnreadCount({ id: subscription.id });
         }
       }
@@ -242,12 +248,11 @@ class EntryListContainer extends Component {
       sortedEntries,
       sortedSubscriptions,
       entry,
-      currentUser,
       location,
       hasPreviousEntry,
       hasNextEntry,
     } = this.props;
-    const { userActions, entriesActions, routerActions, sidebarActions } = this.props;
+    const { entriesActions, sidebarActions } = this.props;
 
     let items;
     if (currentViewLayout === 'list' || currentViewLayout === 'compact_list') {
@@ -275,8 +280,7 @@ class EntryListContainer extends Component {
       <InfiniteScroll
         threshold={300}
         loadMore={() => entriesActions.requestLoadMore(this.requestParams(this.props))}
-        hasMore={entries.hasMoreEntries}
-    >
+        hasMore={entries.hasMoreEntries}>
 
         {entries.listedIds.length > 0 && items}
         {!entries.hasMoreEntries && <NoMoreContent />}
@@ -302,8 +306,28 @@ class EntryListContainer extends Component {
         onPreviousEntryClick={this.previousEntry}
         onNextEntryClick={this.nextEntry}
         onOpenExternalClick={this.openExternal}
-        onToggleSidebarClick={sidebarActions.toggle}
-    />
+        onToggleSidebarClick={sidebarActions.toggle} />
+    );
+
+
+    const entryListToolbarMobile = (
+      <EntryListToolbarMobile
+        title={this.getTitle()}
+        currentViewLayout={currentViewLayout}
+        showSpinner={entries.isLoading}
+        hasPreviousEntry={hasPreviousEntry}
+        hasNextEntry={hasNextEntry}
+        isSubscriptionSelected={isSubscriptionSelected}
+        isCategorySelected={isCategorySelected}
+        onMarkAsReadClick={this.markAsRead}
+        onRefreshEntriesClick={this.refreshEntries}
+        onRemoveFeedOrCategoryClick={this.handleOnRemoveFeedOrCategory}
+        onViewLayoutChangeClick={this.handleViewLayoutChange}
+        onOpenEditFeedOrCategoryModalClick={this.openEditModal}
+        onPreviousEntryClick={this.previousEntry}
+        onNextEntryClick={this.nextEntry}
+        onOpenExternalClick={this.openExternal}
+        onToggleSidebarClick={sidebarActions.toggle} />
     );
 
     const masterListCls = classNames('master-list', {
@@ -312,19 +336,11 @@ class EntryListContainer extends Component {
 
     const hasChildren = React.Children.count(this.props.children) > 0;
 
-    const profileToolbar = (
-      <ProfileToolbar
-        currentUser={currentUser}
-        userActions={userActions}
-        routerActions={routerActions}
-    />
-    );
-
     return (
       <div className="main-master-container">
         {!hasChildren && sortedSubscriptions.length === 0 &&
           <div className="layout-master-container">
-            <LayoutHeader>{entryListToolbar}</LayoutHeader>
+            <LayoutHeader>{entryListToolbar}{entryListToolbarMobile}</LayoutHeader>
             <LayoutContent>
               <Teaser>
                 <EarthSVGIcon size="xxlarge" color="gray" />
@@ -342,19 +358,19 @@ class EntryListContainer extends Component {
           <div className={masterListCls}>
             {currentViewLayout === 'list' &&
               <div className="layout-master-container">
-                <LayoutHeader>{entryListToolbar}</LayoutHeader>
+                <LayoutHeader>{entryListToolbar}{entryListToolbarMobile}</LayoutHeader>
                 <LayoutContent>{paginatedItems}</LayoutContent>
               </div>
             }
             {currentViewLayout === 'compact_list' &&
               <div className="layout-master-container">
-                <LayoutHeader>{entryListToolbar}</LayoutHeader>
+                <LayoutHeader>{entryListToolbar}{entryListToolbarMobile}</LayoutHeader>
                 <LayoutContent>{paginatedItems}</LayoutContent>
               </div>
             }
             {currentViewLayout === 'grid' &&
               <div className="layout-master-container">
-                <LayoutHeader>{entryListToolbar}</LayoutHeader>
+                <LayoutHeader>{entryListToolbar}{entryListToolbarMobile}</LayoutHeader>
                 <LayoutContent>{paginatedItems}</LayoutContent>
               </div>
             }
@@ -363,7 +379,7 @@ class EntryListContainer extends Component {
 
         {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
           <div className="layout-master-container hide-small-screen">
-            <LayoutHeader>{profileToolbar}</LayoutHeader>
+            <LayoutHeader />
             <LayoutContent>
               <Teaser>
                 <EarthSVGIcon size="xxlarge" color="gray" />
@@ -376,7 +392,7 @@ class EntryListContainer extends Component {
 
         {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
           <div className="layout-master-container">
-            <LayoutHeader>{entryListToolbar}</LayoutHeader>
+            <LayoutHeader>{entryListToolbar}{entryListToolbarMobile}</LayoutHeader>
             <LayoutContent>
               <Teaser>
                 <CheckmarkSVGIcon size="xxlarge" color="gray" />
@@ -395,11 +411,34 @@ class EntryListContainer extends Component {
       </div>
     );
   }
+
+  getTitle() {
+    const { subscriptions, categories } = this.props;
+    const isSubscriptionSelected = location.pathname.startsWith('/subscriptions');
+    const isCategorySelected = location.pathname.startsWith('/categories');
+    const params = this.requestParams(this.props);
+
+    let title = '';
+    if (params.subscription_id === 'all') {
+      title = 'All';
+    } else if (params.subscription_id === 'today') {
+      title = 'Today';
+    } else if (isSubscriptionSelected) {
+      const subscription = subscriptions.byId[+params.subscription_id];
+      if (subscription) title = subscription.title;
+    } else if (isCategorySelected) {
+      const category = categories.byId[+params.category_id];
+      if (category) title = category.title;
+    }
+
+    return title;
+  }
 }
 
 function mapStateToProps(state, ownProps) {
   return {
     currentUser: state.user.current,
+    subscriptions: state.subscriptions,
     sortedSubscriptions: getSortedSubscriptions(state),
     entries: state.entries,
     sidebar: state.sidebar,

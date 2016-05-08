@@ -1,13 +1,14 @@
 .toolbar {
   display: flex;
+  width: 100%;
   align-items: center;
+  flex: 1 1;
 
   @include respond-to(small-screen) {
     margin-right: -$space-2;
     margin-left: -$space-2;
 
     .btn {
-      padding: $btn-padding-header-small-screen;
       background-color: transparent;
       border: 0;
 
@@ -16,14 +17,48 @@
         height: 24px;
       }
     }
+  }
 
-    >.btn:first-child {
-      padding-left: $space-2;
+}
+
+.toolbar--titled {
+  position: relative;
+  display: flex;
+
+  margin-right: -$space-2;
+  margin-left: -$space-2;
+  padding-top: 0;
+  padding-bottom: 0;
+
+  align-items: center;
+  flex: 1 1;
+
+  .left {
+    display: flex;
+  }
+
+  header {
+    position: absolute;
+    top: 0;
+    right: 56px;
+    bottom: 0;
+    left: 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .title {
+      text-align: center;
     }
 
-    >.btn:last-child {
-      padding-right: $space-2;
+    .spinner {
+      position: absolute;
     }
   }
 
+  .right {
+    display: flex;
+    margin-left: auto;
+  }
 }

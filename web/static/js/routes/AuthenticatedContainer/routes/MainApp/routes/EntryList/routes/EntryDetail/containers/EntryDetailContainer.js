@@ -7,7 +7,7 @@ import LayoutHeader from 'layouts/LayoutHeader';
 import LayoutContent from 'layouts/LayoutContent';
 import FeedEntryContent from '../components/FeedEntryContent';
 import EntryContentToolbar from '../components/EntryContentToolbar';
-import ProfileToolbar from 'components/ProfileToolbar';
+import EntryContentToolbarMobile from '../components/EntryContentToolbarMobile';
 import FeedEntryEmbedWebsiteContent from '../components/FeedEntryEmbedWebsiteContent';
 import FeedEntryEmbedArticleContent from '../components/FeedEntryEmbedArticleContent';
 
@@ -131,11 +131,9 @@ class EntryDetailContainer extends Component {
   render() {
     const {
       entry,
-      currentUser,
       hasPreviousEntry,
       hasNextEntry,
     } = this.props;
-    const { userActions, routerActions } = this.props;
 
     const entryContentToolbar = (
       <EntryContentToolbar
@@ -149,48 +147,50 @@ class EntryDetailContainer extends Component {
         onOpenExternalClick={this.onOpenExternalClick}
         showEntryContentModalButton
         onGoBackClick={this.onGoBackClick}
-        onChangeViewModeClick={this.onChangeViewModeClick}
-    />
+        onChangeViewModeClick={this.onChangeViewModeClick} />
     );
 
-    const profileToolbar = (
-      <ProfileToolbar
-        currentUser={currentUser}
-        userActions={userActions}
-        routerActions={routerActions}
-        className="hide-small-screen"
-    />
+    const entryContentToolbarMobile = (
+      <EntryContentToolbarMobile
+        entry={entry}
+        currentViewMode={this.state.currentViewMode}
+        showSpinner={this.state.showSpinner}
+        hasPreviousEntry={hasPreviousEntry}
+        hasNextEntry={hasNextEntry}
+        onPreviousEntryClick={this.previousEntry}
+        onNextEntryClick={this.nextEntry}
+        onOpenExternalClick={this.onOpenExternalClick}
+        showEntryContentModalButton
+        onGoBackClick={this.onGoBackClick}
+        onChangeViewModeClick={this.onChangeViewModeClick} />
     );
 
     return (
       <div className="main-detail-container">
         <div className="detail">
           <div className="layout-master-container">
-            <LayoutHeader>{entryContentToolbar}{profileToolbar}</LayoutHeader>
+            <LayoutHeader>{entryContentToolbar}{entryContentToolbarMobile}</LayoutHeader>
             <LayoutContent>
               {entry && this.state.currentViewMode === 'normal' &&
                 <FeedEntryContent
                   entry={entry}
                   onLoadingComplete={this.onLoadingComplete}
                   onLoadingStart={this.onLoadingStart}
-                  onEntryShown={this.handleEntryShown}
-    />
+                  onEntryShown={this.handleEntryShown} />
               }
               {entry && this.state.currentViewMode === 'article' &&
                 <FeedEntryEmbedArticleContent
                   entry={entry}
                   onLoadingStart={this.onLoadingStart}
                   onLoadingComplete={this.onLoadingComplete}
-                  onEntryShown={this.handleEntryShown}
-    />
+                  onEntryShown={this.handleEntryShown} />
               }
               {entry && this.state.currentViewMode === 'website' &&
                 <FeedEntryEmbedWebsiteContent
                   entry={entry}
                   onLoadingStart={this.onLoadingStart}
                   onLoadingComplete={this.onLoadingComplete}
-                  onEntryShown={this.handleEntryShown}
-    />
+                  onEntryShown={this.handleEntryShown} />
               }
             </LayoutContent>
           </div>
