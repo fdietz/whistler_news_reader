@@ -35,7 +35,6 @@
   flex: 1 1;
 
   .left {
-    z-index: 2;
     display: flex;
   }
 
@@ -46,15 +45,19 @@
     bottom: 0;
     left: 56px;
 
-    z-index: 1;
+    z-index: -1;
     display: flex;
 
     align-items: center;
     justify-content: center;
 
     .title {
+      overflow: hidden;
+      font-size: .8rem;
       color: $gray;
       text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .spinner {
@@ -67,7 +70,6 @@
   }
 
   .right {
-    z-index: 2;
     display: flex;
     margin-left: auto;
   }

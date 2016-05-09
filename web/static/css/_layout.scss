@@ -25,11 +25,6 @@ body {
   border-bottom: 1px solid $darken-1;
 
   align-items: center;
-
-  @include respond-to(small-screen) {
-    height: 56px;
-    // padding: 0;
-  }
 }
 
 .layout-master-content {
