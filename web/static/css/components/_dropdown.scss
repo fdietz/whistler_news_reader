@@ -93,8 +93,8 @@
 
 .dropdown__list-item {
   display: flex;
-  padding: .4em $space-2;
-  font-size: .8rem;
+  padding: .5em $space-2;
+  font-size: .9rem;
   line-height: 1rem;
   color: $gray;
   white-space: nowrap;
@@ -117,6 +117,7 @@
   }
 
   .media {
+    display: flex;
     width: 1rem;
     margin-right: $space-1;
     margin-left: 0;

@@ -41,11 +41,11 @@ $sidebar-color: $gray;
 }
 
 .sidebar-content {
+  position: relative;
   padding: $default-padding;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   flex: 1 1;
-  position: relative;
 }
 
 .sidebar-header,
