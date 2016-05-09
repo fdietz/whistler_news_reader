@@ -241,6 +241,28 @@ class EntryListContainer extends Component {
     routerActions.push({ pathname: configPathname(params, pathname), state: { modal: true } });
   }
 
+  getTitle() {
+    const { subscriptions, categories } = this.props;
+    const isSubscriptionSelected = location.pathname.startsWith('/subscriptions');
+    const isCategorySelected = location.pathname.startsWith('/categories');
+    const params = this.requestParams(this.props);
+
+    let title = '';
+    if (params.subscription_id === 'all') {
+      title = 'All';
+    } else if (params.subscription_id === 'today') {
+      title = 'Today';
+    } else if (isSubscriptionSelected) {
+      const subscription = subscriptions.byId[+params.subscription_id];
+      if (subscription) title = subscription.title;
+    } else if (isCategorySelected) {
+      const category = categories.byId[+params.category_id];
+      if (category) title = category.title;
+    }
+
+    return title;
+  }
+  
   render() {
     const { currentViewLayout } = this.state;
     const {
@@ -410,28 +432,6 @@ class EntryListContainer extends Component {
         }
       </div>
     );
-  }
-
-  getTitle() {
-    const { subscriptions, categories } = this.props;
-    const isSubscriptionSelected = location.pathname.startsWith('/subscriptions');
-    const isCategorySelected = location.pathname.startsWith('/categories');
-    const params = this.requestParams(this.props);
-
-    let title = '';
-    if (params.subscription_id === 'all') {
-      title = 'All';
-    } else if (params.subscription_id === 'today') {
-      title = 'Today';
-    } else if (isSubscriptionSelected) {
-      const subscription = subscriptions.byId[+params.subscription_id];
-      if (subscription) title = subscription.title;
-    } else if (isCategorySelected) {
-      const category = categories.byId[+params.category_id];
-      if (category) title = category.title;
-    }
-
-    return title;
   }
 }
 
