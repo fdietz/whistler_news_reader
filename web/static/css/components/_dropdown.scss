@@ -1,6 +1,10 @@
 .dropdown {
   position: relative;
 
+  &.expand {
+    width: 100%;
+  }
+
   &.east {
     .dropdown__content {
       left: 0;

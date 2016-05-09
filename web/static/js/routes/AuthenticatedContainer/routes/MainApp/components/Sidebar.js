@@ -6,11 +6,6 @@ import debounce from 'lodash.debounce';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import {
-  ArrowDownSVGIcon,
-  ArrowUpSVGIcon,
-} from 'components/SVGIcon';
-
 import DropdownTrigger from 'components/DropdownTrigger';
 import DropdownContent from 'components/DropdownContent';
 import Dropdown from 'components/Dropdown';
@@ -19,7 +14,9 @@ import {
   HouseSVGIcon,
   ListSVGIcon,
   PlusSVGIcon,
-  GoBackSVGIcon,
+  CogSVGIcon,
+  ArrowDownSVGIcon,
+  ArrowUpSVGIcon
 } from 'components/SVGIcon';
 
 import Button from 'components/Button';
@@ -280,15 +277,15 @@ class Sidebar extends Component {
             {this.renderAddCategoryLink()}
           </div>
         </div>
-        <div className="sidebar-footer hide-large-screen2">
-          <div className="avatar-square">
-            <img src={currentUser.image_url} />
-          </div>
-          <Dropdown className="north ml1">
-            <DropdownTrigger className="mr1">
-              <div className="user-email">{currentUser.email}</div>
-              <ArrowDownSVGIcon color="light-gray" size="small" className="arrow-down" />
-              <ArrowUpSVGIcon color="light-gray" size="small" className="arrow-up" />
+        <div className="sidebar-footer">
+          <Dropdown className="north expand">
+            <DropdownTrigger>
+              <CogSVGIcon size="small" color="light-gray" />
+              <div className="sidebar-nav-list__name">{currentUser.email}</div>
+              <div className="sidebar-nav-list__badge2 mx-auto">
+                <ArrowDownSVGIcon color="light-gray" size="medium" className="arrow-down" />
+                <ArrowUpSVGIcon color="light-gray" size="medium" className="arrow-up" />
+              </div>
             </DropdownTrigger>
             <DropdownContent>
               <ul className="dropdown__list">

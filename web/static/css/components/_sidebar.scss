@@ -116,9 +116,9 @@ $sidebar-color: $gray;
 
   &.active {
 
-    // > .sidebar-nav-list__meta {
-    //   background-color: $blue;
-    // }
+    > .sidebar-nav-list__meta {
+      background-color: $darken-3;
+    }
 
     > .sidebar-nav-list__meta > .sidebar-nav-list__badge {
       color: $white !important;
