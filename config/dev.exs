@@ -6,13 +6,23 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
+
+webpack_devserver = [{Path.expand("webpack.devserver.js"), []}]
+webpack_watch     = [npm: ["run", "webpack:watch"]]
+
+watchers = if System.get_env("WEBPACK_ENV") === "hot" do
+  webpack_devserver
+else
+  webpack_watch
+end
+
 config :whistler_news_reader, WhistlerNewsReader.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
   cache_static_lookup: false,
   check_origin: false,
-  watchers: [{Path.expand("webpack.devserver.js"), []}]
+  watchers: watchers
 
 # Watch static and templates for browser reloading.
 config :whistler_news_reader, WhistlerNewsReader.Endpoint,
