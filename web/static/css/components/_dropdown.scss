@@ -74,6 +74,9 @@
   border-radius: $border-radius;
   box-shadow: 2px 2px 2px 0 $darken-2;
 
+  font-size: .9rem;
+  line-height: 1rem;
+
   opacity: 1;
   transform: scale(1, 1);
   transform-origin: top;
@@ -82,6 +85,14 @@
   &.hidden {
     opacity: 0;
     transform: scale(1, 0);
+  }
+
+  @include respond-to(small-screen) {
+    color: $gray;
+    background-color: $blue-2;
+
+    font-size: 1rem;
+    line-height: 1.1rem;
   }
 }
 
@@ -94,16 +105,11 @@
 .dropdown__list-item {
   display: flex;
   padding: .5em $space-2;
-  font-size: .9rem;
-  line-height: 1rem;
-  color: $gray;
   white-space: nowrap;
   cursor: pointer;
   align-items: center;
 
   @include respond-to(small-screen) {
-    font-size: 1rem;
-    line-height: 1.1rem;
     padding: .7em $space-2;
   }
 

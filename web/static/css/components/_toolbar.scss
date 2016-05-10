@@ -1,3 +1,8 @@
+@mixin toolbar-invert {
+  color: $gray;
+  background-color: $blue-2;
+}
+
 .toolbar {
   display: flex;
   width: 100%;
@@ -7,6 +12,8 @@
   @include respond-to(small-screen) {
     margin-right: -$space-2;
     margin-left: -$space-2;
+
+    @include toolbar-invert;
 
     .btn {
       padding: 1em;
@@ -19,7 +26,6 @@
       }
     }
   }
-
 }
 
 .toolbar--titled {
