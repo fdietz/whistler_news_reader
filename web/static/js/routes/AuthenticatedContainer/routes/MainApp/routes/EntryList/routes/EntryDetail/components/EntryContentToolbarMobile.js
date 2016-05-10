@@ -109,7 +109,7 @@ const EntryContentToolbarMobile = ({
                   className="dropdown-field media" />
                 <label
                   htmlFor="article"
-                  className="dropdown-label content">Readability optimized article (experimental)</label>
+                  className="dropdown-label content">Readability optimized (beta)</label>
               </li>
               <li
                 className="dropdown__list-item"

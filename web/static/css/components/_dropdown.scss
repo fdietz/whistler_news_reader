@@ -101,6 +101,12 @@
   cursor: pointer;
   align-items: center;
 
+  @include respond-to(small-screen) {
+    font-size: 1rem;
+    line-height: 1.1rem;
+    padding: .7em $space-2;
+  }
+
   &:hover,
   &.active {
     background-color: rgba(0, 0, 0, .05);
