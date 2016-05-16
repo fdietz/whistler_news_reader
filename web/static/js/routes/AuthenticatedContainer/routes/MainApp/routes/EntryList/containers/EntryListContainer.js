@@ -262,7 +262,7 @@ class EntryListContainer extends Component {
 
     return title;
   }
-  
+
   render() {
     const { currentViewLayout } = this.state;
     const {
@@ -352,11 +352,12 @@ class EntryListContainer extends Component {
         onToggleSidebarClick={sidebarActions.toggle} />
     );
 
+    const hasChildren = React.Children.count(this.props.children) > 0;
+
     const masterListCls = classNames('master-list', {
       grid: currentViewLayout === 'grid',
+      'hide-small-screen': hasChildren
     });
-
-    const hasChildren = React.Children.count(this.props.children) > 0;
 
     return (
       <div className="main-master-container">

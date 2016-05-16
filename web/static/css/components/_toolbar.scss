@@ -8,7 +8,6 @@
   width: 100%;
   align-items: center;
   flex: 1 1;
-  // z-index: 1;
 
   @include respond-to(small-screen) {
     margin-right: -$space-2;
@@ -33,14 +32,6 @@
       border-radius: 0;
       width: 56px;
       height: 56px;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      .w {
-        align-self: center;
-      }
     }
   }
 

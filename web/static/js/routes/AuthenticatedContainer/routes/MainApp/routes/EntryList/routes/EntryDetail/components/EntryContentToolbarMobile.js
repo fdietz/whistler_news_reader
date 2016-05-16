@@ -57,7 +57,7 @@ const EntryContentToolbarMobile = ({
         type="header"
         onClick={onGoBackClick}
         title="Go back"
-        className="show-small-screen-only mr1">
+        className="btn-logo">
         <GoBackSVGIcon color="white" size="small" />
       </Button>
 

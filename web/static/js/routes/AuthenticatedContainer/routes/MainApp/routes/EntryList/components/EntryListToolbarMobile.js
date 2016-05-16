@@ -39,7 +39,7 @@ const EntryListToolbarMobile = ({
         onClick={onToggleSidebarClick}
         title="Toggle Sidebar"
         className="btn-logo">
-        <div className="w">W</div>
+        <MenuSVGIcon color="white" size="small" />
       </Button>
       <header>
         <div className="title">{title}</div>
