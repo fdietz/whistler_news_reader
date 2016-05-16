@@ -24,8 +24,7 @@ const EntryListToolbarMobile = ({
   onOpenEditFeedOrCategoryModalClick,
   onToggleSidebarClick,
 }) => {
-  const spinnerCls = classNames({
-    spinner: true,
+  const spinnerCls = classNames('loader loader__invert', {
     hide: !showSpinner,
   });
 
@@ -45,7 +44,7 @@ const EntryListToolbarMobile = ({
       <header>
         <div className="title">{title}</div>
         <span className={spinnerCls}>
-          <Icon name="spinner" size="small" />
+          <Icon name="spinner_white" size="small" />
         </span>
       </header>
       <div className="right">

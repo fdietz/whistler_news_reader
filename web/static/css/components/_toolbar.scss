@@ -35,6 +35,12 @@
       font-size: 1.1rem;
     }
   }
+
+  .loader {
+    font-size: .1rem;
+    margin: 10em;
+  }
+
 }
 
 .toolbar--titled {
@@ -58,7 +64,6 @@
   header {
     display: flex;
 
-    padding-left: $space-2;
     align-items: center;
 
     .title {
@@ -68,14 +73,7 @@
       text-align: center;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-
-    .spinner {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      display: flex;
-      align-items: center;
+      padding-left: $space-2;
     }
   }
 
