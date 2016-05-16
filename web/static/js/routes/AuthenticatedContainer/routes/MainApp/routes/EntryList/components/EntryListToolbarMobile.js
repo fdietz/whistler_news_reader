@@ -38,8 +38,9 @@ const EntryListToolbarMobile = ({
       <Button
         type="header"
         onClick={onToggleSidebarClick}
-        title="Mark all stories as read">
-        <MenuSVGIcon color="white" size="small" />
+        title="Toggle Sidebar"
+        className="btn-logo">
+        W
       </Button>
       <header>
         <div className="title">{title}</div>
