@@ -23,7 +23,7 @@ const EntryListToolbar = ({
   onOpenEditFeedOrCategoryModalClick,
   onToggleSidebarClick,
 }) => {
-  const spinnerCls = classNames('loader', {
+  const spinnerCls = classNames('spinner spinner-blink', {
     hide: !showSpinner,
   });
 

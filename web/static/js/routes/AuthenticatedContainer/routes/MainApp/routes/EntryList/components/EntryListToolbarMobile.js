@@ -24,7 +24,7 @@ const EntryListToolbarMobile = ({
   onOpenEditFeedOrCategoryModalClick,
   onToggleSidebarClick,
 }) => {
-  const spinnerCls = classNames('loader loader__invert', {
+  const spinnerCls = classNames('spinner spinner-blink__invert', {
     hide: !showSpinner,
   });
 
@@ -39,7 +39,7 @@ const EntryListToolbarMobile = ({
         onClick={onToggleSidebarClick}
         title="Toggle Sidebar"
         className="btn-logo">
-        W
+        <div className="w">W</div>
       </Button>
       <header>
         <div className="title">{title}</div>

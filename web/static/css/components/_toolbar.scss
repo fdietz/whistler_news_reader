@@ -8,6 +8,7 @@
   width: 100%;
   align-items: center;
   flex: 1 1;
+  // z-index: 1;
 
   @include respond-to(small-screen) {
     margin-right: -$space-2;
@@ -33,12 +34,14 @@
       width: 56px;
       height: 56px;
       font-size: 1.1rem;
-    }
-  }
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-  .loader {
-    font-size: .1rem;
-    margin: 10em;
+      .w {
+        align-self: center;
+      }
+    }
   }
 
 }
@@ -52,7 +55,6 @@
   padding-top: 0;
   padding-bottom: 0;
 
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
 
   align-items: center;
   flex: 1 1;
@@ -64,6 +66,8 @@
   header {
     display: flex;
 
+    margin-left: $space-2;
+
     align-items: center;
 
     .title {
@@ -73,7 +77,6 @@
       text-align: center;
       text-overflow: ellipsis;
       white-space: nowrap;
-      padding-left: $space-2;
     }
   }
 
