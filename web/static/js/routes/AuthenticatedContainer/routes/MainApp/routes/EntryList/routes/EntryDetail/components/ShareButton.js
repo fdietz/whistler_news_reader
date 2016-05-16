@@ -15,16 +15,16 @@ const openWindow = (href) => {
   return false;
 };
 
-export const TwitterLink = ({ title, url, ...rest }) => {
+export const TwitterLink = ({ title, url, iconColor = "gray", ...rest }) => {
   const href = `https://twitter.com/intent/tweet/?text=${title}&url=${url}`;
   return (
     <a href={href} target="_blank" {...rest}>
-      <TwitterSVGIcon color="gray" />
+      <TwitterSVGIcon color={iconColor} />
       Twitter
     </a>);
 };
 
-export const FacebookLink = ({ title, url, ...rest }) => {
+export const FacebookLink = ({ title, url, iconColor = "gray", ...rest }) => {
   const href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
   return (
     <a
@@ -32,13 +32,13 @@ export const FacebookLink = ({ title, url, ...rest }) => {
       target="_blank"
       onClick={openWindow.bind(this, href)}
   >
-      <FacebookSVGIcon color="gray" />
+      <FacebookSVGIcon color={iconColor} />
       Facebook
     </a>
   );
 };
 
-export const GooglePlusLink = ({ title, url, ...rest }) => {
+export const GooglePlusLink = ({ title, url, iconColor = "gray", ...rest }) => {
   const href = `https://plus.google.com/share?url=${url}`;
   return (
     <a
@@ -46,27 +46,27 @@ export const GooglePlusLink = ({ title, url, ...rest }) => {
       target="_blank"
       onClick={openWindow.bind(this, href)}
   >
-      <GooglePlusSVGIcon color="gray" />
+      <GooglePlusSVGIcon color={iconColor} />
       Google
     </a>
   );
 };
 
-export const PinterestLink = ({ title, url, ...rest }) => {
+export const PinterestLink = ({ title, url, iconColor = "gray", ...rest }) => {
   const href = `http://pinterest.com/pin/create/button/?url=${url}&description=${title}`;
   return (
     <a href={href} target="_blank" {...rest}>
-      <PinterestSVGIcon color="gray" />
+      <PinterestSVGIcon color={iconColor} />
       Pinterest
     </a>
   );
 };
 
-export const MailLink = ({ title, url, ...rest }) => {
+export const MailLink = ({ title, url, iconColor = "gray", ...rest }) => {
   const href = `mailto:?&subject=${title}&body=${url}`;
   return (
     <a href={href} target="_blank" {...rest}>
-      <MailSVGIcon color="gray" />
+      <MailSVGIcon color={iconColor} />
       Mail
     </a>
   );

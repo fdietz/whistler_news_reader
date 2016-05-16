@@ -38,10 +38,6 @@ $entry-list-secondary-color: $gray-3;
   transition: opacity 500ms ease-out;
   flex-direction: column;
 
-  @include respond-to(small-screen) {
-    background-color: $darken-1;
-  }
-
   &.selected {
     background-color: $gray-2;
   }

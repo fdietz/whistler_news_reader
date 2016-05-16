@@ -22,9 +22,8 @@
 
   @include respond-to(small-screen) {
     padding: $space-2;
-    background-color: $darken-1;
   }
-  
+
 }
 
 .feed-entry-content__header {
@@ -35,6 +34,7 @@
 
     a {
       text-decoration: none;
+      color: $black-3;
     }
   }
 }

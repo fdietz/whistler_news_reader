@@ -58,7 +58,7 @@ const EntryContentToolbarMobile = ({
         onClick={onGoBackClick}
         title="Go back"
         className="show-small-screen-only mr1">
-        <GoBackSVGIcon color="light-gray" size="small" />
+        <GoBackSVGIcon color="white" size="small" />
       </Button>
 
       <header>
@@ -74,12 +74,12 @@ const EntryContentToolbarMobile = ({
           onClick={onOpenExternalClick}
           disabled={!entry}
           title="Open story in new browser tab or window">
-          <EarthSVGIcon color="light-gray" size="small" />
+          <EarthSVGIcon color="white" size="small" />
         </Button>
 
         <Dropdown className="west">
           <DropdownTrigger className={shareDropdownCls}>
-            <EllipsisSVGIcon color="light-gray" size="small" />
+            <EllipsisSVGIcon color="white" size="small" />
           </DropdownTrigger>
           <DropdownContent>
             <ul className="dropdown__list">
@@ -130,19 +130,19 @@ const EntryContentToolbarMobile = ({
               <ul className="dropdown__list">
                 <li className="dropdown__list-separator" />
                 <li className="dropdown__list-item">
-                  <MailLink {...entry} />
+                  <MailLink {...entry} iconColor="white" />
                 </li>
                 <li className="dropdown__list-item">
-                  <TwitterLink {...entry} />
+                  <TwitterLink {...entry} iconColor="white" />
                 </li>
                 <li className="dropdown__list-item">
-                  <FacebookLink {...entry} />
+                  <FacebookLink {...entry} iconColor="white" />
                 </li>
                 <li className="dropdown__list-item">
-                  <GooglePlusLink {...entry} />
+                  <GooglePlusLink {...entry} iconColor="white" />
                 </li>
                 <li className="dropdown__list-item">
-                  <PinterestLink {...entry} />
+                  <PinterestLink {...entry} iconColor="white" />
                 </li>
               </ul>
             }

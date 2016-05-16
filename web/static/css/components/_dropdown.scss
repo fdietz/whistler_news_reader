@@ -88,7 +88,7 @@
   }
 
   @include respond-to(small-screen) {
-    color: $gray;
+    color: $white;
     background-color: $blue-2;
 
     font-size: 1rem;
@@ -111,6 +111,10 @@
 
   @include respond-to(small-screen) {
     padding: .7em $space-2;
+
+    a {
+      color: $white !important;
+    }
   }
 
   &:hover,
@@ -155,4 +159,8 @@
   height: 1px;
   margin: .2rem;
   background-color: $darken-1;
+
+  @include respond-to(small-screen) {
+    background-color: $gray;
+  }
 }
