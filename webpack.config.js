@@ -53,7 +53,7 @@ var config = {
   entry: prod ? prodEntry : devEntry,
   output: {
     path: path.join(__dirname, "./priv/static"),
-    filename: "bundle.js",
+    filename: "js/bundle.js",
     publicPath: publicPath
   },
   plugins: plugins,
