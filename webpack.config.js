@@ -2,12 +2,14 @@
 var path = require("path");
 var webpack = require("webpack");
 const validate = require("webpack-validator");
+var CopyWebpackPlugin = require("copy-webpack-plugin");
 
 var env = process.env.MIX_ENV || "dev";
 var prod = env === "prod";
 
 var plugins = [
-  new webpack.NoErrorsPlugin()
+  new webpack.NoErrorsPlugin(),
+  new CopyWebpackPlugin([{ from: './web/static/assets' }])
 ];
 
 var loaders = ["babel?cacheDirectory"];
@@ -50,7 +52,7 @@ var config = {
   devtool: prod ? null : "eval-source-map",
   entry: prod ? prodEntry : devEntry,
   output: {
-    path: path.join(__dirname, "./priv/static/js"),
+    path: path.join(__dirname, "./priv/static"),
     filename: "bundle.js",
     publicPath: publicPath
   },
