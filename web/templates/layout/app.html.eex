@@ -13,7 +13,7 @@
 
     <title>whistler news reader</title>
 
-    <link rel="manifest" href="<%= static_path(@conn, "/app_manifest.json") %>">
+    <link rel="manifest" href="/app_manifest.json>
 
     <link rel="apple-touch-icon" sizes="57x57" href="<%= static_path(@conn, "/favicons/apple-icon-57x57.png") %>">
     <link rel="apple-touch-icon" sizes="60x60" href="<%= static_path(@conn, "/favicons/apple-icon-60x60.png") %>">
