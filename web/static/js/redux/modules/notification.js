@@ -5,6 +5,16 @@ export const RESET_NOTIFICATION = 'RESET_NOTIFICATION';
 export const createNotification = createAction(CREATE_NOTIFICATION);
 export const resetNotification = createAction(RESET_NOTIFICATION);
 
+export function showNotificationWithTimeout(text) {
+  return dispatch => {
+    dispatch(createNotification(text));
+
+    setTimeout(() => {
+      dispatch(resetNotification());
+    }, 5000);
+  };
+}
+
 export default function reducer(state = null, action) {
   const { type, payload } = action;
 
