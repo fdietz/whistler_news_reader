@@ -37,7 +37,7 @@
   <body>
     <%= render @view_module, @view_template, assigns %>
     <%= if Mix.env == :dev && System.get_env("WEBPACK_ENV") == "hot" do %>
-      <script src="http://localhost:4001/bundle.js"></script>
+      <script src="http://localhost:4001/js/bundle.js"></script>
     <% else %>
       <script src="<%= static_path(@conn, "/js/bundle.js") %>"></script>
     <% end %>
