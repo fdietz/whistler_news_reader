@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 
-import FeedEntryGridItem from './FeedEntryGridItem';
+import EntryGridItem from './EntryGridItem';
 
-class FeedEntryGrid extends Component {
+class EntryGrid extends Component {
 
   static propTypes = {
     entries: PropTypes.arrayOf(PropTypes.shape({
@@ -24,7 +24,7 @@ class FeedEntryGrid extends Component {
       <div className={cls}>
         {entries.map((entry) => {
           return (
-            <FeedEntryGridItem
+            <EntryGridItem
               entry={entry}
               isSelected={entry && currentEntry && entry.id === currentEntry.id}
               key={entry.id}
@@ -38,4 +38,4 @@ class FeedEntryGrid extends Component {
   }
 }
 
-export default FeedEntryGrid;
+export default EntryGrid;

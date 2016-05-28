@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import shallowCompare from 'react-addons-shallow-compare';
 
-import FeedEntryListItem from './FeedEntryListItem';
+import EntryListItem from './EntryListItem';
 
 import { isElementInViewport } from 'utils/dom';
 
-class FeedEntryList extends Component {
+class EntryList extends Component {
 
   static propTypes = {
     entries: PropTypes.arrayOf(PropTypes.shape({
@@ -57,7 +57,7 @@ class FeedEntryList extends Component {
       <div className={cls}>
         {entries.map((entry) => {
           return (
-            <FeedEntryListItem
+            <EntryListItem
               entry={entry}
               isSelected={entry && currentEntry && entry.id === currentEntry.id}
               key={entry.id}
@@ -71,4 +71,4 @@ class FeedEntryList extends Component {
   }
 }
 
-export default FeedEntryList;
+export default EntryList;

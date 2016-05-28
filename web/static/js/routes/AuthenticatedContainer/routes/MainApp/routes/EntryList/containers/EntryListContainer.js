@@ -9,8 +9,8 @@ import { Link } from 'react-router';
 import LayoutHeader from 'layouts/LayoutHeader';
 import LayoutContent from 'layouts/LayoutContent';
 import InfiniteScroll from '../components/InfiniteScroll';
-import FeedEntryList from '../components/FeedEntryList';
-import FeedEntryGrid from '../components/FeedEntryGrid';
+import EntryList from '../components/EntryList';
+import EntryGrid from '../components/EntryGrid';
 import NoMoreContent from '../components/NoMoreContent';
 import EntryListToolbar from '../components/EntryListToolbar';
 import EntryListToolbarMobile from '../components/EntryListToolbarMobile';
@@ -279,7 +279,7 @@ class EntryListContainer extends Component {
     let items;
     if (currentViewLayout === 'list' || currentViewLayout === 'compact_list') {
       items = (
-        <FeedEntryList
+        <EntryList
           entries={sortedEntries}
           currentEntry={entry}
           onEntryClick={e => this.handleSelectCurrentEntry(e)}
@@ -288,7 +288,7 @@ class EntryListContainer extends Component {
       );
     } else if (currentViewLayout === 'grid') {
       items = (
-        <FeedEntryGrid
+        <EntryGrid
           entries={sortedEntries}
           currentEntry={entry}
           onEntryClick={e => this.handleSelectCurrentEntry(e)}

@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import DateTimeHelper from 'utils/DateTimeHelper';
-import BackgroundImage from 'components/BackgroundImage';
 import Image from 'components/Image';
 
-class FeedEntryGridItem extends Component {
+class EntryGridItem extends Component {
 
   static propTypes = {
     entry: PropTypes.shape({
@@ -61,4 +60,4 @@ class FeedEntryGridItem extends Component {
   }
 }
 
-export default FeedEntryGridItem;
+export default EntryGridItem;

@@ -4,7 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 
 import DateTimeHelper from 'utils/DateTimeHelper';
 
-class FeedEntryListItem extends Component {
+class EntryListItem extends Component {
 
   static propTypes = {
     entry: PropTypes.object.isRequired,
@@ -46,4 +46,4 @@ class FeedEntryListItem extends Component {
   }
 }
 
-export default FeedEntryListItem;
+export default EntryListItem;
