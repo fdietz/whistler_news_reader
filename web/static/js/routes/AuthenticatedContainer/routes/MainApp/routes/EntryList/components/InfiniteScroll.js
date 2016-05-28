@@ -14,7 +14,6 @@ export default class InfiniteScroll extends Component {
 
   static defaultProps = {
     hasMore: true,
-    loadMore: function () {},
     threshold: 250,
   }
 
@@ -37,23 +36,21 @@ export default class InfiniteScroll extends Component {
     this.handleScrollEvent();
   }
 
-  render() {
-    return (
-      <div ref="scrollContainer" className="infinite-scroll-container">
-        {this.props.children}
-      </div>
-    );
+  componentWillUnmount() {
+    this.detachScrollListener();
+    this.detachResizeListener();
   }
 
   handleScrollEvent() {
     if (!this.props.hasMore) return;
 
-    let scrollTop = this.scrollableAncestor.scrollTop;
-    let scrollHeight = this.scrollableAncestor.scrollHeight;
-    let offsetHeight = this.scrollableAncestor.offsetHeight;
+    const scrollTop = this.scrollableAncestor.scrollTop;
+    const scrollHeight = this.scrollableAncestor.scrollHeight;
+    const offsetHeight = this.scrollableAncestor.offsetHeight;
 
-    if (scrollTop + offsetHeight + this.props.threshold > scrollHeight) {
-      this.props.loadMore();
+    // check for scrollHeight !== 0 in case component is hidden via CSS
+    if (scrollHeight !== 0 && scrollTop + offsetHeight + this.props.threshold > scrollHeight) {
+      if (this.props.loadMore) this.props.loadMore();
     }
   }
 
@@ -74,9 +71,12 @@ export default class InfiniteScroll extends Component {
     window.removeEventListener('resize', this.handleScrollEvent);
   }
 
-  componentWillUnmount() {
-    this.detachScrollListener();
-    this.detachResizeListener();
+  render() {
+    return (
+      <div ref="scrollContainer" className="infinite-scroll-container">
+        {this.props.children}
+      </div>
+    );
   }
 
 }
