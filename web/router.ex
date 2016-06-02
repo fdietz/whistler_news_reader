@@ -39,7 +39,7 @@ defmodule WhistlerNewsReader.Router do
     resources "/subscriptions", Api.SubscriptionController
 
     resources "/entry_articles", Api.EntryArticleController, only: [:show]
-    
+
     post "/imports", Api.ImportController, :create
     get "/random_images", Api.RandomImageController, :index
   end

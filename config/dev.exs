@@ -22,17 +22,18 @@ config :whistler_news_reader, WhistlerNewsReader.Endpoint,
   code_reloader: true,
   cache_static_lookup: false,
   check_origin: false,
+  # watchers: []
   watchers: watchers
 
 # Watch static and templates for browser reloading.
-config :whistler_news_reader, WhistlerNewsReader.Endpoint,
-  live_reload: [
-    patterns: [
-      # ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
-      ~r{web/views/.*(ex)$},
-      ~r{web/templates/.*(eex)$}
-    ]
-  ]
+# config :whistler_news_reader, WhistlerNewsReader.Endpoint,
+#   live_reload: [
+#     patterns: [
+#       # ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+#       ~r{web/views/.*(ex)$},
+#       ~r{web/templates/.*(eex)$}
+#     ]
+#   ]
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
