@@ -6,7 +6,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
-var env = process.env.NODE_ENV || 'dev';
+var env = process.env.NODE_ENV || process.env.MIX_ENV || 'dev';
 var prod = env === 'prod' || env === 'production';
 
 var plugins = [
