@@ -69,7 +69,7 @@ defmodule WhistlerNewsReader.Entry do
   def older_than_given_days(query, days) do
     minus_days = - days;
     from p in query,
-    where: p.published >= datetime_add(^Ecto.DateTime.utc, ^minus_days, "day")
+    where: p.published <= datetime_add(^Ecto.DateTime.utc, ^minus_days, "day")
   end
 
   def for_guid(query, guid) do
