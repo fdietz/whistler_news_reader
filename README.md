@@ -1,6 +1,8 @@
 # whistler news reader
 [![Build Status](https://travis-ci.org/fdietz/whistler_news_reader.svg?branch=master)](https://travis-ci.org/fdietz/whistler_news_reader)
 
+** The maintainer is currently on vacation until end of July with limited internet access **
+
 A modern stylish RSS Reader with a beautiful reading experience.
 
 ![alt tag](https://raw.githubusercontent.com/fdietz/whistler_news_reader/master/screenshots/list.png)
