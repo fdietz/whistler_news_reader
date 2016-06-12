@@ -13,7 +13,7 @@ defmodule WhistlerNewsReader.Entry do
 
     #field :feed_id, :integer
     belongs_to :feed, WhistlerNewsReader.Feed
-    has_many :unread_entries, WhistlerNewsReader.SubscribedEntry
+    has_many :unread_entries, WhistlerNewsReader.SubscribedEntry, on_delete: :delete_all
 
     timestamps
   end
@@ -64,6 +64,12 @@ defmodule WhistlerNewsReader.Entry do
 
     from p in query,
     where: p.published >= ^Ecto.DateTime.to_string(ecto_date_time)
+  end
+
+  def older_than_given_days(query, days) do
+    minus_days = - days;
+    from p in query,
+    where: p.published >= datetime_add(^Ecto.DateTime.utc, ^minus_days, "day")
   end
 
   def for_guid(query, guid) do

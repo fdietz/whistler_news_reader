@@ -7,9 +7,8 @@ defmodule WhistlerNewsReader.Feed do
     field :feed_url, :string
     field :site_url, :string
     field :last_refreshed_at, Ecto.DateTime
-    has_many :entries, WhistlerNewsReader.Entry
-    has_many :unread_entries, WhistlerNewsReader.SubscribedEntry
-    has_many :subscriptions, WhistlerNewsReader.Subscription
+    has_many :entries, WhistlerNewsReader.Entry, on_delete: :delete_all
+    has_many :subscriptions, WhistlerNewsReader.Subscription, on_delete: :delete_all
 
     timestamps
   end
