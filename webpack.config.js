@@ -2,7 +2,7 @@
 var path = require('path');
 var webpack = require('webpack');
 const validate = require('webpack-validator');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+// var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
@@ -11,17 +11,20 @@ var prod = env === 'prod' || env === 'production';
 
 var plugins = [
   new webpack.NoErrorsPlugin(),
-  // new CopyWebpackPlugin([{ from: './client/assets' }]),
+  new CopyWebpackPlugin([
+    { from: './client/assets' },
+    { from: './client/app_manifest.json' }
+  ]),
   new FaviconsWebpackPlugin({
     logo: './client/assets/favicons/android-icon-192x192.png',
     title: "whistl'er news reader",
     background: '#27323F'
-  }),
-  new HtmlWebpackPlugin({
-    template: './client/index.tmpl.html.ejs',
-    inject: 'body',
-    filename: 'index.html'
-  }),
+  })
+  // new HtmlWebpackPlugin({
+  //   template: './client/index.tmpl.html.ejs',
+  //   inject: 'body',
+  //   filename: 'index.html'
+  // }),
 ];
 
 var loaders = ['babel?cacheDirectory'];
