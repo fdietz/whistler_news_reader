@@ -7,7 +7,6 @@ defmodule WhistlerNewsReader.FeedServerWorker do
   alias WhistlerNewsReader.FeedRefresher
 
   def start_link(name) do
-    IO.puts "Starting Feed Server for #{name}"
     GenServer.start_link(WhistlerNewsReader.FeedServerWorker, name, name: via_tuple(name))
   end
 

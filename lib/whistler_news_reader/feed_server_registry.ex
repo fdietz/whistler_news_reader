@@ -5,8 +5,6 @@ defmodule WhistlerNewsReader.FeedServerRegistry do
   alias WhistlerNewsReader.FeedServerSupervisor
 
   def start_link do
-    IO.puts "Start FeedServerRegistry"
-
     GenServer.start_link(__MODULE__, nil, name: :feed_server_registry)
   end
 

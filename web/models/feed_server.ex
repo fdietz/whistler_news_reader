@@ -12,10 +12,6 @@ defmodule WhistlerNewsReader.FeedServer do
     |> Enum.map(&Task.await(&1, @task_await_timeout_ms))
   end
 
-  def refresh_async(feed) do
-    Task.async(fn -> refresh(feed) end)
-  end
-
   def refresh(feed) do
     pid = FeedServerRegistry.server_process(feed.id)
     FeedServerWorker.refresh(pid)
@@ -27,12 +23,16 @@ defmodule WhistlerNewsReader.FeedServer do
     |> Enum.map(&Task.await(&1, @task_await_timeout_ms))
   end
 
-  def import_async(user, feed_attrs, opts) do
-    Task.async(fn -> import(user, feed_attrs, opts) end)
-  end
-
   def import(user, feed_attrs, opts \\ []) do
     FeedImporter.import(user, feed_attrs, opts)
+  end
+
+  defp refresh_async(feed) do
+    Task.async(fn -> refresh(feed) end)
+  end
+
+  defp import_async(user, feed_attrs, opts) do
+    Task.async(fn -> import(user, feed_attrs, opts) end)
   end
 
 end
