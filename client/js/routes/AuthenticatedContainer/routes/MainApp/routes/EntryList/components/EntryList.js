@@ -5,7 +5,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 
 import EntryListItem from './EntryListItem';
 
-import { isElementInViewport } from 'utils/dom';
+import { isElementInViewport } from '../../../../../../../utils/dom';
 
 class EntryList extends Component {
 

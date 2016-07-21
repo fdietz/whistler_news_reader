@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import FeedEntryListItem from '../FeedEntryListItem';
+import EntryListItem from '../EntryListItem';
 
 const entry = {
   id: 1,
@@ -21,20 +21,15 @@ const props = {
   onClick: () => {},
 };
 
-test('FeedEntryListItem render correctly', t => {
-  const wrapper = shallow(<FeedEntryListItem {...props} />);
+test('EntryListItem render correctly', t => {
+  const wrapper = shallow(<EntryListItem {...props} />);
   t.true(wrapper.find('.entry-title').text() === 'title');
   t.true(wrapper.find('.feed-title').text() === 'feed title');
 });
 
-test('FeedEntryListItem render circle if selected', t => {
-  const wrapper = shallow(<FeedEntryListItem {...props} isSelected />);
-  t.true(wrapper.find('.circle').length === 1);
-});
-
-test('FeedEntryListItem fire onClick', t => {
+test('EntryListItem fire onClick', t => {
   const spy = sinon.spy();
-  const wrapper = shallow(<FeedEntryListItem {...props} onClick={spy} />);
+  const wrapper = shallow(<EntryListItem {...props} onClick={spy} />);
   wrapper.simulate('click');
   t.true(spy.calledOnce);
 });
