@@ -19,7 +19,7 @@ defmodule WhistlerNewsReader.Mixfile do
   def application do
     [mod: {WhistlerNewsReader, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex, :tzdata, :comeonin]]
+                    :phoenix_ecto, :postgrex, :tzdata, :comeonin, :gproc]]
   end
 
   # Specifies which paths to compile per environment
@@ -46,6 +46,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:elixir_gravatar_url, "~> 1.0.0"},
      {:poolboy, "~> 1.5.1"},
      {:html_sanitize_ex, "~> 0.1.0"},
-     {:poison, "~> 1.5.0"}]
+     {:poison, "~> 1.5.0"},
+     {:gproc, "~> 0.5.0"}]
   end
 end

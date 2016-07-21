@@ -11,9 +11,11 @@ defmodule WhistlerNewsReader do
       supervisor(WhistlerNewsReader.Endpoint, []),
       # Start the Ecto repository
       worker(WhistlerNewsReader.Repo, []),
+
       # Here you could define other workers and supervisors as children
-      supervisor(WhistlerNewsReader.FeedWorkerSupervisor, []),
-      worker(WhistlerNewsReader.FeedRefresherScheduler, [])
+      supervisor(WhistlerNewsReader.FeedServerSupervisor, []),
+      worker(WhistlerNewsReader.FeedRefresherScheduler, []),
+      worker(WhistlerNewsReader.FeedServerRegistry, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

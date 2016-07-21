@@ -3,7 +3,7 @@ defmodule WhistlerNewsReader.OpmlImport do
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.OpmlParser
   alias WhistlerNewsReader.Category
-  alias WhistlerNewsReader.FeedWorker
+  alias WhistlerNewsReader.FeedServer
 
   require Logger
 
@@ -19,7 +19,7 @@ defmodule WhistlerNewsReader.OpmlImport do
         %{"feed_url" => feed_attrs[:xmlurl], "category_id" => category.id}
       end)
 
-      FeedWorker.import_all(user, feed_attrs_enum, subscribe_user: true)
+      FeedServer.import_all(user, feed_attrs_enum, subscribe_user: true)
     end)
   end
 

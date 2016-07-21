@@ -14,6 +14,7 @@
   "floki": {:hex, :floki, "0.7.1"},
   "fs": {:hex, :fs, "0.9.2"},
   "gettext": {:hex, :gettext, "0.11.0"},
+  "gproc": {:hex, :gproc, "0.5.0"},
   "guardian": {:hex, :guardian, "0.9.1"},
   "hackney": {:hex, :hackney, "1.5.7"},
   "html_sanitize_ex": {:hex, :html_sanitize_ex, "0.1.2"},

@@ -4,7 +4,7 @@ defmodule WhistlerNewsReader.FeedRefresherScheduler do
 
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.Feed
-  alias WhistlerNewsReader.FeedWorker
+  alias WhistlerNewsReader.FeedServer
 
   @sleep_sec 3600 # 1 hour
 
@@ -27,7 +27,7 @@ defmodule WhistlerNewsReader.FeedRefresherScheduler do
   def process_task do
     Logger.debug "FeedRefresherScheduler - process_task"
     feeds = Repo.all(Feed)
-    FeedWorker.refresh_all(feeds)
+    FeedServer.refresh_all(feeds)
   end
 
   def sleep do

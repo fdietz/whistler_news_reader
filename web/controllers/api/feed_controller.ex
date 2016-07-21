@@ -5,7 +5,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
   plug Guardian.Plug.EnsureAuthenticated, handler: WhistlerNewsReader.Api.SessionController
 
   alias WhistlerNewsReader.Feed
-  alias WhistlerNewsReader.FeedWorker
+  alias WhistlerNewsReader.FeedServer
 
   plug :scrub_params, "feed" when action in [:create, :update]
 
@@ -20,7 +20,7 @@ defmodule WhistlerNewsReader.Api.FeedController do
   end
 
   def create(conn, %{"feed" => feed_attributes} = _params) do
-    case FeedWorker.import(current_user(conn), feed_attributes) do
+    case FeedServer.import(current_user(conn), feed_attributes) do
       {:ok, feed} ->
         conn
         |> put_status(:created)

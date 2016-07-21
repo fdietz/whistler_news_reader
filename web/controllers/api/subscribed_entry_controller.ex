@@ -5,11 +5,10 @@ defmodule WhistlerNewsReader.Api.SubscribedEntryController do
   plug Guardian.Plug.EnsureAuthenticated, handler: WhistlerNewsReader.Api.SessionController
 
   alias WhistlerNewsReader.Repo
-  alias WhistlerNewsReader.Entry
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.SubscribedEntry
   alias WhistlerNewsReader.MarkAsReadHelper
-  alias WhistlerNewsReader.FeedWorker
+  alias WhistlerNewsReader.FeedServer
 
   def index(conn, %{"subscription_id" => "today", "last_published" => last_published, "limit" => limit} = _params) do
     subscribed_entries = SubscribedEntry |> SubscribedEntry.for_user_id(current_user(conn).id) |> SubscribedEntry.for_unread |> SubscribedEntry.for_today |> load_more(last_published, limit)
@@ -58,27 +57,27 @@ defmodule WhistlerNewsReader.Api.SubscribedEntryController do
   def refresh(conn, %{"subscription_id" => "all"} = _params) do
     subscriptions = Subscription |> Subscription.for_user_id(current_user(conn).id) |> Repo.all |> Repo.preload(:feed)
     feeds = Enum.map(subscriptions, fn(subscription) -> subscription.feed end)
-    FeedWorker.refresh_all(feeds)
+    FeedServer.refresh_all(feeds)
     conn |> send_resp(204, "")
   end
 
   def refresh(conn, %{"subscription_id" => "today"} = _params) do
     subscriptions = Subscription |> Subscription.for_user_id(current_user(conn).id) |> Repo.all |> Repo.preload(:feed)
     feeds = Enum.map(subscriptions, fn(subscription) -> subscription.feed end)
-    FeedWorker.refresh_all(feeds)
+    FeedServer.refresh_all(feeds)
     conn |> send_resp(204, "")
   end
 
   def refresh(conn, %{"subscription_id" => subscription_id} = _params) do
     subscription = Repo.get!(Subscription, subscription_id) |> Repo.preload(:feed)
-    FeedWorker.refresh(subscription.feed)
+    FeedServer.refresh(subscription.feed)
     conn |> send_resp(204, "")
   end
 
   def refresh(conn, %{"category_id" => category_id} = _params) do
     subscriptions = Subscription |> Subscription.for_category_id(category_id) |> Repo.all |> Repo.preload(:feed)
     feeds = Enum.map(subscriptions, fn(subscription) -> subscription.feed end)
-    FeedWorker.refresh_all(feeds)
+    FeedServer.refresh_all(feeds)
     conn |> send_resp(204, "")
   end
 
