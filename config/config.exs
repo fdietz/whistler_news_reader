@@ -34,3 +34,6 @@ config :guardian, Guardian,
   verify_issuer: true,
   secret_key: "",
   serializer: WhistlerNewsReader.GuardianSerializer
+
+config :hound, driver: "chrome_driver"
+# config :hound, driver: "phantomjs"

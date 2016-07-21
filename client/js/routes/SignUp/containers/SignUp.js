@@ -61,7 +61,7 @@ class SignUp extends Component {
       'fade-in': image,
     });
     return (
-      <div className="panel-container">
+      <div className="panel-container" >
         <div className={cls} style={style} />
         <div className="panel">
           <header>
@@ -69,29 +69,29 @@ class SignUp extends Component {
               whistl'er news reader
             </div>
           </header>
-          <form onSubmit={this._handleSubmit}>
+          <form onSubmit={this._handleSubmit} id="sign_up_form">
 
             <label className="field-label">
               Name
-              <input ref="name" className="field" type="text" placeholder="Name" focus />
+              <input ref="name" className="field" id="name" type="text" placeholder="Name" focus />
               {renderErrorsFor(errors, 'name')}
             </label>
 
             <label className="field-label">
               Email
-              <input ref="email" className="field" type="email" placeholder="Email" />
+              <input ref="email" className="field" id="email" type="email" placeholder="Email" />
               {renderErrorsFor(errors, 'email')}
             </label>
 
             <label className="field-label">
               Password
-              <input ref="password" className="field" type="password" placeholder="Password" />
+              <input ref="password" className="field" id="password" type="password" placeholder="Password" />
               {renderErrorsFor(errors, 'password')}
             </label>
 
             <label className="field-label">
               Password confirmation
-              <input ref="passwordConfirmation" className="field" type="password" placeholder="Confirm password" />
+              <input ref="passwordConfirmation" className="field" id="password_confirm" type="password" placeholder="Confirm password" />
               {renderErrorsFor(errors, 'password_confirmation')}
             </label>
 

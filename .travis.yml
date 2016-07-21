@@ -10,4 +10,4 @@ services:
 before_script:
   - mix do ecto.create, ecto.migrate
 script:
-  - mix test
+  - mix test --exclude integration
