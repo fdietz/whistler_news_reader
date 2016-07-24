@@ -1,8 +1,3 @@
-@mixin toolbar-invert {
-  color: $gray;
-  background-color: $blue-2;
-}
-
 .toolbar {
   display: flex;
   width: 100%;
@@ -13,12 +8,8 @@
     margin-right: -$space-2;
     margin-left: -$space-2;
 
-    @include toolbar-invert;
-
     .btn {
       padding: 1em;
-      background-color: transparent;
-      border: 0;
 
       svg {
         width: 24px;
@@ -27,8 +18,7 @@
     }
 
     .btn-logo {
-      color: $white;
-      background-color: $red;
+      color: $red;
       border-radius: 0;
       width: 56px;
       height: 56px;
@@ -64,7 +54,7 @@
     .title {
       overflow: hidden;
       font-size: 1.1rem;
-      color: $white;
+      color: $light-gray;
       text-align: center;
       text-overflow: ellipsis;
       white-space: nowrap;

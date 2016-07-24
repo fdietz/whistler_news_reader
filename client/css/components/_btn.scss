@@ -118,18 +118,12 @@ $btn-font-size-large: 1.1rem;
 }
 
 .btn-header {
-  padding: $btn-padding-header;
-  color: $gray-3;
-  background-color: #FFF;
-  border-color: $gray-4;
-  border-radius: $border-radius;
 
   &:hover {
     box-shadow: inset 0 0 0 20rem $darken-1;
   }
 
   &:focus {
-    border-color: $darken-2;
     outline: none;
   }
 

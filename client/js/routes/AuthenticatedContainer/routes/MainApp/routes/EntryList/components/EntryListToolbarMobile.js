@@ -39,7 +39,7 @@ const EntryListToolbarMobile = ({
         onClick={onToggleSidebarClick}
         title="Toggle Sidebar"
         className="btn-logo">
-        <MenuSVGIcon color="white" size="small" />
+        <MenuSVGIcon color="#F25653" size="small" />
       </Button>
       <header>
         <div className="title">{title}</div>
@@ -52,11 +52,11 @@ const EntryListToolbarMobile = ({
           type="header"
           onClick={onRefreshEntriesClick}
           title="Fetch new stories">
-          <CycleSVGIcon color="white" size="small" />
+          <CycleSVGIcon color="light-gray" size="small" />
         </Button>
         <Dropdown className="west">
           <DropdownTrigger className="btn btn-header">
-            <EllipsisSVGIcon color="white" size="small" />
+            <EllipsisSVGIcon color="light-gray" size="small" />
           </DropdownTrigger>
           <DropdownContent >
             <ul className="dropdown__list">
@@ -64,7 +64,7 @@ const EntryListToolbarMobile = ({
                 <a
                   onClick={onMarkAsReadClick}
                   title="Mark all stories as read">
-                  <CheckmarkSVGIcon color="white" size="small" />
+                  <CheckmarkSVGIcon color="light-gray" size="small" />
                   Mark all as read
                 </a>
               </li>
@@ -117,7 +117,7 @@ const EntryListToolbarMobile = ({
                 className={editFeedOrCategoryCls}
                 onClick={onOpenEditFeedOrCategoryModalClick}>
                 <div className="media">
-                  <CogSVGIcon color="white" size="small" />
+                  <CogSVGIcon color="light-gray" size="small" />
                 </div>
                 <div className="content">Settings</div>
               </li>
@@ -125,7 +125,7 @@ const EntryListToolbarMobile = ({
                 className={editFeedOrCategoryCls}
                 onClick={onRemoveFeedOrCategoryClick}>
                 <div className="media">
-                  <TrashSVGIcon color="white" size="small" />
+                  <TrashSVGIcon color="light-gray" size="small" />
                 </div>
                 <div className="content">Delete</div>
               </li>

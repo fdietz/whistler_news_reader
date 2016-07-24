@@ -58,7 +58,7 @@ const EntryContentToolbarMobile = ({
         onClick={onGoBackClick}
         title="Go back"
         className="btn-logo">
-        <GoBackSVGIcon color="white" size="small" />
+        <GoBackSVGIcon color="light-gray" size="small" />
       </Button>
 
       <header>
@@ -74,12 +74,12 @@ const EntryContentToolbarMobile = ({
           onClick={onOpenExternalClick}
           disabled={!entry}
           title="Open story in new browser tab or window">
-          <EarthSVGIcon color="white" size="small" />
+          <EarthSVGIcon color="light-gray" size="small" />
         </Button>
 
         <Dropdown className="west">
           <DropdownTrigger className={shareDropdownCls}>
-            <EllipsisSVGIcon color="white" size="small" />
+            <EllipsisSVGIcon color="light-gray" size="small" />
           </DropdownTrigger>
           <DropdownContent>
             <ul className="dropdown__list">
@@ -130,19 +130,19 @@ const EntryContentToolbarMobile = ({
               <ul className="dropdown__list">
                 <li className="dropdown__list-separator" />
                 <li className="dropdown__list-item">
-                  <MailLink {...entry} iconColor="white" />
+                  <MailLink {...entry} iconColor="light-gray" />
                 </li>
                 <li className="dropdown__list-item">
-                  <TwitterLink {...entry} iconColor="white" />
+                  <TwitterLink {...entry} iconColor="light-gray" />
                 </li>
                 <li className="dropdown__list-item">
-                  <FacebookLink {...entry} iconColor="white" />
+                  <FacebookLink {...entry} iconColor="light-gray" />
                 </li>
                 <li className="dropdown__list-item">
-                  <GooglePlusLink {...entry} iconColor="white" />
+                  <GooglePlusLink {...entry} iconColor="light-gray" />
                 </li>
                 <li className="dropdown__list-item">
-                  <PinterestLink {...entry} iconColor="white" />
+                  <PinterestLink {...entry} iconColor="light-gray" />
                 </li>
               </ul>
             }

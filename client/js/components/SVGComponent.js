@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 
 const SIZES = {
-  small: { width: 16, height: 16 },
+  tiny: { width: 16, height: 16 },
+  small: { width: 20, height: 20 },
   medium: { width: 24, height: 24 },
   large: { width: 32, height: 32 },
   xlarge: { width: 48, height: 48 },
