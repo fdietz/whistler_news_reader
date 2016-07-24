@@ -32,7 +32,13 @@ defmodule WhistlerNewsReader.FeedServer do
   end
 
   defp import_async(user, feed_attrs, opts) do
-    Task.async(fn -> import(user, feed_attrs, opts) end)
+    Task.async(fn ->
+      try do
+        import(user, feed_attrs, opts) 
+      catch _,_ ->
+        :error
+      end
+    end)
   end
 
 end
