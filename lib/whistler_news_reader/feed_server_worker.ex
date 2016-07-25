@@ -4,7 +4,7 @@
 defmodule WhistlerNewsReader.FeedServerWorker do
   use GenServer
 
-  alias WhistlerNewsReader.FeedRefresher
+  alias WhistlerNewsReader.FeedWorker
 
   def start_link(name) do
     GenServer.start_link(WhistlerNewsReader.FeedServerWorker, name, name: via_tuple(name))
@@ -28,7 +28,7 @@ defmodule WhistlerNewsReader.FeedServerWorker do
 
   def handle_call({:refresh}, _from, {name, {}} = state) do
     feed = WhistlerNewsReader.Repo.get!(WhistlerNewsReader.Feed, name)
-    {:reply, FeedRefresher.refresh(feed), state}
+    {:reply, FeedWorker.refresh(feed), state}
   end
 
   def handle_info(:stop, state), do: {:stop, :normal, state}
