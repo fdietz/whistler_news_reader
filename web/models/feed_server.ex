@@ -2,7 +2,7 @@ defmodule WhistlerNewsReader.FeedServer do
 
   alias WhistlerNewsReader.FeedServerRegistry
   alias WhistlerNewsReader.FeedServerWorker
-  alias WhistlerNewsReader.FeedImporter
+  alias WhistlerNewsReader.FeedWorker
 
   @task_await_timeout_ms 60_000
 
@@ -46,7 +46,7 @@ defmodule WhistlerNewsReader.FeedServer do
   end
 
   def import(user, feed_attrs, opts \\ []) do
-    FeedImporter.import(user, feed_attrs, opts)
+    FeedWorker.import(user, feed_attrs, opts)
   end
 
 end
