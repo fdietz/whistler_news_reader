@@ -11,7 +11,6 @@ defmodule WhistlerNewsReader.FeedServer do
     feeds
     |> Enum.map(&refresh_async(&1))
     |> Enum.map(&Task.await(&1, @task_await_timeout_ms))
-    feeds |> Enum.map(&refresh(&1))
   end
 
   defp refresh_async(feed) do
@@ -22,7 +21,6 @@ defmodule WhistlerNewsReader.FeedServer do
         :error
       end
     end)
-    Task.async(fn -> refresh(feed) end)
   end
 
   def refresh(feed) do
