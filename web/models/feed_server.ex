@@ -6,11 +6,23 @@ defmodule WhistlerNewsReader.FeedServer do
 
   @task_await_timeout_ms 60_000
 
+  # run in parallel
   def refresh_all(feeds) do
-    # feeds
-    # |> Enum.map(&refresh_async(&1))
-    # |> Enum.map(&Task.await(&1, @task_await_timeout_ms))
-    feeds |> Enum.map(&refresh_async(&1))
+    feeds
+    |> Enum.map(&refresh_async(&1))
+    |> Enum.map(&Task.await(&1, @task_await_timeout_ms))
+    feeds |> Enum.map(&refresh(&1))
+  end
+
+  defp refresh_async(feed) do
+    Task.async(fn ->
+      try do
+        refresh(feed)
+      catch _,_ ->
+        :error
+      end
+    end)
+    Task.async(fn -> refresh(feed) end)
   end
 
   def refresh(feed) do
@@ -18,18 +30,11 @@ defmodule WhistlerNewsReader.FeedServer do
     FeedServerWorker.refresh(pid)
   end
 
+  # run in parallel
   def import_all(user, feed_attrs_enum, opts \\ []) do
     feed_attrs_enum
     |> Enum.map(&import_async(user, &1, opts))
     |> Enum.map(&Task.await(&1, @task_await_timeout_ms))
-  end
-
-  def import(user, feed_attrs, opts \\ []) do
-    FeedImporter.import(user, feed_attrs, opts)
-  end
-
-  defp refresh_async(feed) do
-    Task.async(fn -> refresh(feed) end)
   end
 
   defp import_async(user, feed_attrs, opts) do
@@ -40,6 +45,10 @@ defmodule WhistlerNewsReader.FeedServer do
         :error
       end
     end)
+  end
+
+  def import(user, feed_attrs, opts \\ []) do
+    FeedImporter.import(user, feed_attrs, opts)
   end
 
 end
