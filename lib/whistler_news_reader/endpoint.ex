@@ -7,7 +7,7 @@ defmodule WhistlerNewsReader.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/", from: :whistler_news_reader, gzip: false,
-    only: ~w(css fonts images js favicons robots.txt app_manifest.json index.html)
+    only: ~w(css fonts images js favicons manifest robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
