@@ -10,8 +10,8 @@ defmodule WhistlerNewsReader.FeedImporter do
   require Logger
 
   def import(user, %{"feed_url" => feed_url} = feed_attributes, opts \\ []) do
-    Logger.info "FeedImporter - import feed #{feed_url} #{feed_attributes["category_id"]}"
-    {subscribe_user, opts} = Keyword.pop(opts, :subscribe_user, false)
+    Logger.info "FeedImporter - import feed #{feed_url} for category #{feed_attributes["category_id"]}"
+    {subscribe_user, _opts} = Keyword.pop(opts, :subscribe_user, false)
 
     with {:ok, parsed_attrs}   <- fetch_and_parse(feed_url),
          {:ok, feed}           <- find_or_create(parsed_attrs, feed_url) do
