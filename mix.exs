@@ -48,6 +48,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:html_sanitize_ex, "~> 0.1.0"},
      {:poison, "~> 1.5.0"},
      {:gproc, "~> 0.5.0"},
-     {:hound, "~> 1.0"}]
+     {:hound, "~> 1.0"},
+     {:credo, "~> 0.4", only: [:dev, :test]}]
   end
 end
