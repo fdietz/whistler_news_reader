@@ -4,7 +4,7 @@ defmodule WhistlerNewsReader.FeedServer do
   alias WhistlerNewsReader.FeedServerWorker
   alias WhistlerNewsReader.FeedWorker
 
-  @task_await_timeout_ms 60_000
+  @task_await_timeout_ms 1_000_000
 
   # run in parallel
   def refresh_all(feeds) do
