@@ -1,0 +1,34 @@
+version: "2"
+services:
+  db:
+    image: "postgres:9.4"
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      # do we need this?
+      # POSTGRES_DB: "whistler_news_reader_prod"
+    volumes:
+      - dbdata:/var/lib/postgres
+
+  web:
+    build: "."
+    environment:
+      PORT: "4000"
+      MIX_ENV: "prod"
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/whistler_news_reader_prod
+    ports:
+      - "4000:4000"
+    links:
+      - "db:db"
+
+  nginx:
+    build:
+      context: "./nginx"
+    ports:
+      - "80:80"
+    links:
+      - "web:web"
+
+volumes:
+  dbdata:
+    driver: local

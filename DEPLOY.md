@@ -1,4 +1,6 @@
-# Heroku Deployment
+# Deployment
+
+## Heroku Deployment
 
 Install the Heroku Toolbelt from here https://toolbelt.heroku.com/
 
@@ -10,7 +12,7 @@ $ heroku create whistler_news_reader
 
 The command will create our application on Heroku and add a git remote "heroku" repository that we can later use for the deployment.
 
-## Buildpacks
+### Buildpacks
 We need two different buildpacks for the Phoenix application:
 * https://github.com/HashNuke/heroku-buildpack-elixir
 * https://github.com/gjaldon/heroku-buildpack-phoenix-static
@@ -34,7 +36,7 @@ Run git push heroku master to create a new release using these buildpacks.
 
 Finally, there's the `compile` file (used by the phoenix static buildpack) which describes how to compile our assets after each deployment.
 
-## Configuration
+### Configuration
 
 In `config/prod.ex` change the following:
 
@@ -92,7 +94,78 @@ Now run the migrations:
 ```
 $ heroku run mix ecto.migrate
 ```
+# Docker
 
+## Prerequisites
+Install the docker toolbox https://www.docker.com/products/docker-toolbox.
+
+## Setup docker machine
+
+### Localhost
+
+1. Create a docker machine locally
+
+    ```bash
+    $ docker-machine start default
+    ```
+
+2. Set the environment
+
+    ```bash
+    $ eval $(docker-machine env)
+    ```
+
+3. Now build the docker images
+
+    ```bash
+    $ POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres docker-composer up -d
+    ```
+
+4. Visit website
+
+    ```bash
+    $ open http://localhost:8080
+    ```
+
+### Cloud Provider/Hosting services
+
+
+1. Create a docker machine:
+
+    ```bash
+    $ docker-machine create --driver digitalocean --digitalocean-access-token xxxxx --digitalocean-image ubuntu-16-04-x64 whistler
+    ```
+
+    Replace `xxxxx` with your token. See the documentation on how to generate
+    your token:
+    https://www.digitalocean.com/community/tutorials/how-to-provision-and-manage-remote-docker-hosts-with-docker-machine-on-ubuntu-16-04
+
+
+2. Set the environment
+
+    ```bash
+    $ eval $(docker-machine env whistler)
+    ```
+
+3. Now build the docker images
+
+    ```bash
+    $ POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres docker-composer up -d
+    ```
+
+   In my experience it didn't work with the digitalocean base image because it has not enough RAM to build `erlang-idna`. See issue https://github.com/benoitc/erlang-idna/issues/8. Upgrading my droplet fixed it for me.
+   
+4. Check your IP address using docker-machine
+
+    ```bash
+    $ docker-machine ip whistler
+    ```
+
+5. Visit website
+
+    ```bash
+    $ open http://your-ip-adress:8080
+    ```
 # Credits
 Thanks to others for getting started with this project:
 * http://codeloveandboards.com/blog/2016/03/04/trello-tribute-with-phoenix-and-react-pt-12/
