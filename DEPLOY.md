@@ -154,7 +154,7 @@ Install the docker toolbox https://www.docker.com/products/docker-toolbox.
     ```
 
    In my experience it didn't work with the digitalocean base image because it has not enough RAM to build `erlang-idna`. See issue https://github.com/benoitc/erlang-idna/issues/8. Upgrading my droplet fixed it for me.
-   
+
 4. Check your IP address using docker-machine
 
     ```bash
@@ -166,6 +166,41 @@ Install the docker toolbox https://www.docker.com/products/docker-toolbox.
     ```bash
     $ open http://your-ip-adress:8080
     ```
+
+### Create the database
+
+Using `docker-composer exec` we can run commands inside the running container.
+
+  ```bash
+  $ POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres docker-compose exec web mix ecto.create
+  ```
+
+### Run migrations
+
+  ```bash
+  $ POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres docker-compose exec web mix ecto.migrate
+  ```
+
+### Restart
+
+  ``` bash
+  docker-compose restart web
+  ```
+
+### Build a new image
+
+  ``` bash
+  docker-compose stop web &&
+  docker-compose rm web &&
+  docker-compose up -d web
+  ```
+
+### Logging
+
+  ``` bash
+  docker-compose logs web
+  ```
+  
 # Credits
 Thanks to others for getting started with this project:
 * http://codeloveandboards.com/blog/2016/03/04/trello-tribute-with-phoenix-and-react-pt-12/
