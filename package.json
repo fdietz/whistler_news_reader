@@ -2,6 +2,7 @@
   "scripts": {
     "test": "BABEL_DISABLE_CACHE=1 NODE_ENV=test ava 'client/js/**/__tests__/*.js' --require 'babel-core/register' --require './client/test/test_helper.js' --verbose",
     "webpack:build": "webpack --colors --progress",
+    "webpack:stats": "webpack --profile --json > stats.json",
     "webpack:watch": "webpack --watch --colors --progress",
     "webpack:devserver": "node webpack.devserver",
     "lint": "eslint ."
