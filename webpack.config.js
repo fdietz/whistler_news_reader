@@ -18,8 +18,16 @@ var loaders = ['babel?cacheDirectory'];
 var publicPath = prod ? '/' : 'http://localhost:4001/';
 
 var uglifyJSOptions = {
-  compress: {
+  compressor: {
+    screw_ie8: true,
     warnings: false
+  },
+  mangle: {
+    screw_ie8: true
+  },
+  output: {
+    comments: false,
+    screw_ie8: true
   }
 };
 
