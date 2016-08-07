@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce';
 import { connect } from 'react-redux';
 import { routerActions as RouterActions } from 'react-router-redux';
 import classNames from 'classnames';
-import { Link } from 'react-router';
+import Media from 'react-media';
 
 import LayoutHeader from 'layouts/LayoutHeader';
 import LayoutContent from 'layouts/LayoutContent';
@@ -14,8 +14,9 @@ import EntryGrid from '../components/EntryGrid';
 import NoMoreContent from '../components/NoMoreContent';
 import EntryListToolbar from '../components/EntryListToolbar';
 import EntryListToolbarMobile from '../components/EntryListToolbarMobile';
-import Teaser from 'components/Teaser';
-import { CheckmarkSVGIcon, EarthSVGIcon } from 'components/SVGIcon';
+import WelcomeTeaser from '../components/WelcomeTeaser';
+import NothingLeftToReadTeaser from '../components/NothingLeftToReadTeaser';
+import NoArticleSelectedTeaser from '../components/NoArticleSelectedTeaser';
 
 import * as UserActions from 'redux/modules/user';
 import * as EntriesActions from 'redux/modules/entries';
@@ -102,9 +103,9 @@ class EntryListContainer extends Component {
     const { entriesActions } = this.props;
 
     entriesActions.requestFetchEntries(this.requestParams(this.props))
-    .then(() => {
-      this.firstEntry();
-    });
+      .then(() => {
+        this.firstEntry();
+      });
 
     bindHotKey('nextEntry', () => this.debouncedNextEntry());
     bindHotKey('previousEntry', () => this.debouncedPreviousEntry());
@@ -133,20 +134,6 @@ class EntryListContainer extends Component {
     unbindHotKey('nextEntry');
     unbindHotKey('previousEntry');
     unbindHotKey('openEntry');
-  }
-
-  requestParams(props) {
-    const { params, pathname } = props;
-    return mapRequestParams(params, pathname);
-  }
-
-  refreshEntries() {
-    const { entriesActions, subscriptionsActions } = this.props;
-    entriesActions.requestRefreshEntries(this.requestParams(this.props))
-      .then(() => {
-        entriesActions.requestFetchEntries(this.requestParams(this.props));
-        subscriptionsActions.requestFetchSubscriptions();
-      });
   }
 
   nextEntry() {
@@ -263,6 +250,20 @@ class EntryListContainer extends Component {
     return title;
   }
 
+  refreshEntries() {
+    const { entriesActions, subscriptionsActions } = this.props;
+    entriesActions.requestRefreshEntries(this.requestParams(this.props))
+      .then(() => {
+        entriesActions.requestFetchEntries(this.requestParams(this.props));
+        subscriptionsActions.requestFetchSubscriptions();
+      });
+  }
+
+  requestParams(props) {
+    const { params, pathname } = props;
+    return mapRequestParams(params, pathname);
+  }
+
   render() {
     const { currentViewLayout } = this.state;
     const {
@@ -359,73 +360,33 @@ class EntryListContainer extends Component {
       'hide-small-screen': hasChildren
     });
 
+    const responsiveToolbar = (
+      <Media query="(max-width: 40em)">
+        {matches => matches ? entryListToolbarMobile : entryListToolbar }
+      </Media>
+    );
+
     return (
       <div className="main-master-container">
         {!hasChildren && sortedSubscriptions.length === 0 &&
-          <div className="layout-master-container">
-            <LayoutHeader>{entryListToolbar}{entryListToolbarMobile}</LayoutHeader>
-            <LayoutContent>
-              <Teaser>
-                <EarthSVGIcon size="xxlarge" color="gray" />
-                <h1>Welcome to whistle'r news reader</h1>
-                <h2>This is exciting!</h2>
-                <p>
-                  Let's get started and <Link to={{ pathname: '/opml_import', state: { modal: true } }}>import</Link> or <Link to={{ pathname: '/feeds/new', state: { modal: true } }}>subscribe</Link> to new feeds.
-                </p>
-              </Teaser>
-            </LayoutContent>
-          </div>
+          <WelcomeTeaser toolbar={responsiveToolbar} />
         }
 
         {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
           <div className={masterListCls}>
-            {currentViewLayout === 'list' &&
-              <div className="layout-master-container">
-                <LayoutHeader>{entryListToolbar}{entryListToolbarMobile}</LayoutHeader>
-                <LayoutContent>{paginatedItems}</LayoutContent>
-              </div>
-            }
-            {currentViewLayout === 'compact_list' &&
-              <div className="layout-master-container">
-                <LayoutHeader>{entryListToolbar}{entryListToolbarMobile}</LayoutHeader>
-                <LayoutContent>{paginatedItems}</LayoutContent>
-              </div>
-            }
-            {currentViewLayout === 'grid' &&
-              <div className="layout-master-container">
-                <LayoutHeader>{entryListToolbar}{entryListToolbarMobile}</LayoutHeader>
-                <LayoutContent>{paginatedItems}</LayoutContent>
-              </div>
-            }
+            <div className="layout-master-container">
+              <LayoutHeader>{responsiveToolbar}</LayoutHeader>
+              <LayoutContent>{paginatedItems}</LayoutContent>
+            </div>
           </div>
         }
 
         {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
-          <div className="layout-master-container hide-small-screen">
-            <LayoutHeader />
-            <LayoutContent>
-              <Teaser>
-                <EarthSVGIcon size="xxlarge" color="gray" />
-                <h2>Moin moin from Hamburg</h2>
-                <p>Have a nice day!</p>
-              </Teaser>
-            </LayoutContent>
-          </div>
+          <NoArticleSelectedTeaser />
         }
 
         {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
-          <div className="layout-master-container">
-            <LayoutHeader>{entryListToolbar}{entryListToolbarMobile}</LayoutHeader>
-            <LayoutContent>
-              <Teaser>
-                <CheckmarkSVGIcon size="xxlarge" color="gray" />
-                <h2>Nothing left to read here</h2>
-                <p>
-                  You can try to  <a href="#" onClick={this.handleRefresh}>refresh</a> or <Link to={{ pathname: '/feeds/new', state: { modal: true } }}>subscribe</Link> to new feeds.
-                </p>
-              </Teaser>
-            </LayoutContent>
-          </div>
+          <NothingLeftToReadTeaser toolbar={responsiveToolbar} onRefresh={this.handleRefresh} />
         }
 
         {hasChildren &&
