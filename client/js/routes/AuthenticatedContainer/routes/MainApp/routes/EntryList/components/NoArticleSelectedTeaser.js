@@ -8,7 +8,7 @@ import { EarthSVGIcon } from 'components/SVGIcon';
 
 const NoArticleSelectedTeaser = function render() {
   return (
-    <div className="layout-master-container hide-small-screen">
+    <div className="layout-master-container hide-small-screen2">
       <LayoutHeader />
       <LayoutContent>
         <Teaser>

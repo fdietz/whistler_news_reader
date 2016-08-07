@@ -355,9 +355,12 @@ class EntryListContainer extends Component {
 
     const hasChildren = React.Children.count(this.props.children) > 0;
 
+    // const masterListCls = classNames('master-list', {
+    //   grid: currentViewLayout === 'grid',
+    //   'hide-small-screen': hasChildren
+    // });
     const masterListCls = classNames('master-list', {
-      grid: currentViewLayout === 'grid',
-      'hide-small-screen': hasChildren
+      grid: currentViewLayout === 'grid'
     });
 
     const responsiveToolbar = (
@@ -366,26 +369,42 @@ class EntryListContainer extends Component {
       </Media>
     );
 
+    const mainList = (
+      <div className={masterListCls}>
+        <div className="layout-master-container">
+          <LayoutHeader>{responsiveToolbar}</LayoutHeader>
+          <LayoutContent>{paginatedItems}</LayoutContent>
+        </div>
+      </div>
+    );
+
     return (
       <div className="main-master-container">
+        {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
+          <Media query="(max-width: 40em)">
+            {
+              function match(matches) {
+                if (matches) {
+                  return !hasChildren ? mainList : null;
+                } else {
+                  return mainList;
+                }
+              }
+            }
+          </Media>
+        }
+
         {!hasChildren && sortedSubscriptions.length === 0 &&
           <WelcomeTeaser toolbar={responsiveToolbar} />
         }
 
-        {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
-          <div className={masterListCls}>
-            <div className="layout-master-container">
-              <LayoutHeader>{responsiveToolbar}</LayoutHeader>
-              <LayoutContent>{paginatedItems}</LayoutContent>
-            </div>
-          </div>
-        }
-
         {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
-          <NoArticleSelectedTeaser />
+          <Media query="(max-width: 40em)">
+            {matches => matches ? null : <NoArticleSelectedTeaser />}
+          </Media>
         }
 
-        {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
+        {sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
           <NothingLeftToReadTeaser toolbar={responsiveToolbar} onRefresh={this.handleRefresh} />
         }
 
