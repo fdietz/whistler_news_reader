@@ -51,6 +51,7 @@ defmodule WhistlerNewsReader.EntryParser do
     html |> without_script_tags |> Floki.text(deep: true, js: false)
   end
 
+  def without_script_tags(nil), do: ""
   def without_script_tags(html) do
     regexp = ~r/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/i
     String.replace(html, regexp, "")
