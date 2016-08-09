@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { routerActions as RouterActions } from 'react-router-redux';
 import classNames from 'classnames';
 import Media from 'react-media';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import LayoutHeader from 'layouts/LayoutHeader';
 import LayoutContent from 'layouts/LayoutContent';
@@ -355,13 +356,13 @@ class EntryListContainer extends Component {
 
     const hasChildren = React.Children.count(this.props.children) > 0;
 
-    // const masterListCls = classNames('master-list', {
-    //   grid: currentViewLayout === 'grid',
-    //   'hide-small-screen': hasChildren
-    // });
     const masterListCls = classNames('master-list', {
-      grid: currentViewLayout === 'grid'
+      grid: currentViewLayout === 'grid',
+      'hide-small-screen': hasChildren
     });
+    // const masterListCls = classNames('master-list', {
+    //   grid: currentViewLayout === 'grid'
+    // });
 
     const responsiveToolbar = (
       <Media query="(max-width: 40em)">
@@ -370,28 +371,87 @@ class EntryListContainer extends Component {
     );
 
     const mainList = (
-      <div className={masterListCls}>
         <div className="layout-master-container">
           <LayoutHeader>{responsiveToolbar}</LayoutHeader>
           <LayoutContent>{paginatedItems}</LayoutContent>
         </div>
-      </div>
     );
+
+          // <Media query="(max-width: 40em)">
+          //   {
+          //     function match(matches) {
+          //       if (matches) {
+          //         return !hasChildren ? mainList : null;
+          //       } else {
+          //         return mainList;
+          //       }
+          //     }
+          //   }
+          // </Media>
+
+    // const transitionMainList = (
+    //       <ReactCSSTransitionGroup
+    //         component="div"
+    //         className={masterListCls}
+    //         transitionName="slide-back"
+    //         transitionEnterTimeout={200}
+    //         transitionLeaveTimeout={1}>
+    //         {React.cloneElement(mainList, {
+    //           key: this.props.pathname
+    //         })}
+    //       </ReactCSSTransitionGroup>
+    // );
+
+
+          // <Media query="(max-width: 40em)">
+          //   {
+          //     function match(matches) {
+          //       if (matches) {
+          //         return !hasChildren ? transitionMainList : null;
+          //       }
+          //
+          //       return transitionMainList;
+          //     }
+          //   }
+          // </Media>
+
+
+        // <ReactCSSTransitionGroup
+        //   component="div"
+        //   className="layout-detail-container"
+        //   transitionName="slide-left"
+        //   transitionEnterTimeout={200}
+        //   transitionLeaveTimeout={200}>
+        //   {hasChildren && React.cloneElement(this.props.children, {
+        //     key: this.props.pathname
+        //   })}
+        // </ReactCSSTransitionGroup>
+
+          // <Media query="(max-width: 40em)">
+          //   {matches => matches ? null : <NoArticleSelectedTeaser />}
+          // </Media>
+
+        // {!hasChildren && sortedSubscriptions.length === 0 &&
+        //   <WelcomeTeaser toolbar={responsiveToolbar} />
+        // }
+        //
+        // {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
+        //   <NoArticleSelectedTeaser />
+        // }
+        //
+        // {sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
+        //   <NothingLeftToReadTeaser toolbar={responsiveToolbar} onRefresh={this.handleRefresh} />
+        // }
+
+    console.log("pathname", this.props.pathname, this.props.pathname.split("/")[2])
+    const segment = this.props.pathname.split("/")[2];
 
     return (
       <div className="main-master-container">
         {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
-          <Media query="(max-width: 40em)">
-            {
-              function match(matches) {
-                if (matches) {
-                  return !hasChildren ? mainList : null;
-                } else {
-                  return mainList;
-                }
-              }
-            }
-          </Media>
+          <div className={masterListCls}>
+            {mainList}
+          </div>
         }
 
         {!hasChildren && sortedSubscriptions.length === 0 &&
@@ -399,18 +459,23 @@ class EntryListContainer extends Component {
         }
 
         {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
-          <Media query="(max-width: 40em)">
-            {matches => matches ? null : <NoArticleSelectedTeaser />}
-          </Media>
+          <NoArticleSelectedTeaser />
         }
 
         {sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
           <NothingLeftToReadTeaser toolbar={responsiveToolbar} onRefresh={this.handleRefresh} />
         }
 
-        {hasChildren &&
-          this.props.children
-        }
+        <ReactCSSTransitionGroup
+          component="div"
+          className="layout-detail-container"
+          transitionName="slide-left"
+          transitionEnterTimeout={200}
+          transitionLeaveTimeout={200}>
+          {hasChildren && React.cloneElement(this.props.children, {
+            key: segment
+          })}
+        </ReactCSSTransitionGroup>
       </div>
     );
   }
