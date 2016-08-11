@@ -404,8 +404,8 @@ class EntryListContainer extends Component {
           component="div"
           className="layout-detail-container"
           transitionName="slide-left"
-          transitionEnterTimeout={100}
-          transitionLeaveTimeout={100}>
+          transitionEnterTimeout={200}
+          transitionLeaveTimeout={200}>
           {hasChildren && React.cloneElement(this.props.children, {
             key: segment
           })}
