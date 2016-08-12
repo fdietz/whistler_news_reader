@@ -72,10 +72,12 @@ body {
       }
 
       opacity: 1;
-      transition: opacity 200ms ease-out;
+      transition: all 200ms ease-out;
+      // transform: scale3d(1, 1, 1);
 
       &.hide-animation {
         opacity: 0;
+        transform: scale3d(0.9, 0.9, 0.9);
       }
     }
   }
