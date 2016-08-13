@@ -67,13 +67,6 @@ var config = {
     publicPath: publicPath
   },
   plugins: plugins,
-  resolve: {
-    root: [
-      path.resolve('./client/js'),
-      path.resolve('./client/css'),
-      path.resolve('./client/assets')
-    ]
-  },
   module: {
     loaders: [
       {
