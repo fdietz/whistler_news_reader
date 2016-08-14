@@ -5,8 +5,7 @@ import classNames from 'classnames';
 
 import { renderErrorsFor } from '../../../utils';
 
-import { requestSignIn } from '../../../redux/modules/user';
-import { requestFetchRandomImages } from '../../../redux/modules/randomImages';
+import { requestSignIn, requestFetchRandomImages } from '../actions';
 
 class SignIn extends Component {
 

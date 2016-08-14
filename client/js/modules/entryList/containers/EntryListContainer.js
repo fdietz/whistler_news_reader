@@ -19,11 +19,11 @@ import WelcomeTeaser from '../components/WelcomeTeaser';
 import NothingLeftToReadTeaser from '../components/NothingLeftToReadTeaser';
 import NoArticleSelectedTeaser from '../components/NoArticleSelectedTeaser';
 
-import * as UserActions from '../../../redux/modules/user';
+import user from '../../user';
 import * as EntriesActions from '../../../redux/modules/entries';
 import * as SubscriptionsActions from '../../../redux/modules/subscriptions';
 import * as CategoriesActions from '../../../redux/modules/categories';
-import * as SidebarActions from '../../../redux/modules/sidebar';
+import sidebar from '../../sidebar';
 
 import {
   getSortedSubscriptions,
@@ -438,11 +438,11 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators(UserActions, dispatch),
+    userActions: bindActionCreators(user.actions, dispatch),
     entriesActions: bindActionCreators(EntriesActions, dispatch),
     subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
     categoriesActions: bindActionCreators(CategoriesActions, dispatch),
-    sidebarActions: bindActionCreators(SidebarActions, dispatch),
+    sidebarActions: bindActionCreators(sidebar.actions, dispatch),
     routerActions: bindActionCreators(RouterActions, dispatch),
   };
 }

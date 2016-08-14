@@ -1,2 +1,4 @@
 import container from './containers/EditDialog';
-export default { container };
+import reducers from './reducers';
+
+export default { container, reducers };

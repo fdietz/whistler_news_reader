@@ -4,8 +4,7 @@ import { Link } from 'react-router';
 import classNames from 'classnames';
 
 import { renderErrorsFor } from '../../../utils';
-import { requestSignUp } from '../../../redux/modules/user';
-import { requestFetchRandomImages } from '../../../redux/modules/randomImages';
+import { requestSignUp, requestFetchRandomImages } from '../actions';
 
 class SignUp extends Component {
 

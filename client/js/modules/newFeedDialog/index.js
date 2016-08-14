@@ -1,2 +1,4 @@
 import container from './containers/NewFeedDialog';
-export default { container };
+import reducers from './reducers';
+
+export default { container, reducers };

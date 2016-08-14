@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
-import { requestSetCurrentUser } from '../../../redux/modules/user';
+import { requestSetCurrentUser } from '../actions';
 import AuthToken from '../../../utils/AuthToken';
 
 class AuthenticatedContainer extends Component {

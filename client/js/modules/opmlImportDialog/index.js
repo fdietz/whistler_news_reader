@@ -1,2 +1,4 @@
 import container from './containers/OpmlImportDialog';
-export default { container };
+import reducers from './reducers';
+
+export default { container, reducers };

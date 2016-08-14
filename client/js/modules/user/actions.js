@@ -1,18 +1,30 @@
-import axios from 'axios';
 import { createAction } from 'redux-actions';
+import axios from 'axios';
 import { push } from 'react-router-redux';
 
 import { transformErrorResponse } from '../../utils/APIHelper';
 
-const CREATE_SIGN_UP = 'CREATE_SIGN_UP';
-const CREATE_SIGN_IN = 'CREATE_SIGN_IN';
-const SIGN_OUT = 'SIGN_OUT';
-const SET_CURRENT_USER = 'SET_CURRENT_USER';
+export const CREATE_SIGN_UP = 'CREATE_SIGN_UP';
+export const CREATE_SIGN_IN = 'CREATE_SIGN_IN';
+export const SIGN_OUT = 'SIGN_OUT';
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+
+export const FETCH_RANDOM_IMAGES = 'FETCH_RANDOM_IMAGES';
 
 export const createSignUp = createAction(CREATE_SIGN_UP);
 export const createSignIn = createAction(CREATE_SIGN_IN);
 export const signOut = createAction(SIGN_OUT);
 export const setCurrentUser = createAction(SET_CURRENT_USER);
+
+export const fetchRandomImages = createAction(FETCH_RANDOM_IMAGES);
+
+export function requestFetchRandomImages() {
+  return dispatch => {
+    fetchRandomImages();
+    return axios.get('/api/random_images')
+      .then(response => dispatch(fetchRandomImages(response.data.random_images)));
+  };
+}
 
 export function requestSignUp(data) {
   return dispatch => {
@@ -46,7 +58,11 @@ export function requestSignIn(email, password) {
 
         dispatch(push('/today'));
       })
-      .catch(e => dispatch(createSignIn(transformErrorResponse(e))));
+      .catch(e => {
+        console.log(e)
+        dispatch(createSignIn(transformErrorResponse(e)))
+      }
+    );
   };
 }
 
@@ -84,24 +100,4 @@ export function requestSetCurrentUser() {
         dispatch(push('/sign_in'));
       });
   };
-}
-
-const initialState = {
-  current: null,
-  errors: null,
-  isLoading: false,
-};
-
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    case CREATE_SIGN_UP:
-    case CREATE_SIGN_IN:
-    case SET_CURRENT_USER:
-      if (!action.payload) return { ...state, isLoading: true };
-      return { ...state, ...action.payload, isLoading: false };
-    case SIGN_OUT:
-      return { ...initialState };
-    default:
-      return state;
-  }
 }

@@ -1,31 +1,31 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import feedForm from './modules/feedForm';
-import categoryForm from './modules/categoryForm';
-import editForm from './modules/editForm';
 import entries from './modules/entries';
-import feeds from './modules/feeds';
 import subscriptions from './modules/subscriptions';
-import notification from './modules/notification';
-import user from './modules/user';
 import categories from './modules/categories';
-import opmlImportForm from './modules/opmlImportForm';
-import randomImages from './modules/randomImages';
-import sidebar from './modules/sidebar';
+
+import newFeedDialog from '../modules/newFeedDialog';
+import editDialog from '../modules/editDialog';
+import newCategoryDialog from '../modules/newCategoryDialog';
+import opmlImportDialog from '../modules/opmlImportDialog';
+import user from '../modules/user';
+import main from '../modules/main';
+import sidebar from '../modules/sidebar';
+import feeds from '../modules/feeds';
 
 export default combineReducers({
-  feedForm,
-  categoryForm,
-  editForm,
+  feedForm: newFeedDialog.reducers.feedForm,
+  categoryForm: newCategoryDialog.reducers.categoryForm,
+  editForm: editDialog.reducers.editForm,
+  opmlImportForm: opmlImportDialog.reducers.opmlImportForm,
+  randomImages: user.reducers.randomImages,
+  notification: main.reducers.notification,
+  user: user.reducers.user,
+  sidebar: sidebar.reducers.sidebar,
   entries,
   categories,
-  feeds,
+  feeds: feeds.reducers.feeds,
   subscriptions,
-  notification,
-  user,
-  opmlImportForm,
-  randomImages,
-  sidebar,
   routing: routerReducer,
 });

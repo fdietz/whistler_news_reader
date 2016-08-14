@@ -7,8 +7,8 @@ import Sidebar from '../components/Sidebar';
 
 import * as SubscriptionsActions from '../../../redux/modules/subscriptions';
 import * as CategoriesActions from '../../../redux/modules/categories';
-import * as SidebarActions from '../../../redux/modules/sidebar';
-import * as UserActions from '../../../redux/modules/user';
+import * as SidebarActions from '../actions';
+import user from '../../user';
 
 import { getSortedSubscriptions, getSortedCategories } from '../../../redux/selectors';
 
@@ -85,7 +85,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators(UserActions, dispatch),
+    userActions: bindActionCreators(user.actions, dispatch),
     subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
     categoriesActions: bindActionCreators(CategoriesActions, dispatch),
     sidebarActions: bindActionCreators(SidebarActions, dispatch),

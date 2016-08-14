@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 // import { CrossSVGIcon } from "components/SVGIcon";
 import Icon from '../../../components/Icon';
 
-import { editFormUpdate, editFormReset } from '../../../redux/modules/editForm';
+import { editFormUpdate, editFormReset } from '../reducers/editForm';
 import { requestUpdateSubscription } from '../../../redux/modules/subscriptions';
 import { requestUpdateCategory } from '../../../redux/modules/categories';
 

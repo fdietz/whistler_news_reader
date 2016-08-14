@@ -5,9 +5,9 @@ import ReactDOM from 'react-dom';
 
 import Icon from '../../../components/Icon';
 
-import * as OpmlImportFormActions from '../../../redux/modules/opmlImportForm';
+import * as OpmlImportFormActions from '../reducers/opmlImportForm';
 
-import * as FeedsActions from '../../../redux/modules/feeds';
+import feeds from '../../feeds';
 
 class OpmlImportDialog extends Component {
 
@@ -118,7 +118,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    feedsActions: bindActionCreators(FeedsActions, dispatch),
+    feedsActions: bindActionCreators(feeds.actions, dispatch),
     opmlImportFormActions: bindActionCreators(OpmlImportFormActions, dispatch),
   };
 }

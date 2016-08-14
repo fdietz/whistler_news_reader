@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import axios from '../../utils/APIHelper';
+import axios from '../../../utils/APIHelper';
 
 export const FEED_FORM_UPDATE = 'FEED_FORM_UPDATE';
 export const FEED_FORM_RESET = 'FEED_FORM_RESET';

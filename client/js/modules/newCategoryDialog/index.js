@@ -1,2 +1,5 @@
 import container from './containers/NewCategoryDialog';
-export default { container };
+
+import reducers from './reducers';
+
+export default { container, reducers };

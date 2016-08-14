@@ -1,22 +1,6 @@
-import { createAction } from 'redux-actions';
 import { combineReducers } from 'redux';
-import axios from '../../utils/APIHelper';
-import normalize from '../../utils/normalize';
 
-export const SEARCH_FEEDS = 'SEARCH_FEEDS';
-export const RESET_SEARCH_FEEDS = 'RESET_SEARCH_FEEDS';
-
-export const searchFeeds = createAction(SEARCH_FEEDS);
-export const resetSearchFeeds = createAction(RESET_SEARCH_FEEDS);
-
-export function requestSearchFeeds(queryString) {
-  return dispatch => {
-    dispatch(searchFeeds());
-    return axios.get('/api/feeds', { params: { q: queryString } })
-      .then(resp => dispatch(searchFeeds(normalize(resp.data.feeds))))
-      .catch(e => dispatch(searchFeeds(e)));
-  };
-}
+import { SEARCH_FEEDS, RESET_SEARCH_FEEDS } from '../actions';
 
 const initialIsLoading = false;
 const initialError = null;

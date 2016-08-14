@@ -1,8 +1,7 @@
 /* eslint no-undefined: 0*/
 import test from 'ava';
-import reducer, {
-  SEARCH_FEEDS,
-} from '../feeds';
+import reducer from '../feeds';
+import { SEARCH_FEEDS } from '../../actions';
 
 test('feeds reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });

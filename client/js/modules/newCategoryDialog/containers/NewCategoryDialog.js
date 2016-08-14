@@ -9,7 +9,7 @@ import {
   categoryFormUpdate,
   categoryFormReset,
   requestCreateCategory,
-} from '../../../redux/modules/categoryForm';
+} from '../reducers/categoryForm';
 
 import { addCategory } from '../../../redux/modules/categories';
 

@@ -15,8 +15,8 @@ import { renderErrorsFor } from '../../../utils';
 import * as EntriesActions from '../../../redux/modules/entries';
 import * as SubscriptionsActions from '../../../redux/modules/subscriptions';
 import * as CategoriesActions from '../../../redux/modules/categories';
-import * as FeedFormActions from '../../../redux/modules/feedForm';
-import * as FeedsActions from '../../../redux/modules/feeds';
+import * as FeedFormActions from '../reducers/feedForm';
+import feeds from '../../feeds';
 
 class NewFeedDialog extends Component {
 
@@ -219,7 +219,7 @@ function mapDispatchToProps(dispatch) {
     entriesActions: bindActionCreators(EntriesActions, dispatch),
     subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
     categoriesActions: bindActionCreators(CategoriesActions, dispatch),
-    feedsActions: bindActionCreators(FeedsActions, dispatch),
+    feedsActions: bindActionCreators(feeds.actions, dispatch),
     feedFormActions: bindActionCreators(FeedFormActions, dispatch),
     routerActions: bindActionCreators(RouterActions, dispatch)
   };

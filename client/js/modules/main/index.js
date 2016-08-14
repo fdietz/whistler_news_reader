@@ -1,3 +1,5 @@
 import container from './containers/MainAppContainer';
 
-export default { container };
+import reducers from './reducers';
+
+export default { container, reducers };
