@@ -3,7 +3,7 @@ import test from 'ava';
 import {
   CREATE_NOTIFICATION,
   RESET_NOTIFICATION,
-} from '../notification';
+} from '../../actions';
 import reducer from '../notification';
 
 test('notification reducer returns default state', t => {

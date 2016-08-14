@@ -1,7 +1,7 @@
-import axios from '../../utils/APIHelper';
+import axios from '../../../utils/APIHelper';
 import { createAction } from 'redux-actions';
 
-import normalize from '../../utils/normalize';
+import normalize from '../../../utils/normalize';
 
 export const FETCH_ENTRIES = 'FETCH_ENTRIES';
 export const FETCH_MORE_ENTRIES = 'FETCH_MORE_ENTRIES';

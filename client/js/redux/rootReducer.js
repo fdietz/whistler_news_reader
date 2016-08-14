@@ -30,6 +30,6 @@ export default combineReducers({
   subscriptions: subscriptions.reducers,
 
   feeds: feeds.reducers.feeds,
-  entries: entries.reducers.entries,
+  entries: entries.reducers,
   routing: routerReducer,
 });

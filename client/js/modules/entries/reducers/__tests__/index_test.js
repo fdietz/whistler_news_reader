@@ -9,7 +9,7 @@ import {
   MARK_ALL_ENTRIES_AS_READ,
 } from '../../actions';
 
-import reducer from '../entries';
+import reducer from '../index';
 
 test('entries reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null, hasMoreEntries: false });
