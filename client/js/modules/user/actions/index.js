@@ -2,7 +2,7 @@ import { createAction } from 'redux-actions';
 import axios from 'axios';
 import { push } from 'react-router-redux';
 
-import { transformErrorResponse } from '../../utils/APIHelper';
+import { transformErrorResponse } from '../../../utils/APIHelper';
 
 export const CREATE_SIGN_UP = 'CREATE_SIGN_UP';
 export const CREATE_SIGN_IN = 'CREATE_SIGN_IN';

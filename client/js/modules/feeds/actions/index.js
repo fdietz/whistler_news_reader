@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions';
-import axios from '../../utils/APIHelper';
-import normalize from '../../utils/normalize';
+import axios from '../../../utils/APIHelper';
+import normalize from '../../../utils/normalize';
 
 export const SEARCH_FEEDS = 'SEARCH_FEEDS';
 export const RESET_SEARCH_FEEDS = 'RESET_SEARCH_FEEDS';
