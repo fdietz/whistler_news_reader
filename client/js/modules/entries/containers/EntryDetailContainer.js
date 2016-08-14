@@ -11,8 +11,9 @@ import EntryContentToolbarMobile from '../components/EntryContentToolbarMobile';
 import FeedEntryEmbedWebsiteContent from '../components/detail/FeedEntryEmbedWebsiteContent';
 import FeedEntryEmbedArticleContent from '../components/detail/FeedEntryEmbedArticleContent';
 
+import * as entriesActions from '../actions';
+
 import user from '../../user';
-import entries from '../../entries';
 import sidebar from '../../sidebar';
 
 import {
@@ -216,7 +217,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(user.actions, dispatch),
-    entriesActions: bindActionCreators(entries.actions, dispatch),
+    entriesActions: bindActionCreators(entriesActions, dispatch),
     subscriptionsActions: bindActionCreators(sidebar.actions.subscriptions, dispatch),
     categoriesActions: bindActionCreators(sidebar.actions.categories, dispatch),
     routerActions: bindActionCreators(RouterActions, dispatch),
