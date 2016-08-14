@@ -5,9 +5,9 @@ import {
   UPDATE_CATEGORY,
   REMOVE_CATEGORY,
   FETCH_CATEGORIES,
-} from '../../actions/categories';
+} from '../../actions';
 
-import reducer from '../categories';
+import reducer from '../index';
 
 
 test('categories reducer returns default state', t => {

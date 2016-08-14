@@ -21,7 +21,9 @@ import NoArticleSelectedTeaser from '../components/NoArticleSelectedTeaser';
 
 import user from '../../user';
 import * as EntriesActions from '../actions';
-import sidebar from '../../sidebar';
+import * as SubscriptionsActions from '../../subscriptions/actions';
+import * as CategoriesActions from '../../categories/actions';
+import * as SidebarActions from '../../sidebar/actions';
 
 import {
   getSortedSubscriptions,
@@ -438,9 +440,9 @@ function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(user.actions, dispatch),
     entriesActions: bindActionCreators(EntriesActions, dispatch),
-    subscriptionsActions: bindActionCreators(sidebar.actions.subscriptions, dispatch),
-    categoriesActions: bindActionCreators(sidebar.actions.categories, dispatch),
-    sidebarActions: bindActionCreators(sidebar.actions, dispatch),
+    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
+    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
+    sidebarActions: bindActionCreators(SidebarActions, dispatch),
     routerActions: bindActionCreators(RouterActions, dispatch),
   };
 }

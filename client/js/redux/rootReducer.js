@@ -10,6 +10,8 @@ import main from '../modules/main';
 import sidebar from '../modules/sidebar';
 import feeds from '../modules/feeds';
 import entries from '../modules/entries';
+import subscriptions from '../modules/subscriptions';
+import categories from '../modules/categories';
 
 // TODO: refactor to only access <module>.reducers
 export default combineReducers({
@@ -23,9 +25,9 @@ export default combineReducers({
 
   user: user.reducers.user,
 
-  sidebar: sidebar.reducers.sidebar,
-  categories: sidebar.reducers.categories,
-  subscriptions: sidebar.reducers.subscriptions,
+  sidebar: sidebar.reducers,
+  categories: categories.reducers,
+  subscriptions: subscriptions.reducers,
 
   feeds: feeds.reducers.feeds,
   entries: entries.reducers.entries,

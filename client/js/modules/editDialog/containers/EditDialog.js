@@ -6,8 +6,8 @@ import { bindActionCreators } from 'redux';
 import Icon from '../../../components/Icon';
 
 import * as FormActions from '../actions';
-import * as SubscriptionsActions from '../../sidebar/actions/subscriptions';
-import * as CategoriesActions from '../../sidebar/actions/categories';
+import * as SubscriptionsActions from '../../subscriptions/actions';
+import * as CategoriesActions from '../../categories/actions';
 import * as selectors from '../selectors';
 
 import { reduceErrorsToString } from '../../../utils/ErrorHelper';

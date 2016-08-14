@@ -7,7 +7,7 @@ import { routerActions as RouterActions } from 'react-router-redux';
 import Icon from '../../../components/Icon';
 
 import * as FormActions from '../actions';
-import * as CategoriesActions from '../../sidebar/actions/categories';
+import * as CategoriesActions from '../../categories/actions';
 
 import { renderErrorsFor } from '../../../utils';
 

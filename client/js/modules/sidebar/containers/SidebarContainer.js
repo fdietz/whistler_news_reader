@@ -5,10 +5,10 @@ import { routerActions as RouterActions } from 'react-router-redux';
 
 import Sidebar from '../components/Sidebar';
 
-import * as SubscriptionsActions from '../actions/subscriptions';
-import * as CategoriesActions from '../actions/categories';
-import * as SidebarActions from '../actions/sidebar';
-import user from '../../user';
+import * as SubscriptionsActions from '../../subscriptions/actions';
+import * as CategoriesActions from '../../categories/actions';
+import * as SidebarActions from '../actions';
+import * as UserActions from '../../user/actions';
 
 import { getSortedSubscriptions, getSortedCategories } from '../../../redux/selectors';
 
@@ -85,7 +85,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators(user.actions, dispatch),
+    userActions: bindActionCreators(UserActions, dispatch),
     subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
     categoriesActions: bindActionCreators(CategoriesActions, dispatch),
     sidebarActions: bindActionCreators(SidebarActions, dispatch),

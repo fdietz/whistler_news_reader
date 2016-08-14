@@ -14,7 +14,8 @@ import FeedEntryEmbedArticleContent from '../components/detail/FeedEntryEmbedArt
 import * as entriesActions from '../actions';
 
 import user from '../../user';
-import sidebar from '../../sidebar';
+import * as SubscriptionsActions from '../../subscriptions/actions';
+import * as CategoriesActions from '../../categories/actions';
 
 import {
   getHasPreviousEntry,
@@ -218,8 +219,8 @@ function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(user.actions, dispatch),
     entriesActions: bindActionCreators(entriesActions, dispatch),
-    subscriptionsActions: bindActionCreators(sidebar.actions.subscriptions, dispatch),
-    categoriesActions: bindActionCreators(sidebar.actions.categories, dispatch),
+    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
+    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
     routerActions: bindActionCreators(RouterActions, dispatch),
   };
 }

@@ -7,9 +7,9 @@ import {
   UPDATE_SUBSCRIPTION,
   DECREMENT_UNREAD_COUNT,
   RESET_UNREAD_COUNT,
-} from '../../actions/subscriptions';
+} from '../../actions';
 
-import reducer from '../subscriptions';
+import reducer from '../index';
 
 test('subscriptions reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });

@@ -14,9 +14,8 @@ import { renderErrorsFor } from '../../../utils';
 
 import * as FeedFormActions from '../actions';
 
-import sidebar from '../../sidebar';
-import * as SubscriptionsActions from '../../sidebar/actions/subscriptions';
-import * as CategoriesActions from '../../sidebar/actions/categories';
+import * as SubscriptionsActions from '../../subscriptions/actions';
+import * as CategoriesActions from '../../categories/actions';
 import * as FeedsActions from '../../feeds/actions';
 import * as EntriesActions from '../../entries/actions';
 

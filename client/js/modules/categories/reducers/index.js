@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { CREATE_SUBSCRIPTION, UPDATE_SUBSCRIPTION, DECREMENT_UNREAD_COUNT, RESET_UNREAD_COUNT, REMOVE_SUBSCRIPTION, FETCH_SUBSCRIPTIONS } from '../actions/subscriptions';
+import { ADD_CATEGORY, UPDATE_CATEGORY, REMOVE_CATEGORY, FETCH_CATEGORIES } from '../actions';
 
 const initialById = {};
 const initialListedIds = [];
@@ -9,12 +9,10 @@ const initialError = null;
 
 function isLoading(state = initialIsLoading, action) {
   switch (action.type) {
-    case CREATE_SUBSCRIPTION:
-    case UPDATE_SUBSCRIPTION:
-    case DECREMENT_UNREAD_COUNT:
-    case RESET_UNREAD_COUNT:
-    case REMOVE_SUBSCRIPTION:
-    case FETCH_SUBSCRIPTIONS:
+    case ADD_CATEGORY:
+    case UPDATE_CATEGORY:
+    case REMOVE_CATEGORY:
+    case FETCH_CATEGORIES:
       return !action.payload ? true : false;
     default:
       return state;
@@ -23,31 +21,25 @@ function isLoading(state = initialIsLoading, action) {
 
 function error(state = initialError, action) {
   switch (action.type) {
-    case CREATE_SUBSCRIPTION:
-    case UPDATE_SUBSCRIPTION:
-    case DECREMENT_UNREAD_COUNT:
-    case RESET_UNREAD_COUNT:
-    case REMOVE_SUBSCRIPTION:
-    case FETCH_SUBSCRIPTIONS:
+    case ADD_CATEGORY:
+    case UPDATE_CATEGORY:
+    case REMOVE_CATEGORY:
+    case FETCH_CATEGORIES:
       return action.error ? action.payload : state;
     default:
       return state;
   }
 }
 
-function subscription(state, action) {
+function category(state, action) {
   if (!action.payload) return state;
   if (action.error) return state;
 
   switch (action.type) {
-    case CREATE_SUBSCRIPTION:
+    case ADD_CATEGORY:
       return action.payload;
-    case UPDATE_SUBSCRIPTION:
+    case UPDATE_CATEGORY:
       return { ...state, ...action.payload };
-    case DECREMENT_UNREAD_COUNT:
-      return { ...state, unread_count: state.unread_count - 1 };
-    case RESET_UNREAD_COUNT:
-      return { ...state, unread_count: 0 };
     default:
       return state;
   }
@@ -58,11 +50,11 @@ function listedIds(state = initialListedIds, action) {
   if (action.error) return state;
 
   switch (action.type) {
-    case CREATE_SUBSCRIPTION:
+    case ADD_CATEGORY:
       return [...state, action.payload.id];
-    case FETCH_SUBSCRIPTIONS:
+    case FETCH_CATEGORIES:
       return action.payload.ids;
-    case REMOVE_SUBSCRIPTION:
+    case REMOVE_CATEGORY:
       return state.filter(id => id !== action.payload.id);
     default:
       return state;
@@ -74,15 +66,10 @@ function byId(state = initialById, action) {
   if (action.error) return state;
 
   switch (action.type) {
-    case CREATE_SUBSCRIPTION:
-    case UPDATE_SUBSCRIPTION:
-    case DECREMENT_UNREAD_COUNT:
-    case RESET_UNREAD_COUNT:
-      return {
-        ...state,
-        [action.payload.id]: subscription(state[action.payload.id], action),
-      };
-    case REMOVE_SUBSCRIPTION:
+    case ADD_CATEGORY:
+    case UPDATE_CATEGORY:
+      return { ...state, [action.payload.id]: category(state[action.payload.id], action) };
+    case REMOVE_CATEGORY:
       return Object.keys(state).reduce((nextState, id) => {
       /* eslint eqeqeq: 0*/
         if (id != action.payload.id) {
@@ -90,7 +77,7 @@ function byId(state = initialById, action) {
         }
         return nextState;
       }, {});
-    case FETCH_SUBSCRIPTIONS:
+    case FETCH_CATEGORIES:
       return action.payload.entities;
     default:
       return state;

@@ -59,7 +59,6 @@ export function requestSignIn(email, password) {
         dispatch(push('/today'));
       })
       .catch(e => {
-        console.log(e)
         dispatch(createSignIn(transformErrorResponse(e)))
       }
     );
