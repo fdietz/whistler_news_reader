@@ -1,15 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-// import Modal from "react-modal";
+import { bindActionCreators } from 'redux';
 import ReactDOM from 'react-dom';
 
-// import { CrossSVGIcon } from "components/SVGIcon";
 import Icon from '../../../components/Icon';
 
-import { editFormUpdate, editFormReset } from '../reducers/editForm';
-// import { requestUpdateSubscription } from '../../../redux/modules/subscriptions';
-// import { requestUpdateCategory } from '../../../redux/modules/categories';
-import sidebar from '../../sidebar';
+import * as FormActions from '../actions';
+import * as SubscriptionsActions from '../../sidebar/actions/subscriptions';
+import * as CategoriesActions from '../../sidebar/actions/categories';
+import * as selectors from '../selectors';
 
 import { reduceErrorsToString } from '../../../utils/ErrorHelper';
 import { renderErrorsFor } from '../../../utils';
@@ -22,6 +21,9 @@ class EditDialog extends Component {
     isSubscriptionSelected: PropTypes.bool.isRequired,
     isCategorySelected: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
+    formActions: PropTypes.object.isRequired,
+    subscriptionsActions: PropTypes.object.isRequired,
+    categoriesActions: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -33,9 +35,9 @@ class EditDialog extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, selection } = this.props;
+    const { formActions, selection } = this.props;
 
-    dispatch(editFormUpdate({ title: selection.title }));
+    formActions.editFormUpdate({ title: selection.title });
 
     setTimeout(() => {
       ReactDOM.findDOMNode(this.refs.title).focus();
@@ -43,28 +45,40 @@ class EditDialog extends Component {
   }
 
   handleChange(event) {
-    const { dispatch } = this.props;
-    dispatch(editFormUpdate({ title: ReactDOM.findDOMNode(this.refs.title).value }));
+    const { formActions } = this.props;
+
+    formActions.editFormUpdate({ title: ReactDOM.findDOMNode(this.refs.title).value });
   }
 
   close(event) {
-    const { dispatch } = this.props;
+    const { formActions, onClose } = this.props;
 
     if (event) event.preventDefault();
-    dispatch(editFormReset());
-    this.props.onClose();
+    formActions.editFormReset();
+    onClose();
   }
 
   submitForm(event) {
-    const { dispatch, editForm, isSubscriptionSelected, selection, onClose } = this.props;
+    const {
+      editForm,
+      isSubscriptionSelected,
+      selection,
+      onClose,
+      formActions,
+      subscriptionsActions,
+      categoriesActions
+    } = this.props;
     event.preventDefault();
 
-    const action = isSubscriptionSelected ? sidebar.actions.subscriptions.requestUpdateSubscription : sidebar.actions.categories.requestUpdateCategory;
+    const action = isSubscriptionSelected ?
+      subscriptionsActions.requestUpdateSubscription
+      :
+      categoriesActions.requestUpdateCategory;
 
-    dispatch(editFormUpdate());
-    dispatch(action(selection.id, { title: editForm.title })).then((result) => {
+    formActions.editFormUpdate();
+    action(selection.id, { title: editForm.title }).then((result) => {
       if (!result.errors) {
-        dispatch(editFormReset());
+        formActions.editFormReset();
         onClose();
       }
     });
@@ -140,29 +154,23 @@ class EditDialog extends Component {
   }
 }
 
-function isSubscriptionSelected(ownProps) {
-  return ownProps.location.pathname.startsWith('/subscriptions');
-}
-
-function isCategorySelected(ownProps) {
-  return ownProps.location.pathname.startsWith('/categories');
-}
-
-function selection(state, ownProps) {
-  return isSubscriptionSelected(ownProps)
-    ? state.subscriptions.byId[ownProps.params.subscription_id]
-    : state.categories.byId[ownProps.params.category_id];
-}
-
 function mapStateToProps(state, ownProps) {
   return {
     editForm: state.editForm,
     category: state.categories.byId[ownProps.params.category_id],
     subscription: state.subscriptions.byId[ownProps.params.subscription_id],
-    selection: selection(state, ownProps),
-    isSubscriptionSelected: isSubscriptionSelected(ownProps),
-    isCategorySelected: isCategorySelected(ownProps),
+    selection: selectors.selection(state, ownProps),
+    isSubscriptionSelected: selectors.isSubscriptionSelected(ownProps),
+    isCategorySelected: selectors.isCategorySelected(ownProps),
   };
 }
 
-export default connect(mapStateToProps)(EditDialog);
+function mapDispatchToProps(dispatch) {
+  return {
+    formActions: bindActionCreators(FormActions, dispatch),
+    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
+    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditDialog);
