@@ -4,11 +4,12 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import nock from 'nock';
 
-import reducer, {
-  requestCreateFeed,
+import {
   FEED_FORM_UPDATE,
   FEED_FORM_RESET,
-} from '../feedForm';
+} from '../../actions';
+
+import reducer from '../feedForm';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
