@@ -10,8 +10,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
 import InfiniteScroll from '../components/InfiniteScroll';
-import EntryList from '../components/EntryList';
-import EntryGrid from '../components/EntryGrid';
+import EntryList from '../components/list/EntryList';
+import EntryGrid from '../components/grid/EntryGrid';
 import NoMoreContent from '../components/NoMoreContent';
 import EntryListToolbar from '../components/EntryListToolbar';
 import EntryListToolbarMobile from '../components/EntryListToolbarMobile';
@@ -20,9 +20,7 @@ import NothingLeftToReadTeaser from '../components/NothingLeftToReadTeaser';
 import NoArticleSelectedTeaser from '../components/NoArticleSelectedTeaser';
 
 import user from '../../user';
-import * as EntriesActions from '../../../redux/modules/entries';
-import * as SubscriptionsActions from '../../../redux/modules/subscriptions';
-import * as CategoriesActions from '../../../redux/modules/categories';
+import * as EntriesActions from '../actions';
 import sidebar from '../../sidebar';
 
 import {
@@ -440,8 +438,8 @@ function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(user.actions, dispatch),
     entriesActions: bindActionCreators(EntriesActions, dispatch),
-    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
-    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
+    subscriptionsActions: bindActionCreators(sidebar.actions.subscriptions, dispatch),
+    categoriesActions: bindActionCreators(sidebar.actions.categories, dispatch),
     sidebarActions: bindActionCreators(sidebar.actions, dispatch),
     routerActions: bindActionCreators(RouterActions, dispatch),
   };

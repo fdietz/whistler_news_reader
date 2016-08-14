@@ -1,12 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import { findScrollableAncestor } from '../../../utils/dom';
-import FeedEntryHeader from './FeedEntryHeader';
-import FeedEntrySubheader from './FeedEntrySubheader';
-import axios from '../../../utils/APIHelper';
+import { findScrollableAncestor } from '../../../../utils/dom';
 
-class FeedEntryEmbedArticleContent extends Component {
+class FeedEntryEmbedWebsiteContent extends Component {
 
   static propTypes = {
     entry: PropTypes.object,
@@ -18,22 +15,18 @@ class FeedEntryEmbedArticleContent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { entryArticle: '' };
-
     this.shouldScrollToTop = false;
+
+    this.onLoad = this.onLoad.bind(this);
   }
 
   componentDidMount() {
     const { entry } = this.props;
 
     this.scrollableAncestor = findScrollableAncestor(ReactDOM.findDOMNode(this));
+    this.initTimer(entry);
 
-    if (entry) {
-      this.loadContent(entry).then(() => {
-        this.updateLinksWithTargetBlank();
-        this.initTimer(entry);
-      });
-    }
+    if (entry) this.updateLinksWithTargetBlank();
   }
 
   componentDidUpdate() {
@@ -43,33 +36,20 @@ class FeedEntryEmbedArticleContent extends Component {
       this.scrollableAncestor.scrollTop = 0;
       this.shouldScrollToTop = false;
     }
+
+    if (entry) this.updateLinksWithTargetBlank();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.entry.id !== this.props.entry.id) {
       this.shouldScrollToTop = true;
-      if (nextProps.onLoadingStart) nextProps.onLoadingStart();
-
-      this.loadContent(nextProps.entry).then(() => {
-        this.updateLinksWithTargetBlank();
-        this.initTimer(nextProps.entry);
-      });
+      this.initTimer(nextProps.entry);
+      if (this.props.onLoadingStart) this.props.onLoadingStart();
     }
   }
 
   componentWillUnmount() {
     if (this.timeout) clearTimeout(this.timeout);
-  }
-
-  loadContent(entry) {
-    return axios.get(`/api/entry_articles/${entry.id}`)
-      .then((response) => {
-        this.setState({ entryArticle: response.data.entry_article });
-        if (this.props.onLoadingComplete) this.props.onLoadingComplete();
-      })
-      .catch(() => {
-        if (this.props.onLoadingComplete) this.props.onLoadingComplete();
-      });
   }
 
   updateLinksWithTargetBlank() {
@@ -90,22 +70,26 @@ class FeedEntryEmbedArticleContent extends Component {
   }
 
   rawContent() {
-    return { __html: this.state.entryArticle.content };
+    return { __html: this.props.entry.content };
+  }
+
+  onLoad() {
+    if (this.props.onLoadingComplete) this.props.onLoadingComplete();
   }
 
   render() {
     const { entry } = this.props;
 
     return (
-      <div className="feed-entry-content">
-        <FeedEntryHeader {...entry} />
-        <FeedEntrySubheader {...entry} />
-        <div
-          className="feed-entry-content__content"
-          dangerouslySetInnerHTML={this.rawContent()} />
+      <div className="feed-entry-content website">
+        <iframe
+          src={entry.url}
+          onLoad={this.onLoad}
+          className="entry-embed-site"
+    />
       </div>
     );
   }
 }
 
-export default FeedEntryEmbedArticleContent;
+export default FeedEntryEmbedWebsiteContent;

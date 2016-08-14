@@ -5,16 +5,15 @@ import { routerActions as RouterActions } from 'react-router-redux';
 
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
-import FeedEntryContent from '../components/FeedEntryContent';
+import FeedEntryContent from '../components/detail/FeedEntryContent';
 import EntryContentToolbar from '../components/EntryContentToolbar';
 import EntryContentToolbarMobile from '../components/EntryContentToolbarMobile';
-import FeedEntryEmbedWebsiteContent from '../components/FeedEntryEmbedWebsiteContent';
-import FeedEntryEmbedArticleContent from '../components/FeedEntryEmbedArticleContent';
+import FeedEntryEmbedWebsiteContent from '../components/detail/FeedEntryEmbedWebsiteContent';
+import FeedEntryEmbedArticleContent from '../components/detail/FeedEntryEmbedArticleContent';
 
 import user from '../../user';
-import * as EntriesActions from '../../../redux/modules/entries';
-import * as SubscriptionsActions from '../../../redux/modules/subscriptions';
-import * as CategoriesActions from '../../../redux/modules/categories';
+import entries from '../../entries';
+import sidebar from '../../sidebar';
 
 import {
   getHasPreviousEntry,
@@ -217,9 +216,9 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(user.actions, dispatch),
-    entriesActions: bindActionCreators(EntriesActions, dispatch),
-    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
-    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
+    entriesActions: bindActionCreators(entries.actions, dispatch),
+    subscriptionsActions: bindActionCreators(sidebar.actions.subscriptions, dispatch),
+    categoriesActions: bindActionCreators(sidebar.actions.categories, dispatch),
     routerActions: bindActionCreators(RouterActions, dispatch),
   };
 }

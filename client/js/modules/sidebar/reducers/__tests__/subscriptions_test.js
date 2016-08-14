@@ -1,13 +1,15 @@
 /* eslint no-undefined: 0*/
 import test from 'ava';
-import reducer, {
+import {
   FETCH_SUBSCRIPTIONS,
   REMOVE_SUBSCRIPTION,
   CREATE_SUBSCRIPTION,
   UPDATE_SUBSCRIPTION,
   DECREMENT_UNREAD_COUNT,
   RESET_UNREAD_COUNT,
-} from '../subscriptions';
+} from '../../actions/subscriptions';
+
+import reducer from '../subscriptions';
 
 test('subscriptions reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });

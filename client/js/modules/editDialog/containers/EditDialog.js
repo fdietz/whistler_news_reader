@@ -7,8 +7,9 @@ import ReactDOM from 'react-dom';
 import Icon from '../../../components/Icon';
 
 import { editFormUpdate, editFormReset } from '../reducers/editForm';
-import { requestUpdateSubscription } from '../../../redux/modules/subscriptions';
-import { requestUpdateCategory } from '../../../redux/modules/categories';
+// import { requestUpdateSubscription } from '../../../redux/modules/subscriptions';
+// import { requestUpdateCategory } from '../../../redux/modules/categories';
+import sidebar from '../../sidebar';
 
 import { reduceErrorsToString } from '../../../utils/ErrorHelper';
 import { renderErrorsFor } from '../../../utils';
@@ -58,7 +59,7 @@ class EditDialog extends Component {
     const { dispatch, editForm, isSubscriptionSelected, selection, onClose } = this.props;
     event.preventDefault();
 
-    const action = isSubscriptionSelected ? requestUpdateSubscription : requestUpdateCategory;
+    const action = isSubscriptionSelected ? sidebar.actions.subscriptions.requestUpdateSubscription : sidebar.actions.categories.requestUpdateCategory;
 
     dispatch(editFormUpdate());
     dispatch(action(selection.id, { title: editForm.title })).then((result) => {

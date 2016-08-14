@@ -1,13 +1,15 @@
 /* eslint no-undefined: 0*/
 import test from 'ava';
 
-import reducer, {
+import {
   FETCH_ENTRIES,
   FETCH_MORE_ENTRIES,
   REFRESH_ENTRIES,
   UPDATE_ENTRY,
   MARK_ALL_ENTRIES_AS_READ,
-} from '../entries';
+} from '../../actions';
+
+import reducer from '../entries';
 
 test('entries reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null, hasMoreEntries: false });

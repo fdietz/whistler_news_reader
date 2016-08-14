@@ -1,11 +1,14 @@
 /* eslint no-undefined: 0*/
 import test from 'ava';
-import reducer, {
+import {
   ADD_CATEGORY,
   UPDATE_CATEGORY,
   REMOVE_CATEGORY,
   FETCH_CATEGORIES,
-} from '../categories';
+} from '../../actions/categories';
+
+import reducer from '../categories';
+
 
 test('categories reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });

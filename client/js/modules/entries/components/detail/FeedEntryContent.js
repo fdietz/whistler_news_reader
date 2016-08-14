@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import { findScrollableAncestor } from '../../../utils/dom';
+import { findScrollableAncestor } from '../../../../utils/dom';
 import FeedEntryHeader from './FeedEntryHeader';
 import FeedEntrySubheader from './FeedEntrySubheader';
 
-class FeedEntryEmbedWebsiteContent extends Component {
+class FeedEntryContent extends Component {
 
   static propTypes = {
     entry: PropTypes.object,
@@ -18,8 +18,6 @@ class FeedEntryEmbedWebsiteContent extends Component {
     super(props);
 
     this.shouldScrollToTop = false;
-
-    this.onLoad = this.onLoad.bind(this);
   }
 
   componentDidMount() {
@@ -46,7 +44,6 @@ class FeedEntryEmbedWebsiteContent extends Component {
     if (nextProps.entry.id !== this.props.entry.id) {
       this.shouldScrollToTop = true;
       this.initTimer(nextProps.entry);
-      if (this.props.onLoadingStart) this.props.onLoadingStart();
     }
   }
 
@@ -75,23 +72,19 @@ class FeedEntryEmbedWebsiteContent extends Component {
     return { __html: this.props.entry.content };
   }
 
-  onLoad() {
-    if (this.props.onLoadingComplete) this.props.onLoadingComplete();
-  }
-
   render() {
     const { entry } = this.props;
 
     return (
-      <div className="feed-entry-content website">
-        <iframe
-          src={entry.url}
-          onLoad={this.onLoad}
-          className="entry-embed-site"
-    />
+      <div className="feed-entry-content">
+        <FeedEntryHeader {...entry} />
+        <FeedEntrySubheader {...entry} />
+        <div
+          className="feed-entry-content__content"
+          dangerouslySetInnerHTML={this.rawContent()} />
       </div>
     );
   }
 }
 
-export default FeedEntryEmbedWebsiteContent;
+export default FeedEntryContent;

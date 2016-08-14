@@ -11,7 +11,7 @@ import {
   requestCreateCategory,
 } from '../reducers/categoryForm';
 
-import { addCategory } from '../../../redux/modules/categories';
+import sidebar from '../../sidebar';
 
 import { renderErrorsFor } from '../../../utils';
 
@@ -57,7 +57,7 @@ class NewCategoryDialog extends Component {
       if (!result.error) {
         onClose();
         dispatch(push(`/categories/${result.id}`));
-        dispatch(addCategory(result));
+        dispatch(sidebar.actions.categories.addCategory(result));
       }
     });
   }

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import DateTimeHelper from '../../../utils/DateTimeHelper';
-import Image from '../../../components/Image';
+import DateTimeHelper from '../../../../utils/DateTimeHelper';
+import Image from '../../../../components/Image';
 
 class EntryGridItem extends Component {
 

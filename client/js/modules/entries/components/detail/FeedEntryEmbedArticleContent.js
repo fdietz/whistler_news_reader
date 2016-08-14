@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import { findScrollableAncestor } from '../../../utils/dom';
+import { findScrollableAncestor } from '../../../../utils/dom';
 import FeedEntryHeader from './FeedEntryHeader';
 import FeedEntrySubheader from './FeedEntrySubheader';
+import axios from '../../../../utils/APIHelper';
 
-class FeedEntryContent extends Component {
+class FeedEntryEmbedArticleContent extends Component {
 
   static propTypes = {
     entry: PropTypes.object,
@@ -17,6 +18,8 @@ class FeedEntryContent extends Component {
   constructor(props) {
     super(props);
 
+    this.state = { entryArticle: '' };
+
     this.shouldScrollToTop = false;
   }
 
@@ -24,9 +27,13 @@ class FeedEntryContent extends Component {
     const { entry } = this.props;
 
     this.scrollableAncestor = findScrollableAncestor(ReactDOM.findDOMNode(this));
-    this.initTimer(entry);
 
-    if (entry) this.updateLinksWithTargetBlank();
+    if (entry) {
+      this.loadContent(entry).then(() => {
+        this.updateLinksWithTargetBlank();
+        this.initTimer(entry);
+      });
+    }
   }
 
   componentDidUpdate() {
@@ -36,19 +43,33 @@ class FeedEntryContent extends Component {
       this.scrollableAncestor.scrollTop = 0;
       this.shouldScrollToTop = false;
     }
-
-    if (entry) this.updateLinksWithTargetBlank();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.entry.id !== this.props.entry.id) {
       this.shouldScrollToTop = true;
-      this.initTimer(nextProps.entry);
+      if (nextProps.onLoadingStart) nextProps.onLoadingStart();
+
+      this.loadContent(nextProps.entry).then(() => {
+        this.updateLinksWithTargetBlank();
+        this.initTimer(nextProps.entry);
+      });
     }
   }
 
   componentWillUnmount() {
     if (this.timeout) clearTimeout(this.timeout);
+  }
+
+  loadContent(entry) {
+    return axios.get(`/api/entry_articles/${entry.id}`)
+      .then((response) => {
+        this.setState({ entryArticle: response.data.entry_article });
+        if (this.props.onLoadingComplete) this.props.onLoadingComplete();
+      })
+      .catch(() => {
+        if (this.props.onLoadingComplete) this.props.onLoadingComplete();
+      });
   }
 
   updateLinksWithTargetBlank() {
@@ -69,7 +90,7 @@ class FeedEntryContent extends Component {
   }
 
   rawContent() {
-    return { __html: this.props.entry.content };
+    return { __html: this.state.entryArticle.content };
   }
 
   render() {
@@ -87,4 +108,4 @@ class FeedEntryContent extends Component {
   }
 }
 
-export default FeedEntryContent;
+export default FeedEntryEmbedArticleContent;

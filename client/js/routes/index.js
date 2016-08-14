@@ -2,8 +2,7 @@ import user from '../modules/user';
 import main from '../modules/main';
 import sidebar from '../modules/sidebar';
 
-import entryList from '../modules/entryList';
-import entryDetail from '../modules/entryDetail';
+import entries from '../modules/entries';
 
 import editDialog from '../modules/editDialog';
 import newFeedDialog from '../modules/newFeedDialog';
@@ -14,11 +13,11 @@ import patterns from '../modules/patterns';
 
 const entryListRoute = {
   path: 'entries',
-  component: entryList.container,
+  component: entries.containers.listContainer,
   childRoutes: [
     {
       path: ':id',
-      component: entryDetail.container,
+      component: entries.containers.detailContainer,
     }
   ]
 };

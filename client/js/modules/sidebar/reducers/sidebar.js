@@ -1,4 +1,4 @@
-import { HIDE_SIDEBAR, SHOW_SIDEBAR, TOGGLE_SIDEBAR } from '../actions';
+import { HIDE_SIDEBAR, SHOW_SIDEBAR, TOGGLE_SIDEBAR } from '../actions/sidebar';
 
 const initial = {
   isVisible: false,

@@ -5,9 +5,9 @@ import { routerActions as RouterActions } from 'react-router-redux';
 
 import Sidebar from '../components/Sidebar';
 
-import * as SubscriptionsActions from '../../../redux/modules/subscriptions';
-import * as CategoriesActions from '../../../redux/modules/categories';
-import * as SidebarActions from '../actions';
+import * as SubscriptionsActions from '../actions/subscriptions';
+import * as CategoriesActions from '../actions/categories';
+import * as SidebarActions from '../actions/sidebar';
 import user from '../../user';
 
 import { getSortedSubscriptions, getSortedCategories } from '../../../redux/selectors';

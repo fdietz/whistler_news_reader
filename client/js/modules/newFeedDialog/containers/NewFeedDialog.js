@@ -12,11 +12,10 @@ import Autocomplete from '../../../components/Autocomplete';
 import { getSortedCategories, getSortedFeeds } from '../../../redux/selectors';
 import { renderErrorsFor } from '../../../utils';
 
-import * as EntriesActions from '../../../redux/modules/entries';
-import * as SubscriptionsActions from '../../../redux/modules/subscriptions';
-import * as CategoriesActions from '../../../redux/modules/categories';
 import * as FeedFormActions from '../reducers/feedForm';
+import sidebar from '../../sidebar';
 import feeds from '../../feeds';
+import entries from '../../entries';
 
 class NewFeedDialog extends Component {
 
@@ -116,9 +115,9 @@ class NewFeedDialog extends Component {
   }
 
   createSubscription(feedId, categoryId) {
-    const { subscriptionsActions, routerActions, feedFormActions, entriesActions } = this.props;
+    const { routerActions, feedFormActions, entriesActions } = this.props;
 
-    subscriptionsActions.requestCreateSubscription({ feed_id: feedId, category_id: categoryId })
+    sidebar.actions.subscriptions.requestCreateSubscription({ feed_id: feedId, category_id: categoryId })
       .then((response) => {
         if (response.error) {
           feedFormActions.feedFormUpdate(response.payload);
@@ -216,9 +215,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    entriesActions: bindActionCreators(EntriesActions, dispatch),
-    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
-    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
+    entriesActions: bindActionCreators(entries.actions, dispatch),
+    subscriptionsActions: bindActionCreators(sidebar.actions.subscriptions, dispatch),
+    categoriesActions: bindActionCreators(sidebar.actions.categories, dispatch),
     feedsActions: bindActionCreators(feeds.actions, dispatch),
     feedFormActions: bindActionCreators(FeedFormActions, dispatch),
     routerActions: bindActionCreators(RouterActions, dispatch)

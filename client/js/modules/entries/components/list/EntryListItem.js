@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import shallowCompare from 'react-addons-shallow-compare';
 
-import DateTimeHelper from '../../../utils/DateTimeHelper';
+import DateTimeHelper from '../../../../utils/DateTimeHelper';
 
 class EntryListItem extends Component {
 
