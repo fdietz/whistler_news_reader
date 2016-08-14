@@ -1,17 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import ReactDOM from 'react-dom';
-import { push } from 'react-router-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { routerActions as RouterActions } from 'react-router-redux';
 
 import Icon from '../../../components/Icon';
 
-import {
-  categoryFormUpdate,
-  categoryFormReset,
-  requestCreateCategory,
-} from '../reducers/categoryForm';
-
-import sidebar from '../../sidebar';
+import * as FormActions from '../actions';
+import * as CategoriesActions from '../../sidebar/actions/categories';
 
 import { renderErrorsFor } from '../../../utils';
 
@@ -20,6 +16,9 @@ class NewCategoryDialog extends Component {
   static propTypes = {
     categoryForm: PropTypes.object,
     onClose: PropTypes.func.isRequired,
+    formActions: PropTypes.object.isRequired,
+    categoriesActions: PropTypes.object.isRequired,
+    routerActions: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -37,33 +36,33 @@ class NewCategoryDialog extends Component {
   }
 
   handleChange(event) {
-    const { dispatch } = this.props;
-    dispatch(categoryFormUpdate({ title: ReactDOM.findDOMNode(this.refs.title).value }));
+    const { formActions } = this.props;
+    formActions.categoryFormUpdate({ title: ReactDOM.findDOMNode(this.refs.title).value });
   }
 
   close(event) {
-    const { dispatch } = this.props;
+    const { formActions, onClose } = this.props;
 
     if (event) event.preventDefault();
-    dispatch(categoryFormReset());
-    this.props.onClose();
+    formActions.categoryFormReset();
+    onClose();
   }
 
   submitForm(event) {
-    const { dispatch, categoryForm, onClose } = this.props;
+    const { routerActions, formActions, categoriesActions, categoryForm, onClose } = this.props;
     event.preventDefault();
 
-    dispatch(requestCreateCategory({ title: categoryForm.title })).then((result) => {
+    formActions.requestCreateCategory({ title: categoryForm.title }).then((result) => {
       if (!result.error) {
         onClose();
-        dispatch(push(`/categories/${result.id}`));
-        dispatch(sidebar.actions.categories.addCategory(result));
+        routerActions.push(`/categories/${result.id}`);
+        categoriesActions.addCategory(result);
       }
     });
   }
 
   render() {
-    const { isOpen, categoryForm } = this.props;
+    const { categoryForm } = this.props;
 
     return (
       <div className="modal-content">
@@ -116,4 +115,12 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(NewCategoryDialog);
+function mapDispatchToProps(dispatch) {
+  return {
+    formActions: bindActionCreators(FormActions, dispatch),
+    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
+    routerActions: bindActionCreators(RouterActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewCategoryDialog);

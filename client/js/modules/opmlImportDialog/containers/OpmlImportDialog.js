@@ -5,15 +5,13 @@ import ReactDOM from 'react-dom';
 
 import Icon from '../../../components/Icon';
 
-import * as OpmlImportFormActions from '../reducers/opmlImportForm';
-
-import feeds from '../../feeds';
+import * as OpmlImportFormActions from '../actions';
+import * as FeedActions from '../../feeds/actions';
 
 class OpmlImportDialog extends Component {
 
   static propTypes = {
     opmlImportForm: PropTypes.object,
-    isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     feedsActions: PropTypes.object.isRequired,
     opmlImportFormActions: PropTypes.object.isRequired,
@@ -48,8 +46,8 @@ class OpmlImportDialog extends Component {
 
     opmlImportFormActions.opmlImportFormUpdate();
 
-    let file = ReactDOM.findDOMNode(this.refs.file);
-    let data = new FormData();
+    const file = ReactDOM.findDOMNode(this.refs.file);
+    const data = new FormData();
     data.append('file', file.files[0]);
 
     opmlImportFormActions.requestOpmlImport(data).then((result) => {
@@ -62,7 +60,7 @@ class OpmlImportDialog extends Component {
   }
 
   render() {
-    const { isOpen, opmlImportForm } = this.props;
+    const { opmlImportForm } = this.props;
 
     return (
       <div className="modal-content">
@@ -118,7 +116,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    feedsActions: bindActionCreators(feeds.actions, dispatch),
+    feedsActions: bindActionCreators(FeedActions, dispatch),
     opmlImportFormActions: bindActionCreators(OpmlImportFormActions, dispatch),
   };
 }

@@ -1,8 +1,8 @@
+import ReactDOM from 'react-dom';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { routerActions as RouterActions } from 'react-router-redux';
-import ReactDOM from 'react-dom';
 import debounce from 'lodash.debounce';
 import classNames from 'classnames';
 
@@ -12,10 +12,13 @@ import Autocomplete from '../../../components/Autocomplete';
 import { getSortedCategories, getSortedFeeds } from '../../../redux/selectors';
 import { renderErrorsFor } from '../../../utils';
 
-import * as FeedFormActions from '../reducers/feedForm';
+import * as FeedFormActions from '../actions';
+
 import sidebar from '../../sidebar';
-import feeds from '../../feeds';
-import entries from '../../entries';
+import * as SubscriptionsActions from '../../sidebar/actions/subscriptions';
+import * as CategoriesActions from '../../sidebar/actions/categories';
+import * as FeedsActions from '../../feeds/actions';
+import * as EntriesActions from '../../entries/actions';
 
 class NewFeedDialog extends Component {
 
@@ -103,6 +106,7 @@ class NewFeedDialog extends Component {
     }
   }
 
+  // TODO: refactor to action
   createFeed(searchTerm, categoryId) {
     const { feedFormActions } = this.props;
 
@@ -114,10 +118,11 @@ class NewFeedDialog extends Component {
       });
   }
 
+  // TODO: refactor to action
   createSubscription(feedId, categoryId) {
-    const { routerActions, feedFormActions, entriesActions } = this.props;
+    const { routerActions, feedFormActions, entriesActions, subscriptionsActions } = this.props;
 
-    sidebar.actions.subscriptions.requestCreateSubscription({ feed_id: feedId, category_id: categoryId })
+    subscriptionsActions.requestCreateSubscription({ feed_id: feedId, category_id: categoryId })
       .then((response) => {
         if (response.error) {
           feedFormActions.feedFormUpdate(response.payload);
@@ -215,10 +220,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    entriesActions: bindActionCreators(entries.actions, dispatch),
-    subscriptionsActions: bindActionCreators(sidebar.actions.subscriptions, dispatch),
-    categoriesActions: bindActionCreators(sidebar.actions.categories, dispatch),
-    feedsActions: bindActionCreators(feeds.actions, dispatch),
+    entriesActions: bindActionCreators(EntriesActions, dispatch),
+    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
+    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
+    feedsActions: bindActionCreators(FeedsActions, dispatch),
     feedFormActions: bindActionCreators(FeedFormActions, dispatch),
     routerActions: bindActionCreators(RouterActions, dispatch)
   };
