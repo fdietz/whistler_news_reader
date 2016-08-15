@@ -1,16 +1,22 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import classNames from 'classnames';
 
 import { renderErrorsFor } from '../../../utils';
-import { requestSignUp, requestFetchRandomImages } from '../actions';
+import * as UserActions from '../actions';
+import * as RandomImagesActions from '../../randomImages/actions';
 
 class SignUp extends Component {
 
   static propTypes = {
     errors: PropTypes.array,
     randomImages: PropTypes.object,
+
+    // actions
+    userActions: PropTypes.object.isRequired,
+    randomImagesActions: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -20,14 +26,13 @@ class SignUp extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(requestFetchRandomImages());
+    const { randomImagesActions } = this.props;
+    randomImagesActions.requestFetchRandomImages();
   }
 
   _handleSubmit(e) {
+    const { userActions } = this.props;
     e.preventDefault();
-
-    const { dispatch } = this.props;
 
     const data = {
       name: this.refs.name.value,
@@ -36,7 +41,7 @@ class SignUp extends Component {
       password_confirmation: this.refs.passwordConfirmation.value,
     };
 
-    dispatch(requestSignUp(data));
+    userActions.requestSignUp(data);
   }
 
   randomImage() {
@@ -110,4 +115,11 @@ const mapStateToProps = (state) => ({
   randomImages: state.randomImages,
 });
 
-export default connect(mapStateToProps)(SignUp);
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators(UserActions, dispatch),
+    randomImagesActions: bindActionCreators(RandomImagesActions, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

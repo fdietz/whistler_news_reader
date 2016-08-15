@@ -9,22 +9,10 @@ export const CREATE_SIGN_IN = 'CREATE_SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 
-export const FETCH_RANDOM_IMAGES = 'FETCH_RANDOM_IMAGES';
-
 export const createSignUp = createAction(CREATE_SIGN_UP);
 export const createSignIn = createAction(CREATE_SIGN_IN);
 export const signOut = createAction(SIGN_OUT);
 export const setCurrentUser = createAction(SET_CURRENT_USER);
-
-export const fetchRandomImages = createAction(FETCH_RANDOM_IMAGES);
-
-export function requestFetchRandomImages() {
-  return dispatch => {
-    fetchRandomImages();
-    return axios.get('/api/random_images')
-      .then(response => dispatch(fetchRandomImages(response.data.random_images)));
-  };
-}
 
 export function requestSignUp(data) {
   return dispatch => {

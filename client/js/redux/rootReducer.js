@@ -12,6 +12,7 @@ import entries from '../modules/entries';
 import subscriptions from '../modules/subscriptions';
 import categories from '../modules/categories';
 import notification from '../modules/notification';
+import randomImages from '../modules/randomImages';
 
 // TODO: refactor to only access <module>.reducers
 export default combineReducers({
@@ -20,10 +21,10 @@ export default combineReducers({
   editForm: editForm.reducers,
   opmlImportForm: opmlImportForm.reducers,
 
-  randomImages: user.reducers.randomImages,
+  randomImages: randomImages.reducers,
   notification: notification.reducers,
 
-  user: user.reducers.user,
+  user: user.reducers,
 
   sidebar: sidebar.reducers,
   categories: categories.reducers,
