@@ -1,8 +1,8 @@
 /* eslint no-undefined: 0*/
 import test from 'ava';
 
-import { EDIT_FORM_UPDATE, EDIT_FORM_RESET } from '../editForm';
-import reducer from '../editForm';
+import { EDIT_FORM_UPDATE, EDIT_FORM_RESET } from '../actions';
+import reducer from '../index';
 
 test('editForm reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), {

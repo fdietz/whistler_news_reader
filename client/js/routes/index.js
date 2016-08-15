@@ -4,7 +4,7 @@ import sidebar from '../modules/sidebar';
 
 import entries from '../modules/entries';
 
-import editDialog from '../modules/editDialog';
+import editForm from '../modules/editForm';
 import newFeedDialog from '../modules/newFeedDialog';
 import newCategoryDialog from '../modules/newCategoryDialog';
 import opmlImportDialog from '../modules/opmlImportDialog';
@@ -24,7 +24,7 @@ const entryListRoute = {
 
 const editDialogRoute = {
   path: 'edit',
-  component: editDialog.container,
+  component: editForm.container,
 };
 
 const opmlImportDialogRoutes = {

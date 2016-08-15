@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 import newFeedDialog from '../modules/newFeedDialog';
-import editDialog from '../modules/editDialog';
+import editForm from '../modules/editForm';
 import newCategoryDialog from '../modules/newCategoryDialog';
 import opmlImportDialog from '../modules/opmlImportDialog';
 import user from '../modules/user';
@@ -17,7 +17,7 @@ import categories from '../modules/categories';
 export default combineReducers({
   feedForm: newFeedDialog.reducers.feedForm,
   categoryForm: newCategoryDialog.reducers.categoryForm,
-  editForm: editDialog.reducers.editForm,
+  editForm: editForm.reducers,
   opmlImportForm: opmlImportDialog.reducers.opmlImportForm,
 
   randomImages: user.reducers.randomImages,
