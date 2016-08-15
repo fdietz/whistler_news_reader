@@ -4,7 +4,7 @@ import {
   CREATE_NOTIFICATION,
   RESET_NOTIFICATION,
 } from '../../actions';
-import reducer from '../notification';
+import reducer from '../index';
 
 test('notification reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), null);

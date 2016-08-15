@@ -10,6 +10,8 @@ export default class Notification extends Component {
 
   render() {
     const { message, type } = this.props;
+    if (!message) return null;
+
     const cls = classNames({
       notification: true,
       info: type === 'info',

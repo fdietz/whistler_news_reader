@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { routerActions as RouterActions } from 'react-router-redux';
 
-import Notification from '../components/Notification';
+import notification from '../../notification';
 import ModalWrapper from '../components/ModalWrapper';
 
 import shallowCompare from 'react-addons-shallow-compare';
@@ -12,10 +12,6 @@ class MainAppContainer extends Component {
 
   static propTypes = {
     pathname: PropTypes.string.isRequired,
-    notification: PropTypes.shape({
-      message: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-    }),
     location: PropTypes.object.isRequired,
     children: PropTypes.node,
 
@@ -41,9 +37,10 @@ class MainAppContainer extends Component {
   }
 
   render() {
-    const { notification, location } = this.props;
+    const { location } = this.props;
     const { routerActions } = this.props;
     const isModal = (location.state && location.state.modal && this.previousChildren);
+    const Notification = notification.container;
 
     return (
       <div className="main-app-container">
@@ -59,7 +56,7 @@ class MainAppContainer extends Component {
         )}
 
         {notification &&
-          <Notification {...notification} />
+          <Notification />
         }
 
       </div>
@@ -70,8 +67,7 @@ class MainAppContainer extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     location: ownProps.location,
-    pathname: ownProps.location.pathname,
-    notification: state.notification
+    pathname: ownProps.location.pathname
   };
 }
 

@@ -6,12 +6,12 @@ import editForm from '../modules/editForm';
 import categoryForm from '../modules/categoryForm';
 import opmlImportForm from '../modules/opmlImportForm';
 import user from '../modules/user';
-import main from '../modules/main';
 import sidebar from '../modules/sidebar';
 import feeds from '../modules/feeds';
 import entries from '../modules/entries';
 import subscriptions from '../modules/subscriptions';
 import categories from '../modules/categories';
+import notification from '../modules/notification';
 
 // TODO: refactor to only access <module>.reducers
 export default combineReducers({
@@ -21,7 +21,7 @@ export default combineReducers({
   opmlImportForm: opmlImportForm.reducers,
 
   randomImages: user.reducers.randomImages,
-  notification: main.reducers.notification,
+  notification: notification.reducers,
 
   user: user.reducers.user,
 
