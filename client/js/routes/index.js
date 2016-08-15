@@ -5,7 +5,7 @@ import sidebar from '../modules/sidebar';
 import entries from '../modules/entries';
 
 import editForm from '../modules/editForm';
-import newFeedDialog from '../modules/newFeedDialog';
+import feedForm from '../modules/feedForm';
 import categoryForm from '../modules/categoryForm';
 import opmlImportDialog from '../modules/opmlImportDialog';
 
@@ -34,7 +34,7 @@ const opmlImportDialogRoutes = {
 
 const newFeedDialogRoutes = {
   path: '/feeds/new',
-  component: newFeedDialog.container,
+  component: feedForm.container,
 };
 
 const newCategoryDialogRoutes = {

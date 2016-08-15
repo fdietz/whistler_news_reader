@@ -9,7 +9,7 @@ import {
   FEED_FORM_RESET,
 } from '../../actions';
 
-import reducer from '../feedForm';
+import reducer from '../index';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
