@@ -3,7 +3,7 @@ import { routerReducer } from 'react-router-redux';
 
 import newFeedDialog from '../modules/newFeedDialog';
 import editForm from '../modules/editForm';
-import newCategoryDialog from '../modules/newCategoryDialog';
+import categoryForm from '../modules/categoryForm';
 import opmlImportDialog from '../modules/opmlImportDialog';
 import user from '../modules/user';
 import main from '../modules/main';
@@ -16,7 +16,7 @@ import categories from '../modules/categories';
 // TODO: refactor to only access <module>.reducers
 export default combineReducers({
   feedForm: newFeedDialog.reducers.feedForm,
-  categoryForm: newCategoryDialog.reducers.categoryForm,
+  categoryForm: categoryForm.reducers,
   editForm: editForm.reducers,
   opmlImportForm: opmlImportDialog.reducers.opmlImportForm,
 

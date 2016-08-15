@@ -1,8 +1,8 @@
 /* eslint no-undefined: 0*/
 import test from 'ava';
 
-import { CATEGORY_FORM_UPDATE, CATEGORY_FORM_RESET } from '../categoryForm';
-import reducer from '../categoryForm';
+import { CATEGORY_FORM_UPDATE, CATEGORY_FORM_RESET } from '../../actions';
+import reducer from '../index';
 
 test('categoryForm reducer returns default state', t => {
   t.deepEqual(reducer(undefined, {}), {

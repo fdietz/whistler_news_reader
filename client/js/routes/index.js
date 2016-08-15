@@ -6,7 +6,7 @@ import entries from '../modules/entries';
 
 import editForm from '../modules/editForm';
 import newFeedDialog from '../modules/newFeedDialog';
-import newCategoryDialog from '../modules/newCategoryDialog';
+import categoryForm from '../modules/categoryForm';
 import opmlImportDialog from '../modules/opmlImportDialog';
 
 import patterns from '../modules/patterns';
@@ -39,7 +39,7 @@ const newFeedDialogRoutes = {
 
 const newCategoryDialogRoutes = {
   path: '/categories/new',
-  component: newCategoryDialog.container,
+  component: categoryForm.container,
 };
 
 export default function makeRoutes(store) {
