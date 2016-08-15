@@ -7,7 +7,7 @@ import entries from '../modules/entries';
 import editForm from '../modules/editForm';
 import feedForm from '../modules/feedForm';
 import categoryForm from '../modules/categoryForm';
-import opmlImportDialog from '../modules/opmlImportDialog';
+import opmlImportForm from '../modules/opmlImportForm';
 
 import patterns from '../modules/patterns';
 
@@ -29,7 +29,7 @@ const editDialogRoute = {
 
 const opmlImportDialogRoutes = {
   path: 'opml_import',
-  component: opmlImportDialog.container,
+  component: opmlImportForm.container,
 };
 
 const newFeedDialogRoutes = {

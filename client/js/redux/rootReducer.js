@@ -4,7 +4,7 @@ import { routerReducer } from 'react-router-redux';
 import feedForm from '../modules/feedForm';
 import editForm from '../modules/editForm';
 import categoryForm from '../modules/categoryForm';
-import opmlImportDialog from '../modules/opmlImportDialog';
+import opmlImportForm from '../modules/opmlImportForm';
 import user from '../modules/user';
 import main from '../modules/main';
 import sidebar from '../modules/sidebar';
@@ -18,7 +18,7 @@ export default combineReducers({
   feedForm: feedForm.reducers,
   categoryForm: categoryForm.reducers,
   editForm: editForm.reducers,
-  opmlImportForm: opmlImportDialog.reducers.opmlImportForm,
+  opmlImportForm: opmlImportForm.reducers,
 
   randomImages: user.reducers.randomImages,
   notification: main.reducers.notification,
