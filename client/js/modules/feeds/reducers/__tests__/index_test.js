@@ -1,6 +1,6 @@
 /* eslint no-undefined: 0*/
 import test from 'ava';
-import reducer from '../feeds';
+import reducer from '../index';
 import { SEARCH_FEEDS } from '../../actions';
 
 test('feeds reducer returns default state', t => {

@@ -29,7 +29,7 @@ export default combineReducers({
   categories: categories.reducers,
   subscriptions: subscriptions.reducers,
 
-  feeds: feeds.reducers.feeds,
+  feeds: feeds.reducers,
   entries: entries.reducers,
   routing: routerReducer,
 });
