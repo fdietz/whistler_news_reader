@@ -358,12 +358,8 @@ class EntryListContainer extends Component {
 
     const masterListCls = classNames('master-list', {
       grid: currentViewLayout === 'grid',
-      // 'hide-small-screen': hasChildren
       'hide-animation': hasChildren
     });
-    // const masterListCls = classNames('master-list', {
-    //   grid: currentViewLayout === 'grid'
-    // });
 
     const responsiveToolbar = (
       <Media query="(max-width: 40em)">
@@ -372,10 +368,10 @@ class EntryListContainer extends Component {
     );
 
     const mainList = (
-        <div className="layout-master-container">
-          <LayoutHeader>{responsiveToolbar}</LayoutHeader>
-          <LayoutContent>{paginatedItems}</LayoutContent>
-        </div>
+      <div className="layout-master-container">
+        <LayoutHeader>{responsiveToolbar}</LayoutHeader>
+        <LayoutContent>{paginatedItems}</LayoutContent>
+      </div>
     );
 
     const segment = this.props.pathname.split('/')[2];

@@ -7,10 +7,11 @@ import Teaser from '../../../components/Teaser';
 
 import { CheckmarkSVGIcon } from '../../../components/SVGIcon';
 
-const NothingLeftToReadTeaser = function render({ responsiveToolbar, onRefresh }) {
+const NothingLeftToReadTeaser = function render({ toolbar, onRefresh }) {
+  console.log(">", toolbar)
   return (
     <div className="layout-master-container">
-      <LayoutHeader>{responsiveToolbar}</LayoutHeader>
+      <LayoutHeader>{toolbar}</LayoutHeader>
       <LayoutContent>
         <Teaser>
           <CheckmarkSVGIcon size="xxlarge" color="gray" />

@@ -8,11 +8,11 @@ import Teaser from '../../../components/Teaser';
 
 import { EarthSVGIcon } from '../../../components/SVGIcon';
 
-const WelcomeTeaser = function render({ responsiveToolbar }) {
+const WelcomeTeaser = function render({ toolbar }) {
   return (
     <div className="layout-master-container">
       <LayoutHeader>
-        {responsiveToolbar}
+        {toolbar}
       </LayoutHeader>
       <LayoutContent>
         <Teaser>
