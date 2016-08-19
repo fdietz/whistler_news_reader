@@ -3,10 +3,8 @@ defmodule WhistlerNewsReader.FeedWorker do
 
   require Logger
 
-  # alias WhistlerNewsReader.FeedRefresher
+  alias WhistlerNewsReader.FeedRefresher
   alias WhistlerNewsReader.FeedImporter
-  alias WhistlerNewsReader.FeedServerRegistry
-  alias WhistlerNewsReader.FeedServerWorker
 
   @genserver_call_timeout_ms 1_000_000
   @pool_transaction_timeout_ms 1_000_000
@@ -57,10 +55,7 @@ defmodule WhistlerNewsReader.FeedWorker do
   end
 
   def handle_call({:refresh, feed}, _from, state) do
-    # {:reply, FeedRefresher.refresh(feed), state}
-    pid = FeedServerRegistry.server_process(feed.id)
-    result = FeedServerWorker.refresh(pid)
-    {:reply, result, state}
+    {:reply, FeedRefresher.refresh(feed), state}
   end
 
 end

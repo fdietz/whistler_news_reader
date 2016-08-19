@@ -24,9 +24,8 @@ defmodule WhistlerNewsReader.FeedServer do
   end
 
   def refresh(feed) do
-    # pid = FeedServerRegistry.server_process(feed.id)
-    # FeedServerWorker.refresh(pid)
-    FeedWorker.refresh(feed)
+    pid = FeedServerRegistry.server_process(feed.id)
+    FeedServerWorker.refresh(pid)
   end
 
   # run in parallel
