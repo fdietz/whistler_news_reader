@@ -1,6 +1,8 @@
 defmodule WhistlerNewsReader.FeedServerRegistry do
   use GenServer
 
+  require Logger
+
   alias WhistlerNewsReader.FeedServerWorker
   alias WhistlerNewsReader.FeedServerSupervisor
 
@@ -24,6 +26,7 @@ defmodule WhistlerNewsReader.FeedServerRegistry do
     feed_server_pid = case FeedServerWorker.whereis(feed_server_name) do
       :undefined ->
         {:ok, pid} = FeedServerSupervisor.start_child(feed_server_name)
+        Logger.info "FeedServerRegistry - start child #{feed_server_name}"
         pid
       pid -> pid
     end
