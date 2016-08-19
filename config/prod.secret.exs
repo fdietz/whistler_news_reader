@@ -11,7 +11,7 @@ config :whistler_news_reader, WhistlerNewsReader.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   database: "whistler_news_reader_prod",
-  pool_size: 20
+  pool_size: 1
 
 config :guardian, Guardian,
   secret_key: System.get_env("GUARDIAN_SECRET_KEY")
