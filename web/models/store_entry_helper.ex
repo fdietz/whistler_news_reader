@@ -11,13 +11,13 @@ defmodule WhistlerNewsReader.StoreEntryHelper do
     Enum.each(entries, fn(entry) ->
       case store_entry(feed, entry) do
         {:ok, :skipping} ->
-          # Logger.info "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} skip"
+          Logger.debug "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} skip"
           {:ok}
         {:ok, _new_entry} ->
-          # Logger.info "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} success"
+          Logger.debug "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} success"
           {:ok}
         {:error, %Ecto.Changeset{} = changeset} ->
-          Logger.info "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} changeset error: #{inspect changeset.errors}"
+          Logger.debug "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} changeset error: #{inspect changeset.errors}"
         {:error, error} ->
           Logger.error "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} error: #{inspect error}"
       end
