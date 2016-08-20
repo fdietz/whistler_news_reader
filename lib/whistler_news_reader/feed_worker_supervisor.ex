@@ -1,7 +1,7 @@
 defmodule WhistlerNewsReader.FeedWorkerSupervisor do
   use Supervisor
 
-  @pool_size 1
+  @pool_size 10
 
   def start_link do
     Supervisor.start_link(__MODULE__, [])
