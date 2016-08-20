@@ -84,19 +84,19 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
     end
   end
 
-  test "POST /api/feeds succeeds", %{conn: conn, jwt: jwt, category: category} do
-    json_body = File.read!("test/fixtures/rss2/example1.xml")
-    with_mock WhistlerNewsReader.FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
-      conn = conn |> put_req_header("authorization", jwt)
-      conn = post conn, feed_path(conn, :create), feed: %{feed_url: @other_feed_url, category_id: category.id}
-
-      assert json_response(conn, 201)
-      feed_id = json_response(conn, 201)["feed"]["id"]
-      category_id = json_response(conn, 201)["feed"]["category_id"]
-      assert category_id == category.id
-      assert Repo.get!(Feed, feed_id)
-    end
-  end
+  # test "POST /api/feeds succeeds with category", %{conn: conn, jwt: jwt, category: category} do
+  #   json_body = File.read!("test/fixtures/rss2/example1.xml")
+  #   with_mock WhistlerNewsReader.FeedFetcher, [fetch: fn(_feed_url) -> {:ok, json_body} end] do
+  #     conn = conn |> put_req_header("authorization", jwt)
+  #     conn = post conn, feed_path(conn, :create), feed: %{feed_url: @other_feed_url, category_id: category.id}
+  #
+  #     assert json_response(conn, 201)
+  #     feed_id = json_response(conn, 201)["feed"]["id"]
+  #     category_id = json_response(conn, 201)["feed"]["category_id"]
+  #     assert category_id == category.id
+  #     assert Repo.get!(Feed, feed_id)
+  #   end
+  # end
 
   test "POST /api/feeds fails if feed exists already", %{conn: conn, jwt: jwt} do
     json_body = File.read!("test/fixtures/rss2/example1.xml")

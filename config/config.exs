@@ -10,9 +10,9 @@ config :whistler_news_reader, WhistlerNewsReader.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "GIp8OnuW3ex0mkgsun4RN6XpAz4NImG9vH6neqxYXo++FinVSah222qUmwm7/Hug",
-  render_errors: [accepts: ~w(html json)],
-  pubsub: [name: WhistlerNewsReader.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  render_errors: [accepts: ~w(html json)]
+  # pubsub: [name: WhistlerNewsReader.PubSub,
+          #  adapter: Phoenix.PubSub.PG2]
 
 config :whistler_news_reader, ecto_repos: [WhistlerNewsReader.Repo]
 

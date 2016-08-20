@@ -4,7 +4,7 @@ defmodule WhistlerNewsReader.Mixfile do
   def project do
     [app: :whistler_news_reader,
      version: "0.0.1",
-     elixir: "~> 1.0",
+     elixir: "~> 1.3",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -34,6 +34,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:phoenix_ecto, "~> 3.0.1"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.6.2"},
+    #  {:phoenix_pubsub, "~> 1.0"},
      {:phoenix_live_reload, "~> 1.0.5", only: :dev},
      {:cowboy, "~> 1.0.4"},
      {:gettext, "~> 0.11"},
