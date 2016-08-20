@@ -14,6 +14,8 @@ config :whistler_news_reader, WhistlerNewsReader.Endpoint,
   pubsub: [name: WhistlerNewsReader.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :whistler_news_reader, ecto_repos: [WhistlerNewsReader.Repo]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

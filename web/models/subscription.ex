@@ -24,9 +24,10 @@ defmodule WhistlerNewsReader.Subscription do
   If no params are provided, an invalid changeset is returned
   with no validation performed.
   """
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, [:feed_id, :user_id, :category_id, :title])
+    |> validate_required([:feed_id, :user_id])
     |> unique_constraint(:feed_id, name: :subscriptions_feed_id_user_id_index)
     |> cast_embed(:settings)
   end

@@ -21,9 +21,9 @@ defmodule WhistlerNewsReader.ChannelCase do
       use Phoenix.ChannelTest
 
       alias WhistlerNewsReader.Repo
-      import Ecto.Model
-      import Ecto.Query, only: [from: 2]
-
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
 
       # The default endpoint for testing
       @endpoint WhistlerNewsReader.Endpoint
@@ -31,8 +31,10 @@ defmodule WhistlerNewsReader.ChannelCase do
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(WhistlerNewsReader.Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(WhistlerNewsReader.Repo, [])
+      Ecto.Adapters.SQL.Sandbox.mode(WhistlerNewsReader.Repo, {:shared, self()})
     end
 
     :ok

@@ -9,7 +9,7 @@ defmodule WhistlerNewsReader.Mixfile do
      compilers: [:phoenix] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     aliases: ["phoenix.digest": "whistler_news_reader.digest"],
+     aliases: aliases,
      deps: deps]
   end
 
@@ -19,7 +19,7 @@ defmodule WhistlerNewsReader.Mixfile do
   def application do
     [mod: {WhistlerNewsReader, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex, :tzdata, :comeonin, :gproc]]
+                    :phoenix_ecto, :postgrex, :tzdata, :comeonin, :gproc, :gettext]]
   end
 
   # Specifies which paths to compile per environment
@@ -30,25 +30,33 @@ defmodule WhistlerNewsReader.Mixfile do
   #
   # Type `mix help deps` for examples and options
   defp deps do
-    [{:phoenix, "~> 1.1.2"},
-     {:phoenix_ecto, "~> 2.0"},
+    [{:phoenix, "~> 1.2.1"},
+     {:phoenix_ecto, "~> 3.0.1"},
      {:postgrex, ">= 0.0.0"},
-     {:phoenix_html, "~> 2.3"},
-     {:phoenix_live_reload, "~> 1.0", only: :dev},
-     {:cowboy, "~> 1.0"},
+     {:phoenix_html, "~> 2.6.2"},
+     {:phoenix_live_reload, "~> 1.0.5", only: :dev},
+     {:cowboy, "~> 1.0.4"},
+     {:gettext, "~> 0.11"},
      {:elixir_feed_parser, "~> 1.1.0"},
-     {:httpoison, "~> 0.8.2"},
-     {:floki, "~> 0.7.1"},
-     {:comeonin, "~> 2.0"},
-     {:guardian, "~> 0.9.0"},
-     {:ex_machina, "~> 0.6.1", only: :test},
-     {:mock, "~> 0.1.1", only: :test},
+     {:httpoison, "~> 0.9.0"},
+     {:floki, "~> 0.10.0"},
+     {:comeonin, "~> 2.5.2"},
+     {:guardian, "~> 0.12.0"},
+     {:ex_machina, "~> 1.0.2", only: :test},
+     {:mock, "~> 0.1.3", only: :test},
      {:elixir_gravatar_url, "~> 1.0.0"},
      {:poolboy, "~> 1.5.1"},
-     {:html_sanitize_ex, "~> 0.1.0"},
-     {:poison, "~> 1.5.0"},
+     {:html_sanitize_ex, "~> 1.0.1"},
+     {:poison, "~> 2.2.0"},
      {:gproc, "~> 0.5.0"},
      {:hound, "~> 1.0"},
-     {:credo, "~> 0.4", only: [:dev, :test]}]
+     {:credo, "~> 0.4.8", only: [:dev, :test]}]
+  end
+
+  defp aliases do
+    ["phoenix.digest": "whistler_news_reader.digest",
+     "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+     "ecto.reset": ["ecto.drop", "ecto.setup"],
+     "test": ["ecto.create --quiet", "ecto.migrate", "test"]]
   end
 end

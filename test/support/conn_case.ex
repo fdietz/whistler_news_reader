@@ -21,8 +21,9 @@ defmodule WhistlerNewsReader.ConnCase do
       use Phoenix.ConnTest
 
       alias WhistlerNewsReader.Repo
-      import Ecto.Model
-      import Ecto.Query, only: [from: 2]
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
 
       import WhistlerNewsReader.Router.Helpers
       import WhistlerNewsReader.Factory
@@ -33,10 +34,13 @@ defmodule WhistlerNewsReader.ConnCase do
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(WhistlerNewsReader.Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(WhistlerNewsReader.Repo, [])
+      Ecto.Adapters.SQL.Sandbox.mode(WhistlerNewsReader.Repo, {:shared, self()})
     end
 
-    :ok
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    # :ok
   end
 end

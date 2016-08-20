@@ -13,10 +13,10 @@ defmodule WhistlerNewsReader.FeedServerTest do
   @valid_feed_url "http://www.theverge.com/rss/full.xml"
 
   setup do
-    user = create(:user)
-    feed = create(:feed, title: "The Verge", feed_url: @valid_feed_url)
-    category = create(:category, user: user)
-    create(:subscription, feed: feed, user: user, category: category)
+    user = insert(:user)
+    feed = insert(:feed, title: "The Verge", feed_url: @valid_feed_url)
+    category = insert(:category, user: user)
+    insert(:subscription, feed: feed, user: user, category: category)
 
     json_body = File.read!("test/fixtures/rss2/example1.xml")
 

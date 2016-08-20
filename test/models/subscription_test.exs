@@ -25,7 +25,7 @@ defmodule WhistlerNewsReader.SubscriptionTest do
     |> Subscription.changeset(@valid_attrs)
 
     assert {:error, changeset} = Repo.insert(subscription)
-    assert changeset.errors[:feed_id] == "has already been taken"
+    assert changeset.errors[:feed_id] == {"has already been taken", []}
   end
 
 end

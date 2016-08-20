@@ -8,7 +8,7 @@ defmodule WhistlerNewsReader.Factory do
   alias WhistlerNewsReader.SubscribedEntry
   alias WhistlerNewsReader.Category
 
-  def factory(:user) do
+  def user_factory do
     %User{
       name: "Jane Smith",
       email: sequence(:email, &"email-#{&1}@example.com"),
@@ -16,7 +16,7 @@ defmodule WhistlerNewsReader.Factory do
     }
   end
 
-  def factory(:feed) do
+  def feed_factory do
     %Feed{
       title: "The Verge",
       feed_url: "http://www.theverge.com/rss/frontpage",
@@ -24,7 +24,7 @@ defmodule WhistlerNewsReader.Factory do
     }
   end
 
-  def factory(:subscription) do
+  def subscription_factory do
     %Subscription{
       user: build(:user),
       feed: build(:feed),
@@ -32,7 +32,7 @@ defmodule WhistlerNewsReader.Factory do
     }
   end
 
-  def factory(:entry) do
+  def entry_factory do
     %Entry{
       title: "Entry Title",
       published: "2016-01-01",
@@ -40,7 +40,7 @@ defmodule WhistlerNewsReader.Factory do
     }
   end
 
-  def factory(:unread_entry) do
+  def unread_entry_factory do
     %SubscribedEntry{
       user: build(:user),
       entry: build(:entry),
@@ -50,7 +50,7 @@ defmodule WhistlerNewsReader.Factory do
     }
   end
 
-  def factory(:category) do
+  def category_factory do
     %Category{
       title: "Category title",
       user: build(:user)

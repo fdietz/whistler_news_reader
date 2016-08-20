@@ -12,30 +12,30 @@ defmodule WhistlerNewsReader.Api.SubscribedEntryControllerTest do
   @valid_feed_url3 "http://www.engadget.com/rss.xml"
 
   setup do
-    user = create(:user)
+    user = insert(:user)
     {:ok, jwt, _full_claims} = Guardian.encode_and_sign(user, :token)
 
-    feed = create(:feed, title: "The Verge", feed_url: @valid_feed_url)
-    feed2 = create(:feed, title: "Wired", feed_url: @valid_feed_url2)
-    feed3 = create(:feed, title: "Engadget", feed_url: @valid_feed_url3)
+    feed = insert(:feed, title: "The Verge", feed_url: @valid_feed_url)
+    feed2 = insert(:feed, title: "Wired", feed_url: @valid_feed_url2)
+    feed3 = insert(:feed, title: "Engadget", feed_url: @valid_feed_url3)
 
-    category = create(:category, user: user)
+    category = insert(:category, user: user)
 
-    subscription = create(:subscription, feed: feed, user: user, category: category)
-    subscription2 = create(:subscription, feed: feed2, user: user, category: category)
-    subscription3 = create(:subscription, feed: feed3, user: user, category: category)
+    subscription = insert(:subscription, feed: feed, user: user, category: category)
+    subscription2 = insert(:subscription, feed: feed2, user: user, category: category)
+    subscription3 = insert(:subscription, feed: feed3, user: user, category: category)
 
     # TODO: fix - 1 day arithmetic
     {{year, month, day}, _ } = :calendar.universal_time()
-    entry = create(:entry, feed: feed, published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
-    entry2 = create(:entry, feed: feed2, published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
-    entry3 = create(:entry, feed: feed3, published: {{year, month, day-2}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
+    entry = insert(:entry, feed: feed, published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
+    entry2 = insert(:entry, feed: feed2, published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
+    entry3 = insert(:entry, feed: feed3, published: {{year, month, day-2}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
 
-    unread_entry = create(:unread_entry, user: user, feed: feed, entry: entry, subscription: subscription)
-    unread_entry2 = create(:unread_entry, user: user, feed: feed2, entry: entry2, subscription: subscription2)
-    unread_entry3 = create(:unread_entry, user: user, feed: feed3, entry: entry3, subscription: subscription3)
+    unread_entry = insert(:unread_entry, user: user, feed: feed, entry: entry, subscription: subscription)
+    unread_entry2 = insert(:unread_entry, user: user, feed: feed2, entry: entry2, subscription: subscription2)
+    unread_entry3 = insert(:unread_entry, user: user, feed: feed3, entry: entry3, subscription: subscription3)
 
-    conn = conn() |> put_req_header("accept", "application/json")
+    conn = build_conn() |> put_req_header("accept", "application/json")
     {:ok, conn: conn, jwt: jwt, user: user, subscription: subscription, subscription2: subscription2, feed: feed, feed2: feed2, feed3: feed3, category: category, entry: entry, entry2: entry2, entry3: entry3, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3}
   end
 

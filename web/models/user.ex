@@ -17,6 +17,7 @@ defmodule WhistlerNewsReader.User do
 
   @required_fields ~w(name email password)
   @optional_fields ~w(encrypted_password)
+  @fields @required_fields ++ @optional_fields
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -24,9 +25,10 @@ defmodule WhistlerNewsReader.User do
   If no params are provided, an invalid changeset is returned
   with no validation performed.
   """
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, [:name, :email, :password, :encrypted_password])
+    |> validate_required([:name, :email, :password])
     |> validate_format(:email, ~r/@/)
     |> validate_length(:email, min: 5)
     |> validate_confirmation(:password, message: "Password does not match")

@@ -10,7 +10,7 @@ defmodule WhistlerNewsReader.Api.SessionControllerTest do
     changeset = User.changeset(%User{}, @valid_attrs)
     user = Repo.insert!(changeset)
 
-    conn = conn() |> put_req_header("accept", "application/json")
+    conn = build_conn() |> put_req_header("accept", "application/json")
     {:ok, conn: conn, user: user}
   end
 

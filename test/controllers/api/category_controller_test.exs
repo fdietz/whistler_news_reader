@@ -5,12 +5,12 @@ defmodule WhistlerNewsReader.Api.CategoryControllerTest do
   alias WhistlerNewsReader.Category
 
   setup do
-    user = create(:user)
+    user = insert(:user)
     {:ok, jwt, _full_claims} = Guardian.encode_and_sign(user, :token)
 
-    category = create(:category, user: user)
+    category = insert(:category, user: user)
 
-    conn = conn() |> put_req_header("accept", "application/json")
+    conn = build_conn() |> put_req_header("accept", "application/json")
     {:ok, conn: conn, jwt: jwt, user: user, category: category}
   end
 
@@ -70,8 +70,8 @@ defmodule WhistlerNewsReader.Api.CategoryControllerTest do
   end
 
   test "DELETE /api/categories/:id fails if feed exists", %{conn: conn, jwt: jwt, user: user, category: category} do
-    feed = create(:feed)
-    create(:subscription, user: user, feed: feed, category: category)
+    feed = insert(:feed)
+    insert(:subscription, user: user, feed: feed, category: category)
 
     conn = conn |> put_req_header("authorization", jwt)
     conn = delete conn, category_path(conn, :delete, category.id)

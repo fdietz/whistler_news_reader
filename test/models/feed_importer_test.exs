@@ -21,7 +21,7 @@ defmodule WhistlerNewsReader.FeedImporterTest do
   @invalid_attrs %{}
 
   setup do
-    user = create(:user)
+    user = insert(:user)
     {:ok, user: user}
   end
 

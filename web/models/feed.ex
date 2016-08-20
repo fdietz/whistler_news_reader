@@ -13,18 +13,16 @@ defmodule WhistlerNewsReader.Feed do
     timestamps
   end
 
-  @required_fields ~w(title feed_url site_url)
-  @optional_fields ~w(last_refreshed_at)
-
   @doc """
   Creates a changeset based on the `model` and `params`.
 
   If no params are provided, an invalid changeset is returned
   with no validation performed.
   """
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, [:title, :feed_url, :site_url, :last_refreshed_at])
+    |> validate_required([:title, :feed_url, :site_url])
     |> unique_constraint(:feed_url)
   end
 

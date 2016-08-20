@@ -17,18 +17,16 @@ defmodule WhistlerNewsReader.SubscribedEntry do
     timestamps
   end
 
-  @required_fields ~w(entry_id user_id feed_id subscription_id)
-  @optional_fields ~w(read)
-
   @doc """
   Creates a changeset based on the `model` and `params`.
 
   If no params are provided, an invalid changeset is returned
   with no validation performed.
   """
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, [:entry_id, :user_id, :feed_id, :subscription_id, :read])
+    |> validate_required([:entry_id, :user_id, :feed_id, :subscription_id])
     |> unique_constraint(:entry_id, name: :subscribed_entries_entry_id_user_id_index)
   end
 

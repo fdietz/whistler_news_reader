@@ -5,13 +5,13 @@ defmodule WhistlerNewsReader.Api.SubscriptionControllerTest do
   alias WhistlerNewsReader.Subscription
 
   setup do
-    user = create(:user)
+    user = insert(:user)
     {:ok, jwt, _full_claims} = Guardian.encode_and_sign(user, :token)
 
-    feed = create(:feed)
-    category = create(:category, user: user)
+    feed = insert(:feed)
+    category = insert(:category, user: user)
 
-    conn = conn() |> put_req_header("accept", "application/json")
+    conn = build_conn() |> put_req_header("accept", "application/json")
     {:ok, conn: conn, jwt: jwt, feed: feed, category: category, user: user}
   end
 

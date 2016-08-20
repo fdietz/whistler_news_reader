@@ -30,6 +30,6 @@ defmodule WhistlerNewsReader.FeedTest do
     |> Feed.changeset(@valid_attrs)
 
     assert {:error, changeset} = Repo.insert(feed)
-    assert changeset.errors[:feed_url] == "has already been taken"
+    assert changeset.errors[:feed_url] == {"has already been taken", []}
   end
 end

@@ -29,23 +29,23 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
   }
 
   setup do
-    user = create(:user)
+    user = insert(:user)
     {:ok, jwt, _full_claims} = Guardian.encode_and_sign(user, :token)
 
-    feed = create(:feed)
-    subscription = create(:subscription, user: user, feed: feed)
+    feed = insert(:feed)
+    subscription = insert(:subscription, user: user, feed: feed)
 
     # TODO: fix - 1 day arithmetic
     {{year, month, day}, _ } = :calendar.universal_time()
-    entry = create(:entry, feed: feed, published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
-    entry2 = create(:entry, feed: feed, published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
+    entry = insert(:entry, feed: feed, published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
+    entry2 = insert(:entry, feed: feed, published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
 
-    create(:unread_entry, user: user, feed: feed, entry: entry, subscription: subscription)
-    create(:unread_entry, user: user, feed: feed, entry: entry2, subscription: subscription)
+    insert(:unread_entry, user: user, feed: feed, entry: entry, subscription: subscription)
+    insert(:unread_entry, user: user, feed: feed, entry: entry2, subscription: subscription)
 
-    category = create(:category, user: user)
+    category = insert(:category, user: user)
 
-    conn = conn() |> put_req_header("accept", "application/json")
+    conn = build_conn() |> put_req_header("accept", "application/json")
     {:ok, conn: conn, jwt: jwt, feed: feed, entry: entry, entry2: entry2, category: category, subscription: subscription}
   end
 
@@ -104,8 +104,8 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
       conn = conn |> put_req_header("authorization", jwt)
       conn = post conn, feed_path(conn, :create), feed: %{feed_url: @feed_url}
 
-      assert json_response(conn, 201)
-      assert json_response(conn, 201)["feed"]["id"]
+      assert json_response(conn, 422)
+      assert json_response(conn, 422)["errors"] == [%{"feed_url" => "has already been taken"}]
     end
   end
 

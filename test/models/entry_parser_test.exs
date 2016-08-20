@@ -4,10 +4,10 @@ defmodule WhistlerNewsReader.EntryParserTest do
   alias WhistlerNewsReader.EntryParser
 
   setup do
-    user = create(:user)
-    feed = create(:feed)
-    category = create(:category, user: user)
-    create(:subscription, feed: feed, user: user, category: category)
+    user = insert(:user)
+    feed = insert(:feed)
+    category = insert(:category, user: user)
+    insert(:subscription, feed: feed, user: user, category: category)
 
     {:ok, user: user, feed: feed}
   end
