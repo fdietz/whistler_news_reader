@@ -35,16 +35,14 @@ class Dropdown extends Component {
   }
 
   onWindowClick(event) {
-    const dropdown = this.dropdownRef;
-    const dropdownContent = this.dropdownContentRef;
-
     // click outside
-    if (this.state.active && !dropdown.contains(event.target)) {
+    if (this.state.active && !this.dropdownRef.contains(event.target)) {
       this.hide();
     }
 
     // click inside
-    if (this.state.active && dropdownContent && dropdownContent.contains(event.target)) {
+    if (this.state.active && this.dropdownContentRef &&
+      this.dropdownContentRef.contains(event.target)) {
       this.hide();
     }
   }

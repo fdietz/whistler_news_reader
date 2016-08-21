@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -48,7 +47,7 @@ class NewFeedDialog extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      ReactDOM.findDOMNode(this.refs.feedUrl).focus();
+      this.feedUrlRef.focus();
     }, 0);
   }
 
@@ -56,7 +55,7 @@ class NewFeedDialog extends Component {
     const { feedFormActions } = this.props;
 
     feedFormActions.feedFormUpdate({
-      categoryId: ReactDOM.findDOMNode(this.refs.categoryId).value
+      categoryId: this.categoryIdRef.value
     });
   }
 
@@ -155,12 +154,13 @@ class NewFeedDialog extends Component {
             </div>
           }
 
-          <label className="field-label">
+          <label className="field-label" htmlFor="feedUrl">
             Website address or feed title
 
             <Autocomplete
               placeholder="Enter Website address or feed title here"
-              ref="value"
+              ref={(r) => { this.feedUrlRef = r; }}
+              id="feedUrl"
               items={sortedFeeds}
               inputClassName={inputCls}
               autoFocus
@@ -177,18 +177,19 @@ class NewFeedDialog extends Component {
           </label>
 
 
-          <label className="field-label mb3">
+          <label className="field-label mb3" htmlFor="categoryId">
             Select category
             <select
               className="field block"
-              ref="categoryId"
+              id="categoryId"
+              ref={(r) => { this.categoryIdRef = r; }}
               onChange={(event) => this.handleChange(event)}
               value={feedForm.category_id}>
 
               <option value="">Select ...</option>
-              {sortedCategories.map((category) => {
-                return <option value={category.id} key={category.id}>{category.title}</option>;
-              })}
+              {sortedCategories.map((category) => (
+                <option value={category.id} key={category.id}>{category.title}</option>
+              ))}
             </select>
           </label>
 
@@ -196,9 +197,9 @@ class NewFeedDialog extends Component {
             <button
               type="submit"
               className="btn btn-primary bg-blue white btn-large with-icon"
-              disabled={!feedForm.feedExists && !feedForm.isFeedUrl || feedForm.isLoading}
+              disabled={(!feedForm.feedExists && !feedForm.isFeedUrl) || feedForm.isLoading}
               onClick={this.submitForm}>
-                {feedForm.isLoading && <Icon name="spinner_white" size="small"/>}
+                {feedForm.isLoading && <Icon name="spinner_white" size="small" />}
                 Add Subscription
             </button>
           </div>

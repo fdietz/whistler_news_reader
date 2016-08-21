@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -40,14 +39,14 @@ class EditDialog extends Component {
     formActions.editFormUpdate({ title: selection.title });
 
     setTimeout(() => {
-      ReactDOM.findDOMNode(this.refs.title).focus();
+      this.titleRef.focus();
     }, 0);
   }
 
-  handleChange(event) {
+  handleChange() {
     const { formActions } = this.props;
 
-    formActions.editFormUpdate({ title: ReactDOM.findDOMNode(this.refs.title).value });
+    formActions.editFormUpdate({ title: this.titleRef.value });
   }
 
   close(event) {
@@ -116,13 +115,14 @@ class EditDialog extends Component {
               </div>
             </div>
           }
-          <label className="field-label mb3">
+          <label className="field-label mb3" htmlFor="title">
             {labels.label}
             <input
               className="field block col-12"
+              id="title"
               type="text"
               placeholder="Enter title here"
-              ref="title"
+              ref={(r) => { this.titleRef = r; }}
               value={editForm.title}
               onChange={(event) => this.handleChange(event)}
               autoFocus />

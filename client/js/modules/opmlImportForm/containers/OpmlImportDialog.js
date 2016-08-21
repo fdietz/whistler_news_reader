@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import ReactDOM from 'react-dom';
 
 import Icon from '../../../components/Icon';
 
@@ -28,7 +27,7 @@ class OpmlImportDialog extends Component {
   handleChange() {
     const { opmlImportFormActions } = this.props;
     opmlImportFormActions.opmlImportFormUpdate({
-      file: ReactDOM.findDOMNode(this.refs.file).value,
+      file: this.fileRef.value,
     });
   }
 
@@ -46,7 +45,7 @@ class OpmlImportDialog extends Component {
 
     opmlImportFormActions.opmlImportFormUpdate();
 
-    const file = ReactDOM.findDOMNode(this.refs.file);
+    const file = this.fileRef;
     const data = new FormData();
     data.append('file', file.files[0]);
 
@@ -68,14 +67,15 @@ class OpmlImportDialog extends Component {
           <h1>Import Your Subscriptions</h1>
 
           <div className="sm-col-12 mb2">
-            <label>
+            <label htmlFor="file">
               Select file to upload...
             </label>
             <input
               className="field block col-12"
               type="file"
+              id="file"
               placeholder="Enter title here"
-              ref="file"
+              ref={(r) => { this.fileRef = r; }}
               onChange={(event) => this.handleChange(event)}
               autoFocus />
 

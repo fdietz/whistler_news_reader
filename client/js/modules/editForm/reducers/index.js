@@ -1,7 +1,7 @@
 import { EDIT_FORM_UPDATE, EDIT_FORM_RESET, } from '../actions';
 
 const initial = {
-  title: null,
+  title: '',
   isLoading: false,
   error: null,
 };

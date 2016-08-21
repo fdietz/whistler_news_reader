@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { routerActions as RouterActions } from 'react-router-redux';
@@ -31,13 +30,13 @@ class NewCategoryDialog extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      ReactDOM.findDOMNode(this.refs.title).focus();
+      this.titleRef.focus();
     }, 0);
   }
 
-  handleChange(event) {
+  handleChange() {
     const { formActions } = this.props;
-    formActions.categoryFormUpdate({ title: ReactDOM.findDOMNode(this.refs.title).value });
+    formActions.categoryFormUpdate({ title: this.titleRef.value });
   }
 
   close(event) {
@@ -75,13 +74,14 @@ class NewCategoryDialog extends Component {
             </div>
           }
 
-          <label className="field-label mb3">
+          <label className="field-label mb3" htmlFor="title">
             Category title
             <input
               className="field block col-12"
               type="text"
+              id="title"
               placeholder="Enter title here"
-              ref="title"
+              ref={(r) => { this.titleRef = r; }}
               value={categoryForm.title}
               onChange={(event) => this.handleChange(event)}
               autoFocus />
