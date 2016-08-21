@@ -54,15 +54,15 @@ class Autocomplete extends Component {
     }
   }
 
-  handleChange(event) {
+  handleChange() {
     const { items } = this.props;
-    const value = this.refs.input.value;
-    this.setState({ value: value, isOpen: value.length > 2 && items.length > 0 });
+    const value = this.inputRef.value;
+    this.setState({ value, isOpen: value.length > 2 && items.length > 0 });
 
     this.props.onChange(value);
   }
 
-  handleOnClick(item, event) {
+  handleOnClick(item) {
     this.setState({ value: item.title, isOpen: false, selectedIndex: -1 });
     this.props.onSelect(item);
   }
@@ -79,7 +79,7 @@ class Autocomplete extends Component {
       <div className={cls} style={style}>
         <input
           type="text"
-          ref="input"
+          ref={(c) => { this.inputRef = c; }}
           className={inputCls}
           value={this.state.value}
           onChange={this.handleChange}

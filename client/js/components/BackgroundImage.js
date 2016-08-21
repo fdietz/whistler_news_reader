@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 
 class BackgroundImage extends Component {
@@ -26,7 +25,7 @@ class BackgroundImage extends Component {
   }
 
   onImageLoad() {
-    const imgTag = ReactDOM.findDOMNode(this.refs.img);
+    const imgTag = this.imgRef;
     const { imageUrl } = this.props;
     imgTag.style.backgroundImage = `url(${imageUrl})`;
 
@@ -34,14 +33,14 @@ class BackgroundImage extends Component {
   }
 
   render() {
-    const { className, style, ...rest } = this.props;
+    const { className, style } = this.props;
 
     const cls = classNames('background-image', className, {
       'image-loaded': this.state.loaded,
     });
 
     return (
-      <div ref="img" className={cls} style={style} {...rest} />
+      <div ref={(r) => { this.imgRef = r; }} className={cls} style={style} />
     );
   }
 }

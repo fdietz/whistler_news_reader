@@ -13,11 +13,6 @@ export default class ClickOutside extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  render() {
-    const { children } = this.props;
-    return <div {...this.props} ref="container">{children}</div>;
-  }
-
   componentDidMount() {
     document.addEventListener('click', this.handleClick);
   }
@@ -28,8 +23,14 @@ export default class ClickOutside extends Component {
 
   handleClick(e) {
     const { onClickOutside } = this.props;
-    const el = this.refs.container;
+    const el = this.containerRef;
 
     if (!el.contains(e.target)) onClickOutside(e);
   }
+
+  render() {
+    const { children } = this.props;
+    return <div {...this.props} ref={(c) => { this.containerRef = c; }}>{children}</div>;
+  }
+
 }

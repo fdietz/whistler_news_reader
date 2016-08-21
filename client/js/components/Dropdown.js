@@ -1,5 +1,4 @@
 import React, { PropTypes, Component, cloneElement } from 'react';
-import ReactDOM from 'react-dom';
 
 import classNames from 'classnames';
 
@@ -27,11 +26,6 @@ class Dropdown extends Component {
     this.onWindowClick = this.onWindowClick.bind(this);
   }
 
-  toggleActive(event) {
-    event.preventDefault();
-    this.toggle();
-  }
-
   componentDidMount() {
     window.addEventListener('click', this.onWindowClick);
   }
@@ -40,31 +34,24 @@ class Dropdown extends Component {
     window.removeEventListener('click', this.onWindowClick);
   }
 
-  render() {
-    const { className, children, style } = this.props;
-    const { active } = this.state;
-    const cls = classNames('dropdown', className);
+  onWindowClick(event) {
+    const dropdown = this.dropdownRef;
+    const dropdownContent = this.dropdownContentRef;
 
-    const clonedChildren = React.Children.map(children, child => {
-      if (child.type === DropdownTrigger) {
-        return cloneElement(child, {
-          active: active,
-          onClick: this.toggleActive,
-        });
-      } else if (child.type === DropdownContent) {
-        return cloneElement(child, {
-          active: active,
-          ref: 'dropdownContent',
-        });
-      }
-      return child;
-    });
+    // click outside
+    if (this.state.active && !dropdown.contains(event.target)) {
+      this.hide();
+    }
 
-    return (
-      <div className={cls} ref="dropdown" style={style}>
-        {clonedChildren}
-      </div>
-    );
+    // click inside
+    if (this.state.active && dropdownContent && dropdownContent.contains(event.target)) {
+      this.hide();
+    }
+  }
+
+  toggleActive(event) {
+    event.preventDefault();
+    this.toggle();
   }
 
   hide() {
@@ -85,20 +72,33 @@ class Dropdown extends Component {
     }
   }
 
-  onWindowClick(event) {
-    const dropdown = this.refs.dropdown;
-    const dropdownContent = ReactDOM.findDOMNode(this.refs.dropdownContent);
+  render() {
+    const { className, children, style } = this.props;
+    const { active } = this.state;
+    const cls = classNames('dropdown', className);
 
-    // click outside
-    if (this.state.active && !dropdown.contains(event.target)) {
-      this.hide();
-    }
+    const clonedChildren = React.Children.map(children, child => {
+      if (child.type === DropdownTrigger) {
+        return cloneElement(child, {
+          active,
+          onClick: this.toggleActive,
+        });
+      } else if (child.type === DropdownContent) {
+        return cloneElement(child, {
+          active,
+          ref: (r) => { this.dropdownContentRef = r; },
+        });
+      }
+      return child;
+    });
 
-    // click inside
-    if (this.state.active && dropdownContent && dropdownContent.contains(event.target)) {
-      this.hide();
-    }
+    return (
+      <div className={cls} ref={(r) => { this.dropdownRef = r; }} style={style}>
+        {clonedChildren}
+      </div>
+    );
   }
+
 }
 
 export default Dropdown;

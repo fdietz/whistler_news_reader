@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 
 class Image extends Component {
@@ -25,7 +24,7 @@ class Image extends Component {
   }
 
   onImageLoad() {
-    const imgTag = ReactDOM.findDOMNode(this.refs.img);
+    const imgTag = this.imageRef;
     const { imageUrl } = this.props;
     imgTag.src = imageUrl;
 
@@ -33,13 +32,13 @@ class Image extends Component {
   }
 
   render() {
-    const { className, style, ...rest } = this.props;
+    const { className, style, imageUrl } = this.props;
     const cls = classNames('image', className, {
       'image-loaded': this.state.loaded,
     });
 
     return (
-      <img ref="img" className={cls} style={style} {...rest} />
+      <img ref={(r) => { this.imageRef = r; }} alt={imageUrl} className={cls} style={style} />
     );
   }
 }
