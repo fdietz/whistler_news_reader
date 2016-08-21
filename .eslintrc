@@ -16,6 +16,7 @@
     "comma-dangle": 0,
     "arrow-body-style": ["error", "as-needed"],
     "react/jsx-closing-bracket-location": 0,
+    "react/jsx-filename-extension": 0
   },
   "settings": {
     "import/resolver": "webpack"
