@@ -356,14 +356,16 @@ class EntryListContainer extends Component {
 
     const hasChildren = React.Children.count(this.props.children) > 0;
 
-    const masterListCls = classNames('master-list', {
+    const masterListCls = classNames('master-layout', {
       grid: currentViewLayout === 'grid',
       'hide-animation': hasChildren
     });
 
     const responsiveToolbar = (
       <Media query="(max-width: 40em)">
-        {matches => matches ? entryListToolbarMobile : entryListToolbar }
+        {function match(matches) {
+          return matches ? entryListToolbarMobile : entryListToolbar;
+        }}
       </Media>
     );
 
@@ -389,7 +391,9 @@ class EntryListContainer extends Component {
         }
 
         {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
-          <NoArticleSelectedTeaser />
+          <Media query="(max-width: 40em)">
+            {function match(matches) { return matches ? null : <NoArticleSelectedTeaser />; } }
+          </Media>
         }
 
         {sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
@@ -398,7 +402,7 @@ class EntryListContainer extends Component {
 
         <ReactCSSTransitionGroup
           component="div"
-          className="layout-detail-container"
+          className="slide-animation-container"
           transitionName="slide-left"
           transitionEnterTimeout={200}
           transitionLeaveTimeout={200}>

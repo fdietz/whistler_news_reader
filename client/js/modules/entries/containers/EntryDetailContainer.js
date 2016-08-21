@@ -167,34 +167,32 @@ class EntryDetailContainer extends Component {
     );
 
     return (
-      <div className="main-detail-container">
-        <div className="detail">
-          <div className="layout-master-container">
-            <LayoutHeader>{entryContentToolbar}{entryContentToolbarMobile}</LayoutHeader>
-            <LayoutContent>
-              {entry && this.state.currentViewMode === 'normal' &&
-                <FeedEntryContent
-                  entry={entry}
-                  onLoadingComplete={this.onLoadingComplete}
-                  onLoadingStart={this.onLoadingStart}
-                  onEntryShown={this.handleEntryShown} />
-              }
-              {entry && this.state.currentViewMode === 'article' &&
-                <FeedEntryEmbedArticleContent
-                  entry={entry}
-                  onLoadingStart={this.onLoadingStart}
-                  onLoadingComplete={this.onLoadingComplete}
-                  onEntryShown={this.handleEntryShown} />
-              }
-              {entry && this.state.currentViewMode === 'website' &&
-                <FeedEntryEmbedWebsiteContent
-                  entry={entry}
-                  onLoadingStart={this.onLoadingStart}
-                  onLoadingComplete={this.onLoadingComplete}
-                  onEntryShown={this.handleEntryShown} />
-              }
-            </LayoutContent>
-          </div>
+      <div className="detail-layout">
+        <div className="layout-master-container">
+          <LayoutHeader>{entryContentToolbar}{entryContentToolbarMobile}</LayoutHeader>
+          <LayoutContent>
+            {entry && this.state.currentViewMode === 'normal' &&
+              <FeedEntryContent
+                entry={entry}
+                onLoadingComplete={this.onLoadingComplete}
+                onLoadingStart={this.onLoadingStart}
+                onEntryShown={this.handleEntryShown} />
+            }
+            {entry && this.state.currentViewMode === 'article' &&
+              <FeedEntryEmbedArticleContent
+                entry={entry}
+                onLoadingStart={this.onLoadingStart}
+                onLoadingComplete={this.onLoadingComplete}
+                onEntryShown={this.handleEntryShown} />
+            }
+            {entry && this.state.currentViewMode === 'website' &&
+              <FeedEntryEmbedWebsiteContent
+                entry={entry}
+                onLoadingStart={this.onLoadingStart}
+                onLoadingComplete={this.onLoadingComplete}
+                onEntryShown={this.handleEntryShown} />
+            }
+          </LayoutContent>
         </div>
         {this.props.children}
       </div>
