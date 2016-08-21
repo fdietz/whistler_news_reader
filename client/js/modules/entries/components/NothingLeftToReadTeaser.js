@@ -8,7 +8,6 @@ import Teaser from '../../../components/Teaser';
 import { CheckmarkSVGIcon } from '../../../components/SVGIcon';
 
 const NothingLeftToReadTeaser = function render({ toolbar, onRefresh }) {
-  console.log(">", toolbar)
   return (
     <div className="layout-master-container">
       <LayoutHeader>{toolbar}</LayoutHeader>
