@@ -29,6 +29,13 @@ class FeedEntryContent extends Component {
     if (entry) this.updateLinksWithTargetBlank();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.entry.id !== this.props.entry.id) {
+      this.shouldScrollToTop = true;
+      this.initTimer(nextProps.entry);
+    }
+  }
+
   componentDidUpdate() {
     const { entry } = this.props;
 
@@ -38,13 +45,6 @@ class FeedEntryContent extends Component {
     }
 
     if (entry) this.updateLinksWithTargetBlank();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.entry.id !== this.props.entry.id) {
-      this.shouldScrollToTop = true;
-      this.initTimer(nextProps.entry);
-    }
   }
 
   componentWillUnmount() {

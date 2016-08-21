@@ -111,7 +111,8 @@ const EntryContentToolbar = ({
           <DropdownTrigger className="btn btn-header">
             {isMobile && <EllipsisSVGIcon color="light-gray" size="small" />}
             {!isMobile && <NewspaperSVGIcon color="light-gray" size="small" />}
-            {!isMobile && <ArrowDownSVGIcon color="light-gray" size="small" className="arrow-down" />}
+            {!isMobile &&
+              <ArrowDownSVGIcon color="light-gray" size="small" className="arrow-down" />}
             {!isMobile && <ArrowUpSVGIcon color="light-gray" size="small" className="arrow-up" />}
           </DropdownTrigger>
           <DropdownContent>

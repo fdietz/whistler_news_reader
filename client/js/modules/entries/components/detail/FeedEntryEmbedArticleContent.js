@@ -36,15 +36,6 @@ class FeedEntryEmbedArticleContent extends Component {
     }
   }
 
-  componentDidUpdate() {
-    const { entry } = this.props;
-
-    if (entry && this.shouldScrollToTop) {
-      this.scrollableAncestor.scrollTop = 0;
-      this.shouldScrollToTop = false;
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.entry.id !== this.props.entry.id) {
       this.shouldScrollToTop = true;
@@ -54,6 +45,15 @@ class FeedEntryEmbedArticleContent extends Component {
         this.updateLinksWithTargetBlank();
         this.initTimer(nextProps.entry);
       });
+    }
+  }
+
+  componentDidUpdate() {
+    const { entry } = this.props;
+
+    if (entry && this.shouldScrollToTop) {
+      this.scrollableAncestor.scrollTop = 0;
+      this.shouldScrollToTop = false;
     }
   }
 

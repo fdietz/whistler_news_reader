@@ -29,6 +29,14 @@ class FeedEntryEmbedWebsiteContent extends Component {
     if (entry) this.updateLinksWithTargetBlank();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.entry.id !== this.props.entry.id) {
+      this.shouldScrollToTop = true;
+      this.initTimer(nextProps.entry);
+      if (this.props.onLoadingStart) this.props.onLoadingStart();
+    }
+  }
+
   componentDidUpdate() {
     const { entry } = this.props;
 
@@ -40,23 +48,8 @@ class FeedEntryEmbedWebsiteContent extends Component {
     if (entry) this.updateLinksWithTargetBlank();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.entry.id !== this.props.entry.id) {
-      this.shouldScrollToTop = true;
-      this.initTimer(nextProps.entry);
-      if (this.props.onLoadingStart) this.props.onLoadingStart();
-    }
-  }
-
   componentWillUnmount() {
     if (this.timeout) clearTimeout(this.timeout);
-  }
-
-  updateLinksWithTargetBlank() {
-    const anchors = ReactDOM.findDOMNode(this).getElementsByTagName('a');
-    for (let i = 0; i < anchors.length; i++) {
-      anchors[i].setAttribute('target', '_blank');
-    }
   }
 
   initTimer(entry) {
@@ -75,6 +68,13 @@ class FeedEntryEmbedWebsiteContent extends Component {
 
   onLoad() {
     if (this.props.onLoadingComplete) this.props.onLoadingComplete();
+  }
+
+  updateLinksWithTargetBlank() {
+    const anchors = ReactDOM.findDOMNode(this).getElementsByTagName('a');
+    for (let i = 0; i < anchors.length; i++) {
+      anchors[i].setAttribute('target', '_blank');
+    }
   }
 
   render() {
