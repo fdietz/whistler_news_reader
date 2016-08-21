@@ -1,5 +1,6 @@
 # whistler news reader
 [![Build Status](https://travis-ci.org/fdietz/whistler_news_reader.svg?branch=master)](https://travis-ci.org/fdietz/whistler_news_reader)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 ** The maintainer is currently on vacation until end of July with limited internet access **
 
