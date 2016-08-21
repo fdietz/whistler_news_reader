@@ -79,10 +79,9 @@ class SignIn extends Component {
                 ref="email"
                 className="field"
                 type="Email"
-                placeholder="Email"
-                focus
+                autoFocus
                 placeholder="yourmail@mail.com"
-    />
+              />
               {renderErrorsFor(errors, 'email')}
             </label>
 
@@ -92,9 +91,8 @@ class SignIn extends Component {
                 ref="password"
                 className="field"
                 type="password"
-                placeholder="Password"
                 placeholder="password"
-    />
+              />
               {renderErrorsFor(errors, 'password')}
             </label>
 

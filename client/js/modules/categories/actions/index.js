@@ -1,6 +1,6 @@
+import { createAction } from 'redux-actions';
 import axios from '../../../utils/APIHelper';
 import normalize from '../../../utils/normalize';
-import { createAction } from 'redux-actions';
 
 export const ADD_CATEGORY = 'ADD_CATEGORY';
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY';
@@ -16,7 +16,7 @@ export function requestUpdateCategory(id, attrs) {
   return dispatch => {
     dispatch(updateCategory());
     return axios.put(`/api/categories/${id}`, { category: attrs })
-      .then(() => dispatch(updateCategory({ id: id, ...attrs })))
+      .then(() => dispatch(updateCategory({ id, ...attrs })))
       .catch(e => dispatch(updateCategory(e)));
   };
 }
@@ -25,7 +25,7 @@ export function requestRemoveCategory(id) {
   return dispatch => {
     dispatch(removeCategory());
     return axios.delete(`/api/categories/${id}`)
-      .then(() => dispatch(removeCategory({ id: id })))
+      .then(() => dispatch(removeCategory({ id })))
       .catch((e) => dispatch(removeCategory(e)));
   };
 }

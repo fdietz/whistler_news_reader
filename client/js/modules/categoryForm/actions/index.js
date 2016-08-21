@@ -1,5 +1,5 @@
-import axios from '../../../utils/APIHelper';
 import { createAction } from 'redux-actions';
+import axios from '../../../utils/APIHelper';
 
 export const CATEGORY_FORM_UPDATE = 'CATEGORY_FORM_UPDATE';
 export const CATEGORY_FORM_RESET = 'CATEGORY_FORM_RESET';

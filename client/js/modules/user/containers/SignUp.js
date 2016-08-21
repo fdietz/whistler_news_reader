@@ -77,7 +77,7 @@ class SignUp extends Component {
 
             <label className="field-label">
               Name
-              <input ref="name" className="field" id="name" type="text" placeholder="Name" focus />
+              <input ref="name" className="field" id="name" type="text" placeholder="Name" autoFocus />
               {renderErrorsFor(errors, 'name')}
             </label>
 

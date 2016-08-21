@@ -1,16 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
-export default class LayoutHeader extends Component {
+const LayoutHeader = ({ children }) => (
+  <div className="layout-master-header">
+    {children}
+  </div>
+);
 
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-  };
+LayoutHeader.propTypes = {
+  children: PropTypes.node,
+};
 
-  render() {
-    return (
-      <div className="layout-master-header">
-        {this.props.children}
-      </div>
-    );
-  }
-}
+export default LayoutHeader;

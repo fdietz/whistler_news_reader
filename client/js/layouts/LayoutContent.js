@@ -1,16 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
-export default class LayoutContent extends Component {
+const LayoutContent = ({ children }) => (
+  <div className="layout-master-content">
+    {children}
+  </div>
+);
 
-  static propTypes = {
-    children: PropTypes.node,
-  };
+LayoutContent.propTypes = {
+  children: PropTypes.node,
+};
 
-  render() {
-    return (
-      <div className="layout-master-content">
-        {this.props.children}
-      </div>
-    );
-  }
-}
+export default LayoutContent;
