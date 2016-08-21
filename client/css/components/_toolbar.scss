@@ -4,6 +4,10 @@
   align-items: center;
   flex: 1 1;
 
+  .left, .right {
+    display: flex;
+  }
+  
   @include respond-to(small-screen) {
     margin-right: -$space-2;
     margin-left: -$space-2;

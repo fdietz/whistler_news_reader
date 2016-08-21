@@ -2,12 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { routerActions as RouterActions } from 'react-router-redux';
+import Media from 'react-media';
 
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
 import FeedEntryContent from '../components/detail/FeedEntryContent';
 import EntryContentToolbar from '../components/EntryContentToolbar';
-import EntryContentToolbarMobile from '../components/EntryContentToolbarMobile';
 import FeedEntryEmbedWebsiteContent from '../components/detail/FeedEntryEmbedWebsiteContent';
 import FeedEntryEmbedArticleContent from '../components/detail/FeedEntryEmbedArticleContent';
 
@@ -137,39 +137,31 @@ class EntryDetailContainer extends Component {
     } = this.props;
 
     const entryContentToolbar = (
-      <EntryContentToolbar
-        entry={entry}
-        currentViewMode={this.state.currentViewMode}
-        showSpinner={this.state.showSpinner}
-        hasPreviousEntry={hasPreviousEntry}
-        hasNextEntry={hasNextEntry}
-        onPreviousEntryClick={this.previousEntry}
-        onNextEntryClick={this.nextEntry}
-        onOpenExternalClick={this.onOpenExternalClick}
-        showEntryContentModalButton
-        onGoBackClick={this.onGoBackClick}
-        onChangeViewModeClick={this.onChangeViewModeClick} />
-    );
-
-    const entryContentToolbarMobile = (
-      <EntryContentToolbarMobile
-        entry={entry}
-        currentViewMode={this.state.currentViewMode}
-        showSpinner={this.state.showSpinner}
-        hasPreviousEntry={hasPreviousEntry}
-        hasNextEntry={hasNextEntry}
-        onPreviousEntryClick={this.previousEntry}
-        onNextEntryClick={this.nextEntry}
-        onOpenExternalClick={this.onOpenExternalClick}
-        showEntryContentModalButton
-        onGoBackClick={this.onGoBackClick}
-        onChangeViewModeClick={this.onChangeViewModeClick} />
+      <Media query="(max-width: 40em)">
+        {
+          (matches) => (
+            <EntryContentToolbar
+              isMobile={matches}
+              entry={entry}
+              currentViewMode={this.state.currentViewMode}
+              showSpinner={this.state.showSpinner}
+              hasPreviousEntry={hasPreviousEntry}
+              hasNextEntry={hasNextEntry}
+              onPreviousEntryClick={this.previousEntry}
+              onNextEntryClick={this.nextEntry}
+              onOpenExternalClick={this.onOpenExternalClick}
+              showEntryContentModalButton
+              onGoBackClick={this.onGoBackClick}
+              onChangeViewModeClick={this.onChangeViewModeClick} />
+          )
+        }
+      </Media>
     );
 
     return (
       <div className="detail-layout">
         <div className="layout-master-container">
-          <LayoutHeader>{entryContentToolbar}{entryContentToolbarMobile}</LayoutHeader>
+          <LayoutHeader>{entryContentToolbar}</LayoutHeader>
           <LayoutContent>
             {entry && this.state.currentViewMode === 'normal' &&
               <FeedEntryContent

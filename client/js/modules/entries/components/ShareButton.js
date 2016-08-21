@@ -18,7 +18,7 @@ const openWindow = (href) => {
 export const TwitterLink = ({ title, url, iconColor = "gray", ...rest }) => {
   const href = `https://twitter.com/intent/tweet/?text=${title}&url=${url}`;
   return (
-    <a href={href} target="_blank" {...rest}>
+    <a href={href} target="_blank">
       <TwitterSVGIcon color={iconColor} />
       Twitter
     </a>);
@@ -55,7 +55,7 @@ export const GooglePlusLink = ({ title, url, iconColor = "gray", ...rest }) => {
 export const PinterestLink = ({ title, url, iconColor = "gray", ...rest }) => {
   const href = `http://pinterest.com/pin/create/button/?url=${url}&description=${title}`;
   return (
-    <a href={href} target="_blank" {...rest}>
+    <a href={href} target="_blank">
       <PinterestSVGIcon color={iconColor} />
       Pinterest
     </a>
@@ -65,7 +65,7 @@ export const PinterestLink = ({ title, url, iconColor = "gray", ...rest }) => {
 export const MailLink = ({ title, url, iconColor = "gray", ...rest }) => {
   const href = `mailto:?&subject=${title}&body=${url}`;
   return (
-    <a href={href} target="_blank" {...rest}>
+    <a href={href} target="_blank">
       <MailSVGIcon color={iconColor} />
       Mail
     </a>
