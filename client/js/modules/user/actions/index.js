@@ -33,10 +33,7 @@ export function requestSignUp(data) {
 export function requestSignIn(email, password) {
   return dispatch => {
     dispatch(createSignIn());
-    const data = {
-      email: email,
-      password: password,
-    };
+    const data = { email, password };
 
     axios.post('/api/sessions', { session: data })
       .then(response => {

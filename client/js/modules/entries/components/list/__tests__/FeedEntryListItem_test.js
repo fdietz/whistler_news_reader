@@ -16,7 +16,7 @@ const entry = {
 };
 
 const props = {
-  entry: entry,
+  entry,
   isSelected: false,
   onClick: () => {},
 };

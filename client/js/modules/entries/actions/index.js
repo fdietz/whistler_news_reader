@@ -62,7 +62,7 @@ export function requestFetchMoreEntries(options = {}) {
     const params = { ...options, limit: 20 };
     dispatch(fetchMoreEntries());
 
-    return axios.get('/api/subscribed_entries', { params: params })
+    return axios.get('/api/subscribed_entries', { params })
       .then(response =>
           dispatch(fetchMoreEntries({
             ...normalize(response.data.entries),
@@ -79,8 +79,8 @@ export function requestLoadMore(requestParams) {
 
     if (entries.hasMoreEntries && !entries.isLoading) {
       const entryId = entries.listedIds[entries.listedIds.length - 1];
-      let oldestPublishedEntry = entries.byId[entryId].published;
-      let params = { ...requestParams, last_published: oldestPublishedEntry };
+      const oldestPublishedEntry = entries.byId[entryId].published;
+      const params = { ...requestParams, last_published: oldestPublishedEntry };
 
       return dispatch(requestFetchMoreEntries(params));
     }

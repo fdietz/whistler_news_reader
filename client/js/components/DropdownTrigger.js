@@ -7,7 +7,7 @@ const DropdownTrigger = ({ children, className, style, active, onClick }) => {
   });
 
   return (
-    <a href="#" className={cls} onClick={onClick} style={style}>
+    <a className={cls} onClick={onClick} style={style}>
       {children}
     </a>
   );

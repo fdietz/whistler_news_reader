@@ -20,7 +20,7 @@ class EntryGridItem extends Component {
 
   extractUrl(str) {
     let m;
-    let urls = [];
+    const urls = [];
     const rex = /<img[^>]+src="?([^"\s]+)"?\s*\/>/g;
 
     while (m = rex.exec(str)) {

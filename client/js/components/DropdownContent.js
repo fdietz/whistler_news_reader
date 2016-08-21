@@ -1,28 +1,23 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 
-class DropdownContent extends Component {
+const DropdownContent = ({ children, className, style, active }) => {
+  const cls = classNames('dropdown__content', className, {
+    hidden: !active,
+  });
 
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    style: PropTypes.object,
-    active: PropTypes.bool,
-  };
+  return (
+    <div className={cls} style={style}>
+      {children}
+    </div>
+  );
+};
 
-  render() {
-    const { children, className, style, active } = this.props;
-
-    const cls = classNames('dropdown__content', className, {
-      hidden: !active,
-    });
-
-    return (
-      <div className={cls} style={style}>
-        {children}
-      </div>
-    );
-  }
-}
+DropdownContent.propTypes = {
+  children: PropTypes.node,
+  className: PropTypes.string,
+  style: PropTypes.object,
+  active: PropTypes.bool,
+};
 
 export default DropdownContent;

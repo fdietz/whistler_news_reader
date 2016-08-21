@@ -1,6 +1,13 @@
 import { combineReducers } from 'redux';
 
-import { CREATE_SUBSCRIPTION, UPDATE_SUBSCRIPTION, DECREMENT_UNREAD_COUNT, RESET_UNREAD_COUNT, REMOVE_SUBSCRIPTION, FETCH_SUBSCRIPTIONS } from '../actions';
+import {
+  CREATE_SUBSCRIPTION,
+  UPDATE_SUBSCRIPTION,
+  DECREMENT_UNREAD_COUNT,
+  RESET_UNREAD_COUNT,
+  REMOVE_SUBSCRIPTION,
+  FETCH_SUBSCRIPTIONS
+  } from '../actions';
 
 const initialById = {};
 const initialListedIds = [];
@@ -15,7 +22,7 @@ function isLoading(state = initialIsLoading, action) {
     case RESET_UNREAD_COUNT:
     case REMOVE_SUBSCRIPTION:
     case FETCH_SUBSCRIPTIONS:
-      return !action.payload ? true : false;
+      return !action.payload;
     default:
       return state;
   }

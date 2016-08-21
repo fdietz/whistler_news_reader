@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import { Link } from 'react-router';
 
@@ -20,12 +20,20 @@ const WelcomeTeaser = function render({ toolbar }) {
           <h1>Welcome to whistle'r news reader</h1>
           <h2>This is exciting!</h2>
           <p>
-            Let's get started and <Link to={{ pathname: '/opml_import', state: { modal: true } }}>import</Link> or <Link to={{ pathname: '/feeds/new', state: { modal: true } }}>subscribe</Link> to new feeds.
+            Let's get started and
+            <Link to={{ pathname: '/opml_import', state: { modal: true } }}>import</Link>
+            or
+            <Link to={{ pathname: '/feeds/new', state: { modal: true } }}>subscribe</Link>
+            to new feeds.
           </p>
         </Teaser>
       </LayoutContent>
     </div>
   );
+};
+
+WelcomeTeaser.propTypes = {
+  toolbar: PropTypes.node
 };
 
 export default WelcomeTeaser;

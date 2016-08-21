@@ -3,7 +3,7 @@ import Perf from 'react-addons-perf';
 
 const styling = 'background: #CEE; color: #222';
 
-export const performance = store => next => action => {
+export const performance = () => next => action => {
   const start = window.performance.now();
   const result = next(action);
   const end = window.performance.now();
@@ -14,7 +14,7 @@ export const performance = store => next => action => {
   return result;
 };
 
-export const reactPerformance = store => next => action => {
+export const reactPerformance = () => next => action => {
   Perf.start();
   const result = next(action);
   Perf.stop();

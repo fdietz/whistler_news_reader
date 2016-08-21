@@ -58,94 +58,6 @@ class Sidebar extends Component {
     this.onSignOutClick = this.onSignOutClick.bind(this);
   }
 
-  renderSubscription(subscription) {
-    const { currentPathname, sidebarActions } = this.props;
-    const path = `/subscriptions/${subscription.id}/entries`;
-    const key = `subscriptions-${subscription.id}`;
-    const active = currentPathname.startsWith(path);
-
-    return (
-      <SubscriptionDragSource
-        key={key}
-        subscription={subscription}
-        path={path}
-        active={active}
-        onDrop={this.handleOnFeedDrop}
-        onLinkClick={sidebarActions.hideSidebar}
-    />
-    );
-  }
-
-  renderLink(label, path, iconName) {
-    const { currentPathname } = this.props;
-    const key = path;
-    const active = currentPathname.startsWith(path);
-
-    const cls = classNames({ 'sidebar-nav-list__name': true, active: active });
-    const listItemCls = classNames({ active: active, 'sidebar-nav-list__item': true });
-    const currentColor = active ? 'white' : 'gray';
-
-    return (
-      <li className={listItemCls} key={key}>
-        <div className="sidebar-nav-list__meta">
-          {React.createElement(iconName, { color: currentColor })}
-          <Link
-            onClick={this.props.sidebarActions.hideSidebar}
-            to={path}
-            className={cls}
-    >{label}</Link>
-        </div>
-      </li>
-    );
-  }
-
-  renderCategory(category, subscriptions) {
-    const { currentPathname, sidebarActions } = this.props;
-    const path = `/categories/${category.id}/entries`;
-    const key = `category-${category.id}`;
-    const active = currentPathname.startsWith(path);
-    const matchingSubscriptions = subscriptions.filter((subscription) => subscription.category_id === category.id);
-    const totalUnreadCount = matchingSubscriptions.reduce((result, subscription) => {
-      return result + subscription.unread_count;
-    }, 0);
-
-    return (
-      <CategoryDropTarget
-        key={key}
-        category={category}
-        path={path}
-        active={active}
-        totalUnreadCount={totalUnreadCount}
-        onExpandClick={this.onCategoryExpandClick}
-        onLinkClick={sidebarActions.hideSidebar}
-    >
-         {matchingSubscriptions.length > 0 && category.expanded &&
-           <div className="sidebar-nav-list nested">
-             {matchingSubscriptions.map(subscription =>
-               this.renderSubscription(subscription)
-             )}
-           </div>
-         }
-      </CategoryDropTarget>
-    );
-  }
-
-  renderAddCategoryLink() {
-    return (
-      <li className="sidebar-nav-list__item" key="addCategory">
-        <div className="sidebar-nav-list__meta">
-          <PlusSVGIcon color="gray" />
-          <a
-            href="#"
-            className="sidebar-nav-list__name action"
-            onClick={this.onNewCategoryClick}
-            title="Add new category"
-    >Category</a>
-        </div>
-      </li>
-    );
-  }
-
   componentDidMount() {
     bindHotKey('nextFeed', () => this.debouncedOnNextClick());
     bindHotKey('previousFeed', () => this.debouncedOnPreviousClick());
@@ -207,16 +119,6 @@ class Sidebar extends Component {
     this.props.routerActions.push({ pathname: '/categories/new', state: { modal: true } });
   }
 
-  handleOnFeedDrop(subscriptionId, categoryId) {
-    const { routerActions } = this.props;
-
-    const { subscriptionsActions } = this.props;
-    subscriptionsActions.requestUpdateSubscription(
-      subscriptionId, { category_id: categoryId }).then(() => {
-        routerActions.push(`/subscriptions/${subscriptionId}/entries`);
-      });
-  }
-
   onSignOutClick(event) {
     event.preventDefault();
     this.props.userActions.requestSignOut();
@@ -227,9 +129,104 @@ class Sidebar extends Component {
     this.props.routerActions.push({ pathname: '/opml_import', state: { modal: true } });
   }
 
+  handleOnFeedDrop(subscriptionId, categoryId) {
+    const { routerActions } = this.props;
+
+    const { subscriptionsActions } = this.props;
+    subscriptionsActions.requestUpdateSubscription(
+      subscriptionId, { category_id: categoryId }).then(() => {
+        routerActions.push(`/subscriptions/${subscriptionId}/entries`);
+      });
+  }
+
+  renderSubscription(subscription) {
+    const { currentPathname, sidebarActions } = this.props;
+    const path = `/subscriptions/${subscription.id}/entries`;
+    const key = `subscriptions-${subscription.id}`;
+    const active = currentPathname.startsWith(path);
+
+    return (
+      <SubscriptionDragSource
+        key={key}
+        subscription={subscription}
+        path={path}
+        active={active}
+        onDrop={this.handleOnFeedDrop}
+        onLinkClick={sidebarActions.hideSidebar}
+    />
+    );
+  }
+
+  renderLink(label, path, iconName) {
+    const { currentPathname } = this.props;
+    const key = path;
+    const active = currentPathname.startsWith(path);
+
+    const cls = classNames({ 'sidebar-nav-list__name': true, active });
+    const listItemCls = classNames({ active, 'sidebar-nav-list__item': true });
+    const currentColor = active ? 'white' : 'gray';
+
+    return (
+      <li className={listItemCls} key={key}>
+        <div className="sidebar-nav-list__meta">
+          {React.createElement(iconName, { color: currentColor })}
+          <Link
+            onClick={this.props.sidebarActions.hideSidebar}
+            to={path}
+            className={cls}
+    >{label}</Link>
+        </div>
+      </li>
+    );
+  }
+
+  renderCategory(category, subscriptions) {
+    const { currentPathname, sidebarActions } = this.props;
+    const path = `/categories/${category.id}/entries`;
+    const key = `category-${category.id}`;
+    const active = currentPathname.startsWith(path);
+    const matchingSubscriptions =
+      subscriptions.filter((subscription) => subscription.category_id === category.id);
+    const totalUnreadCount = matchingSubscriptions.reduce((result, subscription) =>
+      result + subscription.unread_count
+    , 0);
+
+    return (
+      <CategoryDropTarget
+        key={key}
+        category={category}
+        path={path}
+        active={active}
+        totalUnreadCount={totalUnreadCount}
+        onExpandClick={this.onCategoryExpandClick}
+        onLinkClick={sidebarActions.hideSidebar}>
+         {matchingSubscriptions.length > 0 && category.expanded &&
+           <div className="sidebar-nav-list nested">
+             {matchingSubscriptions.map(subscription =>
+               this.renderSubscription(subscription)
+             )}
+           </div>
+         }
+      </CategoryDropTarget>
+    );
+  }
+
+  renderAddCategoryLink() {
+    return (
+      <li className="sidebar-nav-list__item" key="addCategory">
+        <div className="sidebar-nav-list__meta">
+          <PlusSVGIcon color="gray" />
+          <a
+            className="sidebar-nav-list__name action"
+            onClick={this.onNewCategoryClick}
+            title="Add new category">Category</a>
+        </div>
+      </li>
+    );
+  }
+
   render() {
     const { currentUser, subscriptions, categories, sidebar } = this.props;
-    const { sidebarActions, userActions, routerActions } = this.props;
 
     const subscriptionsWithoutCategory = subscriptions.filter(subscription =>
       !subscription.category_id);
@@ -290,10 +287,10 @@ class Sidebar extends Component {
             <DropdownContent>
               <ul className="dropdown__list">
                 <li className="dropdown__list-item">
-                  <a href="#" onClick={this.onOPMLImportClick}>OPML Import</a>
+                  <a onClick={this.onOPMLImportClick}>OPML Import</a>
                 </li>
                 <li className="dropdown__list-item">
-                  <a href="#" onClick={this.onSignOutClick}>Logout</a>
+                  <a onClick={this.onSignOutClick}>Logout</a>
                 </li>
               </ul>
             </DropdownContent>

@@ -47,9 +47,21 @@ class SidebarContainer extends Component {
   }
 
   render() {
-    const { sortedCategories, sortedSubscriptions, pathname, sidebar, currentUser } = this.props;
+    const {
+      sortedCategories,
+      sortedSubscriptions,
+      pathname,
+      sidebar,
+      currentUser
+      } = this.props;
 
-    const { categoriesActions, subscriptionsActions, routerActions, sidebarActions, userActions } = this.props;
+    const {
+      categoriesActions,
+      subscriptionsActions,
+      routerActions,
+      sidebarActions,
+      userActions
+      } = this.props;
 
     return (
       <Sidebar

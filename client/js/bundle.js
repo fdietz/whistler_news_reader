@@ -11,7 +11,7 @@ import '../css/app.scss';
 import configureStore from './redux/configureStore';
 import makeRoutes from './routes/index';
 
-const initialState = window.__INITIAL_STATE__;
+const initialState = window.INITIAL_STATE || {};
 const store = configureStore(initialState);
 const history = syncHistoryWithStore(browserHistory, store);
 const routes = makeRoutes(store);

@@ -1,6 +1,12 @@
 import { combineReducers } from 'redux';
 
-import { FETCH_ENTRIES, FETCH_MORE_ENTRIES, REFRESH_ENTRIES, UPDATE_ENTRY, MARK_ALL_ENTRIES_AS_READ } from '../actions';
+import {
+  FETCH_ENTRIES,
+  FETCH_MORE_ENTRIES,
+  REFRESH_ENTRIES,
+  UPDATE_ENTRY,
+  MARK_ALL_ENTRIES_AS_READ
+} from '../actions';
 
 const initialById = {};
 const initialListedIds = [];
@@ -14,7 +20,7 @@ function hasMoreEntries(state = initialHasMoreEntries, action) {
   switch (action.type) {
     case FETCH_ENTRIES:
     case FETCH_MORE_ENTRIES:
-      return action.payload.hasMoreEntries ? true : false;
+      return action.payload.hasMoreEntries;
     default:
       return state;
   }
@@ -25,7 +31,7 @@ function isLoading(state = initialIsLoading, action) {
     case FETCH_ENTRIES:
     case FETCH_MORE_ENTRIES:
     case REFRESH_ENTRIES:
-      return !action.payload ? true : false;
+      return !action.payload;
     default:
       return state;
   }

@@ -1,5 +1,4 @@
 import React, { PropTypes, Component, cloneElement } from 'react';
-import { Link } from 'react-router';
 import Modal from 'react-modal';
 
 import { CrossSVGIcon } from '../../../components/SVGIcon';
@@ -27,9 +26,9 @@ class ModalWrapper extends Component {
 
   render() {
     const { children } = this.props;
-    const clonedChildren = React.Children.map(children, child => {
-      return cloneElement(child, { onClose: this.close });
-    });
+    const clonedChildren = React.Children.map(children, child =>
+      cloneElement(child, { onClose: this.close })
+    );
 
     return (
       <Modal

@@ -29,7 +29,7 @@ function handleError(response) {
 
 const instance = axios.create();
 
-instance.interceptors.request.use(function (config) {
+instance.interceptors.request.use((config) => {
   const token = AuthToken.getToken();
 
   if (token) {
@@ -39,10 +39,9 @@ instance.interceptors.request.use(function (config) {
   return config;
 });
 
-instance.interceptors.response.use(function (response) {
-  return response;
-}, function (response) {
-  return handleError(response);
-});
+instance.interceptors.response.use(
+  (response) => response,
+  (response) => handleError(response)
+);
 
 export default instance;

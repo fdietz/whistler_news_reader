@@ -31,18 +31,14 @@ class SubscriptionDragSource extends Component {
     const { subscription, active, onLinkClick, path } = this.props;
     const opacity = isDragging ? 0.4 : 1;
 
-    const cls = classNames('sidebar-nav-list__item', {
-      active: active,
-    });
+    const cls = classNames('sidebar-nav-list__item', { active });
 
-    const linkCls = classNames('sidebar-nav-list__name', {
-      active: active,
-    });
+    const linkCls = classNames('sidebar-nav-list__name', { active });
 
     return connectDragSource(
       <div className={cls} style={{ opacity }}>
         <div className="sidebar-nav-list__meta">
-          <div className="icon-placeholder"></div>
+          <div className="icon-placeholder" />
           <Link
             onClick={onLinkClick}
             to={path}

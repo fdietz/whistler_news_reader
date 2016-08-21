@@ -1,18 +1,17 @@
 /* eslint no-undefined: 0*/
 import test from 'ava';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+// import configureMockStore from 'redux-mock-store';
+// import thunk from 'redux-thunk';
 import nock from 'nock';
 
 import {
   FEED_FORM_UPDATE,
-  FEED_FORM_RESET,
 } from '../../actions';
 
 import reducer from '../index';
 
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
+// const middlewares = [thunk];
+// const mockStore = configureMockStore(middlewares);
 
 test.beforeEach(() => {
   nock.disableNetConnect();

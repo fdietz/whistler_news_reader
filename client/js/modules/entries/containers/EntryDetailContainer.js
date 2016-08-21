@@ -11,7 +11,7 @@ import EntryContentToolbar from '../components/EntryContentToolbar';
 import FeedEntryEmbedWebsiteContent from '../components/detail/FeedEntryEmbedWebsiteContent';
 import FeedEntryEmbedArticleContent from '../components/detail/FeedEntryEmbedArticleContent';
 
-import * as entriesActions from '../actions';
+import * as EntriesActions from '../actions';
 
 import user from '../../user';
 import * as SubscriptionsActions from '../../subscriptions/actions';
@@ -72,6 +72,29 @@ class EntryDetailContainer extends Component {
     this.onLoadingComplete = this.onLoadingComplete.bind(this);
   }
 
+
+  onGoBackClick() {
+    const { routerActions, params, pathname } = this.props;
+
+    routerActions.push(goBackPathname(params, pathname));
+  }
+
+  onChangeViewModeClick(mode) {
+    this.setState({ currentViewMode: mode });
+  }
+
+  onLoadingStart() {
+    this.setState({ showSpinner: true });
+  }
+
+  onLoadingComplete() {
+    this.setState({ showSpinner: false });
+  }
+
+  onOpenExternalClick() {
+    window.open(this.props.entry.url, '_blank');
+  }
+
   handleEntryShown(entry) {
     const { entriesActions, subscriptionsActions } = this.props;
     entriesActions.requestMarkEntryAsRead(entry).then(() => {
@@ -97,10 +120,6 @@ class EntryDetailContainer extends Component {
     }
   }
 
-  onOpenExternalClick() {
-    window.open(this.props.entry.url, '_blank');
-  }
-
   requestParams(props) {
     const { params, pathname } = props;
     return mapRequestParams(params, pathname);
@@ -110,25 +129,6 @@ class EntryDetailContainer extends Component {
     const { routerActions, params, pathname } = this.props;
     routerActions.push(entryPath(entryId, params, pathname));
   }
-
-  onGoBackClick() {
-    const { routerActions, params, pathname } = this.props;
-
-    routerActions.push(goBackPathname(params, pathname));
-  }
-
-  onChangeViewModeClick(mode) {
-    this.setState({ currentViewMode: mode });
-  }
-
-  onLoadingStart() {
-    this.setState({ showSpinner: true });
-  }
-
-  onLoadingComplete() {
-    this.setState({ showSpinner: false });
-  }
-
   render() {
     const {
       entry,
@@ -208,7 +208,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators(user.actions, dispatch),
-    entriesActions: bindActionCreators(entriesActions, dispatch),
+    entriesActions: bindActionCreators(EntriesActions, dispatch),
     subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
     categoriesActions: bindActionCreators(CategoriesActions, dispatch),
     routerActions: bindActionCreators(RouterActions, dispatch),

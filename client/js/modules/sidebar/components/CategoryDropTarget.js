@@ -32,7 +32,15 @@ class CategoryDropTarget extends Component {
   }
 
   render() {
-    const { category, active, totalUnreadCount, onExpandClick, children, onLinkClick, path } = this.props;
+    const {
+      category,
+      active,
+      totalUnreadCount,
+      onExpandClick,
+      children,
+      onLinkClick,
+      path
+    } = this.props;
     const { canDrop, isOver, connectDropTarget } = this.props;
     const isActive = canDrop && isOver;
 
@@ -41,13 +49,9 @@ class CategoryDropTarget extends Component {
       backgroundColor = 'rgba(0,0,0,0.5)';
     }
 
-    const cls = classNames('sidebar-nav-list__item', {
-      active: active,
-    });
+    const cls = classNames('sidebar-nav-list__item', { active });
 
-    const linkCls = classNames('sidebar-nav-list__name', {
-      active: active,
-    });
+    const linkCls = classNames('sidebar-nav-list__name', { active });
 
     const toggleCls = classNames('sidebar-nav-list__expand-toggle', {
       expanded: category.expanded,
@@ -59,18 +63,15 @@ class CategoryDropTarget extends Component {
       <div className={cls} style={{ backgroundColor }}>
         <div className="sidebar-nav-list__meta">
           <a
-            href="#"
             className={toggleCls}
-            onClick={onExpandClick.bind(this, category)}
-    >
+            onClick={onExpandClick.bind(this, category)}>
             <ArrowRightBoldSVGIcon color={currentColor} />
-         </a>
-         <Link
-           onClick={onLinkClick}
-           to={path}
-           className={linkCls}
-           title={category.title}
-    >{category.title}</Link>
+          </a>
+          <Link
+            onClick={onLinkClick}
+            to={path}
+            className={linkCls}
+            title={category.title}>{category.title}</Link>
          {totalUnreadCount > 0 &&
            <Badge count={totalUnreadCount} className="sidebar-nav-list__badge" />
          }

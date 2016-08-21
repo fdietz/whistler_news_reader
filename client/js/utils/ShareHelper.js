@@ -4,6 +4,5 @@ export function twitterUrl(articleUrl) {
 }
 
 export function facebookUrl(articleUrl) {
-  const text = 'Share';
   return `https://www.facebook.com/sharer/sharer.php?u=${articleUrl}`;
 }

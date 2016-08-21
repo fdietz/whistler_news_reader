@@ -40,7 +40,7 @@ export function requestUpdateSubscription(id, attrs) {
   return dispatch => {
     dispatch(updateSubscription());
     return axios.put(`/api/subscriptions/${id}`, { subscription: attrs })
-      .then(() => dispatch(updateSubscription({ id: id, ...attrs })))
+      .then(() => dispatch(updateSubscription({ id, ...attrs })))
       .catch(e => dispatch(updateSubscription(e)));
   };
 }
@@ -49,7 +49,7 @@ export function requestRemoveSubscription(id) {
   return dispatch => {
     dispatch(removeSubscription());
     return axios.delete(`/api/subscriptions/${id}`)
-      .then(() => dispatch(removeSubscription({ id: id })))
+      .then(() => dispatch(removeSubscription({ id })))
       .catch(e => dispatch(removeSubscription(e)));
   };
 }

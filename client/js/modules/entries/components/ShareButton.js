@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import {
   MailSVGIcon,
@@ -15,35 +15,46 @@ const openWindow = (href) => {
   return false;
 };
 
-export const TwitterLink = ({ title, url, iconColor = "gray", ...rest }) => {
+export const TwitterLink = ({ title, url, iconColor = 'gray' }) => {
   const href = `https://twitter.com/intent/tweet/?text=${title}&url=${url}`;
   return (
-    <a href={href} target="_blank">
+    <a href={href} target="_blank" rel="noreferrer noopener">
       <TwitterSVGIcon color={iconColor} />
       Twitter
     </a>);
 };
 
-export const FacebookLink = ({ title, url, iconColor = "gray", ...rest }) => {
+TwitterLink.propTypes = {
+  title: PropTypes.string,
+  url: PropTypes.string,
+  iconColor: PropTypes.string
+};
+
+export const FacebookLink = ({ url, iconColor = 'gray' }) => {
   const href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
   return (
     <a
       href={href}
-      target="_blank"
-      onClick={openWindow.bind(this, href)}
-  >
+      target="_blank" rel="noreferrer noopener"
+      onClick={openWindow.bind(this, href)}>
       <FacebookSVGIcon color={iconColor} />
       Facebook
     </a>
   );
 };
 
-export const GooglePlusLink = ({ title, url, iconColor = "gray", ...rest }) => {
+FacebookLink.propTypes = {
+  title: PropTypes.string,
+  url: PropTypes.string,
+  iconColor: PropTypes.string
+};
+
+export const GooglePlusLink = ({ url, iconColor = 'gray' }) => {
   const href = `https://plus.google.com/share?url=${url}`;
   return (
     <a
       href={href}
-      target="_blank"
+      target="_blank" rel="noreferrer noopener"
       onClick={openWindow.bind(this, href)}
   >
       <GooglePlusSVGIcon color={iconColor} />
@@ -52,22 +63,40 @@ export const GooglePlusLink = ({ title, url, iconColor = "gray", ...rest }) => {
   );
 };
 
-export const PinterestLink = ({ title, url, iconColor = "gray", ...rest }) => {
+GooglePlusLink.propTypes = {
+  title: PropTypes.string,
+  url: PropTypes.string,
+  iconColor: PropTypes.string
+};
+
+export const PinterestLink = ({ title, url, iconColor = 'gray' }) => {
   const href = `http://pinterest.com/pin/create/button/?url=${url}&description=${title}`;
   return (
-    <a href={href} target="_blank">
+    <a href={href} target="_blank" rel="noreferrer noopener">
       <PinterestSVGIcon color={iconColor} />
       Pinterest
     </a>
   );
 };
 
-export const MailLink = ({ title, url, iconColor = "gray", ...rest }) => {
+PinterestLink.propTypes = {
+  title: PropTypes.string,
+  url: PropTypes.string,
+  iconColor: PropTypes.string
+};
+
+export const MailLink = ({ title, url, iconColor = 'gray' }) => {
   const href = `mailto:?&subject=${title}&body=${url}`;
   return (
-    <a href={href} target="_blank">
+    <a href={href} target="_blank" rel="noreferrer noopener">
       <MailSVGIcon color={iconColor} />
       Mail
     </a>
   );
+};
+
+MailLink.propTypes = {
+  title: PropTypes.string,
+  url: PropTypes.string,
+  iconColor: PropTypes.string
 };

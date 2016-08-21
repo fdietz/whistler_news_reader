@@ -5,7 +5,7 @@ const initial = {
 };
 
 export default function reducer(state = initial, action) {
-  const { type, payload } = action;
+  const { type } = action;
 
   if (type === HIDE_SIDEBAR) {
     return { ...state, isVisible: false };

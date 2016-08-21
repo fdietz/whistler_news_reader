@@ -8,15 +8,15 @@ export default {
     const elapsed = current - previous;
 
     if (elapsed < msPerMinute) {
-      return Math.round(elapsed / 1000) + 'sec';
+      return `${Math.round(elapsed / 1000)} sec`;
     } else if (elapsed < msPerHour) {
-      return Math.round(elapsed / msPerMinute) + 'm';
+      return `${Math.round(elapsed / msPerMinute)} m`;
     } else if (elapsed < msPerDay) {
-      return Math.round(elapsed / msPerHour) + 'h';
+      return `${Math.round(elapsed / msPerHour)} h`;
     } else if (elapsed < msPerMonth) {
-      return (previous.getMonth() + 1) + '/' + previous.getDay() + '/' + previous.getFullYear();
+      return `${(previous.getMonth() + 1)}/${previous.getDay()}/${previous.getFullYear()}`;
     }
 
-    return (previous.getMonth() + 1) + '/' + previous.getDay() + '/' + previous.getFullYear();
+    return `${(previous.getMonth() + 1)}/${previous.getDay()}/${previous.getFullYear()}`;
   },
 };

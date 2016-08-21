@@ -42,7 +42,7 @@ const newCategoryDialogRoutes = {
   component: categoryForm.container,
 };
 
-export default function makeRoutes(store) {
+export default function makeRoutes() {
   const routes = {
     childRoutes: [
       {

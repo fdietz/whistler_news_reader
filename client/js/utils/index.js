@@ -11,6 +11,8 @@ export function renderErrorsFor(errors, ref) {
         </div>
       );
     }
+
+    return null;
   });
 }
 
