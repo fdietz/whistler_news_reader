@@ -14,7 +14,7 @@ import EntryList from '../components/list/EntryList';
 import EntryGrid from '../components/grid/EntryGrid';
 import NoMoreContent from '../components/NoMoreContent';
 import EntryListToolbar from '../components/EntryListToolbar';
-import EntryListToolbarMobile from '../components/EntryListToolbarMobile';
+// import EntryListToolbarMobile from '../components/EntryListToolbarMobile';
 import WelcomeTeaser from '../components/WelcomeTeaser';
 import NothingLeftToReadTeaser from '../components/NothingLeftToReadTeaser';
 import NoArticleSelectedTeaser from '../components/NoArticleSelectedTeaser';
@@ -314,46 +314,6 @@ class EntryListContainer extends Component {
     const isSubscriptionSelected = location.pathname.startsWith('/subscriptions');
     const isCategorySelected = location.pathname.startsWith('/categories');
 
-    const entryListToolbar = (
-      <EntryListToolbar
-        currentViewLayout={currentViewLayout}
-        showSpinner={entries.isLoading}
-        hasPreviousEntry={hasPreviousEntry}
-        hasNextEntry={hasNextEntry}
-        isSubscriptionSelected={isSubscriptionSelected}
-        isCategorySelected={isCategorySelected}
-        onMarkAsReadClick={this.markAsRead}
-        onRefreshEntriesClick={this.refreshEntries}
-        onRemoveFeedOrCategoryClick={this.handleOnRemoveFeedOrCategory}
-        onViewLayoutChangeClick={this.handleViewLayoutChange}
-        onOpenEditFeedOrCategoryModalClick={this.openEditModal}
-        onPreviousEntryClick={this.previousEntry}
-        onNextEntryClick={this.nextEntry}
-        onOpenExternalClick={this.openExternal}
-        onToggleSidebarClick={sidebarActions.toggle} />
-    );
-
-
-    const entryListToolbarMobile = (
-      <EntryListToolbarMobile
-        title={this.getTitle()}
-        currentViewLayout={currentViewLayout}
-        showSpinner={entries.isLoading}
-        hasPreviousEntry={hasPreviousEntry}
-        hasNextEntry={hasNextEntry}
-        isSubscriptionSelected={isSubscriptionSelected}
-        isCategorySelected={isCategorySelected}
-        onMarkAsReadClick={this.markAsRead}
-        onRefreshEntriesClick={this.refreshEntries}
-        onRemoveFeedOrCategoryClick={this.handleOnRemoveFeedOrCategory}
-        onViewLayoutChangeClick={this.handleViewLayoutChange}
-        onOpenEditFeedOrCategoryModalClick={this.openEditModal}
-        onPreviousEntryClick={this.previousEntry}
-        onNextEntryClick={this.nextEntry}
-        onOpenExternalClick={this.openExternal}
-        onToggleSidebarClick={sidebarActions.toggle} />
-    );
-
     const hasChildren = React.Children.count(this.props.children) > 0;
 
     const masterListCls = classNames('master-layout', {
@@ -363,9 +323,28 @@ class EntryListContainer extends Component {
 
     const responsiveToolbar = (
       <Media query="(max-width: 40em)">
-        {function match(matches) {
-          return matches ? entryListToolbarMobile : entryListToolbar;
-        }}
+        {
+          (matches) => (
+            <EntryListToolbar
+              isMobile={matches}
+              title={this.getTitle()}
+              currentViewLayout={currentViewLayout}
+              showSpinner={entries.isLoading}
+              hasPreviousEntry={hasPreviousEntry}
+              hasNextEntry={hasNextEntry}
+              isSubscriptionSelected={isSubscriptionSelected}
+              isCategorySelected={isCategorySelected}
+              onMarkAsReadClick={this.markAsRead}
+              onRefreshEntriesClick={this.refreshEntries}
+              onRemoveFeedOrCategoryClick={this.handleOnRemoveFeedOrCategory}
+              onViewLayoutChangeClick={this.handleViewLayoutChange}
+              onOpenEditFeedOrCategoryModalClick={this.openEditModal}
+              onPreviousEntryClick={this.previousEntry}
+              onNextEntryClick={this.nextEntry}
+              onOpenExternalClick={this.openExternal}
+              onToggleSidebarClick={sidebarActions.toggle} />
+          )
+        }
       </Media>
     );
 
