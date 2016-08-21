@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { routerActions as RouterActions } from 'react-router-redux';
+import shallowCompare from 'react-addons-shallow-compare';
 
 import Sidebar from '../components/Sidebar';
 
@@ -12,7 +13,6 @@ import * as UserActions from '../../user/actions';
 
 import { getSortedSubscriptions, getSortedCategories } from '../../../redux/selectors';
 
-import shallowCompare from 'react-addons-shallow-compare';
 
 class SidebarContainer extends Component {
 
@@ -20,10 +20,6 @@ class SidebarContainer extends Component {
     sortedSubscriptions: PropTypes.array.isRequired,
     sortedCategories: PropTypes.array.isRequired,
     pathname: PropTypes.string.isRequired,
-    notification: PropTypes.shape({
-      message: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-    }),
     sidebar: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,

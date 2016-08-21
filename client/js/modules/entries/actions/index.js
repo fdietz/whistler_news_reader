@@ -1,7 +1,9 @@
-import axios from '../../../utils/APIHelper';
 import { createAction } from 'redux-actions';
+import axios from '../../../utils/APIHelper';
 
 import normalize from '../../../utils/normalize';
+
+import { showRetryNotification } from '../../notification/actions';
 
 export const FETCH_ENTRIES = 'FETCH_ENTRIES';
 export const FETCH_MORE_ENTRIES = 'FETCH_MORE_ENTRIES';
@@ -38,14 +40,20 @@ export function requestFetchEntries(options = {}) {
     const params = { ...options, limit: 20 };
     dispatch(fetchEntries());
 
-    return axios.get('/api/subscribed_entries', { params: params })
+    return axios.get('/api/subscribed_entries', { params })
       .then(response => {
         dispatch(fetchEntries({
           ...normalize(response.data.entries),
           hasMoreEntries: response.data.entries.length === params.limit,
         }));
       })
-      .catch(e => dispatch(fetchEntries(e)));
+      .catch(e => {
+        dispatch(fetchEntries(e));
+        dispatch(showRetryNotification('Fetching failed',
+          () => dispatch(requestFetchEntries(options)),
+          { type: 'error', }));
+        return Promise.reject(e);
+      });
   };
 }
 
@@ -88,6 +96,12 @@ export function requestRefreshEntries(options = {}) {
 
     return axios.put('/api/subscribed_entries/refresh', params)
     .then(() => dispatch(refreshEntries({})))
-    .catch(e => dispatch(refreshEntries(e)));
+    .catch(e => {
+      dispatch(refreshEntries(e));
+      dispatch(showRetryNotification('Refresh failed',
+        () => dispatch(requestRefreshEntries(options)),
+        { type: 'error', }));
+      return Promise.reject(e);
+    });
   };
 }

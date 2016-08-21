@@ -57,10 +57,6 @@ class EntryListContainer extends Component {
     subscriptions: PropTypes.object.isRequired,
     categories: PropTypes.object.isRequired,
     currentUser: PropTypes.object,
-    notification: PropTypes.shape({
-      message: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-    }),
     params: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
@@ -125,6 +121,7 @@ class EntryListContainer extends Component {
       if (p.subscription_id && np.subscription_id && p.subscription_id === np.subscription_id) {
       } else if (p.category_id && np.category_id && p.category_id === np.category_id) {
       } else {
+        console.log(">>>>>>")
         entriesActions.requestFetchEntries(np);
         // entriesActions.requestFetchEntries(np).then(() => this.firstEntry());
       }

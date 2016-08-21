@@ -1,8 +1,9 @@
 .notification {
+  display: flex;
+  align-items: center;
+
   position: fixed;
-  top: $space-2;
-  right: 0;
-  left: 50%;
+  // right: 20%;
 
   z-index: 10;
 
@@ -17,18 +18,40 @@
   border: 1px solid $darken-1;
   border-radius: $border-radius;
 
-  box-shadow: 1px 1px 5px 0 $darken-2;
+  box-shadow: 3px 3px 5px 0 $darken-2;
   transition: opacity .5s ease-in-out;
 
+  cursor: pointer;
+
   &.info {
-    background-color: $yellow;
+    background-color: rgba($yellow, .7);
   }
 
   &.error {
-    background-color: $red;
+    background-color: rgba($red, .7);
   }
 
   &.success {
-    background-color: $green;
+    background-color: rgba($green, .7);
+  }
+
+  @include respond-to(small-screen) {
+    bottom: $space-2;
+    left: 50%;
+  }
+
+  @include respond-to(medium-screen) {
+    top: $space-2;
+    right: $space-2;
+  }
+
+  @include respond-to(large-screen) {
+    top: $space-2;
+    right: $space-2;
+  }
+
+  @include respond-to(xlarge-screen) {
+    top: $space-2;
+    right: $space-2;
   }
 }

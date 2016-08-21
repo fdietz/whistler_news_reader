@@ -2,11 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { routerActions as RouterActions } from 'react-router-redux';
+import shallowCompare from 'react-addons-shallow-compare';
 
 import notification from '../../notification';
 import ModalWrapper from '../components/ModalWrapper';
-
-import shallowCompare from 'react-addons-shallow-compare';
 
 class MainAppContainer extends Component {
 
