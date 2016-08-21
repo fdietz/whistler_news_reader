@@ -1,3 +1,7 @@
 node_modules/**
 priv/static/**
+deps/**
 coverage
+webpack.devserver.js
+webpack.config.js
+jsconfig.js
