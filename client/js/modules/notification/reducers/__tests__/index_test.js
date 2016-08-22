@@ -7,7 +7,12 @@ import {
 import reducer from '../index';
 
 test('notification reducer returns default state', t => {
-  t.deepEqual(reducer(undefined, {}), null);
+  t.deepEqual(reducer(undefined, {}), {
+    message: null,
+    type: 'info',
+    isRetry: false,
+    retryAction: null
+  });
 });
 
 test('notification reducer CREATE_NOTIFICATION', t => {
@@ -23,5 +28,10 @@ test('notification reducer RESET_NOTIFICATION', t => {
   t.deepEqual(reducer(undefined, {
     type: RESET_NOTIFICATION,
     payload: null,
-  }), null);
+  }), {
+    message: null,
+    type: 'info',
+    isRetry: false,
+    retryAction: null
+  });
 });

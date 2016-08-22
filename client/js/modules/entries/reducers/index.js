@@ -20,7 +20,7 @@ function hasMoreEntries(state = initialHasMoreEntries, action) {
   switch (action.type) {
     case FETCH_ENTRIES:
     case FETCH_MORE_ENTRIES:
-      return action.payload.hasMoreEntries;
+      return action.payload.hasMoreEntries ? true : false;
     default:
       return state;
   }
