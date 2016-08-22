@@ -1,10 +1,13 @@
 defmodule WhistlerNewsReader.MarkAsReadHelper do
+  @moduledoc """
+  Helper functions to mark entries as read
+  """
 
   alias WhistlerNewsReader.SubscribedEntry
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.Repo
 
-  def mark_entry_as_read(user, subscribed_entry) do
+  def mark_entry_as_read(_user, subscribed_entry) do
     unread_entry = Repo.get!(SubscribedEntry, subscribed_entry.id)
     unread_entry |> SubscribedEntry.changeset(%{read: true}) |> Repo.update!
   end

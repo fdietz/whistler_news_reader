@@ -1,4 +1,9 @@
 defmodule WhistlerNewsReader.EntryParser do
+  @moduledoc """
+  Parser for feed entry as returned by elixir-feed-parser hex package.
+
+  Generates unique id for all feed entry.
+  """
 
   def parse(feed, parsed_entry) do
     published    = parse_published(feed, parsed_entry)
@@ -24,7 +29,7 @@ defmodule WhistlerNewsReader.EntryParser do
     }
   end
 
-  defp parse_summary(feed, parsed_entry) do
+  defp parse_summary(_feed, parsed_entry) do
     html_to_text(parsed_entry[:summary] || parsed_entry[:content] || parsed_entry[:description])
   end
 
@@ -39,7 +44,8 @@ defmodule WhistlerNewsReader.EntryParser do
   end
   defp generate_guid(feed_url, entry_guid, entry_published, entry_title) do
     unique_id_str = "#{feed_url}#{entry_guid}#{entry_published}#{entry_title}"
-    :crypto.hash(:sha256, unique_id_str) |> Base.encode16
+    hash = :crypto.hash(:sha256, unique_id_str)
+    hash |> Base.encode16
   end
 
   defp sanitize_html(html) do

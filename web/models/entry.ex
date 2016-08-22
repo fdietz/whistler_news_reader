@@ -57,7 +57,7 @@ defmodule WhistlerNewsReader.Entry do
   end
 
   def for_today(query) do
-    {{year, month, day}, _ } = :calendar.universal_time()
+    {{year, month, day}, _} = :calendar.universal_time()
     ecto_date_time = {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl
 
     from p in query,

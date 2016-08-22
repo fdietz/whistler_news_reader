@@ -9,8 +9,8 @@ defmodule WhistlerNewsReader.Api.FeedController do
 
   plug :scrub_params, "feed" when action in [:create, :update]
 
-  def index(conn, %{"q" => queryString} = _params) do
-    feeds = Feed |> Feed.search_by(queryString) |> Repo.all
+  def index(conn, %{"q" => query_string} = _params) do
+    feeds = Feed |> Feed.search_by(query_string) |> Repo.all
     render(conn, "index.json", feeds: feeds)
   end
 

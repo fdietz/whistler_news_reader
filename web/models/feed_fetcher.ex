@@ -1,5 +1,9 @@
 defmodule WhistlerNewsReader.FeedFetcher do
+  @moduledoc """
+  Fetch feed from url using HTTPoison
 
+  Retries on failure
+  """
   require Logger
 
   @user_agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
@@ -17,10 +21,10 @@ defmodule WhistlerNewsReader.FeedFetcher do
     case HTTPoison.get(feed_url, http_headers, options) do
       {:error, %HTTPoison.Error{reason: :timeout}} ->
         :timer.sleep(@retry_sleep_ms)
-        fetch(feed_url, retries-1)
+        fetch(feed_url, retries - 1)
       {:error, %HTTPoison.Error{reason: :connect_timeout}} ->
         :timer.sleep(@retry_sleep_ms)
-        fetch(feed_url, retries-1)
+        fetch(feed_url, retries - 1)
       response ->
         map_response(response)
     end

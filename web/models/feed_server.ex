@@ -1,7 +1,9 @@
 defmodule WhistlerNewsReader.FeedServer do
 
-  alias WhistlerNewsReader.FeedServerRegistry
-  alias WhistlerNewsReader.FeedServerWorker
+  @moduledoc """
+  Encapsulates refresh and import feed async/await tasks.
+  """
+
   alias WhistlerNewsReader.FeedWorker
 
   @task_await_timeout_ms 1_000_000
@@ -24,8 +26,6 @@ defmodule WhistlerNewsReader.FeedServer do
   end
 
   def refresh(feed) do
-    # pid = FeedServerRegistry.server_process(feed.id)
-    # FeedServerWorker.refresh(pid)
     FeedWorker.refresh(feed)
   end
 

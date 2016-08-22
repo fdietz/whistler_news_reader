@@ -113,7 +113,7 @@ defmodule WhistlerNewsReader.Api.SubscribedEntryController do
     query |> SubscribedEntry.gt_last_published(last_published) |> sort_limit_and_preload(limit)
   end
 
-  defp sort_limit_and_preload(query, limit \\20) do
+  defp sort_limit_and_preload(query, limit \\ 20) do
     query |> SubscribedEntry.sorted |> SubscribedEntry.limit(limit) |> Repo.all |> Repo.preload([:entry, :subscription])
   end
 
