@@ -5,6 +5,7 @@ export function findScrollableAncestor(currentNode) {
     node = node.parentNode;
 
     if (node === document || node === document.documentElement) {
+      /* eslint no-continue:0 */
       continue;
     }
 

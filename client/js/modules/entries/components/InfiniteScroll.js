@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 
 import { findScrollableAncestor } from '../../../utils/dom';
 
@@ -23,7 +22,7 @@ export default class InfiniteScroll extends Component {
   }
 
   componentDidMount() {
-    this.scrollableAncestor = findScrollableAncestor(ReactDOM.findDOMNode(this));
+    this.scrollableAncestor = findScrollableAncestor(this.scrollContainerRef);
     this.attachScrollListener();
     this.handleScrollEvent();
   }
@@ -73,7 +72,7 @@ export default class InfiniteScroll extends Component {
 
   render() {
     return (
-      <div ref="scrollContainer" className="infinite-scroll-container">
+      <div ref={(r) => { this.scrollContainerRef = r; }} className="infinite-scroll-container">
         {this.props.children}
       </div>
     );

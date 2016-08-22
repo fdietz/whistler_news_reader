@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 
 import { CrossSVGIcon } from '../../../components/SVGIcon';
 
-import { customModalStyles } from '../../../utils/ModalHelper';
+import customModalStyles from '../../../utils/ModalHelper';
 
 class ModalWrapper extends Component {
 

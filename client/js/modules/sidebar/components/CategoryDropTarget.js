@@ -103,4 +103,5 @@ function collect(connect, monitor) {
   };
 }
 
+/* eslint new-cap: 0 */
 export default DropTarget(ItemTypes.SUBSCRIPTION, categoryTarget, collect)(CategoryDropTarget);

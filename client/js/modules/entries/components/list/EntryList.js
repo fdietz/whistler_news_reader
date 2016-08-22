@@ -1,3 +1,4 @@
+/* eslint react/no-string-refs: 0 */
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
@@ -55,17 +56,14 @@ class EntryList extends Component {
 
     return (
       <div className={cls}>
-        {entries.map((entry) => {
-          return (
-            <EntryListItem
-              entry={entry}
-              isSelected={entry && currentEntry && entry.id === currentEntry.id}
-              key={entry.id}
-              ref={entry.id}
-              onClick={this.handleOnEntryClick}
-          />
-          );
-        })}
+        {entries.map((entry) =>
+          <EntryListItem
+            entry={entry}
+            isSelected={entry && currentEntry && entry.id === currentEntry.id}
+            key={entry.id}
+            ref={entry.id}
+            onClick={this.handleOnEntryClick} />
+        )}
       </div>
     );
   }

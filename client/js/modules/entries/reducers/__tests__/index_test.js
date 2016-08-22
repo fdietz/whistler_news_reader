@@ -12,7 +12,9 @@ import {
 import reducer from '../index';
 
 test('entries reducer returns default state', t => {
-  t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null, hasMoreEntries: false });
+  t.deepEqual(reducer(undefined, {}), {
+    byId: {}, listedIds: [], isLoading: false, error: null, hasMoreEntries: false
+  });
 });
 
 test('entries reducer FETCH_ENTRIES with empty payload', t => {

@@ -22,7 +22,7 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
 
-    this._handleSubmit = this._handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -30,15 +30,15 @@ class SignUp extends Component {
     randomImagesActions.requestFetchRandomImages();
   }
 
-  _handleSubmit(e) {
+  handleSubmit(e) {
     const { userActions } = this.props;
     e.preventDefault();
 
     const data = {
-      name: this.refs.name.value,
-      email: this.refs.email.value,
-      password: this.refs.password.value,
-      password_confirmation: this.refs.passwordConfirmation.value,
+      name: this.nameRef.value,
+      email: this.emailRef.value,
+      password: this.passwordRef.value,
+      password_confirmation: this.passwordConfirmationRef.value,
     };
 
     userActions.requestSignUp(data);
@@ -73,29 +73,50 @@ class SignUp extends Component {
               whistl'er news reader
             </div>
           </header>
-          <form onSubmit={this._handleSubmit} id="sign_up_form">
+          <form onSubmit={this.handleSubmit} id="sign_up_form">
 
-            <label className="field-label">
+            <label className="field-label" htmlFor="name">
               Name
-              <input ref="name" className="field" id="name" type="text" placeholder="Name" autoFocus />
+              <input
+                ref={(r) => { this.nameRef = r; }}
+                className="field"
+                id="name"
+                type="text"
+                placeholder="Name"
+                autoFocus />
               {renderErrorsFor(errors, 'name')}
             </label>
 
-            <label className="field-label">
+            <label className="field-label" htmlFor="email">
               Email
-              <input ref="email" className="field" id="email" type="email" placeholder="Email" />
+              <input
+                ref={(r) => { this.emailRef = r; }}
+                className="field"
+                id="email"
+                type="email"
+                placeholder="Email" />
               {renderErrorsFor(errors, 'email')}
             </label>
 
-            <label className="field-label">
+            <label className="field-label" htmlFor="password">
               Password
-              <input ref="password" className="field" id="password" type="password" placeholder="Password" />
+              <input
+                ref={(r) => { this.passwordRef = r; }}
+                className="field"
+                id="password"
+                type="password"
+                placeholder="Password" />
               {renderErrorsFor(errors, 'password')}
             </label>
 
-            <label className="field-label">
+            <label className="field-label" htmlFor="password_confirm">
               Password confirmation
-              <input ref="passwordConfirmation" className="field" id="password_confirm" type="password" placeholder="Confirm password" />
+              <input
+                ref={(r) => { this.passwordConfirmationRef = r; }}
+                className="field"
+                id="password_confirm"
+                type="password"
+                placeholder="Confirm password" />
               {renderErrorsFor(errors, 'password_confirmation')}
             </label>
 

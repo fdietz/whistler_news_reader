@@ -82,4 +82,9 @@ function collect(connect, monitor) {
   };
 }
 
-export default DragSource(ItemTypes.SUBSCRIPTION, subscriptionSource, collect)(SubscriptionDragSource);
+/* eslint new-cap: 0 */
+export default DragSource(
+  ItemTypes.SUBSCRIPTION,
+  subscriptionSource,
+  collect
+)(SubscriptionDragSource);

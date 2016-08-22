@@ -23,6 +23,7 @@ class EntryGridItem extends Component {
     const urls = [];
     const rex = /<img[^>]+src="?([^"\s]+)"?\s*\/>/g;
 
+    /* eslint no-cond-assign: 0 */
     while (m = rex.exec(str)) {
       urls.push(m[1]);
     }
@@ -51,7 +52,7 @@ class EntryGridItem extends Component {
           <div className="entry-title">{entry.title}</div>
           <div className="meta">
             <div className="feed-title">{entry.subscription_title}</div>
-            <span className="circle"></span>
+            <span className="circle" />
             <span className="published">{relativeDateTime}</span>
           </div>
         </div>

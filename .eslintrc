@@ -15,6 +15,7 @@
     "strict": 0, // required by `babel-eslint`
     "comma-dangle": 0,
     "arrow-body-style": ["error", "as-needed"],
+    "no-underscore-dangle": 0,
     "react/jsx-closing-bracket-location": 0,
     "react/jsx-filename-extension": 0,
     "react/jsx-no-bind": [1, {

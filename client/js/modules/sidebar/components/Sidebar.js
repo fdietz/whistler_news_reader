@@ -237,7 +237,7 @@ class Sidebar extends Component {
     });
 
     return (
-      <div className={sidebarCls} ref="sidebar">
+      <div className={sidebarCls}>
         <div className="sidebar-header">
           <div className="logo">whistle'r</div>
           <div className="subtitle">
@@ -301,4 +301,5 @@ class Sidebar extends Component {
   }
 }
 
+/* eslint new-cap: 0 */
 export default DragDropContext(HTML5Backend)(Sidebar);

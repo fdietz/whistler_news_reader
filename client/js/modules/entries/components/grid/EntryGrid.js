@@ -22,17 +22,15 @@ class EntryGrid extends Component {
 
     return (
       <div className={cls}>
-        {entries.map((entry) => {
-          return (
-            <EntryGridItem
-              entry={entry}
-              isSelected={entry && currentEntry && entry.id === currentEntry.id}
-              key={entry.id}
-              ref={entry.id}
-              onClick={() => onEntryClick(entry)}
-              className="entry-grid__item"
-          />);
-        })}
+        {entries.map((entry) =>
+          <EntryGridItem
+            entry={entry}
+            isSelected={entry && currentEntry && entry.id === currentEntry.id}
+            key={entry.id}
+            ref={entry.id}
+            onClick={() => onEntryClick(entry)}
+            className="entry-grid__item"
+        />)}
       </div>
     );
   }

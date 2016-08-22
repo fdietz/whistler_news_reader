@@ -35,7 +35,8 @@ class SignIn extends Component {
     const { userActions } = this.props;
     e.preventDefault();
 
-    const { email, password } = this.refs;
+    const email = this.emailRef;
+    const password = this.passwordRef;
 
     userActions.requestSignIn(email.value, password.value);
   }
@@ -73,10 +74,11 @@ class SignIn extends Component {
           <form onSubmit={this.handleSubmit}>
             {renderErrorsFor(errors, 'base')}
 
-            <label className="field-label">
+            <label className="field-label" htmlFor="email">
               Email
               <input
-                ref="email"
+                ref={(r) => { this.emailRef = r; }}
+                id="email"
                 className="field"
                 type="Email"
                 autoFocus
@@ -85,10 +87,11 @@ class SignIn extends Component {
               {renderErrorsFor(errors, 'email')}
             </label>
 
-            <label className="field-label">
+            <label className="field-label" htmlFor="password">
               Password
               <input
-                ref="password"
+                ref={(r) => { this.passwordRef = r; }}
+                id="password"
                 className="field"
                 type="password"
                 placeholder="password"
@@ -99,14 +102,14 @@ class SignIn extends Component {
             <div className="button-bar mt2">
               <Link to="/sign_up">Create new account</Link>
               <button type="submit" className="btn btn-primary block ml2">Login</button>
-              </div>
+            </div>
           </form>
         </div>
 
         {image &&
           <div className="credits">
             <div>{image.alt}</div>
-          <a href="https://unsplash.com/" className="gray-2">unsplash.com</a>
+            <a href="https://unsplash.com/" className="gray-2">unsplash.com</a>
           </div>
         }
 

@@ -119,7 +119,9 @@ class EntryListContainer extends Component {
 
       // TODO: clean this up
       if (p.subscription_id && np.subscription_id && p.subscription_id === np.subscription_id) {
+        // noop
       } else if (p.category_id && np.category_id && p.category_id === np.category_id) {
+        // noop
       } else {
         entriesActions.requestFetchEntries(np);
       }

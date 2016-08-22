@@ -52,6 +52,14 @@ class FeedEntryEmbedWebsiteContent extends Component {
     if (this.timeout) clearTimeout(this.timeout);
   }
 
+  onLoad() {
+    if (this.props.onLoadingComplete) this.props.onLoadingComplete();
+  }
+
+  rawContent() {
+    return { __html: this.props.entry.content };
+  }
+
   initTimer(entry) {
     if (this.timeout) clearTimeout(this.timeout);
 
@@ -62,13 +70,6 @@ class FeedEntryEmbedWebsiteContent extends Component {
     }
   }
 
-  rawContent() {
-    return { __html: this.props.entry.content };
-  }
-
-  onLoad() {
-    if (this.props.onLoadingComplete) this.props.onLoadingComplete();
-  }
 
   updateLinksWithTargetBlank() {
     const anchors = ReactDOM.findDOMNode(this).getElementsByTagName('a');

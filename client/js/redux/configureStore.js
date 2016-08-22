@@ -8,26 +8,32 @@ const __DEBUG__ = process.env.NODE_ENV !== 'production';
 const __PERFORMANCE_DEBUG__ = false;
 
 export default function configureStore(initialState = {}) {
-  let middlewares = [thunk, routerMiddleware(browserHistory)];
+  const middlewares = [thunk, routerMiddleware(browserHistory)];
 
   if (__DEBUG__) {
+    /* eslint global-require:0 */
     const createLogger = require('redux-logger');
+
     middlewares.push(createLogger());
   }
 
   if (__PERFORMANCE_DEBUG__) {
     // const performance = require("../middleware/performance").performance;
     // middlewares.push(performance);
+
+    /* eslint global-require:0 */
     const reactPerformance = require('../middleware/performance').reactPerformance;
+
     middlewares.push(reactPerformance);
   }
 
-  let middleware = applyMiddleware(...middlewares);
+  const middleware = applyMiddleware(...middlewares);
 
   const store = middleware(createStore)(rootReducer, initialState);
 
   if (module.hot) {
     module.hot.accept('./rootReducer', () => {
+      /* eslint global-require:0 */
       const nextRootReducer = require('./rootReducer').default;
 
       store.replaceReducer(nextRootReducer);

@@ -1,4 +1,4 @@
-export const customModalStyles = {
+const customModalStyles = {
   overlay: {
     position: 'fixed',
     top: '0px',
@@ -18,3 +18,5 @@ export const customModalStyles = {
     padding: 0,
   },
 };
+
+export default customModalStyles;

@@ -44,7 +44,7 @@ export function requestSignIn(email, password) {
         dispatch(push('/today'));
       })
       .catch(e => {
-        dispatch(createSignIn(transformErrorResponse(e)))
+        dispatch(createSignIn(transformErrorResponse(e)));
       }
     );
   };
