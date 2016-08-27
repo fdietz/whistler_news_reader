@@ -26,7 +26,6 @@ RUN mkdir /app
 WORKDIR /app
 
 ENV MIX_ENV prod
-ENV NODE_ENV production
 
 COPY mix.* ./
 COPY config/* ./config/
