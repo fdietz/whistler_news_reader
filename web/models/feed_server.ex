@@ -4,7 +4,9 @@ defmodule WhistlerNewsReader.FeedServer do
   Encapsulates refresh and import feed async/await tasks.
   """
 
-  alias WhistlerNewsReader.FeedWorker
+  alias WhistlerNewsReader.FeedServerWorker
+  alias WhistlerNewsReader.FeedServerRegistry
+  alias WhistlerNewsReader.FeedImporter
 
   @task_await_timeout_ms 1_000_000
 
@@ -26,7 +28,8 @@ defmodule WhistlerNewsReader.FeedServer do
   end
 
   def refresh(feed) do
-    FeedWorker.refresh(feed)
+    pid = FeedServerRegistry.server_process(feed.id)
+    FeedServerWorker.refresh(pid)
   end
 
   # run in parallel
@@ -47,7 +50,7 @@ defmodule WhistlerNewsReader.FeedServer do
   end
 
   def import(user, feed_attrs, opts \\ []) do
-    FeedWorker.import(user, feed_attrs, opts)
+    FeedImporter.import(user, feed_attrs, opts)
   end
 
 end

@@ -1,6 +1,6 @@
 defmodule WhistlerNewsReader.FeedRefresher do
 
-  alias WhistlerNewsReader.FeedFetcher
+  alias WhistlerNewsReader.FeedFetcherWorker
   alias WhistlerNewsReader.StoreEntryHelper
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Repo
@@ -8,12 +8,15 @@ defmodule WhistlerNewsReader.FeedRefresher do
   require Logger
 
   def refresh(feed) do
-    Logger.info "FeedRefresher - refreshing feed id: #{feed.id}, title: #{feed.title}"
+    Logger.info "FeedRefresher - START refreshing feed id: #{feed.id}, title: #{feed.title}"
 
-    with {:ok, json_body}     <- FeedFetcher.fetch(feed.feed_url),
+    result = with {:ok, json_body}     <- FeedFetcherWorker.fetch(feed.feed_url),
          {:ok, parsed_attrs}  <- ElixirFeedParser.parse(json_body),
          {:ok, _updated_feed} <- update_last_refreshed_at(feed),
          do: StoreEntryHelper.store_entries(feed, parsed_attrs.entries)
+
+    Logger.info "FeedRefresher - DONE refreshing feed id: #{feed.id}, title: #{feed.title}"
+    result
   end
 
   defp update_last_refreshed_at(feed) do

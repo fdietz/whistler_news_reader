@@ -14,7 +14,7 @@ defmodule WhistlerNewsReader do
 
       # Here you could define other workers and supervisors as children
       supervisor(WhistlerNewsReader.FeedServerSupervisor, []),
-      supervisor(WhistlerNewsReader.FeedWorkerSupervisor, []),    
+      supervisor(WhistlerNewsReader.FeedFetcherWorkerSupervisor, []),    
       worker(WhistlerNewsReader.FeedRefresherScheduler, []),
       worker(WhistlerNewsReader.FeedServerRegistry, [])
     ]

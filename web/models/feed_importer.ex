@@ -1,6 +1,6 @@
 defmodule WhistlerNewsReader.FeedImporter do
 
-  alias WhistlerNewsReader.FeedFetcher
+  alias WhistlerNewsReader.FeedFetcherWorker
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.Repo
@@ -29,7 +29,7 @@ defmodule WhistlerNewsReader.FeedImporter do
   end
 
   def fetch_and_parse(feed_url) do
-    case FeedFetcher.fetch(feed_url) do
+    case FeedFetcherWorker.fetch(feed_url) do
       {:ok, xml_body} ->
         case import_feed_url(xml_body) do
           {:error, _} ->
@@ -46,7 +46,7 @@ defmodule WhistlerNewsReader.FeedImporter do
 
   def import_site_url(xml_body) do
     with {:ok, feed_url}  <- FeedUrlExtractor.extract(xml_body),
-         {:ok, xml_body}  <- FeedFetcher.fetch(feed_url),
+         {:ok, xml_body}  <- FeedFetcherWorker.fetch(feed_url),
          do: import_feed_url(xml_body)
   end
 
