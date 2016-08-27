@@ -7,7 +7,7 @@ Install the Heroku Toolbelt from here https://toolbelt.heroku.com/
 First create our new project:
 
 ```
-$ heroku create whistler_news_reader
+$ heroku create whistler-news-reader
 ```
 
 The command will create our application on Heroku and add a git remote "heroku" repository that we can later use for the deployment.
@@ -200,7 +200,7 @@ Using `docker-composer exec` we can run commands inside the running container.
   ``` bash
   docker-compose logs web
   ```
-  
+
 # Credits
 Thanks to others for getting started with this project:
 * http://codeloveandboards.com/blog/2016/03/04/trello-tribute-with-phoenix-and-react-pt-12/
