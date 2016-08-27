@@ -1,4 +1,4 @@
-FROM elixir:1.3
+FROM elixir:1.2
 
 MAINTAINER Frederik Dietz <fdietz@gmail.com>
 
@@ -22,29 +22,30 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
 
 RUN npm install -g npm@3.8.9
 
-RUN mix local.hex --force && \
-    mix local.rebar --force
-RUN rm -rf deps
-RUN rm -rf _build
-
+RUN mkdir /app
 WORKDIR /app
+
 ENV MIX_ENV prod
+ENV NODE_ENV production
 
-COPY ./client /app/
-COPY ./config /app/
-COPY ./lib /app/
-COPY ./priv /app/
-COPY ./test /app/
-COPY ./web /app/
-COPY mix.* /app/
+COPY mix.* ./
+COPY config/* ./config/
 
-RUN mix do deps.get --only prod
+RUN mix local.rebar
+RUN mix local.hex --force
+RUN mix deps.get --only prod
 RUN mix deps.compile --only prod
+
+COPY ./client ./client/
+COPY ./lib ./lib/
+COPY ./priv ./priv/
+COPY ./web ./web/
+RUN mix compile --only prod
 
 COPY package.json /app/
 RUN npm install
 
-RUN mix compile
+RUN mix phoenix.digest
 
 EXPOSE 4000
 

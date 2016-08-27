@@ -16,6 +16,8 @@ services:
       PORT: "4000"
       MIX_ENV: "prod"
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/whistler_news_reader_prod
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      GUARDIAN_SECRET_KEY: ${GUARDIAN_SECRET_KEY}
     ports:
       - "4000:4000"
     links:
