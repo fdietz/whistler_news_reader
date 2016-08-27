@@ -3,19 +3,27 @@ var path = require('path');
 var webpack = require('webpack');
 const validate = require('webpack-validator');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var env = process.env.NODE_ENV || process.env.MIX_ENV || 'dev';
+var hot = process.env.WEBPACK_ENV === 'hot';
 var prod = env === 'prod' || env === 'production';
 
 var plugins = [
   new webpack.NoErrorsPlugin(),
   new CopyWebpackPlugin([
     { from: './client/assets' }
-  ])
+  ]),
+  new HtmlWebpackPlugin({
+    showErrors: true,
+    template: './client/index.tmpl.html',
+    filename: 'index.html'
+  })
 ];
 
 var loaders = ['babel?cacheDirectory'];
-var publicPath = prod ? '/' : 'http://localhost:4001/';
+var publicPath = hot ? 'http://localhost:4001/' : '/';
+if (prod) publicPath = '/';
 
 var uglifyJSOptions = {
   compressor: {
