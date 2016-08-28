@@ -25,6 +25,12 @@ defmodule WhistlerNewsReader.PageController do
   end
 
   def webpack_file_system do
-    File.read!("./priv/static/index.html")
+    case File.read("./priv/static/index.html") do
+      {:ok, body}      ->
+        body
+      {:error, reason} ->
+        Logger.error "PageController - error retrieving template from local filesystem #{reason}. Did you run the webpack build?"
+        reason
+    end
   end
 end
