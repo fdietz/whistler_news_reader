@@ -4,6 +4,7 @@ defmodule WhistlerNewsReader.IntegrationCase do
 
   import WhistlerNewsReader.Factory
 
+  alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.User
 
   using do
