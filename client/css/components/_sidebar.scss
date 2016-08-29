@@ -11,8 +11,8 @@ $sidebar-color: $gray;
   width: 350px;
 
   transform: none;
-  transition: transform .33s cubic-bezier(.694, .0482, .335, 1);
-
+  transition: transform .33s cubic-bezier(.05, .69, .14, 1);
+  
   &.hidden {
     transform: translateX(-400px);
   }
