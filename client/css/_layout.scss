@@ -16,10 +16,7 @@ body {
   display: flex;
   width: 100%;
   height: 100%;
-  transform: none;
-  transition: transform .33s cubic-bezier(.694, .0482, .335, 1);
   flex-direction: column;
-  flex: 1 1;
 }
 
 .layout-master-header {
@@ -83,6 +80,8 @@ body {
   }
 
   .slide-animation-container {
+    display: flex;
+    flex: 1 1;
     will-change: transition transform;
 
     @include respond-to(small-screen) {
