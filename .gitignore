@@ -23,3 +23,5 @@ coverage/
 .eslintcache
 
 client/dist
+
+npm-debug.log.*
