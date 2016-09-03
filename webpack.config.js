@@ -92,12 +92,31 @@ var config = {
         ]
       },
       {
-        test: /\.(svg|jpg|png)$/,
-        loader: 'file-loader'
+        test: /\.(ico|jpg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
+        exclude: /\/favicon.ico$/,
+        loader: 'file'
+      },
+      // special case for favicon.ico to place it into build root directory.
+      {
+        test: /\/favicon.ico$/,
+        loader: 'file'
       },
       {
         test: /\.json$/,
-        loader: 'json-loader'
+        exclude: /manifest\.json/,
+        loader: 'json'
+      },
+      // special case for manifest.json since we want the url only instead of JSON
+      {
+        test: /manifest\.json/,
+        loader: 'file'
+      },
+      {
+        test: /\.html$/,
+        loader: 'html',
+        query: {
+          attrs: ['link:href'],
+        }
       }
     ]
   }
