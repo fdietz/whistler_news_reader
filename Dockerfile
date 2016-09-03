@@ -1,48 +1,24 @@
-FROM elixir:1.2
+FROM trenpixster/elixir:1.3.0
 
 MAINTAINER Frederik Dietz <fdietz@gmail.com>
 
-RUN apt-get update -q && \
-    apt-get -y install \
-    apt-transport-https \
-    curl \
-    libpq-dev \
-    postgresql-client \
-    imagemagick \
-    && apt-get clean -y && \
-    rm -rf /var/cache/apt/*
-
-RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
-    echo 'deb https://deb.nodesource.com/node_4.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
-    apt-get update -q && \
-    apt-get install -y \
-    nodejs \
-    && apt-get clean -y && \
-    rm -rf /var/cache/apt/*
-
-RUN npm install -g npm@3.8.9
+RUN curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash - && apt-get install -y nodejs
 
 RUN mkdir /app
 WORKDIR /app
 
 ENV MIX_ENV prod
 
-COPY mix.* ./
-COPY config/* ./config/
-
+ADD mix.* ./
 RUN mix local.rebar
 RUN mix local.hex --force
-RUN mix deps.get --only prod
-RUN mix deps.compile --only prod
+RUN mix deps.get
 
-COPY ./client ./client/
-COPY ./lib ./lib/
-COPY ./priv ./priv/
-COPY ./web ./web/
-RUN mix compile --only prod
-
-COPY package.json /app/
+ADD package.json ./
 RUN npm install
+
+ADD . .
+RUN mix compile
 
 RUN mix phoenix.digest
 
