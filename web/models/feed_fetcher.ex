@@ -7,7 +7,7 @@ defmodule WhistlerNewsReader.FeedFetcher do
   require Logger
 
   @user_agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36"
-  @http_timeout_ms 5_000
+  @http_timeout_ms 60_000
   @max_retries 3
   @retry_sleep_ms 1_000
 
