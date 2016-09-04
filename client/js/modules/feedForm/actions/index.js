@@ -14,7 +14,6 @@ export function requestCreateFeed(feedAttributes) {
       .then((response) => {
         dispatch(feedFormReset());
         return response.data.feed;
-      })
-      .catch(e => dispatch(feedFormUpdate(e)));
+      }, e => dispatch(feedFormUpdate(e)));
   };
 }

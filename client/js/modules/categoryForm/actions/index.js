@@ -15,7 +15,6 @@ export function requestCreateCategory(attrs) {
       .then(response => {
         dispatch(categoryFormReset());
         return response.data.category;
-      })
-      .catch(e => dispatch(categoryFormUpdate(e)));
+      }, e => dispatch(categoryFormUpdate(e)));
   };
 }

@@ -25,8 +25,7 @@ export function requestSignUp(data) {
         dispatch(createSignUp(response.data));
 
         dispatch(push('/today'));
-      })
-      .catch(e => dispatch(createSignUp(transformErrorResponse(e))));
+      }, e => dispatch(createSignUp(transformErrorResponse(e))));
   };
 }
 
@@ -42,8 +41,7 @@ export function requestSignIn(email, password) {
         dispatch(createSignIn({ current: response.data.user }));
 
         dispatch(push('/today'));
-      })
-      .catch(e => {
+      }, e => {
         dispatch(createSignIn(transformErrorResponse(e)));
       }
     );
@@ -61,8 +59,7 @@ export function requestSignOut() {
         dispatch(signOut());
 
         dispatch(push('/sign_in'));
-      })
-      .catch(e => dispatch(signOut(transformErrorResponse(e))));
+      }, e => dispatch(signOut(transformErrorResponse(e))));
   };
 }
 
@@ -79,8 +76,7 @@ export function requestSetCurrentUser() {
         } else {
           dispatch(setCurrentUser({ current: response.data.user }));
         }
-      })
-      .catch(() => {
+      }, () => {
         dispatch(push('/sign_in'));
       });
   };

@@ -20,10 +20,9 @@ export function requestCreateSubscription(attrs) {
   return dispatch => {
     dispatch(createSubscription());
     return axios.post('/api/subscriptions', { subscription: attrs })
-      .then((response) =>
-        dispatch(createSubscription(response.data.subscription))
-      )
-      .catch(e => dispatch(createSubscription(e)));
+      .then(
+        response => dispatch(createSubscription(response.data.subscription)),
+               e => dispatch(createSubscription(e)));
   };
 }
 
@@ -31,8 +30,8 @@ export function requestFetchSubscriptions() {
   return dispatch => {
     dispatch(fetchSubscriptions());
     return axios.get('/api/subscriptions')
-      .then(resp => dispatch(fetchSubscriptions(normalize(resp.data.subscriptions))))
-      .catch(e => dispatch(fetchSubscriptions(e)));
+      .then(resp => dispatch(fetchSubscriptions(normalize(resp.data.subscriptions))),
+               e => dispatch(fetchSubscriptions(e)));
   };
 }
 
@@ -40,8 +39,8 @@ export function requestUpdateSubscription(id, attrs) {
   return dispatch => {
     dispatch(updateSubscription());
     return axios.put(`/api/subscriptions/${id}`, { subscription: attrs })
-      .then(() => dispatch(updateSubscription({ id, ...attrs })))
-      .catch(e => dispatch(updateSubscription(e)));
+      .then(() => dispatch(updateSubscription({ id, ...attrs })),
+             e => dispatch(updateSubscription(e)));
   };
 }
 
@@ -49,7 +48,7 @@ export function requestRemoveSubscription(id) {
   return dispatch => {
     dispatch(removeSubscription());
     return axios.delete(`/api/subscriptions/${id}`)
-      .then(() => dispatch(removeSubscription({ id })))
-      .catch(e => dispatch(removeSubscription(e)));
+      .then(() => dispatch(removeSubscription({ id })),
+             e => dispatch(removeSubscription(e)));
   };
 }

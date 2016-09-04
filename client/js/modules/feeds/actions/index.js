@@ -12,7 +12,7 @@ export function requestSearchFeeds(queryString) {
   return dispatch => {
     dispatch(searchFeeds());
     return axios.get('/api/feeds', { params: { q: queryString } })
-      .then(resp => dispatch(searchFeeds(normalize(resp.data.feeds))))
-      .catch(e => dispatch(searchFeeds(e)));
+      .then(resp => dispatch(searchFeeds(normalize(resp.data.feeds))),
+        e => dispatch(searchFeeds(e)));
   };
 }

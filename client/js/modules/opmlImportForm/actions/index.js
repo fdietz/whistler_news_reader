@@ -15,7 +15,6 @@ export function requestOpmlImport(data) {
       .then(response => {
         dispatch(opmlImportFormReset());
         return response.data;
-      })
-      .catch(e => dispatch(opmlImportFormUpdate(e)));
+      }, e => dispatch(opmlImportFormUpdate(e)));
   };
 }

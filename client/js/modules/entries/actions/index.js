@@ -21,8 +21,8 @@ export function requestMarkEntryAsRead(entry) {
   return dispatch => {
     dispatch(updateEntry());
     return axios.put(`/api/subscribed_entries/${entry.id}/mark_as_read`)
-      .then(() => dispatch(updateEntry({ id: entry.id, unread: false })))
-      .catch(e => dispatch(updateEntry(e)));
+      .then(() => dispatch(updateEntry({ id: entry.id, unread: false })),
+             e => dispatch(updateEntry(e)));
   };
 }
 
@@ -30,8 +30,8 @@ export function requestMarkAllEntriesAsRead(params) {
   return dispatch => {
     dispatch(markAllEntriesAsRead());
     return axios.put('/api/subscribed_entries/mark_all_as_read', params)
-      .then(() => dispatch(markAllEntriesAsRead(params)))
-      .catch(e => dispatch(markAllEntriesAsRead(e)));
+      .then(() => dispatch(markAllEntriesAsRead(params)),
+             e => dispatch(markAllEntriesAsRead(e)));
   };
 }
 
@@ -46,8 +46,7 @@ export function requestFetchEntries(options = {}) {
           ...normalize(response.data.entries),
           hasMoreEntries: response.data.entries.length === params.limit,
         }));
-      })
-      .catch(e => {
+      }, e => {
         dispatch(fetchEntries(e));
         dispatch(showRetryNotification('Fetching failed',
           () => dispatch(requestFetchEntries(options)),
@@ -67,9 +66,7 @@ export function requestFetchMoreEntries(options = {}) {
           dispatch(fetchMoreEntries({
             ...normalize(response.data.entries),
             hasMoreEntries: response.data.entries.length === params.limit,
-          }))
-      )
-      .catch(e => dispatch(fetchMoreEntries(e)));
+          })), e => dispatch(fetchMoreEntries(e)));
   };
 }
 
@@ -95,13 +92,13 @@ export function requestRefreshEntries(options = {}) {
     dispatch(refreshEntries());
 
     return axios.put('/api/subscribed_entries/refresh', params)
-    .then(() => dispatch(refreshEntries({})))
-    .catch(e => {
-      dispatch(refreshEntries(e));
-      dispatch(showRetryNotification('Refresh failed',
-        () => dispatch(requestRefreshEntries(options)),
-        { type: 'error', }));
-      return Promise.reject(e);
-    });
+    .then(() => dispatch(refreshEntries({})),
+      e => {
+        dispatch(refreshEntries(e));
+        dispatch(showRetryNotification('Refresh failed',
+          () => dispatch(requestRefreshEntries(options)),
+          { type: 'error', }));
+        return Promise.reject(e);
+      });
   };
 }
