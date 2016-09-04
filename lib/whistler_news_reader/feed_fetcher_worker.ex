@@ -3,8 +3,8 @@ defmodule WhistlerNewsReader.FeedFetcherWorker do
 
   require Logger
 
-  @genserver_call_timeout_ms 1_000_000
-  @pool_transaction_timeout_ms 1_000_000
+  @genserver_call_timeout_ms 1_000
+  @pool_transaction_timeout_ms 1_000
 
   def start_link(_) do
     GenServer.start_link(__MODULE__, nil, [])
