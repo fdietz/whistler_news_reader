@@ -1,5 +1,5 @@
 defmodule WhistlerNewsReader.ErrorViewTest do
-  use WhistlerNewsReader.ConnCase, async: true
+  use WhistlerNewsReader.ConnCase, async: false
 
   # Bring render/3 and render_to_string/3 for testing custom views
   import Phoenix.View

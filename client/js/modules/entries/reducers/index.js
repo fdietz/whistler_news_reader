@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import {
   FETCH_ENTRIES,
   FETCH_MORE_ENTRIES,
-  REFRESH_ENTRIES,
   UPDATE_ENTRY,
   MARK_ALL_ENTRIES_AS_READ
 } from '../actions';
@@ -30,7 +29,6 @@ function isLoading(state = initialIsLoading, action) {
   switch (action.type) {
     case FETCH_ENTRIES:
     case FETCH_MORE_ENTRIES:
-    case REFRESH_ENTRIES:
       return !action.payload;
     default:
       return state;
@@ -69,8 +67,6 @@ function listedIds(state = initialListedIds, action) {
       return action.payload.ids;
     case FETCH_MORE_ENTRIES:
       return [...state, ...action.payload.ids];
-    case REFRESH_ENTRIES:
-      return state;
     default:
       return state;
   }
@@ -86,8 +82,6 @@ function byId(state = initialById, action) {
         ...state,
         [action.payload.id]: entryReducer(state[action.payload.id], action),
       };
-    case REFRESH_ENTRIES:
-      return state;
     case FETCH_ENTRIES:
       return action.payload.entities;
     case FETCH_MORE_ENTRIES:

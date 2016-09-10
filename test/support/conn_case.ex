@@ -34,6 +34,7 @@ defmodule WhistlerNewsReader.ConnCase do
   end
 
   setup tags do
+    WhistlerNewsReader.Parallel.clear(:feed_server)
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(WhistlerNewsReader.Repo)
 
     unless tags[:async] do
@@ -41,6 +42,5 @@ defmodule WhistlerNewsReader.ConnCase do
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}
-    # :ok
   end
 end

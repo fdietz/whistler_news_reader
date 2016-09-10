@@ -4,7 +4,6 @@ import test from 'ava';
 import {
   FETCH_ENTRIES,
   FETCH_MORE_ENTRIES,
-  REFRESH_ENTRIES,
   UPDATE_ENTRY,
   MARK_ALL_ENTRIES_AS_READ,
 } from '../../actions';
@@ -109,27 +108,6 @@ test('entries reducer FETCH_MORE_ENTRIES with error', t => {
     hasMoreEntries: false,
   });
 });
-
-test('entries reducer REFRESH_ENTRIES with empty payload', t => {
-  const newState = reducer(undefined, {
-    type: REFRESH_ENTRIES,
-    payload: null,
-  });
-  t.deepEqual(newState, {
-    byId: {}, listedIds: [], isLoading: true, error: null, hasMoreEntries: false,
-  });
-});
-
-// TODO: consider using alwasy FETCH_ENTRIES instead
-// test("entries reducer REFRESH_ENTRIES with payload", t => {
-//   const newState = reducer(undefined, {
-//     type: REFRESH_ENTRIES,
-//     payload: {}
-//   });
-//   t.deepEqual(newState, {
-//     byId: {}, listedIds: [], isLoading: true, error: null, hasMoreEntries: false
-//   });
-// });
 
 test('entries reducer UPDATE_ENTRY with payload', t => {
   const newState = reducer({

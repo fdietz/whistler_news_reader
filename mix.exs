@@ -6,11 +6,11 @@ defmodule WhistlerNewsReader.Mixfile do
      version: "0.0.1",
      elixir: "~> 1.2",
      elixirc_paths: elixirc_paths(Mix.env),
-     compilers: [:phoenix] ++ Mix.compilers,
+     compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     aliases: aliases,
-     deps: deps]
+     aliases: aliases(),
+     deps: deps()]
   end
 
   # Configuration for the OTP application
@@ -18,7 +18,7 @@ defmodule WhistlerNewsReader.Mixfile do
   # Type `mix help compile.app` for more information
   def application do
     [mod: {WhistlerNewsReader, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger,
+     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
                     :phoenix_ecto, :postgrex, :tzdata, :comeonin, :gproc, :gettext]]
   end
 
@@ -32,9 +32,9 @@ defmodule WhistlerNewsReader.Mixfile do
   defp deps do
     [{:phoenix, "~> 1.2.1"},
      {:phoenix_ecto, "~> 3.0.1"},
-     {:postgrex, ">= 0.0.0"},
+     {:postgrex, ">= 0.12.0"},
      {:phoenix_html, "~> 2.6.2"},
-    #  {:phoenix_pubsub, "~> 1.0"},
+     {:phoenix_pubsub, "~> 1.0"},
      {:phoenix_live_reload, "~> 1.0.5", only: :dev},
      {:cowboy, "~> 1.0.4"},
      {:gettext, "~> 0.11"},
@@ -49,7 +49,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:poolboy, "~> 1.5.1"},
      {:html_sanitize_ex, "~> 1.0.1"},
      {:poison, "~> 2.2.0"},
-     {:gproc, "~> 0.5.0"},
+     {:gproc, "~> 0.6.1"},
      {:hound, "~> 1.0"},
      {:credo, "~> 0.4.8", only: [:dev, :test]}]
   end

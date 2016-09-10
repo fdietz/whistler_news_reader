@@ -54,33 +54,6 @@ defmodule WhistlerNewsReader.Api.SubscribedEntryController do
     render(conn, "index.json", subscribed_entries: subscribed_entries, current_user: current_user(conn))
   end
 
-  def refresh(conn, %{"subscription_id" => "all"} = _params) do
-    subscriptions = Subscription |> Subscription.for_user_id(current_user(conn).id) |> Repo.all |> Repo.preload(:feed)
-    feeds = Enum.map(subscriptions, fn(subscription) -> subscription.feed end)
-    FeedServer.refresh_all(feeds)
-    conn |> send_resp(204, "")
-  end
-
-  def refresh(conn, %{"subscription_id" => "today"} = _params) do
-    subscriptions = Subscription |> Subscription.for_user_id(current_user(conn).id) |> Repo.all |> Repo.preload(:feed)
-    feeds = Enum.map(subscriptions, fn(subscription) -> subscription.feed end)
-    FeedServer.refresh_all(feeds)
-    conn |> send_resp(204, "")
-  end
-
-  def refresh(conn, %{"subscription_id" => subscription_id} = _params) do
-    subscription = Repo.get!(Subscription, subscription_id) |> Repo.preload(:feed)
-    FeedServer.refresh(subscription.feed)
-    conn |> send_resp(204, "")
-  end
-
-  def refresh(conn, %{"category_id" => category_id} = _params) do
-    subscriptions = Subscription |> Subscription.for_category_id(category_id) |> Repo.all |> Repo.preload(:feed)
-    feeds = Enum.map(subscriptions, fn(subscription) -> subscription.feed end)
-    FeedServer.refresh_all(feeds)
-    conn |> send_resp(204, "")
-  end
-
   def mark_as_read(conn, %{"id" => id}) do
     subscribed_entry = Repo.get!(SubscribedEntry, id)
     MarkAsReadHelper.mark_entry_as_read(current_user(conn), subscribed_entry)

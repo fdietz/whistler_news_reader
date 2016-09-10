@@ -1,5 +1,5 @@
 defmodule WhistlerNewsReader.FeedServerTest do
-  use WhistlerNewsReader.ModelCase
+  use WhistlerNewsReader.ModelCase, async: false
 
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.Feed

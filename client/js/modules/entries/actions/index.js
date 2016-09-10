@@ -7,13 +7,11 @@ import { showRetryNotification } from '../../notification/actions';
 
 export const FETCH_ENTRIES = 'FETCH_ENTRIES';
 export const FETCH_MORE_ENTRIES = 'FETCH_MORE_ENTRIES';
-export const REFRESH_ENTRIES = 'REFRESH_ENTRIES';
 export const UPDATE_ENTRY = 'UPDATE_ENTRY';
 export const MARK_ALL_ENTRIES_AS_READ = 'MARK_ALL_ENTRIES_AS_READ';
 
 export const fetchEntries = createAction(FETCH_ENTRIES);
 export const fetchMoreEntries = createAction(FETCH_MORE_ENTRIES);
-export const refreshEntries = createAction(REFRESH_ENTRIES);
 export const updateEntry = createAction(UPDATE_ENTRY);
 export const markAllEntriesAsRead = createAction(MARK_ALL_ENTRIES_AS_READ);
 
@@ -83,22 +81,5 @@ export function requestLoadMore(requestParams) {
     }
 
     return Promise.resolve();
-  };
-}
-
-export function requestRefreshEntries(options = {}) {
-  return dispatch => {
-    const params = Object.assign(options, {});
-    dispatch(refreshEntries());
-
-    return axios.put('/api/subscribed_entries/refresh', params)
-    .then(() => dispatch(refreshEntries({})),
-      e => {
-        dispatch(refreshEntries(e));
-        dispatch(showRetryNotification('Refresh failed',
-          () => dispatch(requestRefreshEntries(options)),
-          { type: 'error', }));
-        return Promise.reject(e);
-      });
   };
 }

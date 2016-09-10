@@ -27,7 +27,6 @@ defmodule WhistlerNewsReader.Router do
     get "/current_user", Api.CurrentUserController, :show
 
     resources "/subscribed_entries", Api.SubscribedEntryController, only: [:index]
-    put "/subscribed_entries/refresh", Api.SubscribedEntryController, :refresh
     put "/subscribed_entries/:id/mark_as_read", Api.SubscribedEntryController, :mark_as_read
     put "/subscribed_entries/mark_all_as_read", Api.SubscribedEntryController, :mark_all_as_read
 

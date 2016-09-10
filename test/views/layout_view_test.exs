@@ -1,3 +1,3 @@
 defmodule WhistlerNewsReader.LayoutViewTest do
-  use WhistlerNewsReader.ConnCase, async: true
+  use WhistlerNewsReader.ConnCase, async: false
 end

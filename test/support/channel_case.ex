@@ -31,6 +31,7 @@ defmodule WhistlerNewsReader.ChannelCase do
   end
 
   setup tags do
+    WhistlerNewsReader.Parallel.clear(:feed_server)
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(WhistlerNewsReader.Repo)
 
     unless tags[:async] do

@@ -1,6 +1,5 @@
 defmodule WhistlerNewsReader.FeedRefresher do
 
-  alias WhistlerNewsReader.FeedFetcherWorker
   alias WhistlerNewsReader.StoreEntryHelper
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.Repo

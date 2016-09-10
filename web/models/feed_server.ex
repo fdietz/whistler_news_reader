@@ -4,53 +4,42 @@ defmodule WhistlerNewsReader.FeedServer do
   Encapsulates refresh and import feed async/await tasks.
   """
 
-  alias WhistlerNewsReader.FeedServerWorker
-  alias WhistlerNewsReader.FeedServerRegistry
+  require Logger
+
   alias WhistlerNewsReader.FeedImporter
+  alias WhistlerNewsReader.FeedRefresher
+  alias WhistlerNewsReader.FeedServerRegistry
+  alias WhistlerNewsReader.FeedServerWorker
 
-  @task_await_timeout_ms 1_000_000
-
-  # run in parallel
   def refresh_all(feeds) do
-    feeds
-    |> Enum.map(&refresh_async(&1))
-    |> Enum.map(&Task.await(&1, @task_await_timeout_ms))
-  end
-
-  defp refresh_async(feed) do
-    Task.async(fn ->
-      try do
+    Enum.each(feeds, fn(feed) ->
+      WhistlerNewsReader.Parallel.run(:feed_server, feed.id, fn ->
         refresh(feed)
-      catch _,_ ->
-        :error
-      end
+      end)
     end)
   end
 
   def refresh(feed) do
     pid = FeedServerRegistry.server_process(feed.id)
     FeedServerWorker.refresh(pid)
+    # FeedRefresher.refresh(feed)
   end
 
   # run in parallel
   def import_all(user, feed_attrs_enum, opts \\ []) do
-    feed_attrs_enum
-    |> Enum.map(&import_async(user, &1, opts))
-    |> Enum.map(&Task.await(&1, @task_await_timeout_ms))
-  end
-
-  defp import_async(user, feed_attrs, opts) do
-    Task.async(fn ->
-      try do
+    Enum.each(feed_attrs_enum, fn(feed_attrs) ->
+      WhistlerNewsReader.Parallel.run(:feed_server, feed_attrs["feed_url"], fn ->
         import(user, feed_attrs, opts)
-      catch _,_ ->
-        :error
-      end
+      end)
     end)
   end
 
   def import(user, feed_attrs, opts \\ []) do
-    FeedImporter.import(user, feed_attrs, opts)
+    try do
+      FeedImporter.import(user, feed_attrs, opts)
+    catch _,reason ->
+      {:error, inspect reason}
+    end
   end
 
 end

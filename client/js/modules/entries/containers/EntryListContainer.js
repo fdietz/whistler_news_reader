@@ -250,11 +250,8 @@ class EntryListContainer extends Component {
 
   refreshEntries() {
     const { entriesActions, subscriptionsActions } = this.props;
-    entriesActions.requestRefreshEntries(this.requestParams(this.props))
-      .then(() => {
-        entriesActions.requestFetchEntries(this.requestParams(this.props));
-        subscriptionsActions.requestFetchSubscriptions();
-      });
+    entriesActions.requestFetchEntries(this.requestParams(this.props));
+    subscriptionsActions.requestFetchSubscriptions();
   }
 
   requestParams(props) {

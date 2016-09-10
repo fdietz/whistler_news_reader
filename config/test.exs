@@ -20,7 +20,7 @@ config :whistler_news_reader, WhistlerNewsReader.Repo,
   database: "whistler_news_reader_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
-  
+
 # Guardian configuration
 config :guardian, Guardian,
   secret_key: "W9cDv9fjPtsYv2gItOcFb5PzmRzqGkrOsJGmby0KpBOlHJIlhxMKFmIlcCG9PVFQ"

@@ -1,11 +1,12 @@
 defmodule WhistlerNewsReader.FeedRefresherScheduler do
   use GenServer
-  import Logger
 
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.FeedServer
 
+  import Logger
+  
   @sleep_sec 3600 # 1 hour
 
   def start_link do

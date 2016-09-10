@@ -53,7 +53,7 @@ class OpmlImportDialog extends Component {
       if (!result.error) {
         opmlImportFormActions.opmlImportFormReset();
         onClose();
-        feedsActions.requestFetchFeeds();
+        // feedsActions.requestFetchFeeds();
       }
     });
   }
