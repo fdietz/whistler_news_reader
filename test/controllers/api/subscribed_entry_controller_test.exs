@@ -3,9 +3,6 @@ defmodule WhistlerNewsReader.Api.SubscribedEntryControllerTest do
 
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.SubscribedEntry
-  alias WhistlerNewsReader.Subscription
-
-  import Mock
 
   @valid_feed_url "http://www.theverge.com/rss/full.xml"
   @valid_feed_url2 "http://feeds.wired.com/wired/index"

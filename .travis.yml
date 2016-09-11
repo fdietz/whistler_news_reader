@@ -9,6 +9,5 @@ services:
   - postgresql
 before_script:
   - mix do ecto.create, ecto.migrate
-  - npm install && npm run webpack:build:production
 script:
   - mix test --exclude integration
