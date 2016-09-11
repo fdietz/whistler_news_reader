@@ -1,0 +1,13 @@
+exports[`Badge renders correctly 1`] = `
+<div
+  className="badge">
+  1
+</div>
+`;
+
+exports[`Badge renders count 99+ if large 1`] = `
+<div
+  className="badge">
+  99+
+</div>
+`;

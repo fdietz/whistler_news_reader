@@ -6,7 +6,23 @@
     "webpack:stats": "webpack --profile --json > stats.json",
     "webpack:watch": "webpack --watch --colors --progress",
     "webpack:devserver": "node webpack.devserver",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "jest": "jest",
+    "jest:coverage": "jest --coverage",
+    "jest:watch": "jest --watch"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "./client/*.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 50,
+        "lines": 33,
+        "statements": 25
+      }
+    }
   },
   "ava": {
     "babel": "inherit"
@@ -44,6 +60,7 @@
     "babel-cli": "^6.11.4",
     "babel-core": "^6.11.4",
     "babel-eslint": "^6.1.2",
+    "babel-jest": "^15.0.0",
     "babel-loader": "^6.2.2",
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "babel-plugin-transform-react-constant-elements": "^6.9.1",
@@ -66,6 +83,7 @@
     "file-loader": "^0.9.0",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.22.0",
+    "jest-cli": "^15.1.1",
     "jsdom": "^9.4.1",
     "json-loader": "^0.5.4",
     "mocha": "^3.0.2",
@@ -74,6 +92,7 @@
     "nyc": "^8.1.0",
     "react-addons-test-utils": "^15.3.1",
     "react-hot-loader": "^1.3.0",
+    "react-test-renderer": "^15.3.1",
     "redux-mock-store": "^1.1.2",
     "sass-lint": "^1.8.2",
     "sass-loader": "^4.0.0",

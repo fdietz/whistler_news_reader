@@ -1,0 +1,23 @@
+exports[`Autocomplete renders correctly 1`] = `
+<div
+  className="autocomplete"
+  style={undefined}>
+  <input
+    className=""
+    onChange={[Function bound handleChange]}
+    onKeyDown={[Function bound handleKeyDown]}
+    placeholder="hello"
+    type="text"
+    value="" />
+  <div
+    className="dropdown__content hidden"
+    style={
+      Object {
+        "width": "100%"
+      }
+    }>
+    <ol
+      className="dropdown__list" />
+  </div>
+</div>
+`;

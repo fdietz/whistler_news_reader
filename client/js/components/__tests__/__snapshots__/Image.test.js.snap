@@ -1,0 +1,6 @@
+exports[`Image renders correctly 1`] = `
+<img
+  alt="hello"
+  className="image"
+  style={undefined} />
+`;

@@ -1,0 +1,7 @@
+exports[`Button UI renders correctly 1`] = `
+<button
+  className="btn"
+  onClick={undefined}>
+  Click me
+</button>
+`;

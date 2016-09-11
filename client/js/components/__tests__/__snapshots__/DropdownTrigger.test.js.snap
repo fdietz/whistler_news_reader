@@ -1,0 +1,6 @@
+exports[`DropdownTrigger renders correctly 1`] = `
+<a
+  className="dropdown__trigger"
+  onClick={undefined}
+  style={undefined} />
+`;

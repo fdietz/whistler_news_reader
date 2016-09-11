@@ -1,0 +1,5 @@
+exports[`BackgroundImage renders correctly 1`] = `
+<div
+  className="background-image"
+  style={undefined} />
+`;

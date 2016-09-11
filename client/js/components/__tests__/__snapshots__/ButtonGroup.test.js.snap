@@ -1,0 +1,10 @@
+exports[`ButtonGroup renders correctly 1`] = `
+<div
+  className="btn-group a">
+  <button
+    className="btn btn-primary"
+    onClick={undefined}>
+    Hello
+  </button>
+</div>
+`;

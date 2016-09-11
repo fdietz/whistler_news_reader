@@ -23,8 +23,8 @@ defmodule WhistlerNewsReader.Api.SubscribedEntryControllerTest do
     subscription3 = insert(:subscription, feed: feed3, user: user, category: category)
 
     # TODO: fix - 1 day arithmetic
-    {{year, month, day}, _ } = :calendar.universal_time()
-    entry = insert(:entry, feed: feed, published: {{year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
+    {{year, month, day}, _} = :calendar.universal_time()
+    entry = insert(:entry, feed: feed, published: { {year, month, day}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
     entry2 = insert(:entry, feed: feed2, published: {{year, month, day-1}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
     entry3 = insert(:entry, feed: feed3, published: {{year, month, day-2}, {0, 0, 0}} |> Ecto.DateTime.from_erl)
 

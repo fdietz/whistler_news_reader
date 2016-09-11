@@ -1,0 +1,5 @@
+exports[`Dropdown renders correctly 1`] = `
+<div
+  className="dropdown"
+  style={undefined} />
+`;
