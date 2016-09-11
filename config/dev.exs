@@ -7,8 +7,8 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
 
-webpack_devserver = [npm: ["run", "webpack:devserver"]]
-webpack_watch     = [npm: ["run", "webpack:watch"]]
+webpack_devserver = [npm: ["run", "devserver"]]
+webpack_watch     = [npm: ["run", "watch"]]
 
 watchers = if System.get_env("WEBPACK_ENV") === "hot" do
   webpack_devserver

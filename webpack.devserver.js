@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.config');
+var config = require('./client/webpack/webpack.config.dev');
 
 new WebpackDevServer(webpack(config), {
   contentBase: 'http://localhost:4001',
