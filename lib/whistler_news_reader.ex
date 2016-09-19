@@ -9,12 +9,10 @@ defmodule WhistlerNewsReader do
     children = [
       # Start the endpoint when the application starts
       supervisor(WhistlerNewsReader.Endpoint, []),
-      supervisor(WhistlerNewsReader.FeedServerSupervisor, []),
       # Start the Ecto repository
       worker(WhistlerNewsReader.Repo, []),
 
       # Here you could define other workers and supervisors as children
-      worker(WhistlerNewsReader.FeedServerRegistry, []),
       worker(WhistlerNewsReader.FeedRefresherScheduler, []),
       worker(WhistlerNewsReader.Parallel, [:feed_server, []])
     ]

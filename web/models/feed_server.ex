@@ -8,8 +8,6 @@ defmodule WhistlerNewsReader.FeedServer do
 
   alias WhistlerNewsReader.FeedImporter
   alias WhistlerNewsReader.FeedRefresher
-  alias WhistlerNewsReader.FeedServerRegistry
-  alias WhistlerNewsReader.FeedServerWorker
 
   def refresh_all(feeds) do
     Enum.each(feeds, fn(feed) ->
@@ -20,9 +18,7 @@ defmodule WhistlerNewsReader.FeedServer do
   end
 
   def refresh(feed) do
-    pid = FeedServerRegistry.server_process(feed.id)
-    FeedServerWorker.refresh(pid)
-    # FeedRefresher.refresh(feed)
+    FeedRefresher.refresh(feed)
   end
 
   # run in parallel
