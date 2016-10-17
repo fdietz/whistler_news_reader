@@ -4,6 +4,13 @@ MAINTAINER Frederik Dietz <fdietz@gmail.com>
 
 RUN curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash - && apt-get install -y nodejs
 
+RUN apt-get update -q && \
+    apt-get -y install \
+    apt-transport-https \
+    imagemagick \
+    && apt-get clean -y && \
+    rm -rf /var/cache/apt/*
+
 RUN mkdir /app
 WORKDIR /app
 
