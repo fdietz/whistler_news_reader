@@ -52,8 +52,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:gproc, "~> 0.6.1"},
      {:hound, "~> 1.0"},
      {:credo, "~> 0.4.8", only: [:dev, :test]},
-     {:mogrify, "~> 0.4.0"},
-     {:exmagick, "~> 0.0.1"}]
+     {:mogrify, "~> 0.4.0"}]
   end
 
   defp aliases do
