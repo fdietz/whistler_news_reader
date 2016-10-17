@@ -38,7 +38,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:phoenix_live_reload, "~> 1.0.5", only: :dev},
      {:cowboy, "~> 1.0.4"},
      {:gettext, "~> 0.11"},
-     {:elixir_feed_parser, "~> 1.1.0"},
+     {:elixir_feed_parser, "~> 1.2.0"},
      {:httpoison, "~> 0.9.0"},
      {:floki, "~> 0.10.0"},
      {:comeonin, "~> 2.5.2"},
@@ -51,7 +51,9 @@ defmodule WhistlerNewsReader.Mixfile do
      {:poison, "~> 2.2.0"},
      {:gproc, "~> 0.6.1"},
      {:hound, "~> 1.0"},
-     {:credo, "~> 0.4.8", only: [:dev, :test]}]
+     {:credo, "~> 0.4.8", only: [:dev, :test]},
+     {:mogrify, "~> 0.4.0"},
+     {:exmagick, "~> 0.0.1"}]
   end
 
   defp aliases do

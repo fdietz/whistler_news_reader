@@ -15,7 +15,8 @@ defmodule WhistlerNewsReader.Api.SubscribedEntryView do
       unread: !subscribed_entry.read,
       feed_id: subscribed_entry.feed_id,
       subscription_id: subscribed_entry.subscription_id,
-      category_id: subscribed_entry.subscription.category_id
+      category_id: subscribed_entry.subscription.category_id,
+      image_url: "/api/subscribed_entries/#{subscribed_entry.id}/image/200x200"
     }, render_entry(subscribed_entry.entry))
   end
 

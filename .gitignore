@@ -3,7 +3,7 @@
 /db
 /deps
 /*.ez
-
+/tmp
 .DS_Store
 
 # Generate on crash by the VM

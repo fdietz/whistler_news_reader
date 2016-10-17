@@ -360,29 +360,38 @@ class EntryListContainer extends Component {
         }
 
         {!hasChildren && sortedSubscriptions.length === 0 &&
-          <WelcomeTeaser toolbar={responsiveToolbar} />
+          <div className="detail-layout">
+            <WelcomeTeaser toolbar={responsiveToolbar} />
+          </div>
         }
 
         {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
           <Media query="(max-width: 40em)">
-            {function match(matches) { return matches ? null : <NoArticleSelectedTeaser />; } }
+            {function match(matches) {
+              return matches ? null :
+                <div className="detail-layout"><NoArticleSelectedTeaser /></div>;
+            }}
           </Media>
         }
 
         {sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
-          <NothingLeftToReadTeaser toolbar={responsiveToolbar} onRefresh={this.handleRefresh} />
+          <div className="detail-layout">
+            <NothingLeftToReadTeaser toolbar={responsiveToolbar} onRefresh={this.handleRefresh} />
+          </div>
         }
 
-        <ReactCSSTransitionGroup
-          component="div"
-          className="slide-animation-container"
-          transitionName="slide-left"
-          transitionEnterTimeout={200}
-          transitionLeaveTimeout={200}>
-          {hasChildren && React.cloneElement(this.props.children, {
-            key: segment
-          })}
-        </ReactCSSTransitionGroup>
+        {hasChildren &&
+          <ReactCSSTransitionGroup
+            component="div"
+            className="slide-animation-container"
+            transitionName="slide-left"
+            transitionEnterTimeout={200}
+            transitionLeaveTimeout={200}>
+            {hasChildren && React.cloneElement(this.props.children, {
+              key: segment
+            })}
+          </ReactCSSTransitionGroup>
+        }
       </div>
     );
   }

@@ -36,7 +36,6 @@ $entry-list-secondary-color: $gray-3;
   border-bottom: 1px solid $darken-1;
   opacity: .7;
   transition: opacity 500ms ease-out;
-  flex-direction: column;
 
   &.selected {
     background-color: $gray-2;
@@ -58,15 +57,39 @@ $entry-list-secondary-color: $gray-3;
     }
   }
 
+  .entry-media {
+    padding-right: $space-2;
+
+    .background-image {
+      width: 4rem;
+      height: 100%;
+      background-size: cover;
+      border-radius: 4px;
+
+      background-color: $gray-2;
+    }
+
+  }
+
+  .entry-content {
+    display: flex;
+    flex-direction: column;
+  }
+
   .entry-title {
     font-size: .9rem;
+    overflow: hidden;
+    // max-height: 2.4rem;
+    height: 2.4rem;
     line-height: 1.2rem;
     flex: 1;
   }
 
   .entry-summary {
-    max-height: 2rem;
-    margin-top: .2rem;
+    display: none;
+    // max-height: 2rem;
+    height: 1rem;
+    // margin-top: .2rem;
     overflow: hidden;
     font-size: .8rem;
     line-height: 1rem;
@@ -99,6 +122,7 @@ $entry-list-secondary-color: $gray-3;
     .published {
       margin-left: auto;
       text-align: right;
+      white-space: nowrap;
     }
   }
 }

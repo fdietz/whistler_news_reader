@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import shallowCompare from 'react-addons-shallow-compare';
 
 import DateTimeHelper from '../../../../utils/DateTimeHelper';
+import BackgroundImage from '../../../../components/BackgroundImage';
 
 class EntryListItem extends Component {
 
@@ -25,7 +26,7 @@ class EntryListItem extends Component {
       className,
     } = this.props;
 
-    let cls = classNames('entry-list__item', className, {
+    const cls = classNames('entry-list__item', className, {
       selected: isSelected,
       unread: entry.unread,
     });
@@ -35,11 +36,16 @@ class EntryListItem extends Component {
 
     return (
       <div className={cls} onClick={() => onClick(entry)}>
-        <div className="entry-title">{entry.title}</div>
-        <div className="entry-summary">{entry.summary}</div>
-        <div className="meta">
-          <div className="feed-title">{entry.subscription_title}</div>
-          <span className="published">{relativeDateTime}</span>
+        <div className="entry-media">
+          <BackgroundImage imageUrl={entry.image_url} />
+        </div>
+        <div className="entry-content">
+          <div className="entry-title">{entry.title}</div>
+          <div className="entry-summary">{entry.summary}</div>
+          <div className="meta">
+            <div className="feed-title">{entry.subscription_title}</div>
+            <span className="published">{relativeDateTime}</span>
+          </div>
         </div>
       </div>
     );

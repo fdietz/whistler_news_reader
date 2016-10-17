@@ -12,7 +12,7 @@ class BackgroundImage extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { loaded: false };
+    this.state = { loaded: false, error: false };
 
     this.onImageLoad = this.onImageLoad.bind(this);
   }
@@ -21,6 +21,7 @@ class BackgroundImage extends Component {
     const { imageUrl } = this.props;
     const img = new window.Image();
     img.onload = () => this.onImageLoad();
+    img.onerror = () => this.setState({ error: true });
     img.src = imageUrl;
   }
 
@@ -37,6 +38,7 @@ class BackgroundImage extends Component {
 
     const cls = classNames('background-image', className, {
       'image-loaded': this.state.loaded,
+      'image-load-error': this.state.error
     });
 
     return (

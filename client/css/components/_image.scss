@@ -1,9 +1,12 @@
 .image,
 .background-image {
-  opacity: 0;
-  transition: opacity ease-in 1s;
+  background-color: $gray-2;
+  border-radius: $border-radius;
+  // opacity: 0;
+  // transition: opacity ease-in 1s;
 
-  &.image-loaded {
-    opacity: 1;
+  &.image-loaded,
+  &.image-load-error {
+    // opacity: 1;
   }
 }
