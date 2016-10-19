@@ -2,7 +2,7 @@ defmodule WhistlerNewsReader.Article do
   @moduledoc """
   Parse HTML to identify relevant content using heuristics
   """
-  
+
   alias WhistlerNewsReader.FeedFetcher
 
   def scrape(url) do
@@ -29,7 +29,7 @@ defmodule WhistlerNewsReader.Article do
           else
             ""
           end
-        other ->
+        _other ->
           ""
       end
     end)

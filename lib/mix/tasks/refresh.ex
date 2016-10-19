@@ -11,9 +11,9 @@ defmodule Mix.Tasks.WhistlerNewsReader.Refresh do
 
     Enum.each repos, fn repo ->
       ensure_repo(repo, args)
-      {:ok, pid, _} = ensure_started(repo, all: true)
+      {:ok, _pid, _} = ensure_started(repo, all: true)
 
-      feeds = repo.all(Feed)
+      feeds = Repo.all(Feed)
       FeedServer.refresh_all(feeds)
     end
   end

@@ -4,7 +4,6 @@ defmodule WhistlerNewsReader.Api.SubscribedEntryImageController do
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.SubscribedEntry
 
-  alias WhistlerNewsReader.EntryImageStorage
   alias WhistlerNewsReader.EntryImageThumbnailer
 
   def show(conn, %{"id" => id} = params) do

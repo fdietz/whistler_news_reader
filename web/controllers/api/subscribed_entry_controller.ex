@@ -8,7 +8,6 @@ defmodule WhistlerNewsReader.Api.SubscribedEntryController do
   alias WhistlerNewsReader.Subscription
   alias WhistlerNewsReader.SubscribedEntry
   alias WhistlerNewsReader.MarkAsReadHelper
-  alias WhistlerNewsReader.FeedServer
 
   def index(conn, %{"subscription_id" => "today", "last_published" => last_published, "limit" => limit} = _params) do
     subscribed_entries = SubscribedEntry |> SubscribedEntry.for_user_id(current_user(conn).id) |> SubscribedEntry.for_unread |> SubscribedEntry.for_today |> load_more(last_published, limit)

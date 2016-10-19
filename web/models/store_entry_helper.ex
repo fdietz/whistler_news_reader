@@ -10,7 +10,7 @@ defmodule WhistlerNewsReader.StoreEntryHelper do
   def store_entries(feed, entries) do
     result = Enum.map(entries, fn(entry) ->
       case store_entry(feed, entry) do
-        {:ok, skipping} ->
+        {:ok, :skipping} ->
           nil
         {:ok, entry} ->
           entry

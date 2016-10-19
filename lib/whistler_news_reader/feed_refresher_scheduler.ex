@@ -5,8 +5,8 @@ defmodule WhistlerNewsReader.FeedRefresherScheduler do
   alias WhistlerNewsReader.Feed
   alias WhistlerNewsReader.FeedServer
 
-  import Logger
-  
+  require Logger
+
   @sleep_sec 3600 # 1 hour
 
   def start_link do
