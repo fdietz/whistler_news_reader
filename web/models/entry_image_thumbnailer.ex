@@ -15,6 +15,7 @@ defmodule WhistlerNewsReader.EntryImageThumbnailer do
       case download_original_image(subscribed_entry) do
         {:ok, image_path} ->
           thumb_path = EntryImageStorage.thumb_path(subscribed_entry.id, dimensions)
+          Logger.info "EntryImageThumbnailer - Creating thumbnail for for entry #{subscribed_entry.id}"
           ImageProcessor.thumb(image_path, thumb_path, dimensions)
         other ->
           other
@@ -48,6 +49,7 @@ defmodule WhistlerNewsReader.EntryImageThumbnailer do
     else
       case EntryImageExtractor.extract_url(subscribed_entry) do
         {:ok, url} ->
+          Logger.info "EntryImageThumbnailer - Downloading original image for entry #{subscribed_entry.id} at url #{url}"
           case EntryImageDownloader.download_url(url) do
             {:ok, image_blob} ->
               {:ok, image_path} = EntryImageStorage.store(subscribed_entry.id, image_blob)

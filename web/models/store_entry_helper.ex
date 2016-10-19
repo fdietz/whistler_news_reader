@@ -8,22 +8,18 @@ defmodule WhistlerNewsReader.StoreEntryHelper do
   require Logger
 
   def store_entries(feed, entries) do
-    Enum.map(entries, fn(entry) ->
+    result = Enum.map(entries, fn(entry) ->
       case store_entry(feed, entry) do
-        {:ok, :skipping} ->
-          Logger.debug "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} skip"
-          {:ok}
-        {:ok, _new_entry} ->
-          Logger.debug "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} success"
-          {:ok}
-        {:error, %Ecto.Changeset{} = changeset} ->
-          Logger.debug "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} changeset error: #{inspect changeset.errors}"
-          {:error}
-        {:error, error} ->
-          Logger.error "FeedRefresher - refresh feed id: #{feed.id}, entry id: #{entry.id} error: #{inspect error}"
-          {:error}
+        {:ok, skipping} ->
+          nil
+        {:ok, entry} ->
+          entry
+        _other ->
+          nil
       end
     end)
+
+    Enum.reject(result, fn(e) -> e == nil end)
   end
 
   def store_entry(feed, parsed_entry) do

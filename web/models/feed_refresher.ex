@@ -8,14 +8,24 @@ defmodule WhistlerNewsReader.FeedRefresher do
   require Logger
 
   def refresh(feed) do
-    with {:ok, json_body}     <- FeedFetcher.fetch(feed.feed_url),
-         {:ok, parsed_attrs}  <- ElixirFeedParser.parse(json_body),
-         {:ok, _updated_feed} <- update_last_refreshed_at(feed),
-         do: StoreEntryHelper.store_entries(feed, parsed_attrs.entries)
+    case FeedFetcher.fetch(feed.feed_url) do
+      {:ok, json_body} ->
+        case ElixirFeedParser.parse(json_body) do
+          {:ok, parsed_attrs} ->
+            {:ok, _updated_feed} = update_last_refreshed_at(feed)
+            entries = StoreEntryHelper.store_entries(feed, parsed_attrs.entries)
 
-    Logger.info "FeedRefresher - refreshed feed id: #{feed.id}, title: #{feed.title}"
+            Logger.info "FeedRefresher - refreshed feed id: #{feed.id}, title: #{feed.title}, new entries: #{inspect(entries)}"
 
-    {:ok, feed.id}
+            {:ok, feed.id, entries}
+          other ->
+            Logger.error "FeedRefresher - Error refreshing feed id: #{feed.id}, title: #{feed.title}: #{inspect(other)}"
+            {:error}
+        end
+      other ->
+        Logger.error "FeedRefresher - Error refreshing feed id: #{feed.id}, title: #{feed.title}: #{inspect(other)}"
+        {:error}
+    end
   end
 
   defp update_last_refreshed_at(feed) do
