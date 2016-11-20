@@ -49,7 +49,7 @@ defmodule WhistlerNewsReader.EntryParser do
   end
 
   defp sanitize_html(html) do
-    html |> without_script_tags |> HtmlSanitizeEx.basic_html
+    html |> without_script_tags # |> HtmlSanitizeEx.basic_html
   end
 
   defp html_to_text(nil), do: nil
