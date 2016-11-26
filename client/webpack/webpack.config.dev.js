@@ -1,16 +1,16 @@
 // Lot's of inspiration from https://github.com/facebookincubator/create-react-app
-var path = require('path');
-var autoprefixer = require('autoprefixer');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var paths = require('./paths');
+const path = require('path');
+const autoprefixer = require('autoprefixer');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const paths = require('./paths');
 
-var NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development');
-var env = {
+const NODE_ENV = JSON.stringify(process.env.NODE_ENV || 'development');
+const env = {
   'process.env.NODE_ENV': NODE_ENV
 };
-var hot = process.env.WEBPACK_ENV === 'hot';
-var publicPath = hot ? 'http://localhost:4001/' : '/'
+const hot = process.env.WEBPACK_ENV === 'hot';
+const publicPath = hot ? 'http://localhost:4001/' : '/';
 
 module.exports = {
   devtool: 'eval',
@@ -27,7 +27,6 @@ module.exports = {
     publicPath: publicPath
   },
   resolve: {
-    fallback: paths.nodePaths,
     extensions: ['.js', '.json', '.jsx', ''],
   },
   resolveLoader: {
@@ -51,10 +50,9 @@ module.exports = {
         exclude: /manifest\.json/,
         loader: 'json'
       },
-      // special case for manifest.json since we want the url only instead of JSON
       {
-        test: /manifest\.json/,
-        loader: 'file'
+        test: /manifest\.json$/,
+        loader: 'file?name=manifest.json!web-app-manifest'
       },
       {
         test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
