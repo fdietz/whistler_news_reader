@@ -9,7 +9,7 @@ import {
   CogSVGIcon,
   ArrowDownSVGIcon,
   ArrowUpSVGIcon,
-  MenuSVGIcon,
+  Menu2SVGIcon,
   EllipsisSVGIcon
 } from '../../../components/SVGIcon';
 
@@ -59,7 +59,7 @@ const EntryListToolbar = ({
           onClick={onToggleSidebarClick}
           title="Toggle Sidebar"
           className="btn-logo">
-          <MenuSVGIcon color="#F25653" size="small" />
+          <Menu2SVGIcon color="light-gray" size="small" />
         </Button>
       }
       {isMobile &&
@@ -77,7 +77,7 @@ const EntryListToolbar = ({
           onClick={onToggleSidebarClick}
           title="Mark all stories as read"
           className="hide-large-screen mr1-important">
-          <MenuSVGIcon color="#F25653" size="small" />
+          <Menu2SVGIcon color="light-gray" size="small" />
         </Button>
       }
       {!isMobile &&
@@ -196,9 +196,11 @@ const EntryListToolbar = ({
           </DropdownContent>
         </Dropdown>
       </div>
-      <span className={spinnerCls}>
-        <Icon name="spinner" size="small" />
-      </span>
+      {!isMobile &&
+        <span className={spinnerCls}>
+          <Icon name="spinner" size="small" />
+        </span>
+      }
     </div>
   );
 };

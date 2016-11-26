@@ -204,6 +204,13 @@ export const MenuSVGIcon = ({ color = 'white', ...props }) => (
 );
 MenuSVGIcon.propTypes = { color: PropTypes.string };
 
+export const Menu2SVGIcon = ({ color = 'white', ...props }) => (
+  <SVGComponent {...props}>
+    <path fill={mapColor(color)} d="M1.25 3.75h17.5v3.75h-17.5zM1.25 8.75h17.5v3.75h-17.5zM1.25 13.75h17.5v3.75h-17.5z"></path>
+  </SVGComponent>
+);
+Menu2SVGIcon.propTypes = { color: PropTypes.string };
+
 export const EllipsisSVGIcon = ({ color = 'white', ...props }) => (
   <SVGComponent {...props}>
   <path fill={mapColor(color)} d="M3 7.8c-1.215 0-2.2 0.985-2.2 2.2s0.985 2.2 2.2 2.2 2.2-0.985 2.2-2.2c0-1.215-0.985-2.2-2.2-2.2zM10 7.8c-1.215 0-2.2 0.985-2.2 2.2s0.985 2.2 2.2 2.2 2.199-0.985 2.199-2.2c0-1.215-0.984-2.2-2.199-2.2zM17 7.8c-1.215 0-2.2 0.985-2.2 2.2s0.985 2.2 2.2 2.2 2.2-0.985 2.2-2.2c0-1.215-0.985-2.2-2.2-2.2z"></path>
