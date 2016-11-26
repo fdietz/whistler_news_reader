@@ -40,11 +40,26 @@ $sidebar-color: $gray;
 }
 
 .sidebar-root {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  display: flex;
+  width: 250px; height: 100vh;
+
+
+
+  @include respond-to(small-screen) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  @include respond-to(medium-screen) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 }
 
 .sidebar-overlay {
