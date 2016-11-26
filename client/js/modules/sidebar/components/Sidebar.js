@@ -56,6 +56,8 @@ class Sidebar extends Component {
 
     this.onOPMLImportClick = this.onOPMLImportClick.bind(this);
     this.onSignOutClick = this.onSignOutClick.bind(this);
+
+    this.onSidebarOverlayClick = this.onSidebarOverlayClick.bind(this);
   }
 
   componentDidMount() {
@@ -81,6 +83,12 @@ class Sidebar extends Component {
   componentWillUnmount() {
     unbindHotKey('nextFeed');
     unbindHotKey('previousFeed');
+  }
+
+  onSidebarOverlayClick(event) {
+    if (this.props.sidebar.isVisible && !this.sidebarRef.contains(event.target)) {
+      this.props.sidebarActions.hideSidebar();
+    }
   }
 
   onNextClick() {
@@ -236,67 +244,75 @@ class Sidebar extends Component {
       visible: sidebar.isVisible,
     });
 
+    const sidebarOverlayCls = classNames('sidebar-overlay', {
+      hidden: !sidebar.isVisible,
+      visible: sidebar.isVisible,
+    });
+
     return (
-      <div className={sidebarCls}>
-        <div className="sidebar-header">
-          <div className="logo">whistle'r</div>
-          <div className="subtitle">
-            <span>n</span>
-            <span>e</span>
-            <span>w</span>
-            <span>s</span>
+      <div className="sidebar-root">
+        <div className={sidebarCls} ref={ref => this.sidebarRef = ref}>
+          <div className="sidebar-header">
+            <div className="logo">whistle'r</div>
+            <div className="subtitle">
+              <span>n</span>
+              <span>e</span>
+              <span>w</span>
+              <span>s</span>
+            </div>
           </div>
-        </div>
-        <div className="sidebar-content scrollbar">
-          <div className="sidebar-actions">
-            <Button
-              onClick={this.onAddClick}
-              type="primary"
-              expand
-              title="Add new Subscription">
-              <PlusSVGIcon size="small" color="white" />
-              Subscriptions
-            </Button>
-          </div>
+          <div className="sidebar-content scrollbar">
+            <div className="sidebar-actions">
+              <Button
+                onClick={this.onAddClick}
+                type="primary"
+                expand
+                title="Add new Subscription">
+                <PlusSVGIcon size="small" color="white" />
+                Subscriptions
+              </Button>
+            </div>
 
-          <div className="sidebar-nav-list">
-            {this.renderLink('Today', '/today/entries', HouseSVGIcon)}
-            {this.renderLink('All', '/all/entries', ListSVGIcon)}
-          </div>
+            <div className="sidebar-nav-list">
+              {this.renderLink('Today', '/today/entries', HouseSVGIcon)}
+              {this.renderLink('All', '/all/entries', ListSVGIcon)}
+            </div>
 
-          <div className="sidebar-nav-list">
-            {categories.map((category) =>
-              this.renderCategory(category, subscriptions)
-            )}
-            {subscriptionsWithoutCategory.map((subscription) =>
-              this.renderSubscription(subscription)
-            )}
-            {this.renderAddCategoryLink()}
+            <div className="sidebar-nav-list">
+              {categories.map((category) =>
+                this.renderCategory(category, subscriptions)
+              )}
+              {subscriptionsWithoutCategory.map((subscription) =>
+                this.renderSubscription(subscription)
+              )}
+              {this.renderAddCategoryLink()}
+            </div>
+          </div>
+          <div className="sidebar-footer">
+            <Dropdown className="north expand">
+              <DropdownTrigger>
+                <CogSVGIcon size="small" color="light-gray" />
+                <div className="sidebar-nav-list__name">{currentUser.email}</div>
+                <div className="sidebar-nav-list__badge2 mx-auto">
+                  <ArrowDownSVGIcon color="light-gray" size="medium" className="arrow-down" />
+                  <ArrowUpSVGIcon color="light-gray" size="medium" className="arrow-up" />
+                </div>
+              </DropdownTrigger>
+              <DropdownContent>
+                <ul className="dropdown__list">
+                  <li className="dropdown__list-item">
+                    <a onClick={this.onOPMLImportClick}>OPML Import</a>
+                  </li>
+                  <li className="dropdown__list-item">
+                    <a onClick={this.onSignOutClick}>Logout</a>
+                  </li>
+                </ul>
+              </DropdownContent>
+            </Dropdown>
           </div>
         </div>
-        <div className="sidebar-footer">
-          <Dropdown className="north expand">
-            <DropdownTrigger>
-              <CogSVGIcon size="small" color="light-gray" />
-              <div className="sidebar-nav-list__name">{currentUser.email}</div>
-              <div className="sidebar-nav-list__badge2 mx-auto">
-                <ArrowDownSVGIcon color="light-gray" size="medium" className="arrow-down" />
-                <ArrowUpSVGIcon color="light-gray" size="medium" className="arrow-up" />
-              </div>
-            </DropdownTrigger>
-            <DropdownContent>
-              <ul className="dropdown__list">
-                <li className="dropdown__list-item">
-                  <a onClick={this.onOPMLImportClick}>OPML Import</a>
-                </li>
-                <li className="dropdown__list-item">
-                  <a onClick={this.onSignOutClick}>Logout</a>
-                </li>
-              </ul>
-            </DropdownContent>
-          </Dropdown>
-        </div>
-      </div>
+        <div className={sidebarOverlayCls} onClick={this.onSidebarOverlayClick} />
+    </div>
     );
   }
 }
