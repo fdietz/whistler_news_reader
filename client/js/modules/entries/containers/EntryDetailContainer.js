@@ -7,6 +7,8 @@ import Media from 'react-media';
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
 import LayoutContainer from '../../../layouts/LayoutContainer';
+import LayoutDetailPage from '../../../layouts/LayoutDetailPage';
+
 import FeedEntryContent from '../components/detail/FeedEntryContent';
 import EntryContentToolbar from '../components/EntryContentToolbar';
 import FeedEntryEmbedWebsiteContent from '../components/detail/FeedEntryEmbedWebsiteContent';
@@ -130,6 +132,7 @@ class EntryDetailContainer extends Component {
     const { routerActions, params, pathname } = this.props;
     routerActions.push(entryPath(entryId, params, pathname));
   }
+
   render() {
     const {
       entry,
@@ -160,7 +163,7 @@ class EntryDetailContainer extends Component {
     );
 
     return (
-      <div className="detail-layout">
+      <LayoutDetailPage>
         <LayoutContainer>
           <LayoutHeader>{entryContentToolbar}</LayoutHeader>
           <LayoutContent>
@@ -188,7 +191,7 @@ class EntryDetailContainer extends Component {
           </LayoutContent>
         </LayoutContainer>
         {this.props.children}
-      </div>
+      </LayoutDetailPage>
     );
   }
 }

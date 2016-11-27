@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 const LayoutHeader = ({ children }) => (
-  <div className="layout-master-header">
+  <div className="layout-header">
     {children}
   </div>
 );

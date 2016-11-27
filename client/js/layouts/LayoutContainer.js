@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 const LayoutContainer = ({ children }) => (
-  <div className="layout-master-container">
+  <div className="layout-container">
     {children}
   </div>
 );

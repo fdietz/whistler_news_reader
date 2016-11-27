@@ -10,6 +10,9 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
 import LayoutContainer from '../../../layouts/LayoutContainer';
+import LayoutMasterPage from '../../../layouts/LayoutMasterPage';
+import LayoutDetailPage from '../../../layouts/LayoutDetailPage';
+
 import InfiniteScroll from '../components/InfiniteScroll';
 import EntryList from '../components/list/EntryList';
 import EntryGrid from '../components/grid/EntryGrid';
@@ -311,7 +314,7 @@ class EntryListContainer extends Component {
 
     const hasChildren = React.Children.count(this.props.children) > 0;
 
-    const masterListCls = classNames('master-layout', {
+    const masterListCls = classNames('layout-master-page', {
       grid: currentViewLayout === 'grid',
       'hide-animation': hasChildren
     });
@@ -344,53 +347,62 @@ class EntryListContainer extends Component {
     );
 
     const mainList = (
-      <LayoutContainer>
-        <LayoutHeader>{responsiveToolbar}</LayoutHeader>
-        <LayoutContent>{paginatedItems}</LayoutContent>
-      </LayoutContainer>
+      <LayoutMasterPage className={masterListCls}>
+        <LayoutContainer>
+          <LayoutHeader>{responsiveToolbar}</LayoutHeader>
+          <LayoutContent>{paginatedItems}</LayoutContent>
+        </LayoutContainer>
+      </LayoutMasterPage>
     );
 
     const segment = this.props.pathname.split('/')[2];
 
     return (
       <div className="main-master-container">
-        {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
-          <div className={masterListCls}>
-            {mainList}
-          </div>
-        }
+        {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 && mainList}
 
         {!hasChildren && sortedSubscriptions.length === 0 &&
-          <div className="detail-layout">
+          <LayoutDetailPage>
             <WelcomeTeaser toolbar={responsiveToolbar} />
-          </div>
+          </LayoutDetailPage>
         }
 
         {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
           <Media query="(max-width: 40em)">
             {function match(matches) {
               return matches ? null :
-                <div className="detail-layout"><NoArticleSelectedTeaser /></div>;
+                <LayoutDetailPage><NoArticleSelectedTeaser /></LayoutDetailPage>;
             }}
           </Media>
         }
 
         {sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
-          <div className="detail-layout">
+          <LayoutDetailPage>
             <NothingLeftToReadTeaser toolbar={responsiveToolbar} onRefresh={this.handleRefresh} />
-          </div>
+          </LayoutDetailPage>
         }
 
-        <ReactCSSTransitionGroup
-          component="div"
-          className="slide-animation-container"
-          transitionName="slide-left"
-          transitionEnterTimeout={200}
-          transitionLeaveTimeout={200}>
-          {this.props.children && React.cloneElement(this.props.children, {
-            key: segment
-          })}
-        </ReactCSSTransitionGroup>
+        <Media query="(max-width: 40em)">
+          {
+            matches => {
+              if (matches) {
+                return (<ReactCSSTransitionGroup
+                  component="div"
+                  className="slide-animation-container"
+                  transitionName="slide-left"
+                  transitionEnterTimeout={200}
+                  transitionLeaveTimeout={200}>
+                  {hasChildren && React.cloneElement(this.props.children, {
+                    key: segment
+                  })}
+                </ReactCSSTransitionGroup>);
+              }
+
+              if (hasChildren) return this.props.children;
+              return null;
+            }
+          }
+        </Media>
       </div>
     );
   }
