@@ -57,8 +57,7 @@ const EntryListToolbar = ({
         <Button
           type="header"
           onClick={onToggleSidebarClick}
-          title="Toggle Sidebar"
-          className="btn-logo">
+          title="Toggle Sidebar">
           <Menu2SVGIcon color="light-gray" size="small" />
         </Button>
       }
@@ -75,11 +74,12 @@ const EntryListToolbar = ({
         <Button
           type="header"
           onClick={onToggleSidebarClick}
-          title="Mark all stories as read"
+          title="Toggle Sidebar"
           className="hide-large-screen mr1-important">
           <Menu2SVGIcon color="light-gray" size="small" />
         </Button>
       }
+
       {!isMobile &&
         <ButtonGroup className="btn-group-rounded">
           <Button
