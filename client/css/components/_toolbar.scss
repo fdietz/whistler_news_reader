@@ -7,7 +7,7 @@
   .left, .right {
     display: flex;
   }
-  
+
   @include respond-to(small-screen) {
     margin-right: -$space-2;
     margin-left: -$space-2;
@@ -19,13 +19,6 @@
         width: 24px;
         height: 24px;
       }
-    }
-
-    .btn-logo {
-      color: $red;
-      border-radius: 0;
-      width: 56px;
-      height: 56px;
     }
   }
 
@@ -51,7 +44,7 @@
   header {
     display: flex;
 
-    margin-left: $space-2;
+    // margin-left: $space-2;
 
     align-items: center;
 
