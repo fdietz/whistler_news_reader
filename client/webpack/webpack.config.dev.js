@@ -47,12 +47,12 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        exclude: /manifest\.json/,
+        exclude: /app_manifest\.json/,
         loader: 'json'
       },
       {
-        test: /manifest\.json$/,
-        loader: 'file?name=manifest.json!web-app-manifest'
+        test: /app_manifest\.json$/,
+        loader: 'file?name=app_manifest.json!web-app-manifest'
       },
       {
         test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,

@@ -42,24 +42,38 @@ module.exports = {
       {
         test: /\.json$/,
         include: [paths.appSrc, paths.appNodeModules],
-        exclude: /manifest\.json/,
+        exclude: /app_manifest\.json/,
         loader: 'json'
       },
-      // special case for manifest.json since we want the url only instead of JSON
       {
-        test: /manifest\.json/,
-        include: [paths.appSrc, paths.appNodeModules],
-        loader: 'file'
+        test: /app_manifest\.json$/,
+        loader: 'file?name=app_manifest.json!web-app-manifest'
       },
       {
-        test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)$/,
+        test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
         include: [paths.appSrc, paths.appNodeModules],
         loader: 'file',
+        query: {
+          name: 'static/media/[name].[hash:8].[ext]'
+        }
+      },
+      // A special case for favicon.ico to place it into build root directory.
+      {
+        test: /\/favicon.ico$/,
+        include: [paths.appSrc],
+        loader: 'file',
+        query: {
+          name: 'favicon.ico?[hash:8]'
+        }
       },
       {
         test: /\.(mp4|webm)$/,
         include: [paths.appSrc, paths.appNodeModules],
-        loader: 'url?limit=10000'
+        loader: 'url',
+        query: {
+          limit: 10000,
+          name: 'static/media/[name].[hash:8].[ext]'
+        }
       },
       {
         test: /\.html$/,
