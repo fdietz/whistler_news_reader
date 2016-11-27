@@ -3,13 +3,14 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
+import LayoutContainer from '../../../layouts/LayoutContainer';
 import Teaser from '../../../components/Teaser';
 
 import { CheckmarkSVGIcon } from '../../../components/SVGIcon';
 
 const NothingLeftToReadTeaser = function render({ toolbar, onRefresh }) {
   return (
-    <div className="layout-master-container">
+    <LayoutContainer>
       <LayoutHeader>{toolbar}</LayoutHeader>
       <LayoutContent>
         <Teaser>
@@ -22,7 +23,7 @@ const NothingLeftToReadTeaser = function render({ toolbar, onRefresh }) {
           </p>
         </Teaser>
       </LayoutContent>
-    </div>
+    </LayoutContainer>
   );
 };
 

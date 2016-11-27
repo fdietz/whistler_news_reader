@@ -9,6 +9,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
+import LayoutContainer from '../../../layouts/LayoutContainer';
 import InfiniteScroll from '../components/InfiniteScroll';
 import EntryList from '../components/list/EntryList';
 import EntryGrid from '../components/grid/EntryGrid';
@@ -343,10 +344,10 @@ class EntryListContainer extends Component {
     );
 
     const mainList = (
-      <div className="layout-master-container">
+      <LayoutContainer>
         <LayoutHeader>{responsiveToolbar}</LayoutHeader>
         <LayoutContent>{paginatedItems}</LayoutContent>
-      </div>
+      </LayoutContainer>
     );
 
     const segment = this.props.pathname.split('/')[2];
@@ -380,18 +381,16 @@ class EntryListContainer extends Component {
           </div>
         }
 
-        {hasChildren &&
-          <ReactCSSTransitionGroup
-            component="div"
-            className="slide-animation-container"
-            transitionName="slide-left"
-            transitionEnterTimeout={200}
-            transitionLeaveTimeout={200}>
-            {hasChildren && React.cloneElement(this.props.children, {
-              key: segment
-            })}
-          </ReactCSSTransitionGroup>
-        }
+        <ReactCSSTransitionGroup
+          component="div"
+          className="slide-animation-container"
+          transitionName="slide-left"
+          transitionEnterTimeout={200}
+          transitionLeaveTimeout={200}>
+          {this.props.children && React.cloneElement(this.props.children, {
+            key: segment
+          })}
+        </ReactCSSTransitionGroup>
       </div>
     );
   }

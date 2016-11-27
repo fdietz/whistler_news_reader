@@ -2,13 +2,14 @@ import React from 'react';
 
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
+import LayoutContainer from '../../../layouts/LayoutContainer';
 import Teaser from '../../../components/Teaser';
 
 import { EarthSVGIcon } from '../../../components/SVGIcon';
 
 const NoArticleSelectedTeaser = function render() {
   return (
-    <div className="layout-master-container">
+    <LayoutContainer>
       <LayoutHeader />
       <LayoutContent>
         <Teaser>
@@ -17,7 +18,7 @@ const NoArticleSelectedTeaser = function render() {
           <p>Have a nice day!</p>
         </Teaser>
       </LayoutContent>
-    </div>
+    </LayoutContainer>
   );
 };
 

@@ -4,13 +4,14 @@ import { Link } from 'react-router';
 
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
+import LayoutContainer from '../../../layouts/LayoutContainer';
 import Teaser from '../../../components/Teaser';
 
 import { EarthSVGIcon } from '../../../components/SVGIcon';
 
 const WelcomeTeaser = function render({ toolbar }) {
   return (
-    <div className="layout-master-container">
+    <LayoutContainer>
       <LayoutHeader>
         {toolbar}
       </LayoutHeader>
@@ -28,7 +29,7 @@ const WelcomeTeaser = function render({ toolbar }) {
           </p>
         </Teaser>
       </LayoutContent>
-    </div>
+    </LayoutContainer>
   );
 };
 

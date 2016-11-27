@@ -6,6 +6,7 @@ import Media from 'react-media';
 
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
+import LayoutContainer from '../../../layouts/LayoutContainer';
 import FeedEntryContent from '../components/detail/FeedEntryContent';
 import EntryContentToolbar from '../components/EntryContentToolbar';
 import FeedEntryEmbedWebsiteContent from '../components/detail/FeedEntryEmbedWebsiteContent';
@@ -160,7 +161,7 @@ class EntryDetailContainer extends Component {
 
     return (
       <div className="detail-layout">
-        <div className="layout-master-container">
+        <LayoutContainer>
           <LayoutHeader>{entryContentToolbar}</LayoutHeader>
           <LayoutContent>
             {entry && this.state.currentViewMode === 'normal' &&
@@ -185,7 +186,7 @@ class EntryDetailContainer extends Component {
                 onEntryShown={this.handleEntryShown} />
             }
           </LayoutContent>
-        </div>
+        </LayoutContainer>
         {this.props.children}
       </div>
     );
