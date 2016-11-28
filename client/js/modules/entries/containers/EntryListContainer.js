@@ -358,7 +358,7 @@ class EntryListContainer extends Component {
     const segment = this.props.pathname.split('/')[2];
 
     return (
-      <div className="main-master-container">
+      <div className="layout-master-container">
         {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 && mainList}
 
         {!hasChildren && sortedSubscriptions.length === 0 &&
@@ -396,9 +396,10 @@ class EntryListContainer extends Component {
                     key: segment
                   })}
                 </ReactCSSTransitionGroup>);
+              } else if (hasChildren) {
+                return this.props.children;
               }
 
-              if (hasChildren) return this.props.children;
               return null;
             }
           }
