@@ -1,21 +1,19 @@
 import debounce from 'lodash.debounce';
 import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { routerActions as RouterActions } from 'react-router-redux';
+import { routerActions } from 'react-router-redux';
 import Media from 'react-media';
-
-import sidebar from '../../sidebar';
 
 import EntryListToolbar from '../components/EntryListToolbar';
 
 import { mapRequestParams, configPathname } from '../../../utils/navigator';
 import { bindHotKey, unbindHotKey } from '../../../utils/HotKeys';
 
-import * as EntriesActions from '../actions';
-import * as SubscriptionsActions from '../../subscriptions/actions';
-import * as CategoriesActions from '../../categories/actions';
-import * as CommonActions from '../../../actions';
+import * as entriesActions from '../actions';
+import * as subscriptionsActions from '../../subscriptions/actions';
+import * as categoriesActions from '../../categories/actions';
+import * as commonActions from '../../../actions';
+import * as sidebarActions from '../../sidebar/actions';
 
 import {
   getSortedSubscriptions,
@@ -45,12 +43,17 @@ class EntryListToolbarContainer extends Component {
 
     // actions
     onViewLayoutChangeClick: PropTypes.func.isRequired,
-    entriesActions: PropTypes.object.isRequired,
-    sidebarActions: PropTypes.object.isRequired,
-    subscriptionsActions: PropTypes.object.isRequired,
-    routerActions: PropTypes.object.isRequired,
-    categoriesActions: PropTypes.object.isRequired,
-    commonActions: PropTypes.object.isRequired
+    requestRemoveFeedOrCategory: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
+    navigateToEntry: PropTypes.func.isRequired,
+    requestLoadMore: PropTypes.func.isRequired,
+    requestMarkAllEntriesAsRead: PropTypes.func.isRequired,
+    resetUnreadCount: PropTypes.func.isRequired,
+    requestRefreshEntries: PropTypes.func.isRequired,
+    requestFetchCategories: PropTypes.func.isRequired,
+    requestFetchSubscriptions: PropTypes.func.isRequired,
+    requestFetchEntries: PropTypes.func.isRequired,
+    toggle: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -103,27 +106,27 @@ class EntryListToolbarContainer extends Component {
   }
 
   handleOnRemoveFeedOrCategory() {
-    const { commonActions, params, pathname } = this.props;
-    commonActions.requestRemoveFeedOrCategory(params, pathname);
+    const { requestRemoveFeedOrCategory, params, pathname } = this.props;
+    requestRemoveFeedOrCategory(params, pathname);
   }
 
   openEditModal() {
-    const { routerActions, params, pathname } = this.props;
+    const { push, params, pathname } = this.props;
 
-    routerActions.push({ pathname: configPathname(params, pathname), state: { modal: true } });
+    push({ pathname: configPathname(params, pathname), state: { modal: true } });
   }
 
   navigateTo(entryId) {
-    const { commonActions, params, pathname } = this.props;
-    commonActions.navigateToEntry(entryId, params, pathname);
+    const { navigateToEntry, params, pathname } = this.props;
+    navigateToEntry(entryId, params, pathname);
   }
 
   nextEntry() {
-    const { entriesActions, hasNextEntry, nextEntryId } = this.props;
+    const { requestLoadMore, hasNextEntry, nextEntryId } = this.props;
     if (hasNextEntry) {
       this.navigateTo(nextEntryId);
     } else {
-      entriesActions.requestLoadMore(this.requestParams(this.props)).then(() => {
+      requestLoadMore(this.requestParams(this.props)).then(() => {
         this.navigateTo(nextEntryId);
       });
     }
@@ -138,34 +141,35 @@ class EntryListToolbarContainer extends Component {
 
   markAsRead() {
     const {
-      sortedSubscriptions,
-      subscriptionsActions,
-      categoriesActions,
-      entriesActions
+      requestMarkAllEntriesAsRead,
+      requestFetchSubscriptions,
+      requestFetchCategories,
+      resetUnreadCount,
+      sortedSubscriptions
     } = this.props;
     const params = this.requestParams(this.props);
 
-    entriesActions.requestMarkAllEntriesAsRead(params).then(() => {
+    requestMarkAllEntriesAsRead(params).then(() => {
       if (params.subscription_id === 'all' || params.subscription_id === 'today') {
-        subscriptionsActions.requestFetchSubscriptions().then(() => {
-          categoriesActions.requestFetchCategories();
+        requestFetchSubscriptions().then(() => {
+          requestFetchCategories();
         });
       } else if (params.subscription_id) {
-        subscriptionsActions.resetUnreadCount({ id: +params.subscription_id });
+        resetUnreadCount({ id: +params.subscription_id });
       } else if (params.category_id) {
         const matchedSubscriptions = sortedSubscriptions.filter(subscription =>
           subscription.category_id === +params.category_id);
         for (const subscription of matchedSubscriptions) {
-          subscriptionsActions.resetUnreadCount({ id: subscription.id });
+          resetUnreadCount({ id: subscription.id });
         }
       }
     });
   }
 
   handleRefresh(event) {
-    const { commonActions, params, pathname } = this.props;
+    const { requestRefreshEntries, params, pathname } = this.props;
     event.preventDefault();
-    commonActions.requestRefreshEntries(params, pathname);
+    requestRefreshEntries(params, pathname);
   }
 
   requestParams(props) {
@@ -193,7 +197,7 @@ class EntryListToolbarContainer extends Component {
               onRefreshEntriesClick={this.handleRefresh}
               onRemoveFeedOrCategoryClick={this.handleOnRemoveFeedOrCategory}
               onOpenEditFeedOrCategoryModalClick={this.openEditModal}
-              onToggleSidebarClick={this.props.sidebarActions.toggle} />
+              onToggleSidebarClick={this.props.toggle} />
           )
         }
       </Media>
@@ -218,15 +222,12 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    entriesActions: bindActionCreators(EntriesActions, dispatch),
-    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
-    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
-    sidebarActions: bindActionCreators(sidebar.actions, dispatch),
-    routerActions: bindActionCreators(RouterActions, dispatch),
-    commonActions: bindActionCreators(CommonActions, dispatch)
-  };
-}
-
+const mapDispatchToProps = {
+  ...entriesActions,
+  ...subscriptionsActions,
+  ...categoriesActions,
+  ...sidebarActions,
+  ...routerActions,
+  ...commonActions
+};
 export default connect(mapStateToProps, mapDispatchToProps)(EntryListToolbarContainer);

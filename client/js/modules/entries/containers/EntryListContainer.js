@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import Media from 'react-media';
@@ -59,8 +58,10 @@ class EntryListContainer extends Component {
     children: PropTypes.node,
 
     // actions
-    entriesActions: PropTypes.object.isRequired,
-    commonActions: PropTypes.object.isRequired
+    requestRefreshEntries: PropTypes.func.isRequired,
+    requestFetchEntries: PropTypes.func.isRequired,
+    navigateToEntry: PropTypes.func.isRequired,
+    requestLoadMore: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -76,16 +77,16 @@ class EntryListContainer extends Component {
   }
 
   componentDidMount() {
-    const { entriesActions } = this.props;
+    const { requestFetchEntries } = this.props;
 
-    entriesActions.requestFetchEntries(this.requestParams(this.props))
+    requestFetchEntries(this.requestParams(this.props))
       .then(() => {
         this.firstEntry();
       });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { entriesActions } = this.props;
+    const { requestFetchEntries } = this.props;
 
     // if we changed routes...
     if (nextProps.location.key !== this.props.location.key) {
@@ -98,7 +99,7 @@ class EntryListContainer extends Component {
       } else if (p.category_id && np.category_id && p.category_id === np.category_id) {
         // noop
       } else {
-        entriesActions.requestFetchEntries(np);
+        requestFetchEntries(np);
       }
     }
   }
@@ -112,8 +113,8 @@ class EntryListContainer extends Component {
   }
 
   navigateTo(entryId) {
-    const { commonActions, params, pathname } = this.props;
-    commonActions.navigateToEntry(entryId, params, pathname);
+    const { navigateToEntry, params, pathname } = this.props;
+    navigateToEntry(entryId, params, pathname);
   }
 
   handleSelectCurrentEntry(entry) {
@@ -125,9 +126,9 @@ class EntryListContainer extends Component {
   }
 
   handleRefresh(event) {
-    const { commonActions, params, pathname } = this.props;
+    const { requestRefreshEntries, params, pathname } = this.props;
     event.preventDefault();
-    commonActions.requestRefreshEntries(params, pathname);
+    requestRefreshEntries(params, pathname);
   }
 
   requestParams(props) {
@@ -143,7 +144,7 @@ class EntryListContainer extends Component {
       sortedSubscriptions,
       currentEntry,
     } = this.props;
-    const { entriesActions } = this.props;
+    const { requestLoadMore } = this.props;
 
     let items;
     if (currentViewLayout === 'list' || currentViewLayout === 'compact_list') {
@@ -170,7 +171,7 @@ class EntryListContainer extends Component {
     const paginatedItems = (
       <InfiniteScroll
         threshold={300}
-        loadMore={() => entriesActions.requestLoadMore(this.requestParams(this.props))}
+        loadMore={() => requestLoadMore(this.requestParams(this.props))}
         hasMore={entries.hasMoreEntries}>
 
         {entries.listedIds.length > 0 && items}
@@ -271,11 +272,6 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    entriesActions: bindActionCreators(EntriesActions, dispatch),
-    commonActions: bindActionCreators(CommonActions, dispatch)
-  };
-}
+const dispatchToProps = { ...EntriesActions, ...CommonActions };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EntryListContainer);
+export default connect(mapStateToProps, dispatchToProps)(EntryListContainer);
