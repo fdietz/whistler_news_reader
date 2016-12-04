@@ -24,6 +24,7 @@ class Dropdown extends Component {
 
     this.toggleActive = this.toggleActive.bind(this);
     this.onWindowClick = this.onWindowClick.bind(this);
+    this.handleClickInsideDropdownContent = this.handleClickInsideDropdownContent.bind(this);
   }
 
   componentDidMount() {
@@ -39,12 +40,10 @@ class Dropdown extends Component {
     if (this.state.active && !this.dropdownRef.contains(event.target)) {
       this.hide();
     }
+  }
 
-    // click inside
-    if (this.state.active && this.dropdownContentRef &&
-      this.dropdownContentRef.contains(event.target)) {
-      this.hide();
-    }
+  handleClickInsideDropdownContent() {
+    this.hide();
   }
 
   toggleActive(event) {
@@ -84,7 +83,7 @@ class Dropdown extends Component {
       } else if (child.type === DropdownContent) {
         return cloneElement(child, {
           active,
-          ref: (r) => { this.dropdownContentRef = r; },
+          onClick: this.handleClickInsideDropdownContent
         });
       }
       return child;
