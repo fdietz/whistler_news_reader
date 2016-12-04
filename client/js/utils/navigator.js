@@ -1,4 +1,6 @@
 export function mapRequestParams(routeParams, pathname) {
+  if (!pathname) throw new Error('Param missing pathname');
+
   if (routeParams.subscription_id && pathname.startsWith('/subscriptions')) {
     return { subscription_id: +routeParams.subscription_id };
   } else if (routeParams.category_id && pathname.startsWith('/categories')) {

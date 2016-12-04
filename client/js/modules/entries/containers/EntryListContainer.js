@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
-import debounce from 'lodash.debounce';
 import { connect } from 'react-redux';
-import { routerActions as RouterActions } from 'react-router-redux';
 import classNames from 'classnames';
 import Media from 'react-media';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -16,18 +14,16 @@ import LayoutDetailPage from '../../../layouts/LayoutDetailPage';
 import InfiniteScroll from '../components/InfiniteScroll';
 import EntryList from '../components/list/EntryList';
 import EntryGrid from '../components/grid/EntryGrid';
+
+import EntryListToolbarContainer from './EntryListToolbarContainer';
+
 import NoMoreContent from '../components/NoMoreContent';
-import EntryListToolbar from '../components/EntryListToolbar';
-// import EntryListToolbarMobile from '../components/EntryListToolbarMobile';
 import WelcomeTeaser from '../components/WelcomeTeaser';
 import NothingLeftToReadTeaser from '../components/NothingLeftToReadTeaser';
 import NoArticleSelectedTeaser from '../components/NoArticleSelectedTeaser';
 
-import user from '../../user';
 import * as EntriesActions from '../actions';
-import * as SubscriptionsActions from '../../subscriptions/actions';
-import * as CategoriesActions from '../../categories/actions';
-import * as SidebarActions from '../../sidebar/actions';
+import * as CommonActions from '../../../actions';
 
 import {
   getSortedSubscriptions,
@@ -38,8 +34,7 @@ import {
   getNextEntryId,
 } from '../../../redux/selectors';
 
-import { bindHotKey, unbindHotKey } from '../../../utils/HotKeys';
-import { entryPath, mapRequestParams, configPathname } from '../../../utils/navigator';
+import { mapRequestParams } from '../../../utils/navigator';
 
 class EntryListContainer extends Component {
   static propTypes = {
@@ -51,28 +46,21 @@ class EntryListContainer extends Component {
       isLoading: PropTypes.bool.isRequired,
       error: PropTypes.string,
     }).isRequired,
-    entry: PropTypes.object,
-    sidebar: PropTypes.object.isRequired,
+    currentEntry: PropTypes.object,
     hasPreviousEntry: PropTypes.bool.isRequired,
     hasNextEntry: PropTypes.bool.isRequired,
     previousEntryId: PropTypes.number,
     nextEntryId: PropTypes.number,
+
     sortedSubscriptions: PropTypes.array.isRequired,
-    subscriptions: PropTypes.object.isRequired,
-    categories: PropTypes.object.isRequired,
-    currentUser: PropTypes.object,
     params: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
     children: PropTypes.node,
 
     // actions
-    userActions: PropTypes.object.isRequired,
-    subscriptionsActions: PropTypes.object.isRequired,
-    categoriesActions: PropTypes.object.isRequired,
     entriesActions: PropTypes.object.isRequired,
-    sidebarActions: PropTypes.object.isRequired,
-    routerActions: PropTypes.object.isRequired,
+    commonActions: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -84,19 +72,6 @@ class EntryListContainer extends Component {
 
     this.handleSelectCurrentEntry = this.handleSelectCurrentEntry.bind(this);
     this.handleViewLayoutChange = this.handleViewLayoutChange.bind(this);
-
-    this.refreshEntries = this.refreshEntries.bind(this);
-    this.markAsRead = this.markAsRead.bind(this);
-    this.openExternal = this.openExternal.bind(this);
-
-    this.nextEntry = this.nextEntry.bind(this);
-    this.previousEntry = this.previousEntry.bind(this);
-    this.openEditModal = this.openEditModal.bind(this);
-    this.handleOnRemoveFeedOrCategory = this.handleOnRemoveFeedOrCategory.bind(this);
-
-    this.debouncedNextEntry = debounce(this.nextEntry, 100);
-    this.debouncedPreviousEntry = debounce(this.previousEntry, 100);
-
     this.handleRefresh = this.handleRefresh.bind(this);
   }
 
@@ -107,10 +82,6 @@ class EntryListContainer extends Component {
       .then(() => {
         this.firstEntry();
       });
-
-    bindHotKey('nextEntry', () => this.debouncedNextEntry());
-    bindHotKey('previousEntry', () => this.debouncedPreviousEntry());
-    bindHotKey('openEntry', () => this.debouncedOpenEntryContentModal());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -132,45 +103,6 @@ class EntryListContainer extends Component {
     }
   }
 
-  componentWillUnmount() {
-    unbindHotKey('nextEntry');
-    unbindHotKey('previousEntry');
-    unbindHotKey('openEntry');
-  }
-
-  getTitle() {
-    const { subscriptions, categories } = this.props;
-    const isSubscriptionSelected = location.pathname.startsWith('/subscriptions');
-    const isCategorySelected = location.pathname.startsWith('/categories');
-    const params = this.requestParams(this.props);
-
-    let title = '';
-    if (params.subscription_id === 'all') {
-      title = 'All';
-    } else if (params.subscription_id === 'today') {
-      title = 'Today';
-    } else if (isSubscriptionSelected) {
-      const subscription = subscriptions.byId[+params.subscription_id];
-      if (subscription) title = subscription.title;
-    } else if (isCategorySelected) {
-      const category = categories.byId[+params.category_id];
-      if (category) title = category.title;
-    }
-
-    return title;
-  }
-
-  nextEntry() {
-    const { entriesActions, hasNextEntry, nextEntryId } = this.props;
-    if (hasNextEntry) {
-      this.navigateTo(nextEntryId);
-    } else {
-      entriesActions.requestLoadMore(this.requestParams(this.props)).then(() => {
-        this.navigateTo(nextEntryId);
-      });
-    }
-  }
-
   firstEntry() {
     const { entries } = this.props;
     if (entries.listedIds.length > 0) {
@@ -179,58 +111,9 @@ class EntryListContainer extends Component {
     }
   }
 
-  previousEntry() {
-    const { hasPreviousEntry, previousEntryId } = this.props;
-    if (hasPreviousEntry) {
-      this.navigateTo(previousEntryId);
-    }
-  }
-
-  markAsRead() {
-    const {
-      sortedSubscriptions,
-      subscriptionsActions,
-      categoriesActions,
-      entriesActions
-    } = this.props;
-    const params = this.requestParams(this.props);
-
-    entriesActions.requestMarkAllEntriesAsRead(params).then(() => {
-      if (params.subscription_id === 'all' || params.subscription_id === 'today') {
-        subscriptionsActions.requestFetchSubscriptions().then(() => {
-          categoriesActions.requestFetchCategories();
-        });
-      } else if (params.subscription_id) {
-        subscriptionsActions.resetUnreadCount({ id: +params.subscription_id });
-      } else if (params.category_id) {
-        const matchedSubscriptions = sortedSubscriptions.filter(subscription =>
-          subscription.category_id === +params.category_id);
-        for (const subscription of matchedSubscriptions) {
-          subscriptionsActions.resetUnreadCount({ id: subscription.id });
-        }
-      }
-    });
-  }
-
-  openExternal() {
-    window.open(this.props.entry.url, '_blank');
-  }
-
-
-  handleOnRemoveFeedOrCategory() {
-    const { subscriptionsActions, categoriesActions } = this.props;
-    const params = this.requestParams(this.props);
-
-    if (params.subscription_id) {
-      subscriptionsActions.requestRemoveSubscription(+params.subscription_id);
-    } else if (params.category_id) {
-      categoriesActions.requestRemoveCategory(+params.category_id);
-    }
-  }
-
   navigateTo(entryId) {
-    const { routerActions, params, pathname } = this.props;
-    routerActions.push(entryPath(entryId, params, pathname));
+    const { commonActions, params, pathname } = this.props;
+    commonActions.navigateToEntry(entryId, params, pathname);
   }
 
   handleSelectCurrentEntry(entry) {
@@ -242,20 +125,9 @@ class EntryListContainer extends Component {
   }
 
   handleRefresh(event) {
+    const { commonActions, params, pathname } = this.props;
     event.preventDefault();
-    this.refreshEntries();
-  }
-
-  openEditModal() {
-    const { routerActions, params, pathname } = this.props;
-
-    routerActions.push({ pathname: configPathname(params, pathname), state: { modal: true } });
-  }
-
-  refreshEntries() {
-    const { entriesActions, subscriptionsActions } = this.props;
-    entriesActions.requestFetchEntries(this.requestParams(this.props));
-    subscriptionsActions.requestFetchSubscriptions();
+    commonActions.requestRefreshEntries(params, pathname);
   }
 
   requestParams(props) {
@@ -269,19 +141,16 @@ class EntryListContainer extends Component {
       entries,
       sortedEntries,
       sortedSubscriptions,
-      entry,
-      location,
-      hasPreviousEntry,
-      hasNextEntry,
+      currentEntry,
     } = this.props;
-    const { entriesActions, sidebarActions } = this.props;
+    const { entriesActions } = this.props;
 
     let items;
     if (currentViewLayout === 'list' || currentViewLayout === 'compact_list') {
       items = (
         <EntryList
           entries={sortedEntries}
-          currentEntry={entry}
+          currentEntry={currentEntry}
           onEntryClick={e => this.handleSelectCurrentEntry(e)}
           className={currentViewLayout === 'compact_list' ? 'compact' : ''}
       />
@@ -290,7 +159,7 @@ class EntryListContainer extends Component {
       items = (
         <EntryGrid
           entries={sortedEntries}
-          currentEntry={entry}
+          currentEntry={currentEntry}
           onEntryClick={e => this.handleSelectCurrentEntry(e)}
       />
       );
@@ -309,9 +178,6 @@ class EntryListContainer extends Component {
       </InfiniteScroll>
     );
 
-    const isSubscriptionSelected = location.pathname.startsWith('/subscriptions');
-    const isCategorySelected = location.pathname.startsWith('/categories');
-
     const hasChildren = React.Children.count(this.props.children) > 0;
 
     const masterListCls = classNames('layout-master-page', {
@@ -320,30 +186,11 @@ class EntryListContainer extends Component {
     });
 
     const responsiveToolbar = (
-      <Media query="(max-width: 40em)">
-        {
-          (matches) => (
-            <EntryListToolbar
-              isMobile={matches}
-              title={this.getTitle()}
-              currentViewLayout={currentViewLayout}
-              showSpinner={entries.isLoading}
-              hasPreviousEntry={hasPreviousEntry}
-              hasNextEntry={hasNextEntry}
-              isSubscriptionSelected={isSubscriptionSelected}
-              isCategorySelected={isCategorySelected}
-              onMarkAsReadClick={this.markAsRead}
-              onRefreshEntriesClick={this.refreshEntries}
-              onRemoveFeedOrCategoryClick={this.handleOnRemoveFeedOrCategory}
-              onViewLayoutChangeClick={this.handleViewLayoutChange}
-              onOpenEditFeedOrCategoryModalClick={this.openEditModal}
-              onPreviousEntryClick={this.previousEntry}
-              onNextEntryClick={this.nextEntry}
-              onOpenExternalClick={this.openExternal}
-              onToggleSidebarClick={sidebarActions.toggle} />
-          )
-        }
-      </Media>
+      <EntryListToolbarContainer
+        params={this.props.params}
+        pathname={this.props.pathname}
+        currentViewLayout={currentViewLayout}
+        onViewLayoutChangeClick={this.handleViewLayoutChange} />
     );
 
     const mainList = (
@@ -411,33 +258,23 @@ class EntryListContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    currentUser: state.user.current,
-    subscriptions: state.subscriptions,
     sortedSubscriptions: getSortedSubscriptions(state),
     entries: state.entries,
-    sidebar: state.sidebar,
-    entry: state.entries.byId[ownProps.params.id],
+    currentEntry: state.entries.byId[ownProps.params.id],
     hasPreviousEntry: getHasPreviousEntry(state, ownProps),
     hasNextEntry: getHasNextEntry(state, ownProps),
     previousEntryId: getPreviousEntryId(state, ownProps),
     nextEntryId: getNextEntryId(state, ownProps),
     sortedEntries: getSortedEntries(state),
-    categories: state.categories,
     pathname: ownProps.location.pathname,
-    location: ownProps.location,
-    notification: state.notification,
-    modals: state.modals,
+    location: ownProps.location
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators(user.actions, dispatch),
     entriesActions: bindActionCreators(EntriesActions, dispatch),
-    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
-    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
-    sidebarActions: bindActionCreators(SidebarActions, dispatch),
-    routerActions: bindActionCreators(RouterActions, dispatch),
+    commonActions: bindActionCreators(CommonActions, dispatch)
   };
 }
 

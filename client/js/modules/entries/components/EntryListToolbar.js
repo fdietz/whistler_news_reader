@@ -212,16 +212,11 @@ EntryListToolbar.propTypes = {
   showSpinner: PropTypes.bool.isRequired,
   isSubscriptionSelected: PropTypes.bool.isRequired,
   isCategorySelected: PropTypes.bool.isRequired,
-  hasPreviousEntry: PropTypes.bool.isRequired,
-  hasNextEntry: PropTypes.bool.isRequired,
   onMarkAsReadClick: PropTypes.func.isRequired,
   onRefreshEntriesClick: PropTypes.func.isRequired,
   onRemoveFeedOrCategoryClick: PropTypes.func.isRequired,
   onViewLayoutChangeClick: PropTypes.func.isRequired,
   onOpenEditFeedOrCategoryModalClick: PropTypes.func.isRequired,
-  onPreviousEntryClick: PropTypes.func.isRequired,
-  onNextEntryClick: PropTypes.func.isRequired,
-  onOpenExternalClick: PropTypes.func.isRequired,
   onToggleSidebarClick: PropTypes.func.isRequired
 };
 
