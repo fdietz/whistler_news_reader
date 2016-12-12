@@ -20,6 +20,7 @@ import NoMoreContent from '../components/NoMoreContent';
 import WelcomeTeaser from '../components/WelcomeTeaser';
 import NothingLeftToReadTeaser from '../components/NothingLeftToReadTeaser';
 import NoArticleSelectedTeaser from '../components/NoArticleSelectedTeaser';
+import LoadingTeaser from '../components/LoadingTeaser';
 
 import * as EntriesActions from '../actions';
 import * as CommonActions from '../../../actions';
@@ -204,6 +205,16 @@ class EntryListContainer extends Component {
     );
 
     const segment = this.props.pathname.split('/')[2];
+
+    if (entries.isLoading) {
+      return (
+        <div className="layout-master-container">
+          <LayoutDetailPage>
+            <LoadingTeaser toolbar={responsiveToolbar}/>
+          </LayoutDetailPage>
+        </div>
+      );
+    }
 
     return (
       <div className="layout-master-container">
