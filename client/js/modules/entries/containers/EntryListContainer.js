@@ -206,24 +206,20 @@ class EntryListContainer extends Component {
 
     const segment = this.props.pathname.split('/')[2];
 
-    if (entries.isLoading) {
-      return (
-        <div className="layout-master-container">
-          <LayoutDetailPage>
-            <LoadingTeaser toolbar={responsiveToolbar}/>
-          </LayoutDetailPage>
-        </div>
-      );
-    }
-
     return (
       <div className="layout-master-container">
         {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 && mainList}
 
-        {!hasChildren && sortedSubscriptions.length === 0 &&
-          <LayoutDetailPage>
-            <WelcomeTeaser toolbar={responsiveToolbar} />
-          </LayoutDetailPage>
+        {entries.listedIds.length === 0 && entries.isLoading &&
+          <Media query="(max-width: 40em)">
+            {matches => {
+              return matches ? (
+                <LayoutDetailPage>
+                  <LoadingTeaser toolbar={responsiveToolbar}/>
+                </LayoutDetailPage>
+              ) : null;
+            }}
+          </Media>
         }
 
         {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
@@ -235,7 +231,7 @@ class EntryListContainer extends Component {
           </Media>
         }
 
-        {sortedSubscriptions.length > 0 && entries.listedIds.length === 0 &&
+        {sortedSubscriptions.length > 0 && entries.listedIds.length === 0 && !entries.isLoading &&
           <LayoutDetailPage>
             <NothingLeftToReadTeaser toolbar={responsiveToolbar} onRefresh={this.handleRefresh} />
           </LayoutDetailPage>
