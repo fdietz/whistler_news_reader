@@ -11,15 +11,6 @@
   @include respond-to(small-screen) {
     margin-right: -$space-2;
     margin-left: -$space-2;
-
-    .btn {
-      padding: 1em;
-
-      svg {
-        width: 24px;
-        height: 24px;
-      }
-    }
   }
 
 }
@@ -44,7 +35,7 @@
   header {
     display: flex;
 
-    // margin-left: $space-2;
+    // margin-left: 50px;
 
     align-items: center;
 

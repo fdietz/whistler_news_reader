@@ -48,9 +48,9 @@ $entry-list-secondary-color: $gray-3;
   &.unread {
     opacity: 1;
 
-    .entry-title {
-      font-weight: 600;
-    }
+    // .entry-title {
+    //   font-weight: 600;
+    // }
 
     .meta .circle {
       display: inline-block;

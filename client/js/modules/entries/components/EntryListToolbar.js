@@ -57,7 +57,8 @@ const EntryListToolbar = ({
         <Button
           type="header"
           onClick={onToggleSidebarClick}
-          title="Toggle Sidebar">
+          title="Toggle Sidebar"
+          className="logo">
           <Menu2SVGIcon color="light-gray" size="small" />
         </Button>
       }
