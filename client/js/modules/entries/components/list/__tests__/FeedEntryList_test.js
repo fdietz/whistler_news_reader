@@ -1,4 +1,3 @@
-import test from 'ava';
 import React from 'react';
 import { shallow } from 'enzyme';
 import EntryList from '../EntryList';
@@ -10,16 +9,17 @@ const entry = {
   published: '2016-01-01',
   unread: true,
   summary: 'summary',
+  image_url: 'url',
   feed: {
     id: 1,
     title: 'feed title',
   },
 };
 
-test('EntryList renders correctly', t => {
+test('EntryList renders correctly', () => {
   const wrapper = shallow(
     <EntryList entries={[entry]} currentEntry={entry} onEntryClick={() => {}} />
   );
   const feedEntry = wrapper.find(EntryListItem);
-  t.deepEqual(feedEntry.prop('entry').title, 'title');
+  expect(feedEntry.prop('entry').title).toEqual('title');
 });

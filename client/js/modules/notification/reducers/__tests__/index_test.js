@@ -1,13 +1,9 @@
 /* eslint no-undefined: 0*/
-import test from 'ava';
-import {
-  CREATE_NOTIFICATION,
-  RESET_NOTIFICATION,
-} from '../../actions';
+import { CREATE_NOTIFICATION, RESET_NOTIFICATION } from '../../actions';
 import reducer from '../index';
 
-test('notification reducer returns default state', t => {
-  t.deepEqual(reducer(undefined, {}), {
+test('notification reducer returns default state', () => {
+  expect(reducer(undefined, {})).toEqual({
     message: null,
     type: 'info',
     isRetry: false,
@@ -15,20 +11,20 @@ test('notification reducer returns default state', t => {
   });
 });
 
-test('notification reducer CREATE_NOTIFICATION', t => {
-  t.deepEqual(reducer(undefined, {
+test('notification reducer CREATE_NOTIFICATION', () => {
+  expect(reducer(undefined, {
     type: CREATE_NOTIFICATION,
     payload: { message: 'test' },
-  }), {
+  })).toEqual({
     message: 'test',
   });
 });
 
-test('notification reducer RESET_NOTIFICATION', t => {
-  t.deepEqual(reducer(undefined, {
+test('notification reducer RESET_NOTIFICATION', () => {
+  expect(reducer(undefined, {
     type: RESET_NOTIFICATION,
     payload: null,
-  }), {
+  })).toEqual({
     message: null,
     type: 'info',
     isRetry: false,

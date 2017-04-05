@@ -1,7 +1,4 @@
 /* eslint no-undefined: 0*/
-import test from 'ava';
-// import configureMockStore from 'redux-mock-store';
-// import thunk from 'redux-thunk';
 import nock from 'nock';
 
 import {
@@ -13,11 +10,11 @@ import reducer from '../index';
 // const middlewares = [thunk];
 // const mockStore = configureMockStore(middlewares);
 
-test.beforeEach(() => {
+beforeEach(() => {
   nock.disableNetConnect();
 });
 
-test.afterEach(() => {
+afterEach(() => {
   nock.cleanAll();
   nock.enableNetConnect();
 });
@@ -60,8 +57,8 @@ test.afterEach(() => {
 //   });
 // });
 
-test('feedForm reducer returns default state', t => {
-  t.deepEqual(reducer(undefined, {}), {
+test('feedForm reducer returns default state', () => {
+  expect(reducer(undefined, {})).toEqual({
     searchTerm: '',
     feedExists: false,
     isFeedUrl: false,
@@ -72,8 +69,8 @@ test('feedForm reducer returns default state', t => {
   });
 });
 
-test('feedForm reducer handles FEED_FORM_UPDATE with empty payload', t => {
-  t.deepEqual(reducer(undefined, { type: FEED_FORM_UPDATE, payload: null }), {
+test('feedForm reducer handles FEED_FORM_UPDATE with empty payload', () => {
+  expect(reducer(undefined, { type: FEED_FORM_UPDATE, payload: null })).toEqual({
     searchTerm: '',
     feedExists: false,
     isFeedUrl: false,
@@ -84,11 +81,11 @@ test('feedForm reducer handles FEED_FORM_UPDATE with empty payload', t => {
   });
 });
 
-test('feedForm reducer handles FEED_FORM_UPDATE with payload', t => {
-  t.deepEqual(reducer(undefined, {
+test('feedForm reducer handles FEED_FORM_UPDATE with payload', () => {
+  expect(reducer(undefined, {
     type: FEED_FORM_UPDATE,
     payload: { searchTerm: 'http://test.de/rss2.xml' },
-  }), {
+  })).toEqual({
     searchTerm: 'http://test.de/rss2.xml',
     feedExists: false,
     isFeedUrl: false,

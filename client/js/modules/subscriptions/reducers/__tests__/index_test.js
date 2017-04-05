@@ -1,31 +1,23 @@
 /* eslint no-undefined: 0*/
-import test from 'ava';
-import {
-  FETCH_SUBSCRIPTIONS,
-  REMOVE_SUBSCRIPTION,
-  CREATE_SUBSCRIPTION,
-  UPDATE_SUBSCRIPTION,
-  DECREMENT_UNREAD_COUNT,
-  RESET_UNREAD_COUNT,
-} from '../../actions';
+import { FETCH_SUBSCRIPTIONS, REMOVE_SUBSCRIPTION, CREATE_SUBSCRIPTION, UPDATE_SUBSCRIPTION, DECREMENT_UNREAD_COUNT, RESET_UNREAD_COUNT } from '../../actions';
 
 import reducer from '../index';
 
-test('subscriptions reducer returns default state', t => {
-  t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });
+test('subscriptions reducer returns default state', () => {
+  expect(reducer(undefined, {})).toEqual({ byId: {}, listedIds: [], isLoading: false, error: null });
 });
 
-test('subscriptions reducer FETCH_SUBSCRIPTIONS without payload', t => {
+test('subscriptions reducer FETCH_SUBSCRIPTIONS without payload', () => {
   const newState = reducer(undefined, {
     type: FETCH_SUBSCRIPTIONS,
     payload: null,
   });
-  t.deepEqual(newState, {
+  expect(newState).toEqual({
     byId: {}, listedIds: [], isLoading: true, error: null,
   });
 });
 
-test('subscriptions reducer FETCH_SUBSCRIPTIONS with payload', t => {
+test('subscriptions reducer FETCH_SUBSCRIPTIONS with payload', () => {
   const newState = reducer(undefined, {
     type: FETCH_SUBSCRIPTIONS,
     payload: {
@@ -35,7 +27,7 @@ test('subscriptions reducer FETCH_SUBSCRIPTIONS with payload', t => {
       },
     },
   });
-  t.deepEqual(newState, {
+  expect(newState).toEqual({
     byId: {
       1: { id: 1 },
     },
@@ -45,13 +37,13 @@ test('subscriptions reducer FETCH_SUBSCRIPTIONS with payload', t => {
   });
 });
 
-test('subscriptions reducer FETCH_SUBSCRIPTIONS with error', t => {
+test('subscriptions reducer FETCH_SUBSCRIPTIONS with error', () => {
   const newState = reducer(undefined, {
     type: FETCH_SUBSCRIPTIONS,
     error: true,
     payload: { message: 'too short' },
   });
-  t.deepEqual(newState, {
+  expect(newState).toEqual({
     byId: {},
     listedIds: [],
     isLoading: false,
@@ -59,12 +51,12 @@ test('subscriptions reducer FETCH_SUBSCRIPTIONS with error', t => {
   });
 });
 
-test('subscriptions reducer CREATE_SUBSCRIPTION with payload', t => {
+test('subscriptions reducer CREATE_SUBSCRIPTION with payload', () => {
   const newState = reducer(undefined, {
     type: CREATE_SUBSCRIPTION,
     payload: { id: 1 },
   });
-  t.deepEqual(newState, {
+  expect(newState).toEqual({
     byId: {
       1: { id: 1 },
     },
@@ -74,7 +66,7 @@ test('subscriptions reducer CREATE_SUBSCRIPTION with payload', t => {
   });
 });
 
-test('subscriptions reducer UPDATE_SUBSCRIPTION with payload', t => {
+test('subscriptions reducer UPDATE_SUBSCRIPTION with payload', () => {
   const oldState = {
     byId: {
       1: { id: 1, title: 'old' },
@@ -87,7 +79,7 @@ test('subscriptions reducer UPDATE_SUBSCRIPTION with payload', t => {
     type: UPDATE_SUBSCRIPTION,
     payload: { id: 1, title: 'new' },
   });
-  t.deepEqual(newState, {
+  expect(newState).toEqual({
     byId: {
       1: { id: 1, title: 'new' },
     },
@@ -97,7 +89,7 @@ test('subscriptions reducer UPDATE_SUBSCRIPTION with payload', t => {
   });
 });
 
-test('subscriptions reducer DECREMENT_UNREAD_COUNT', t => {
+test('subscriptions reducer DECREMENT_UNREAD_COUNT', () => {
   const oldState = {
     byId: {
       1: { id: 1, unread_count: 2 },
@@ -110,7 +102,7 @@ test('subscriptions reducer DECREMENT_UNREAD_COUNT', t => {
     type: DECREMENT_UNREAD_COUNT,
     payload: { id: 1 },
   });
-  t.deepEqual(newState, {
+  expect(newState).toEqual({
     byId: {
       1: { id: 1, unread_count: 1 },
     },
@@ -120,7 +112,7 @@ test('subscriptions reducer DECREMENT_UNREAD_COUNT', t => {
   });
 });
 
-test('subscriptions reducer RESET_UNREAD_COUNT for feed_id', t => {
+test('subscriptions reducer RESET_UNREAD_COUNT for feed_id', () => {
   const oldState = {
     byId: {
       1: { id: 1, unread_count: 2, category_id: 1 },
@@ -133,7 +125,7 @@ test('subscriptions reducer RESET_UNREAD_COUNT for feed_id', t => {
     type: RESET_UNREAD_COUNT,
     payload: { id: 1 },
   });
-  t.deepEqual(newState, {
+  expect(newState).toEqual({
     byId: {
       1: { id: 1, unread_count: 0, category_id: 1 },
     },
@@ -143,7 +135,7 @@ test('subscriptions reducer RESET_UNREAD_COUNT for feed_id', t => {
   });
 });
 
-test('subscriptions reducer REMOVE_SUBSCRIPTION with payload', t => {
+test('subscriptions reducer REMOVE_SUBSCRIPTION with payload', () => {
   const oldState = {
     byId: {
       1: { id: 1 },
@@ -156,7 +148,7 @@ test('subscriptions reducer REMOVE_SUBSCRIPTION with payload', t => {
     type: REMOVE_SUBSCRIPTION,
     payload: { id: 1 },
   });
-  t.deepEqual(newState, {
+  expect(newState).toEqual({
     byId: {},
     listedIds: [],
     isLoading: false,

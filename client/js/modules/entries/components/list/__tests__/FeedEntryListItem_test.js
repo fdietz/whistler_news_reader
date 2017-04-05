@@ -1,4 +1,3 @@
-import test from 'ava';
 import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
@@ -13,6 +12,7 @@ const entry = {
   summary: 'summary',
   subscription_id: 1,
   subscription_title: 'feed title',
+  image_url: 'test'
 };
 
 const props = {
@@ -21,15 +21,15 @@ const props = {
   onClick: () => {},
 };
 
-test('EntryListItem render correctly', t => {
+test('EntryListItem render correctly', () => {
   const wrapper = shallow(<EntryListItem {...props} />);
-  t.true(wrapper.find('.entry-title').text() === 'title');
-  t.true(wrapper.find('.feed-title').text() === 'feed title');
+  expect(wrapper.find('.entry-title').text() === 'title').toBe(true);
+  expect(wrapper.find('.feed-title').text() === 'feed title').toBe(true);
 });
 
-test('EntryListItem fire onClick', t => {
+test('EntryListItem fire onClick', () => {
   const spy = sinon.spy();
   const wrapper = shallow(<EntryListItem {...props} onClick={spy} />);
   wrapper.simulate('click');
-  t.true(spy.calledOnce);
+  expect(spy.calledOnce).toBe(true);
 });

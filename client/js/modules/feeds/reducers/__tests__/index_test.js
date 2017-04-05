@@ -1,23 +1,22 @@
 /* eslint no-undefined: 0*/
-import test from 'ava';
 import reducer from '../index';
 import { SEARCH_FEEDS } from '../../actions';
 
-test('feeds reducer returns default state', t => {
-  t.deepEqual(reducer(undefined, {}), { byId: {}, listedIds: [], isLoading: false, error: null });
+test('feeds reducer returns default state', () => {
+  expect(reducer(undefined, {})).toEqual({ byId: {}, listedIds: [], isLoading: false, error: null });
 });
 
-test('feeds reducer SEARCH_FEEDS without payload', t => {
+test('feeds reducer SEARCH_FEEDS without payload', () => {
   const newState = reducer(undefined, {
     type: SEARCH_FEEDS,
     payload: null,
   });
-  t.deepEqual(newState, {
+  expect(newState).toEqual({
     byId: {}, listedIds: [], isLoading: true, error: null,
   });
 });
 
-test('feeds reducer SEARCH_FEEDS with payload', t => {
+test('feeds reducer SEARCH_FEEDS with payload', () => {
   const newState = reducer(undefined, {
     type: SEARCH_FEEDS,
     payload: {
@@ -27,7 +26,7 @@ test('feeds reducer SEARCH_FEEDS with payload', t => {
       },
     },
   });
-  t.deepEqual(newState, {
+  expect(newState).toEqual({
     byId: {
       1: { id: 1 },
     },
@@ -37,13 +36,13 @@ test('feeds reducer SEARCH_FEEDS with payload', t => {
   });
 });
 
-test('feeds reducer SEARCH_FEEDS with error', t => {
+test('feeds reducer SEARCH_FEEDS with error', () => {
   const newState = reducer(undefined, {
     type: SEARCH_FEEDS,
     error: true,
     payload: { message: 'too short' },
   });
-  t.deepEqual(newState, {
+  expect(newState).toEqual({
     byId: {},
     listedIds: [],
     isLoading: false,

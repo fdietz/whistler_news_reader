@@ -11,6 +11,7 @@ exports[`Autocomplete renders correctly 1`] = `
     value="" />
   <div
     className="dropdown__content hidden"
+    onClick={undefined}
     style={
       Object {
         "width": "100%"

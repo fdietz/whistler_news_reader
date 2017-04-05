@@ -1,5 +1,6 @@
 exports[`DropdownContent renders correctly 1`] = `
 <div
   className="dropdown__content hidden"
+  onClick={undefined}
   style={undefined} />
 `;
