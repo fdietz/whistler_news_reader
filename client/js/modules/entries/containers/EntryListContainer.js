@@ -215,7 +215,7 @@ class EntryListContainer extends Component {
             {matches => {
               return matches ? (
                 <LayoutDetailPage>
-                  <LoadingTeaser toolbar={responsiveToolbar}/>
+                  <LoadingTeaser toolbar={responsiveToolbar} />
                 </LayoutDetailPage>
               ) : null;
             }}

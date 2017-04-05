@@ -1,13 +1,12 @@
 // Lot's of inspiration from https://github.com/facebookincubator/create-react-app
-var path = require('path');
-var autoprefixer = require('autoprefixer');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var url = require('url');
-var paths = require('./paths');
+const path = require('path');
+const autoprefixer = require('autoprefixer');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const paths = require('./paths');
 
-var publicPath = '/';
+const publicPath = '/';
 
 module.exports = {
   bail: true,
@@ -17,7 +16,7 @@ module.exports = {
     path: paths.appBuild,
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].chunk.js',
-    publicPath: publicPath
+    publicPath
   },
   resolve: {
     extensions: ['', '.js'],
@@ -84,7 +83,7 @@ module.exports = {
       }
     ]
   },
-  postcss: function() {
+  postcss() {
     return [autoprefixer];
   },
   plugins: [

@@ -34,7 +34,7 @@ class EntryGridItem extends Component {
   render() {
     const { entry, isSelected = false, onClick, className } = this.props;
 
-    let cls = classNames('item', className, {
+    const cls = classNames('item', className, {
       selected: isSelected,
       unread: entry.unread,
     });

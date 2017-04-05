@@ -24,7 +24,7 @@ module.exports = {
     path: paths.appBuild,
     pathinfo: true,
     filename: 'js/bundle.js',
-    publicPath: publicPath
+    publicPath
   },
   resolve: {
     extensions: ['.js', '.json', '.jsx', ''],
@@ -90,7 +90,7 @@ module.exports = {
       }
     ]
   },
-  postcss: function() {
+  postcss() {
     return [
       autoprefixer({
         browsers: ['last 2 versions']

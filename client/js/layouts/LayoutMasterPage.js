@@ -8,7 +8,7 @@ const LayoutMasterPage = ({ children, className }) => {
     {children}
     </div>
   );
-}
+};
 
 LayoutMasterPage.propTypes = {
   children: PropTypes.node,
