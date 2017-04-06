@@ -17,7 +17,6 @@ const history = syncHistoryWithStore(browserHistory, store);
 const routes = makeRoutes(store);
 
 const rootElement = document.getElementById('root');
-
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>

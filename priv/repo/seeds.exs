@@ -15,9 +15,8 @@ alias WhistlerNewsReader.User
 
 [
   %{
-    first_name: "admin",
-    last_name: "admin",
-    email: "admin@whistler_news_reader.com",
+    name: "admin",
+    email: "admin@whistlernewsreader.com",
     password: "abc123"
   },
 ]
