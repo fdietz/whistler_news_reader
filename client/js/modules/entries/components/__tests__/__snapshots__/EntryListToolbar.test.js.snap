@@ -1,0 +1,176 @@
+exports[`EntryListToolbar renders correctly 1`] = `
+<div
+  className="toolbar toolbar--titled show-small-screen-only">
+  <button
+    className="btn logo btn-header"
+    onClick={[Function onToggleSidebarClick]}
+    title="Toggle Sidebar">
+    <svg
+      height={20}
+      viewBox="0 0 20 20 "
+      width={20}>
+      <path
+        d="M1.25 3.75h17.5v3.75h-17.5zM1.25 8.75h17.5v3.75h-17.5zM1.25 13.75h17.5v3.75h-17.5z"
+        fill="#98B0D2" />
+    </svg>
+  </button>
+  <header>
+    <div
+      className="title">
+      title
+    </div>
+    <span
+      className="spinner spinner-blink hide">
+      <span
+        className="svg-entypo-icon-spinner_white svg-icon-small" />
+    </span>
+  </header>
+  <div
+    className="right">
+    <button
+      className="btn btn-header"
+      onClick={[Function onRefreshEntriesClick]}
+      title="Fetch new stories">
+      <svg
+        height={20}
+        viewBox="0 0 20 20 "
+        width={20}>
+        <path
+          d="M5.516 14.224c-2.262-2.433-2.222-6.245 0.127-8.611 0.962-0.968 2.164-1.546 3.414-1.736l-0.069-2.077c-1.754 0.213-3.452 0.996-4.797 2.35-3.149 3.172-3.186 8.29-0.123 11.532l-1.741 1.753 5.51 0.301-0.015-5.834-2.306 2.322zM12.162 2.265l0.015 5.834 2.307-2.323c2.262 2.433 2.223 6.245-0.127 8.611-0.962 0.969-2.164 1.546-3.415 1.736l0.069 2.076c1.755-0.213 3.453-0.996 4.798-2.351 3.148-3.171 3.187-8.29 0.122-11.531l1.741-1.753-5.51-0.299z"
+          fill="#98B0D2" />
+      </svg>
+    </button>
+    <div
+      className="dropdown dropdown west"
+      style={undefined}>
+      <a
+        className="dropdown__trigger btn btn-header"
+        onClick={[Function bound toggleActive]}
+        style={undefined}>
+        <svg
+          height={20}
+          viewBox="0 0 20 20 "
+          width={20}>
+          <path
+            d="M3 7.8c-1.215 0-2.2 0.985-2.2 2.2s0.985 2.2 2.2 2.2 2.2-0.985 2.2-2.2c0-1.215-0.985-2.2-2.2-2.2zM10 7.8c-1.215 0-2.2 0.985-2.2 2.2s0.985 2.2 2.2 2.2 2.199-0.985 2.199-2.2c0-1.215-0.984-2.2-2.199-2.2zM17 7.8c-1.215 0-2.2 0.985-2.2 2.2s0.985 2.2 2.2 2.2 2.2-0.985 2.2-2.2c0-1.215-0.985-2.2-2.2-2.2z"
+            fill="#98B0D2" />
+        </svg>
+      </a>
+      <div
+        className="dropdown__content hidden"
+        onClick={[Function bound handleClickInsideDropdownContent]}
+        style={undefined}>
+        <ul
+          className="dropdown__list">
+          <li
+            className="dropdown__list-item">
+            <a
+              onClick={[Function onMarkAsReadClick]}
+              title="Mark all stories as read">
+              <svg
+                height={20}
+                viewBox="0 0 20 20 "
+                width={20}>
+                <path
+                  d="M8.295 17c-0.435 0-0.847-0.203-1.111-0.553l-3.574-4.718c-0.465-0.614-0.344-1.488 0.27-1.953s1.488-0.344 1.953 0.27l2.351 3.104 5.912-9.491c0.407-0.653 1.267-0.853 1.921-0.446 0.653 0.406 0.853 1.267 0.445 1.92l-6.983 11.21c-0.243 0.391-0.662 0.636-1.121 0.656-0.021 0.001-0.042 0.001-0.063 0.001z"
+                  fill="#98B0D2" />
+              </svg>
+              Mark all as read
+            </a>
+          </li>
+          <li
+            className="dropdown__list-separator" />
+          <li
+            className="dropdown__list-item"
+            onClick={[Function bound onViewLayoutChangeClick]}>
+            <input
+              checked={false}
+              className="dropdown-field media"
+              id="list"
+              name="currrent_view_layout"
+              readOnly={true}
+              type="radio" />
+            <label
+              className="dropdown-label content"
+              htmlFor="list">
+              List
+            </label>
+          </li>
+          <li
+            className="dropdown__list-item"
+            onClick={[Function bound onViewLayoutChangeClick]}>
+            <input
+              checked={false}
+              className="dropdown-field media"
+              id="compact_list"
+              name="currrent_view_layout"
+              readOnly={true}
+              type="radio" />
+            <label
+              className="dropdown-label content"
+              htmlFor="compact_list">
+              Compact List
+            </label>
+          </li>
+          <li
+            className="dropdown__list-item"
+            onClick={[Function bound onViewLayoutChangeClick]}>
+            <input
+              checked={false}
+              className="dropdown-field media"
+              id="grid"
+              name="currrent_view_layout"
+              readOnly={true}
+              type="radio" />
+            <label
+              className="dropdown-label content"
+              htmlFor="grid">
+              Grid (experimental)
+            </label>
+          </li>
+          <li
+            className="dropdown__list-separator" />
+          <li
+            className="dropdown__list-item"
+            onClick={[Function onOpenEditFeedOrCategoryModalClick]}>
+            <div
+              className="media">
+              <svg
+                height={20}
+                viewBox="0 0 20 20 "
+                width={20}>
+                <path
+                  d="M16.785 10c0-1.048 0.645-1.875 1.615-2.443-0.176-0.584-0.406-1.145-0.691-1.672-1.090 0.285-1.971-0.142-2.711-0.882-0.742-0.741-0.969-1.623-0.684-2.711-0.527-0.285-1.086-0.518-1.672-0.692-0.568 0.971-1.595 1.616-2.642 1.616s-2.073-0.645-2.642-1.616c-0.586 0.174-1.145 0.407-1.672 0.691 0.284 1.089 0.058 1.971-0.683 2.712s-1.623 1.167-2.711 0.883c-0.285 0.526-0.517 1.087-0.692 1.671 0.971 0.568 1.616 1.395 1.616 2.443 0 1.047-0.645 2.074-1.616 2.643 0.175 0.585 0.407 1.145 0.692 1.672 1.089-0.285 1.97-0.058 2.711 0.683s0.967 1.622 0.683 2.711c0.527 0.285 1.087 0.518 1.672 0.692 0.569-0.972 1.595-1.616 2.642-1.616s2.075 0.645 2.643 1.616c0.586-0.175 1.145-0.407 1.672-0.692-0.285-1.089-0.059-1.97 0.684-2.711 0.74-0.74 1.621-1.167 2.711-0.883 0.285-0.527 0.516-1.087 0.691-1.672-0.971-0.569-1.616-1.396-1.616-2.443zM10 13.653c-2.017 0-3.652-1.636-3.652-3.653s1.635-3.653 3.652-3.653c2.018 0 3.653 1.636 3.653 3.653s-1.635 3.653-3.653 3.653z"
+                  fill="#98B0D2" />
+              </svg>
+            </div>
+            <div
+              className="content">
+              Settings
+            </div>
+          </li>
+          <li
+            className="dropdown__list-item"
+            onClick={[Function onRemoveFeedOrCategoryClick]}>
+            <div
+              className="media">
+              <svg
+                height={20}
+                viewBox="0 0 20 20 "
+                width={20}>
+                <path
+                  d="M3.389 7.912l1.102 9.709c0.059 0.461 2.285 1.977 5.509 1.979 3.224-0.002 5.451-1.518 5.51-1.979l1.102-9.709c-1.684 0.942-4.201 1.388-6.612 1.388s-4.928-0.446-6.611-1.388zM13.167 1.912l-0.859-0.953c-0.331-0.471-0.691-0.559-1.392-0.559h-1.832c-0.7 0-1.060 0.088-1.392 0.559l-0.858 0.953c-2.57 0.449-4.434 1.64-4.434 2.518v0.171c0 1.546 3.402 2.8 7.6 2.8s7.6-1.254 7.6-2.8v-0.171c0-0.878-1.863-2.069-4.433-2.518zM12.069 4.139l-1.252-1.339h-1.634l-1.252 1.339h-1.7c0 0 1.862-2.22 2.111-2.521 0.19-0.23 0.385-0.318 0.637-0.318h2.043c0.252 0 0.446 0.088 0.637 0.318 0.248 0.301 2.111 2.521 2.111 2.521h-1.701z"
+                  fill="#98B0D2" />
+              </svg>
+            </div>
+            <div
+              className="content">
+              Delete
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;
