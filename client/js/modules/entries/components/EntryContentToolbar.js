@@ -232,6 +232,7 @@ const EntryContentToolbar = ({
 
 EntryContentToolbar.propTypes = {
   isMobile: PropTypes.bool.isRequired,
+  showSpinner: PropTypes.bool.isRequired,
   entry: PropTypes.object,
   currentViewMode: PropTypes.string.isRequired,
   hasPreviousEntry: PropTypes.bool.isRequired,
@@ -240,8 +241,7 @@ EntryContentToolbar.propTypes = {
   onNextEntryClick: PropTypes.func.isRequired,
   onOpenExternalClick: PropTypes.func.isRequired,
   onGoBackClick: PropTypes.func.isRequired,
-  onChangeViewModeClick: PropTypes.func.isRequired,
-  showSpinner: PropTypes.bool.isRequired,
+  onChangeViewModeClick: PropTypes.func.isRequired
 };
 
 export default EntryContentToolbar;

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { routerActions as RouterActions } from 'react-router-redux';
-import Media from 'react-media';
 
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
@@ -19,7 +18,7 @@ import * as SubscriptionsActions from '../../subscriptions/actions';
 
 import { getEnhancedEntry } from '../../../redux/selectors';
 
-class EntryDetailContainer extends Component {
+export class EntryDetailContainer extends Component {
 
   static propTypes = {
     entries: PropTypes.shape({

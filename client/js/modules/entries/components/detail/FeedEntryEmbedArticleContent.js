@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 
 import { findScrollableAncestor } from '../../../../utils/dom';
 import FeedEntryHeader from './FeedEntryHeader';
