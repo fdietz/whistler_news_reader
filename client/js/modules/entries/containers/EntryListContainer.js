@@ -22,8 +22,8 @@ import NothingLeftToReadTeaser from '../components/NothingLeftToReadTeaser';
 import NoArticleSelectedTeaser from '../components/NoArticleSelectedTeaser';
 import LoadingTeaser from '../components/LoadingTeaser';
 
-import * as EntriesActions from '../actions';
-import * as CommonActions from '../../../actions';
+import * as entriesActions from '../actions';
+import * as commonActions from '../../../actions';
 
 import {
   getSortedSubscriptions,
@@ -279,6 +279,6 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-const dispatchToProps = { ...EntriesActions, ...CommonActions };
+const dispatchToProps = { ...entriesActions, ...commonActions };
 
 export default connect(mapStateToProps, dispatchToProps)(EntryListContainer);

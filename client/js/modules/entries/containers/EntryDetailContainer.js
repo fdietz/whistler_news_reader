@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { routerActions as RouterActions } from 'react-router-redux';
 import Media from 'react-media';
@@ -15,10 +14,8 @@ import FeedEntryEmbedWebsiteContent from '../components/detail/FeedEntryEmbedWeb
 import FeedEntryEmbedArticleContent from '../components/detail/FeedEntryEmbedArticleContent';
 
 import * as EntriesActions from '../actions';
-
 import user from '../../user';
 import * as SubscriptionsActions from '../../subscriptions/actions';
-import * as CategoriesActions from '../../categories/actions';
 
 import {
   getHasPreviousEntry,
@@ -50,11 +47,10 @@ class EntryDetailContainer extends Component {
     params: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
 
-    userActions: PropTypes.object.isRequired,
-    subscriptionsActions: PropTypes.object.isRequired,
-    categoriesActions: PropTypes.object.isRequired,
-    entriesActions: PropTypes.object.isRequired,
-    routerActions: PropTypes.object.isRequired,
+    decrementUnreadCount: PropTypes.func.isRequired,
+    requestMarkEntryAsRead: PropTypes.func.isRequired,
+    requestLoadMore: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -77,9 +73,9 @@ class EntryDetailContainer extends Component {
 
 
   onGoBackClick() {
-    const { routerActions, params, pathname } = this.props;
+    const { push, params, pathname } = this.props;
 
-    routerActions.push(goBackPathname(params, pathname));
+    push(goBackPathname(params, pathname));
   }
 
   onChangeViewModeClick(mode) {
@@ -99,18 +95,18 @@ class EntryDetailContainer extends Component {
   }
 
   handleEntryShown(entry) {
-    const { entriesActions, subscriptionsActions } = this.props;
-    entriesActions.requestMarkEntryAsRead(entry).then(() => {
-      subscriptionsActions.decrementUnreadCount({ id: entry.subscription_id });
+    const { requestMarkEntryAsRead, decrementUnreadCount } = this.props;
+    requestMarkEntryAsRead(entry).then(() => {
+      decrementUnreadCount({ id: entry.subscription_id });
     });
   }
 
   nextEntry() {
-    const { entriesActions, hasNextEntry, nextEntryId } = this.props;
+    const { requestLoadMore, hasNextEntry, nextEntryId } = this.props;
     if (hasNextEntry) {
       this.navigateTo(nextEntryId);
     } else {
-      entriesActions.requestLoadMore(this.requestParams(this.props)).then(() => {
+      requestLoadMore(this.requestParams(this.props)).then(() => {
         this.navigateTo(nextEntryId);
       });
     }
@@ -129,8 +125,8 @@ class EntryDetailContainer extends Component {
   }
 
   navigateTo(entryId) {
-    const { routerActions, params, pathname } = this.props;
-    routerActions.push(entryPath(entryId, params, pathname));
+    const { push, params, pathname } = this.props;
+    push(entryPath(entryId, params, pathname));
   }
 
   render() {
@@ -209,14 +205,11 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    userActions: bindActionCreators(user.actions, dispatch),
-    entriesActions: bindActionCreators(EntriesActions, dispatch),
-    subscriptionsActions: bindActionCreators(SubscriptionsActions, dispatch),
-    categoriesActions: bindActionCreators(CategoriesActions, dispatch),
-    routerActions: bindActionCreators(RouterActions, dispatch),
-  };
-}
+const dispatchToProps = {
+  ...user.actions,
+  ...EntriesActions,
+  ...SubscriptionsActions,
+  ...RouterActions
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(EntryDetailContainer);
+export default connect(mapStateToProps, dispatchToProps)(EntryDetailContainer);
