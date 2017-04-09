@@ -26,7 +26,8 @@ import * as commonActions from '../../../actions';
 
 import {
   getSortedSubscriptions,
-  getSortedEntries
+  getSortedEntries,
+  getCurrentEntry
 } from '../../../redux/selectors';
 
 import { mapRequestParams } from '../../../utils/navigator';
@@ -258,7 +259,7 @@ function mapStateToProps(state, ownProps) {
   return {
     sortedSubscriptions: getSortedSubscriptions(state),
     entries: state.entries,
-    currentEntry: state.entries.byId[ownProps.params.id],
+    currentEntry: getCurrentEntry(state, ownProps),
     sortedEntries: getSortedEntries(state),
     pathname: ownProps.location.pathname,
     location: ownProps.location

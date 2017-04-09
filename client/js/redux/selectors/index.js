@@ -75,6 +75,10 @@ export function getEnhancedEntry(state, ownProps) {
   return null;
 }
 
+export function getCurrentEntry(state, ownProps) {
+  return state.entries.byId[+ownProps.params.id];
+}
+
 function currentIndex(entryIds, entryId) {
   return entryId ? entryIds.findIndex(id => id === entryId) : 0;
 }
