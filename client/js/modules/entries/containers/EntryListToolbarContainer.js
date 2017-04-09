@@ -21,6 +21,8 @@ import {
   getHasNextEntry,
   getPreviousEntryId,
   getNextEntryId,
+  isSubscriptionSelected,
+  isCategorySelected
 } from '../../../redux/selectors';
 
 class EntryListToolbarContainer extends Component {
@@ -207,8 +209,8 @@ class EntryListToolbarContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    isSubscriptionSelected: ownProps.pathname.startsWith('/subscriptions'),
-    isCategorySelected: ownProps.pathname.startsWith('/categories'),
+    isSubscriptionSelected: isSubscriptionSelected(state, ownProps),
+    isCategorySelected: isCategorySelected(state, ownProps),
 
     subscriptions: state.subscriptions,
     sortedSubscriptions: getSortedSubscriptions(state),

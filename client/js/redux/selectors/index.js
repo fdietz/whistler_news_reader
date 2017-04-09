@@ -75,6 +75,14 @@ export function getEnhancedEntry(state, ownProps) {
   return null;
 }
 
+export function isSubscriptionSelected(state, ownProps) {
+  return ownProps.pathname.startsWith('/subscriptions');
+}
+
+export function isCategorySelected(state, ownProps) {
+  return ownProps.pathname.startsWith('/categories');
+}
+
 export function getCurrentEntry(state, ownProps) {
   return state.entries.byId[+ownProps.params.id];
 }
