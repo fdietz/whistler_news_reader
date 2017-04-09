@@ -17,7 +17,6 @@ import EntryGrid from '../components/grid/EntryGrid';
 import EntryListToolbarContainer from './EntryListToolbarContainer';
 
 import NoMoreContent from '../components/NoMoreContent';
-import WelcomeTeaser from '../components/WelcomeTeaser';
 import NothingLeftToReadTeaser from '../components/NothingLeftToReadTeaser';
 import NoArticleSelectedTeaser from '../components/NoArticleSelectedTeaser';
 import LoadingTeaser from '../components/LoadingTeaser';
@@ -27,11 +26,7 @@ import * as commonActions from '../../../actions';
 
 import {
   getSortedSubscriptions,
-  getSortedEntries,
-  getHasPreviousEntry,
-  getHasNextEntry,
-  getPreviousEntryId,
-  getNextEntryId,
+  getSortedEntries
 } from '../../../redux/selectors';
 
 import { mapRequestParams } from '../../../utils/navigator';
@@ -47,11 +42,6 @@ class EntryListContainer extends Component {
       error: PropTypes.string,
     }).isRequired,
     currentEntry: PropTypes.object,
-    hasPreviousEntry: PropTypes.bool.isRequired,
-    hasNextEntry: PropTypes.bool.isRequired,
-    previousEntryId: PropTypes.number,
-    nextEntryId: PropTypes.number,
-
     sortedSubscriptions: PropTypes.array.isRequired,
     params: PropTypes.object.isRequired,
     pathname: PropTypes.string.isRequired,
@@ -269,10 +259,6 @@ function mapStateToProps(state, ownProps) {
     sortedSubscriptions: getSortedSubscriptions(state),
     entries: state.entries,
     currentEntry: state.entries.byId[ownProps.params.id],
-    hasPreviousEntry: getHasPreviousEntry(state, ownProps),
-    hasNextEntry: getHasNextEntry(state, ownProps),
-    previousEntryId: getPreviousEntryId(state, ownProps),
-    nextEntryId: getNextEntryId(state, ownProps),
     sortedEntries: getSortedEntries(state),
     pathname: ownProps.location.pathname,
     location: ownProps.location
