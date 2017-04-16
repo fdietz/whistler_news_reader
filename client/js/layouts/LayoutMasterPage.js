@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 
-const LayoutMasterPage = ({ children, className }) => {
+const LayoutMasterPage = ({ children, className, style }) => {
   const cls = classNames('layout-master-page', className);
   return (
-    <div className={cls}>
+    <div className={cls} style={style}>
     {children}
     </div>
   );
@@ -12,7 +12,8 @@ const LayoutMasterPage = ({ children, className }) => {
 
 LayoutMasterPage.propTypes = {
   children: PropTypes.node,
-  className: PropTypes.string
+  className: PropTypes.string,
+  style: PropTypes.string
 };
 
 export default LayoutMasterPage;

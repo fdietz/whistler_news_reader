@@ -1,24 +1,18 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
-import Media from 'react-media';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import LayoutHeader from '../../../layouts/LayoutHeader';
 import LayoutContent from '../../../layouts/LayoutContent';
 import LayoutContainer from '../../../layouts/LayoutContainer';
-import LayoutMasterPage from '../../../layouts/LayoutMasterPage';
-import LayoutDetailPage from '../../../layouts/LayoutDetailPage';
+import MasterDetail from '../../../layouts/MasterDetail';
 
 import InfiniteScroll from '../components/InfiniteScroll';
 import EntryList from '../components/list/EntryList';
-import EntryGrid from '../components/grid/EntryGrid';
 
 import EntryListToolbarContainer from './EntryListToolbarContainer';
 
 import NoMoreContent from '../components/NoMoreContent';
 import NothingLeftToReadTeaser from '../components/NothingLeftToReadTeaser';
-import NoArticleSelectedTeaser from '../components/NoArticleSelectedTeaser';
 import LoadingTeaser from '../components/LoadingTeaser';
 
 import * as entriesActions from '../actions';
@@ -138,27 +132,13 @@ class EntryListContainer extends Component {
     } = this.props;
     const { requestLoadMore } = this.props;
 
-    let items;
-    if (currentViewLayout === 'list' || currentViewLayout === 'compact_list') {
-      items = (
-        <EntryList
-          entries={sortedEntries}
-          currentEntry={currentEntry}
-          onEntryClick={e => this.handleSelectCurrentEntry(e)}
-          className={currentViewLayout === 'compact_list' ? 'compact' : ''}
+    const items = (
+      <EntryList
+        entries={sortedEntries}
+        currentEntry={currentEntry}
+        onEntryClick={e => this.handleSelectCurrentEntry(e)}
       />
-      );
-    } else if (currentViewLayout === 'grid') {
-      items = (
-        <EntryGrid
-          entries={sortedEntries}
-          currentEntry={currentEntry}
-          onEntryClick={e => this.handleSelectCurrentEntry(e)}
-      />
-      );
-    } else {
-      throw Error(`Unknown currentViewLayout ${currentViewLayout}`);
-    }
+    );
 
     const paginatedItems = (
       <InfiniteScroll
@@ -171,13 +151,6 @@ class EntryListContainer extends Component {
       </InfiniteScroll>
     );
 
-    const hasChildren = React.Children.count(this.props.children) > 0;
-
-    const masterListCls = classNames('layout-master-page', {
-      grid: currentViewLayout === 'grid',
-      'hide-animation': hasChildren
-    });
-
     const responsiveToolbar = (
       <EntryListToolbarContainer
         params={this.props.params}
@@ -187,70 +160,33 @@ class EntryListContainer extends Component {
     );
 
     const mainList = (
-      <LayoutMasterPage className={masterListCls}>
-        <LayoutContainer>
-          <LayoutHeader>{responsiveToolbar}</LayoutHeader>
-          <LayoutContent>{paginatedItems}</LayoutContent>
-        </LayoutContainer>
-      </LayoutMasterPage>
+      <LayoutContainer>
+        <LayoutHeader>{responsiveToolbar}</LayoutHeader>
+        <LayoutContent>{paginatedItems}</LayoutContent>
+      </LayoutContainer>
     );
 
-    const segment = this.props.pathname.split('/')[2];
+    let master;
+
+    if (sortedSubscriptions.length > 0) {
+      if (entries.isLoading) {
+        master = <LoadingTeaser toolbar={responsiveToolbar} />;  
+      } else if (!entries.isLoading) {
+        if (entries.listedIds.length > 0) {
+          master = mainList;
+        } else {
+          master = <NothingLeftToReadTeaser toolbar={responsiveToolbar} onRefresh={this.handleRefresh} />;
+        }
+      }
+    }
 
     return (
-      <div className="layout-master-container">
-        {sortedSubscriptions.length > 0 && entries.listedIds.length > 0 && mainList}
-
-        {entries.listedIds.length === 0 && entries.isLoading &&
-          <Media query="(max-width: 40em)">
-            {matches => {
-              return matches ? (
-                <LayoutDetailPage>
-                  <LoadingTeaser toolbar={responsiveToolbar} />
-                </LayoutDetailPage>
-              ) : null;
-            }}
-          </Media>
-        }
-
-        {!hasChildren && sortedSubscriptions.length > 0 && entries.listedIds.length > 0 &&
-          <Media query="(max-width: 40em)">
-            {function match(matches) {
-              return matches ? null :
-                <LayoutDetailPage><NoArticleSelectedTeaser /></LayoutDetailPage>;
-            }}
-          </Media>
-        }
-
-        {sortedSubscriptions.length > 0 && entries.listedIds.length === 0 && !entries.isLoading &&
-          <LayoutDetailPage>
-            <NothingLeftToReadTeaser toolbar={responsiveToolbar} onRefresh={this.handleRefresh} />
-          </LayoutDetailPage>
-        }
-
-        <Media query="(max-width: 40em)">
-          {
-            matches => {
-              if (matches) {
-                return (<ReactCSSTransitionGroup
-                  component="div"
-                  className="slide-animation-container"
-                  transitionName="slide-left"
-                  transitionEnterTimeout={200}
-                  transitionLeaveTimeout={200}>
-                  {hasChildren && React.cloneElement(this.props.children, {
-                    key: segment
-                  })}
-                </ReactCSSTransitionGroup>);
-              } else if (hasChildren) {
-                return this.props.children;
-              }
-
-              return null;
-            }
-          }
-        </Media>
-      </div>
+      <MasterDetail
+        master={master}
+        detail={this.props.children}
+        expandMaster={React.Children.count(this.props.children) === 0}
+        pathname={this.props.pathname}
+      />
     );
   }
 }
