@@ -44,7 +44,7 @@ In `config/prod.ex` change the following:
 ```
 -url: [host: "example.com", port: 80],
 
-+url: [scheme: "https", host: "whistler_news_reader.herokuapp.com", port: 443],
++url: [scheme: "https", host: System.get_env("URL_HOST"), port: System.get_env("URL_PORT")],
 +force_ssl: [rewrite_on: [:x_forwarded_proto]],
 ```
 
@@ -60,6 +60,17 @@ In `config/prod.secret.exs` change the following:
 ```
 
 The important take away is that we replace some settings with environment variables, as for example the `secret_key_base`, guardian `secret_key` or the database `url`. The later will be automatically set by Heroku, but we need to create the secret keys using the `mix phoenix.gen.secret` command.
+
+Now we can set the host based on heroku app name:
+```
+$ heroku config:set URL_HOST="https://whistler-news-reader.herokuapp.com/"
+```
+
+And the port accordingly:
+
+```
+$ heroku config:set URL_PORT=443
+```
 
 Execute the following for the secret_key:
 ```
