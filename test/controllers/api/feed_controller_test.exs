@@ -8,25 +8,6 @@ defmodule WhistlerNewsReader.Api.FeedControllerTest do
 
   @feed_url "http://www.theverge.com/rss/frontpage"
   @other_feed_url "http://heise.de.feedsportal.com/c/35207/f/653902/index.rss"
-  @not_existing_feed_url "http://www.theverge.com/404"
-
-  @valid_attrs %{
-    title: "The Verge",
-    feed_url: "http://www.theverge.com/rss/frontpage",
-    site_url: "http://www.theverge.com"
-  }
-
-  @valid_attrs2 %{
-    title: "The Verge 2",
-    feed_url: "http://www.theverge.com/rss/all2",
-    site_url: "http://www.theverge.com"
-  }
-
-  @valid_attrs3 %{
-    title: "The Verge 3",
-    feed_url: "http://www.theverge.com/rss/all3",
-    site_url: "http://www.theverge.com"
-  }
 
   setup do
     user = insert(:user)

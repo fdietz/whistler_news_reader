@@ -9,16 +9,6 @@ defmodule WhistlerNewsReader.FeedImporterTest do
   import Mock
 
   @feed_url "http://www.theverge.com/rss/frontpage"
-  @not_existing_feed_url "http://www.theverge.com/404"
-  @invalid_feed_format_feed_url "http://www.theverge.com/invalid_feed_format"
-
-  @valid_attrs %{
-    title: "The Verge - All Posts",
-    feed_url: "http://www.theverge.com/rss/frontpage",
-    site_url: "http://www.theverge.com"
-  }
-
-  @invalid_attrs %{}
 
   setup do
     user = insert(:user)
