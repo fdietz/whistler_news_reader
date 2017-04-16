@@ -4,7 +4,7 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "build": "webpack --config ./client/webpack/webpack.config.dev.js --colors --progress",
-    "build:production": "NODE_ENV=production webpack --config ./client/webpack/webpack.config.prod.js",
+    "build:production": "NODE_ENV=production webpack --config ./client/webpack/webpack.config.prod.js --display-error-details",
     "stats": "webpack --config ./client/webpack/webpack.config.prod.js --profile --json > stats.json",
     "watch": "webpack --config ./client/webpack/webpack.config.prod.js --watch --colors --progress",
     "devserver": "node webpack.devserver",
