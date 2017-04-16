@@ -38,7 +38,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:phoenix_live_reload, "~> 1.0.5", only: :dev},
      {:cowboy, "~> 1.0.4"},
      {:gettext, "~> 0.11"},
-     {:elixir_feed_parser, "~> 1.2.0"},
+     {:elixir_feed_parser, "~> 2.0.0"},
      {:httpoison, "~> 0.9.0"},
      {:floki, "~> 0.10.0"},
      {:comeonin, "~> 2.5.2"},
@@ -50,7 +50,7 @@ defmodule WhistlerNewsReader.Mixfile do
      {:html_sanitize_ex, "~> 1.0.1"},
      {:poison, "~> 2.2.0"},
      {:gproc, "~> 0.6.1"},
-     {:hound, "~> 1.0"},
+     {:hound, "~> 1.0.3"},
      {:credo, "~> 0.4.8", only: [:dev, :test]},
      {:mogrify, "~> 0.4.0"}]
   end

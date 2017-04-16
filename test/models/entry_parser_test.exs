@@ -33,7 +33,7 @@ defmodule WhistlerNewsReader.EntryParserTest do
 
     parsed_entry = EntryParser.parse(feed, entry_body)
     assert parsed_entry[:feed_id] == feed.id
-    assert parsed_entry[:guid] == "1D69ED1DF649131628990F74515EFBD0F59ED08112B66B22507DA9D11EB5BA1E"
+    assert parsed_entry[:guid] == "E364DB5BD27D3DBA1BD688235B3E53175A744005B439F9FB14BAB1DF67562C40"
     assert parsed_entry[:title] == "Politiker-Fakes: Virtuelle Doppelgänger ärgern die Mächtigen"
     assert parsed_entry[:url] == "https://www.heise.de/newsticker/meldung/Politiker-Fakes-Virtuelle-Doppelgaenger-aergern-die-Maechtigen-3351148.html?wt_mc=rss.ho.beitrag.atom"
     assert parsed_entry[:summary] == "Früher wurden Politiker im Kabarett veräppelt, heute geschieht das im Netz: Fake-Profile für Trump oder Merkel setzen sich satirisch mit politischer Inszenierung auseinander – und legen manchmal selbst die Originale rein."

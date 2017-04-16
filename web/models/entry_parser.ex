@@ -25,7 +25,8 @@ defmodule WhistlerNewsReader.EntryParser do
   defp convert_to_ecto_date_time(date_time) do
     %Ecto.DateTime{
       year: date_time.year, month: date_time.month, day: date_time.day,
-      hour: date_time.hour, min: date_time.min, sec: date_time.sec, usec: date_time.usec
+      hour: date_time.hour, min: date_time.minute, sec: date_time.second,
+      usec: 0
     }
   end
 
