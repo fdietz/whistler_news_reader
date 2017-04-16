@@ -20,16 +20,13 @@ We need two different buildpacks for the Phoenix application:
 Install both using `heroku buildpacks:add` command:
 
 ```
-> heroku buildpacks:add https://github.com/HashNuke/heroku-buildpack-elixir
-Buildpack added. Next release on whistler-news-reader will use https://github.com/HashNuke/heroku-buildpack-elixir.
+$ heroku buildpacks:add https://github.com/HashNuke/heroku-buildpack-elixir
 ```
 
+and 
+
 ```
-> heroku buildpacks:add https://github.com/gjaldon/heroku-buildpack-phoenix-static
-Buildpack added. Next release on whistler-news-reader will use:
-  1. https://github.com/HashNuke/heroku-buildpack-elixir
-  2. https://github.com/gjaldon/heroku-buildpack-phoenix-static
-Run git push heroku master to create a new release using these buildpacks.
+$ heroku buildpacks:add https://github.com/gjaldon/heroku-buildpack-phoenix-static
 ```
 
 `elixir_buildpack.config` specifies the required elixir version. The `phoenix_static_buildpack.config` the `node` and `rpm` versions respectively.
@@ -38,48 +35,28 @@ Finally, there's the `compile` file (used by the phoenix static buildpack) which
 
 ### Configuration
 
-In `config/prod.ex` change the following:
+In `config/prod.ex` and `config/prod.secret.exs` we use several environment variables
+which must be set.
 
-
-```
--url: [host: "example.com", port: 80],
-
-+url: [scheme: "https", host: System.get_env("URL_HOST"), port: System.get_env("URL_PORT")],
-+force_ssl: [rewrite_on: [:x_forwarded_proto]],
-```
-
-In `config/prod.secret.exs` change the following:
-```
--username: System.get_env("DATABASE_USERNAME"),
--password: System.get_env("DATABASE_PASSWORD"),
-
-+url: System.get_env("DATABASE_URL"),
-
-+config :guardian, Guardian,
-+  secret_key: System.get_env("GUARDIAN_SECRET_KEY")
-```
-
-The important take away is that we replace some settings with environment variables, as for example the `secret_key_base`, guardian `secret_key` or the database `url`. The later will be automatically set by Heroku, but we need to create the secret keys using the `mix phoenix.gen.secret` command.
-
-Now we can set the host based on heroku app name:
+Let's start with the `URL_HOST` based on heroku app name:
 ```
 $ heroku config:set URL_HOST="https://whistler-news-reader.herokuapp.com/"
 ```
 
-And the port accordingly:
+And the `URL_PORT` accordingly:
 
 ```
 $ heroku config:set URL_PORT=443
 ```
 
-Execute the following for the secret_key:
+Execute the following for the `SECRET_KEY_BASE`:
 ```
 $ mix phoenix.gen.secret
 xxxxxxxxxx
 $ heroku config:set SECRET_KEY_BASE="xxxxxxxxxx"
 ```
 
-And again for the guardian secret_key:
+And again for the guardian `GUARDIAN_SECRET_KEY`:
 
 ```
 $ mix phoenix.gen.secret
@@ -102,9 +79,11 @@ heroku addons:create heroku-postgresql:hobby-dev
 ```
 
 Now run the migrations:
+
 ```
 $ heroku run mix ecto.migrate
 ```
+
 # Docker
 
 ## Prerequisites
