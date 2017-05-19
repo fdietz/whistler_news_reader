@@ -5,7 +5,7 @@ defmodule WhistlerNewsReader.EntryImageExtractor do
 
   # TODO: only use img if found at the beginning
   def extract_url(subscribed_entry) do
-    content = subscribed_entry.entry.content || ""
+    content = subscribed_entry.content || ""
     result = Regex.run(~r/<img.*?src="(.*?)"/, content)
     first_match(result)
   end
