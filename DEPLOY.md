@@ -140,7 +140,7 @@ Install the docker toolbox https://www.docker.com/products/docker-toolbox.
 3. Now build the docker images
 
     ```bash
-    $ POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres docker-composer up -d
+    $ POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres docker-compose up -d
     ```
 
    In my experience it didn't work with the digitalocean base image because it has not enough RAM to build `erlang-idna`. See issue https://github.com/benoitc/erlang-idna/issues/8. Upgrading my droplet fixed it for me.
