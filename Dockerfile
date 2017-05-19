@@ -1,8 +1,8 @@
-FROM trenpixster/elixir:1.3.0
+FROM trenpixster/elixir:1.4.1
 
 MAINTAINER Frederik Dietz <fdietz@gmail.com>
 
-RUN curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash - && apt-get install -y nodejs
+RUN curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash - && apt-get install -y nodejs
 
 RUN apt-get update -q && \
     apt-get -y install \
