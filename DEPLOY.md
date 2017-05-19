@@ -108,7 +108,7 @@ Install the docker toolbox https://www.docker.com/products/docker-toolbox.
 3. Now build the docker images
 
     ```bash
-    $ POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres docker-composer up -d
+    $ POSTGRES_USER=postgres POSTGRES_PASSWORD=postgres docker-compose up -d
     ```
 
 4. Visit website
