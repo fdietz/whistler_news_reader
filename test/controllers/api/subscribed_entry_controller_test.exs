@@ -1,5 +1,5 @@
-defmodule WhistlerNewsReader.Api.SubscribedEntryControllerTest do
-  use WhistlerNewsReader.ConnCase, async: false
+defmodule WhistlerNewsReaderWeb.Api.SubscribedEntryControllerTest do
+  use WhistlerNewsReaderWeb.ConnCase, async: false
 
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.SubscribedEntry
@@ -49,6 +49,7 @@ defmodule WhistlerNewsReader.Api.SubscribedEntryControllerTest do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, subscribed_entry_path(conn, :index, %{"subscription_id" => subscription.id, "last_published" => Ecto.DateTime.to_iso8601(Ecto.DateTime.utc), "limit" => 1})
 
+    IO.inspect json_response(conn, 200)["entries"]
     result = Enum.at(json_response(conn, 200)["entries"], 0)
     assert result["id"] == entry.id
     assert result["title"] == entry.title

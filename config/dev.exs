@@ -16,7 +16,7 @@ else
   webpack_watch
 end
 
-config :whistler_news_reader, WhistlerNewsReader.Endpoint,
+config :whistler_news_reader, WhistlerNewsReaderWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,

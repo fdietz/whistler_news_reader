@@ -4,7 +4,7 @@ defmodule WhistlerNewsReader.Mixfile do
   def project do
     [app: :whistler_news_reader,
      version: "0.0.1",
-     elixir: "~> 1.4.1",
+     elixir: "~> 1.4",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix, :gettext] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -23,21 +23,21 @@ defmodule WhistlerNewsReader.Mixfile do
   end
 
   # Specifies which paths to compile per environment
-  defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
-  defp elixirc_paths(_),     do: ["lib", "web"]
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_),     do: ["lib"]
 
   # Specifies your project dependencies
   #
   # Type `mix help deps` for examples and options
   defp deps do
-    [{:phoenix, "~> 1.2.1"},
+    [{:phoenix, "~> 1.3.0"},
      {:phoenix_ecto, "~> 3.0.1"},
      {:postgrex, ">= 0.12.0"},
-     {:phoenix_html, "~> 2.6.2"},
+     {:phoenix_html, "~> 2.10.4"},
      {:phoenix_pubsub, "~> 1.0"},
-     {:phoenix_live_reload, "~> 1.0.5", only: :dev},
+     {:phoenix_live_reload, "~> 1.1.3", only: :dev},
      {:cowboy, "~> 1.0.4"},
-     {:gettext, "~> 0.11"},
+     {:gettext, "~> 0.13.1"},
      {:elixir_feed_parser, "~> 2.0.0"},
      {:httpoison, "~> 0.9.0"},
      {:floki, "~> 0.10.0"},

@@ -1,4 +1,4 @@
-defmodule WhistlerNewsReader.ChannelCase do
+defmodule WhistlerNewsReaderWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -26,7 +26,7 @@ defmodule WhistlerNewsReader.ChannelCase do
       import Ecto.Query
 
       # The default endpoint for testing
-      @endpoint WhistlerNewsReader.Endpoint
+      @endpoint WhistlerNewsReaderWeb.Endpoint
     end
   end
 

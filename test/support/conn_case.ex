@@ -1,4 +1,4 @@
-defmodule WhistlerNewsReader.ConnCase do
+defmodule WhistlerNewsReaderWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -25,11 +25,11 @@ defmodule WhistlerNewsReader.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import WhistlerNewsReader.Router.Helpers
+      import WhistlerNewsReaderWeb.Router.Helpers
       import WhistlerNewsReader.Factory
 
       # The default endpoint for testing
-      @endpoint WhistlerNewsReader.Endpoint
+      @endpoint WhistlerNewsReaderWeb.Endpoint
     end
   end
 

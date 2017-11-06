@@ -8,7 +8,7 @@ defmodule WhistlerNewsReader do
 
     children = [
       # Start the endpoint when the application starts
-      supervisor(WhistlerNewsReader.Endpoint, []),
+      supervisor(WhistlerNewsReaderWeb.Endpoint, []),
       # Start the Ecto repository
       worker(WhistlerNewsReader.Repo, []),
 
@@ -26,7 +26,7 @@ defmodule WhistlerNewsReader do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    WhistlerNewsReader.Endpoint.config_change(changed, removed)
+    WhistlerNewsReaderWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

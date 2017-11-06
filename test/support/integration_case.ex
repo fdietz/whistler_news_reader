@@ -14,14 +14,14 @@ defmodule WhistlerNewsReader.IntegrationCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import WhistlerNewsReader.Router.Helpers
+      import WhistlerNewsReaderWeb.Router.Helpers
       import WhistlerNewsReader.Factory
       import WhistlerNewsReader.IntegrationCase
 
       alias WhistlerNewsReader.Repo
 
       # The default endpoint for testing
-      @endpoint WhistlerNewsReader.Endpoint
+      @endpoint WhistlerNewsReaderWeb.Endpoint
 
       hound_session
     end

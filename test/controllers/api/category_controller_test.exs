@@ -1,5 +1,5 @@
-defmodule WhistlerNewsReader.Api.CategoryControllerTest do
-  use WhistlerNewsReader.ConnCase, async: false
+defmodule WhistlerNewsReaderWeb.Api.CategoryControllerTest do
+  use WhistlerNewsReaderWeb.ConnCase, async: false
 
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.Category

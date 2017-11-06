@@ -1,5 +1,5 @@
-defmodule WhistlerNewsReader.Api.RegistrationControllerTest do
-  use WhistlerNewsReader.ConnCase, async: false
+defmodule WhistlerNewsReaderWeb.Api.RegistrationControllerTest do
+  use WhistlerNewsReaderWeb.ConnCase, async: false
 
   alias WhistlerNewsReader.Repo
   alias WhistlerNewsReader.User

@@ -6,7 +6,7 @@
 use Mix.Config
 
 # Configures the endpoint
-config :whistler_news_reader, WhistlerNewsReader.Endpoint,
+config :whistler_news_reader, WhistlerNewsReaderWeb.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "GIp8OnuW3ex0mkgsun4RN6XpAz4NImG9vH6neqxYXo++FinVSah222qUmwm7/Hug",

@@ -1,5 +1,5 @@
-defmodule WhistlerNewsReader.PageControllerTest do
-  use WhistlerNewsReader.ConnCase
+defmodule WhistlerNewsReaderWeb.PageControllerTest do
+  use WhistlerNewsReaderWeb.ConnCase
 
   import Mock
 
