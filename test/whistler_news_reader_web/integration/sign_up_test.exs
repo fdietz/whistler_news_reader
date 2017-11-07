@@ -1,4 +1,4 @@
-defmodule WhistlerNewsReader.SignUpTest do
+defmodule WhistlerNewsReaderWeb.SignUpTest do
   use WhistlerNewsReader.IntegrationCase
 
   @tag :integration

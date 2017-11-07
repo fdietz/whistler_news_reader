@@ -36,83 +36,80 @@ defmodule WhistlerNewsReaderWeb.Api.SubscribedEntryControllerTest do
     {:ok, conn: conn, jwt: jwt, user: user, subscription: subscription, subscription2: subscription2, feed: feed, feed2: feed2, feed3: feed3, category: category, entry: entry, entry2: entry2, entry3: entry3, unread_entry: unread_entry, unread_entry2: unread_entry2, unread_entry3: unread_entry3}
   end
 
-  test "GET /api/subscribed_entries?subscription_id=1 succeeds", %{conn: conn, jwt: jwt, subscription: subscription, entry: entry} do
+  test "GET /api/subscribed_entries?subscription_id=1 succeeds", %{conn: conn, jwt: jwt, subscription: subscription, entry: entry, unread_entry: unread_entry} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, subscribed_entry_path(conn, :index, %{"subscription_id" => subscription.id})
 
     result = Enum.at(json_response(conn, 200)["entries"], 0)
-    assert result["id"] == entry.id
+    assert result["id"] == unread_entry.id
     assert result["title"] == entry.title
   end
 
-  test "GET /api/subscribed_entries?subscription_id=1&last_published&limit succeeds", %{conn: conn, jwt: jwt, subscription: subscription, entry: entry} do
+  test "GET /api/subscribed_entries?subscription_id=1&last_published&limit succeeds", %{conn: conn, jwt: jwt, subscription: subscription, entry: entry, unread_entry: unread_entry} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, subscribed_entry_path(conn, :index, %{"subscription_id" => subscription.id, "last_published" => Ecto.DateTime.to_iso8601(Ecto.DateTime.utc), "limit" => 1})
 
-    IO.inspect json_response(conn, 200)["entries"]
     result = Enum.at(json_response(conn, 200)["entries"], 0)
-    assert result["id"] == entry.id
+    assert result["id"] == unread_entry.id
     assert result["title"] == entry.title
   end
 
-  test "GET /api/subscribed_entries?category_id=1 succeeds", %{conn: conn, jwt: jwt, category: category, entry: entry} do
+  test "GET /api/subscribed_entries?category_id=1 succeeds", %{conn: conn, jwt: jwt, category: category, entry: entry, unread_entry: unread_entry} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, subscribed_entry_path(conn, :index, %{"category_id" => category.id, "last_published" => Ecto.DateTime.to_iso8601(Ecto.DateTime.utc), "limit" => 1})
 
     result = Enum.at(json_response(conn, 200)["entries"], 0)
-    assert result["id"] == entry.id
+    assert result["id"] == unread_entry.id
     assert result["title"] == entry.title
   end
 
-  test "GET /api/subscribed_entries?category_id=1&last_published&limit succeeds", %{conn: conn, jwt: jwt, category: category, entry: entry} do
+  test "GET /api/subscribed_entries?category_id=1&last_published&limit succeeds", %{conn: conn, jwt: jwt, category: category, entry: entry, unread_entry: unread_entry} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, subscribed_entry_path(conn, :index, %{"category_id" => category.id})
 
     result = Enum.at(json_response(conn, 200)["entries"], 0)
-    assert result["id"] == entry.id
+    assert result["id"] == unread_entry.id
     assert result["title"] == entry.title
   end
 
-  test "GET /api/subscribed_entries?subscription_id=all succeeds", %{conn: conn, jwt: jwt, entry: entry, entry2: entry2} do
+  test "GET /api/subscribed_entries?subscription_id=all succeeds", %{conn: conn, jwt: jwt, entry: entry, unread_entry: unread_entry, entry2: entry2, unread_entry2: unread_entry2} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, subscribed_entry_path(conn, :index, %{"subscription_id" => "all"})
-
     first = Enum.at(json_response(conn, 200)["entries"], 0)
     second = Enum.at(json_response(conn, 200)["entries"], 1)
 
-    assert first["id"] == entry.id
+    assert first["id"] == unread_entry.id
     assert first["title"] == entry.title
-    assert second["id"] == entry2.id
+    assert second["id"] == unread_entry2.id
     assert second["title"] == entry2.title
   end
 
-  test "GET /api/subscribed_entries?subscription_id=all&last_published&limit succeeds", %{conn: conn, jwt: jwt, entry: entry} do
+  test "GET /api/subscribed_entries?subscription_id=all&last_published&limit succeeds", %{conn: conn, jwt: jwt, entry: entry, unread_entry: unread_entry} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, subscribed_entry_path(conn, :index, %{"subscription_id" => "all", "last_published" => Ecto.DateTime.to_iso8601(Ecto.DateTime.utc), "limit" => 1})
-
     first = Enum.at(json_response(conn, 200)["entries"], 0)
 
-    assert first["id"] == entry.id
+    assert first["id"] == unread_entry.id
     assert first["title"] == entry.title
   end
 
-  test "GET /api/subscribed_entries?subscription_id=today succeeds", %{conn: conn, jwt: jwt, entry: entry} do
+  test "GET /api/subscribed_entries?subscription_id=today succeeds", %{conn: conn, jwt: jwt, entry: entry, unread_entry: unread_entry} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, subscribed_entry_path(conn, :index, %{"subscription_id" => "today"})
 
     assert 1 == length json_response(conn, 200)["entries"]
     first = Enum.at(json_response(conn, 200)["entries"], 0)
-    assert first["id"] == entry.id
+    assert first["id"] == unread_entry.id
     assert first["title"] == entry.title
   end
 
-  test "GET /api/subscribed_entries?subscription_id=today&last_published&limit succeeds", %{conn: conn, jwt: jwt, entry: entry} do
+  test "GET /api/subscribed_entries?subscription_id=today&last_published&limit succeeds", %{conn: conn, jwt: jwt, entry: entry, unread_entry: unread_entry} do
     conn = conn |> put_req_header("authorization", jwt)
     conn = get conn, subscribed_entry_path(conn, :index, %{"subscription_id" => "today", "last_published" => Ecto.DateTime.to_iso8601(Ecto.DateTime.utc), "limit" => 1})
 
     assert 1 == length json_response(conn, 200)["entries"]
     first = Enum.at(json_response(conn, 200)["entries"], 0)
-    assert first["id"] == entry.id
+    assert first["id"] == unread_entry.id
     assert first["title"] == entry.title
   end
 
@@ -125,7 +122,7 @@ defmodule WhistlerNewsReaderWeb.Api.SubscribedEntryControllerTest do
     assert unread_entry.read == false
 
     conn = conn |> put_req_header("authorization", jwt)
-    conn = put conn, subscribed_entry_path(conn, :mark_as_read, entry)
+    conn = put conn, subscribed_entry_path(conn, :mark_as_read, unread_entry)
     assert conn.status == 204
 
     assert Repo.get!(SubscribedEntry, unread_entry.id).read == true
